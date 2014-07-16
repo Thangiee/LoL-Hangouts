@@ -19,7 +19,8 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
   "org.scaloid" %% "scaloid-support-v4" % "3.4-10",
-  "com.android.support" % "support-v4" % "13.0.0")
+  "com.android.support" % "support-v4" % "13.0.0",
+  "com.google.code.gson" % "gson" % "2.2.4")
 
 scalacOptions in Compile += "-feature"
 
