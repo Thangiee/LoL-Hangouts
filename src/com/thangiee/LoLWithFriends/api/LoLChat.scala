@@ -1,32 +1,42 @@
 package com.thangiee.LoLWithFriends.api
 
 import org.jivesoftware.smack._
-import android.content.Context
-import scala.collection.JavaConversions._
-import org.jivesoftware.smack.packet.{Message, Presence}
-import org.jivesoftware.smack.packet.Presence.Mode
 import org.jivesoftware.smack.packet.Message.Type
+import org.jivesoftware.smack.packet.Presence.Mode
+import org.jivesoftware.smack.packet.{Message, Presence}
 
-class LoLChat(context: Context, server: Servers) {
-  // set up configuration to connect
-  private val config = new ConnectionConfiguration(server.host, 5223, "pvp.net")
-  config.setSocketFactory(new DummySSLSocketFactory())
-  Riot.init(context, config)
+import scala.collection.JavaConversions._
 
-  def connect(): Boolean = XMPPExceptionHandler(Riot.conn.connect())
+object LoLChat {
+  private var _connection: Option[XMPPConnection] = None
+
+  def connection: XMPPConnection = {
+    _connection match {
+      case Some(conn) => conn
+      case None       => throw new IllegalStateException("Connection is not setup! Make sure you call connect() first.")
+    }
+  }
+
+  def connect(server: Servers): Boolean = {
+    // set up configuration to connect
+    val config = new ConnectionConfiguration(server.host, 5223, "pvp.net")
+    config.setSocketFactory(new DummySSLSocketFactory())
+    _connection = Some(new XMPPConnection(config))
+    XMPPExceptionHandler(connection.connect())
+  }
 
   def login(user: String, pass: String): Boolean = login(user, pass, replaceLeague = false)
 
   def login(user: String, pass: String, replaceLeague: Boolean): Boolean = {
     if (replaceLeague)
-      XMPPExceptionHandler(Riot.conn.login(user, "AIR_"+pass, "xiff"))
+      XMPPExceptionHandler(connection.login(user, "AIR_"+pass))
     else
-      XMPPExceptionHandler(Riot.conn.login(user, "AIR_"+pass))
+      XMPPExceptionHandler(connection.login(user, "AIR_"+pass, "xiff"))
   }
 
-  def disconnect() = Riot.conn.disconnect()
+  def disconnect() = connection.disconnect()
 
-  def friends: List[Summoner] = for (entry <- Riot.conn.getRoster.getEntries.toList) yield new Summoner(entry)
+  def friends: List[Summoner] = for (entry <- connection.getRoster.getEntries.toList) yield new Summoner(entry)
 
   def friendByName(name: String): Option[Summoner] = friends.find((f) => f.name == name)
 
@@ -36,9 +46,9 @@ class LoLChat(context: Context, server: Servers) {
 
   def offlineFriends: List[Summoner] = friends.filter((friend) => !friend.isOnline)
 
-  def isConnected: Boolean = Riot.conn.isConnected
+  def isConnected: Boolean = connection.isConnected
 
-  def isLogin: Boolean = Riot.conn.isAuthenticated
+  def isLogin: Boolean = connection.isAuthenticated
 
   def appearOnline() = updateStatus(Presence.Type.available)
 
@@ -49,11 +59,11 @@ class LoLChat(context: Context, server: Servers) {
   def sendMessage(summoner: Summoner, msg: String):Boolean = {
     val message = new Message(summoner.id, Type.chat)
     message.setBody(msg)
-    XMPPExceptionHandler(Riot.conn.sendPacket(message))
+    XMPPExceptionHandler(connection.sendPacket(message))
   }
 
   def initListener(listener: MessageListener) {
-    Riot.conn.getChatManager.addChatListener(new ChatManagerListener {
+    connection.getChatManager.addChatListener(new ChatManagerListener {
       override def chatCreated(chat: Chat, createdLocally: Boolean): Unit = {
         if (!createdLocally)
           chat.addMessageListener(listener)
@@ -64,7 +74,7 @@ class LoLChat(context: Context, server: Servers) {
   private[api] def updateStatus(`type`: Presence.Type, mode: Presence.Mode = Mode.chat) {
     val p = new Presence(`type`, "This is a Test", 1, mode) // todo: change message
     try {
-      Riot.conn.sendPacket(p)
+      connection.sendPacket(p)
     } catch {
       case e: IllegalStateException => e.printStackTrace()
     }
