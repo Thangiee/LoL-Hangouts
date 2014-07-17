@@ -6,7 +6,7 @@ name := "LoLWithFriends"
 
 scalaVersion := "2.11.0"
 
-minSdkVersion in Android := 14
+minSdkVersion in Android := "14"
 
 platformTarget in Android := "android-19"
 
@@ -22,8 +22,8 @@ libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid-support-v4" % "3.4-10",
   "org.scala-lang" % "scala-xml" % "2.11.0-M4",
   "com.android.support" % "support-v4" % "13.0.0",
-  "com.google.code.gson" % "gson" % "2.2.4")
-
+  "com.google.code.gson" % "gson" % "2.2.4",
+  aar("com.andreabaccega" % "android-form-edittext" % "1.0.5"))
 
 scalacOptions in Compile += "-feature"
 
