@@ -14,13 +14,16 @@ proguardCache in Android ++= Seq(
   ProguardCache("org.scaloid") % "org.scaloid"
 )
 
-proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**")
+proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
+  "-dontwarn scala.**")
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
   "org.scaloid" %% "scaloid-support-v4" % "3.4-10",
+  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
   "com.android.support" % "support-v4" % "13.0.0",
   "com.google.code.gson" % "gson" % "2.2.4")
+
 
 scalacOptions in Compile += "-feature"
 
