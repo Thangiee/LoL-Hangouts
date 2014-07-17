@@ -18,5 +18,5 @@ class Summoner(entry: RosterEntry) {
 
   def status: String = presence.getStatus
 
-  private def presence: Presence = Riot.conn.getRoster.getPresence(id)
+  private def presence: Presence = LoLChat.connection.getRoster.getPresence(id)
 }
