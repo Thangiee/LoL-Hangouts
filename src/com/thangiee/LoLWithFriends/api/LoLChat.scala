@@ -10,16 +10,12 @@ import scala.collection.JavaConversions._
 object LoLChat {
   private var _connection: Option[XMPPConnection] = None
 
-  def connection: XMPPConnection = {
-    _connection match {
-      case Some(conn) => conn
-      case None       => throw new IllegalStateException("Connection is not setup! Make sure you call connect() first.")
-    }
-  }
+  def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
+    "Connection is not setup! Make sure you call LoLChat.connect(...) first."))
 
-  def connect(server: Servers): Boolean = {
+  def connect(server: Server): Boolean = {
     // set up configuration to connect
-    val config = new ConnectionConfiguration(server.host, 5223, "pvp.net")
+    val config = new ConnectionConfiguration(server.url, 5223, "pvp.net")
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
     XMPPExceptionHandler(connection.connect())
@@ -29,18 +25,18 @@ object LoLChat {
 
   def login(user: String, pass: String, replaceLeague: Boolean): Boolean = {
     if (replaceLeague)
-      XMPPExceptionHandler(connection.login(user, "AIR_"+pass))
-    else
       XMPPExceptionHandler(connection.login(user, "AIR_"+pass, "xiff"))
+    else
+      XMPPExceptionHandler(connection.login(user, "AIR_"+pass))
   }
 
   def disconnect() = connection.disconnect()
 
   def friends: List[Summoner] = for (entry <- connection.getRoster.getEntries.toList) yield new Summoner(entry)
 
-  def friendByName(name: String): Option[Summoner] = friends.find((f) => f.name == name)
+  def getFriendByName(name: String): Option[Summoner] = friends.find((f) => f.name == name)
 
-  def friendById(id: String): Option[Summoner] = friends.find((f) => f.id == id)
+  def getFriendById(id: String): Option[Summoner] = friends.find((f) => f.id == id)
 
   def onlineFriends: List[Summoner] = friends.filter((friend) => friend.isOnline)
 
@@ -62,7 +58,7 @@ object LoLChat {
     XMPPExceptionHandler(connection.sendPacket(message))
   }
 
-  def initListener(listener: MessageListener) {
+  def initChatListener(listener: MessageListener) {
     connection.getChatManager.addChatListener(new ChatManagerListener {
       override def chatCreated(chat: Chat, createdLocally: Boolean): Unit = {
         if (!createdLocally)
