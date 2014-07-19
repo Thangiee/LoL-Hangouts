@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Please select your server"
+            android:text="@string/server_selection_header"
             android:id="@+id/textView" android:layout_gravity="center_horizontal" android:gravity="center"
             android:textStyle="bold" android:textSize="16sp"/>
     
