@@ -9,7 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Server name"
+            android:text="@string/server_name"
             android:textSize="18sp"
             android:id="@+id/tv_server_name"
             android:layout_centerVertical="true" android:layout_toRightOf="@+id/im_flag"/>
