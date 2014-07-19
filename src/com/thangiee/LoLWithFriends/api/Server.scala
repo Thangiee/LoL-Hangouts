@@ -45,24 +45,9 @@ object OCE extends Server {
   override val name: String = "Oceania"
 }
 
-object PBE extends Server {
-  override val url: String = "chat.pbe1.lol.riotgames.com"
-  override val name: String = "Public Beta Environment"
-}
-
-object PH extends Server {
-  override val url: String = "chatph.lol.garenanow.com"
-  override val name: String = "Phillipines"
-}
-
 object RU extends Server {
   override val url: String = "chat.ru.lol.riotgames.com"
   override val name: String = "Russia"
-}
-
-object TH extends Server {
-  override val url: String = "chatth.lol.garenanow.com"
-  override val name: String = "Thailand"
 }
 
 object TR extends Server {
@@ -70,12 +55,3 @@ object TR extends Server {
   override val name: String = "Turkey"
 }
 
-object TW extends Server {
-  override val url: String = "chattw.lol.garenanow.com"
-  override val name: String = "Taiwan"
-}
-
-object VN extends Server {
-  override val url: String = "chatvn.lol.garenanow.com"
-  override val name: String = "Vietnam"
-}
