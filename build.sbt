@@ -15,8 +15,7 @@ proguardCache in Android ++= Seq(
 )
 
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
-  "-dontwarn scala.**", "-keep class org.scaloid.common.**", "-keep class org.jivesoftware.smack.** {*;}",
-  "-keep class com.thangiee.LoLWithFriends.** {*;}")
+  "-dontwarn scala.**", "-keep class org.scaloid.common.**", "-keep class org.jivesoftware.smack.** {*;}")
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
@@ -24,9 +23,9 @@ libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-xml" % "2.11.0-M4",
   "com.android.support" % "support-v4" % "13.0.0",
   "com.google.code.gson" % "gson" % "2.2.4",
-  aar("com.andreabaccega" % "android-form-edittext" % "1.0.5"))
-
-scalacOptions in Compile += "-feature"
+  "com.github.amigold.fundapter2" % "library" % "1.01",
+  "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
+  aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.0.4"))
 
 run <<= run in Android
 
