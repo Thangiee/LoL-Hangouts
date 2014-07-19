@@ -13,13 +13,15 @@ object LoLChat {
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
     "Connection is not setup! Make sure you call LoLChat.connect(...) first."))
 
-  def connect(server: Server): Boolean = {
+  def connect(url: String): Boolean = {
     // set up configuration to connect
-    val config = new ConnectionConfiguration(server.url, 5223, "pvp.net")
+    val config = new ConnectionConfiguration(url, 5223, "pvp.net")
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
     XMPPExceptionHandler(connection.connect())
   }
+
+  def connect(server: Server): Boolean = connect(server.url)
 
   def login(user: String, pass: String): Boolean = login(user, pass, replaceLeague = false)
 
