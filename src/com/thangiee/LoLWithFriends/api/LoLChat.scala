@@ -9,9 +9,13 @@ import scala.collection.JavaConversions._
 
 object LoLChat {
   private var _connection: Option[XMPPConnection] = None
+  private var _friendListListener: Option[FriendListListener] = None
 
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
     "Connection is not setup! Make sure you call LoLChat.connect(...) first."))
+
+  def friendListListener: FriendListListener = _friendListListener.getOrElse(throw new IllegalStateException(
+    "Listener is not setup! Make sure you call LoLChat.initFriendListListener(...)"))
 
   def connect(url: String): Boolean = {
     // set up configuration to connect
@@ -67,6 +71,11 @@ object LoLChat {
           chat.addMessageListener(listener)
       }
     })
+  }
+
+  def initFriendListListener(listener: FriendListListener) {
+    _friendListListener = Some(listener)
+    connection.getRoster.addRosterListener(new FriendRosterListener)
   }
 
   private[api] def updateStatus(`type`: Presence.Type, mode: Presence.Mode = Mode.chat) {
