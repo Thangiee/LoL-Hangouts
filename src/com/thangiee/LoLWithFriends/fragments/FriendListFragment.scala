@@ -21,6 +21,7 @@ class FriendListFragment extends Fragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
+    EventBus.getDefault.registerSticky(this)
     val view = inflater.inflate(R.layout.friend_list_pane, container, false)
     val listView = view.findViewById(R.id.list_summoner_card).asInstanceOf[CardListView]
 
@@ -32,9 +33,10 @@ class FriendListFragment extends Fragment {
     view
   }
 
-  override def onResume(): Unit = {
-    super.onResume()
-    EventBus.getDefault.registerSticky(this)
+
+  override def onDestroy(): Unit = {
+    super.onDestroy()
+    EventBus.getDefault.unregister(this)
   }
 
   def refreshFriendList() {
