@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
+import com.thangiee.LoLWithFriends.utils.Events.RefreshFriendList
 import com.thangiee.LoLWithFriends.views.SummonerCard
+import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.{Card, CardArrayAdapter}
 import it.gmariotti.cardslib.library.view.CardListView
 
@@ -30,6 +32,11 @@ class FriendListFragment extends Fragment {
     view
   }
 
+  override def onResume(): Unit = {
+    super.onResume()
+    EventBus.getDefault.registerSticky(this)
+  }
+
   def refreshFriendList() {
     Future {
       cards.clear()
@@ -39,6 +46,7 @@ class FriendListFragment extends Fragment {
       })
     }
   }
+
 
   /**
    * get a list of cards with online friend cards ordered first
@@ -50,4 +58,6 @@ class FriendListFragment extends Fragment {
     cards.++=(for (f <- LoLChat.onlineFriends) yield new SummonerCard(getActivity, f))
     cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerCard(getActivity, f))
   }
+
+  def onEvent(event: RefreshFriendList): Unit = refreshFriendList()
 }
