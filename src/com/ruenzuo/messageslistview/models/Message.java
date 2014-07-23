@@ -1,22 +1,34 @@
 package com.ruenzuo.messageslistview.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.util.Date;
 
 /**
  * Created by ruenzuo on 27/05/14.
  */
-public class Message {
+@Table(name = "Message")
+public class Message extends Model {
 
-    private Date date;
-    private String text;
+    @Column private Date date;
+    @Column private String text;
+    @Column private int msgType;
+    @Column private String name;
     private MessageType type;
+
+    public Message() {
+        super();
+    }
 
     public Message(MessageBuilder messageBuilder) {
         this.date = messageBuilder.date;
         this.text = messageBuilder.text;
         this.type = messageBuilder.type;
+        this.name = messageBuilder.name;
+        this.msgType = messageBuilder.msgType;
     }
-
 
     public Date getDate() {
         return date;
@@ -24,6 +36,14 @@ public class Message {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getText() {
@@ -35,7 +55,7 @@ public class Message {
     }
 
     public MessageType getType() {
-        return type;
+        return msgType == 0 ? MessageType.MESSAGE_TYPE_SENT : MessageType.MESSAGE_TYPE_RECEIVED;
     }
 
     public void setType(MessageType type) {
@@ -47,9 +67,12 @@ public class Message {
         private final MessageType type;
         private Date date;
         private String text;
+        private int msgType;
+        private String name;
 
         public MessageBuilder(MessageType type) {
             this.type = type;
+            this.msgType = type.toInt();
         }
 
         public MessageBuilder date(Date date) {
@@ -59,6 +82,11 @@ public class Message {
 
         public MessageBuilder text(String text) {
             this.text = text;
+            return this;
+        }
+
+        public MessageBuilder name(String name) {
+            this.name = name;
             return this;
         }
 
