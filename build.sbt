@@ -16,7 +16,7 @@ proguardCache in Android ++= Seq(
 
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
   "-dontwarn scala.**", "-keep class org.scaloid.common.**", "-keep class org.jivesoftware.smack.** {*;}",
-  "-keep class net.simonvt.menudrawer.** {*;}", "-keep class com.activeandroid.app.Application")
+  "-keep class net.simonvt.menudrawer.** {*;}", "-keep class com.activeandroid.** {*;}")
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
