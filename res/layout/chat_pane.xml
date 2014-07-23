@@ -21,32 +21,31 @@
             android:id="@+id/bottom_write_bar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" android:paddingTop="8dp">
+            android:layout_alignParentBottom="true" android:paddingTop="10dp" android:paddingBottom="10dp">
 
         <EditText
                 android:id="@+id/etx_msg_field"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5sp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:background="@android:color/transparent"
                 android:layout_weight="1"
                 android:hint="Write here"
-                android:padding="5sp" />
+                android:layout_gravity="center_vertical" android:paddingLeft="8dp"/>
 
         <com.dd.CircularProgressButton
                 android:id="@+id/btn_send_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:paddingLeft="15sp"
                 android:paddingRight="15sp"
                 progress:cpb_iconComplete="@drawable/ic_action_accept"
                 progress:cpb_iconError="@drawable/ic_action_cancel"
-                progress:cpb_textIdle="send" android:layout_gravity="bottom" android:layout_marginLeft="5dp"
-                android:layout_marginRight="8dp" android:layout_marginBottom="5dp"/>
+                progress:cpb_textIdle="send" android:layout_marginLeft="5dp"
+                android:layout_marginRight="8dp"/>
     </LinearLayout>
 
     <LinearLayout
