@@ -15,8 +15,12 @@ proguardCache in Android ++= Seq(
 )
 
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
-  "-dontwarn scala.**", "-keep class org.scaloid.common.**", "-keep class org.jivesoftware.smack.** {*;}",
-  "-keep class net.simonvt.menudrawer.** {*;}", "-keep class com.activeandroid.** {*;}")
+  "-dontwarn scala.**", "-keep class org.scaloid.common.**",
+//  "-keep class scala.collection.mutable.** {*;}",
+  "-keep class org.jivesoftware.smack.** {*;}",
+  "-keep class net.simonvt.menudrawer.** {*;}",
+  "-keep class com.activeandroid.** {*;}",
+  "-keepclassmembers class ** {public void onEvent(**);}")
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
@@ -26,6 +30,7 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.2.4",
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
+  "de.greenrobot" % "eventbus" % "2.2.1",
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.0.4"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"))
