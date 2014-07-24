@@ -34,7 +34,7 @@ class FriendListFragment extends Fragment {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, Class[RefreshFriendList])
+    EventBus.getDefault.unregister(this, classOf[RefreshFriendList])
     super.onDestroy()
   }
 
