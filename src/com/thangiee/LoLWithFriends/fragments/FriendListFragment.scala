@@ -16,8 +16,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class FriendListFragment extends Fragment {
-  val cards = scala.collection.mutable.ArrayBuffer[Card]()
-  lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
+  private val cards = scala.collection.mutable.ArrayBuffer[Card]()
+  private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -34,10 +34,11 @@ class FriendListFragment extends Fragment {
   }
 
   override def onDestroy(): Unit = {
+    EventBus.getDefault.unregister(this, Class[RefreshFriendList])
     super.onDestroy()
   }
 
-  def refreshFriendList() {
+  private def refreshFriendList() {
     Future {
       cards.clear()
       cards ++= getOrderedFriendCardList
