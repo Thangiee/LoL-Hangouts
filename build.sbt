@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
   "de.greenrobot" % "eventbus" % "2.2.1",
-  aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.0.4"),
+  aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.0.5"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"))
 
