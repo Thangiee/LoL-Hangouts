@@ -45,6 +45,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener {
   }
 
   def onEvent(event: SummonerCardClicked): Unit = {
+    app.activeFriendChat = event.summoner.name
     getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
     slidingLayout.closePane()
   }
