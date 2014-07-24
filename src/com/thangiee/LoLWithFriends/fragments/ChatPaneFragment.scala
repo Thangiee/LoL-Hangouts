@@ -3,7 +3,7 @@ package com.thangiee.LoLWithFriends.fragments
 import java.util.Date
 
 import android.app.Fragment
-import android.os.{SystemClock, Bundle}
+import android.os.{Bundle, SystemClock}
 import android.view.View.OnClickListener
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.EditText
@@ -13,11 +13,11 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLWithFriends.R
-import com.thangiee.LoLWithFriends.api.{Summoner, LoLChat}
+import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.{Style, Crouton}
+import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -27,14 +27,11 @@ class ChatPaneFragment private extends Fragment {
   private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
   private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
   private lazy val friendName = getArguments.getString("name-key")
-
-
-  lazy val messageAdapter = new MessageAdapter(getActivity, 0)
+  private lazy val messageAdapter = new MessageAdapter(getActivity, 0)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     view = inflater.inflate(R.layout.chat_pane, container, false)
-    EventBus.getDefault.register(this)
 
     sendButton.setOnClickListener(new OnClickListener {
       override def onClick(v: View): Unit = sendMessage()
@@ -49,6 +46,18 @@ class ChatPaneFragment private extends Fragment {
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view
+  }
+
+
+  override def onResume(): Unit = {
+    super.onResume()
+    EventBus.getDefault.register(this)
+  }
+
+
+  override def onPause(): Unit = {
+    super.onPause()
+    EventBus.getDefault.unregister(this, Class[ReceivedMessage])
   }
 
   private def sendMessage() {
