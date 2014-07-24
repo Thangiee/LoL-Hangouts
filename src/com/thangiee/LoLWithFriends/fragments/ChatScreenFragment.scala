@@ -36,7 +36,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener {
 
   override def onPause(): Unit = {
     super.onPause()
-    EventBus.getDefault.unregister(this, Class[SummonerCardClicked])
+    EventBus.getDefault.unregister(this, classOf[SummonerCardClicked])
   }
 
   def onEvent(event: SummonerCardClicked): Unit = {

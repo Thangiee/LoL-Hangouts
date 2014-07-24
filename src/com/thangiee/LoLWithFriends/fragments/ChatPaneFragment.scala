@@ -57,7 +57,7 @@ class ChatPaneFragment private extends Fragment {
 
   override def onPause(): Unit = {
     super.onPause()
-    EventBus.getDefault.unregister(this, Class[ReceivedMessage])
+    EventBus.getDefault.unregister(this, classOf[ReceivedMessage])
   }
 
   private def sendMessage() {
