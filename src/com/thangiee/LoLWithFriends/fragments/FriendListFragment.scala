@@ -33,10 +33,8 @@ class FriendListFragment extends Fragment {
     view
   }
 
-
   override def onDestroy(): Unit = {
     super.onDestroy()
-    EventBus.getDefault.unregister(this)
   }
 
   def refreshFriendList() {
@@ -48,7 +46,6 @@ class FriendListFragment extends Fragment {
       })
     }
   }
-
 
   /**
    * get a list of cards with online friend cards ordered first
