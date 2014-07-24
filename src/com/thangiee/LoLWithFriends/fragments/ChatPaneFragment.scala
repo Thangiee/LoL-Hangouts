@@ -13,7 +13,7 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLWithFriends.R
-import com.thangiee.LoLWithFriends.api.LoLChat
+import com.thangiee.LoLWithFriends.api.{Summoner, LoLChat}
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
 import de.greenrobot.event.EventBus
@@ -22,10 +22,12 @@ import de.keyboardsurfer.android.widget.crouton.{Style, Crouton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ChatPaneFragment extends Fragment {
+class ChatPaneFragment private extends Fragment {
   private var view: View = _
-  lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
-  lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
+  private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
+  private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
+  private lazy val friendName = getArguments.getString("name-key")
+
 
   lazy val messageAdapter = new MessageAdapter(getActivity, 0)
 
@@ -38,9 +40,10 @@ class ChatPaneFragment extends Fragment {
       override def onClick(v: View): Unit = sendMessage()
     })
     sendButton.setIndeterminateProgressMode(true)
+    msgField.setHint("send to " + friendName)
 
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
-    messageAdapter.addAll(DataBaseHandler.getMessageLog("lolwithfriends"))
+    messageAdapter.addAll(DataBaseHandler.getMessageLog(friendName))
     messageListView.setAdapter(messageAdapter)
 
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
@@ -48,16 +51,16 @@ class ChatPaneFragment extends Fragment {
     view
   }
 
-  def sendMessage() {
+  private def sendMessage() {
     if (msgField.getText.length() == 0) return // don't send if blank
     sendButton.setProgress(50)
     sendButton.setEnabled(false)
     Future {
       SystemClock.sleep(750)
-      if (LoLChat.sendMessage(LoLChat.getFriendByName("lolwithfriends").get, msgField.getText.toString)) {
+      if (LoLChat.sendMessage(LoLChat.getFriendByName(friendName).get, msgField.getText.toString)) {
         // if message sent, then save that message to DB
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
-          .date(new Date()).name("lolwithfriends").build()
+          .date(new Date()).name(friendName).build()
         msg.save() // save to DB
 
         runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
@@ -84,5 +87,15 @@ class ChatPaneFragment extends Fragment {
     getActivity.runOnUiThread(new Runnable {
       override def run(): Unit = f
     })
+  }
+}
+
+object ChatPaneFragment {
+  def newInstance(summoner: Summoner): ChatPaneFragment = {
+    val bundle = new Bundle()
+    bundle.putString("name-key", summoner.name)
+    val frag = new ChatPaneFragment
+    frag.setArguments(bundle)
+    frag
   }
 }
