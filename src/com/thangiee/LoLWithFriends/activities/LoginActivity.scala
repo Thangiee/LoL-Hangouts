@@ -25,7 +25,8 @@ class LoginActivity extends SActivity with UpButton {
   }
 
   private def login() {
-    if (logInButton.getProgress == -1) { logInButton.setProgress(0); return }
+    if (logInButton.getProgress == -1) { logInButton.setProgress(0); return } // when button in fail state, switch to default state
+    logInButton.disable // disable to prevent multiple login attempt
     Future {
       runOnUiThread(logInButton.setProgress(50))
       SystemClock.sleep(1000)
@@ -34,17 +35,19 @@ class LoginActivity extends SActivity with UpButton {
       if (!LoLChat.connect(getIntent.getStringExtra("server-url"))) {
         runOnUiThread(Crouton.makeText(this, "Fail to connect to server", Style.ALERT).show())
         runOnUiThread(logInButton.setProgress(-1))
+        logInButton.enable
         return
       }
 
       // after successfully connecting to server, try to login
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         runOnUiThread(logInButton.setProgress(100))
-        startActivity[TestActivity]
+        startActivity[MainActivity]
       } else {
         runOnUiThread(Crouton.makeText(this, "Invalid username/passwoard", Style.ALERT).show())
         runOnUiThread(logInButton.setProgress(-1))
       }
+      logInButton.enable
     }
   }
 }
