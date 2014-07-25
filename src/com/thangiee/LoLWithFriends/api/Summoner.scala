@@ -16,7 +16,7 @@ class Summoner(entry: RosterEntry) {
 
   def isOnline: Boolean = presence.getType == Type.available
 
-  def status: String = presence.getStatus
+  def status: String = if (isOnline) presence.getStatus else ""
 
   private def presence: Presence = LoLChat.connection.getRoster.getPresence(id)
 }
