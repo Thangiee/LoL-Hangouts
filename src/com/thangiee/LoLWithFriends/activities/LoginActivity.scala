@@ -3,7 +3,7 @@ package com.thangiee.LoLWithFriends.activities
 import android.os.{SystemClock, Bundle}
 import android.widget.EditText
 import com.dd.CircularProgressButton
-import com.thangiee.LoLWithFriends.R
+import com.thangiee.LoLWithFriends.{MyApplication, R}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common._
@@ -42,6 +42,7 @@ class LoginActivity extends SActivity with UpButton {
       // after successfully connecting to server, try to login
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         runOnUiThread(logInButton.setProgress(100))
+        getApplication.asInstanceOf[MyApplication].currentUser = userEditText.getText.toString
         startActivity[MainActivity]
       } else {
         runOnUiThread(Crouton.makeText(this, "Invalid username/passwoard", Style.ALERT).show())
