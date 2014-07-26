@@ -1,15 +1,14 @@
 package com.thangiee.LoLWithFriends.activities
 
 import android.app.ListActivity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.{ImageView, ListView}
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api._
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import org.scaloid.common.SContext
 
 import scala.collection.JavaConverters._
@@ -35,11 +34,8 @@ class ServerSelection extends ListActivity with SContext {
   }
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
-    val intent = new Intent(this, classOf[LoginActivity])
-    intent.putExtra("server-url", servers(position).url)
-    intent.putExtra("server-name", servers(position).name)
-    intent.putExtra("server-flag", servers(position).flag)
-    startActivity(intent)
+    MyApp.selectedServer = servers(position)
+    startActivity[LoginActivity]
   }
 }
 
