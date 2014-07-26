@@ -15,7 +15,9 @@ public class Message extends Model {
     @Column private Date date;
     @Column private String text;
     @Column private int msgType;
-    @Column private String name;
+    @Column private String otherPerson;
+    @Column private String thisPerson;
+    @Column boolean isRead;
     private MessageType type;
 
     public Message() {
@@ -26,24 +28,22 @@ public class Message extends Model {
         this.date = messageBuilder.date;
         this.text = messageBuilder.text;
         this.type = messageBuilder.type;
-        this.name = messageBuilder.name;
+        this.otherPerson = messageBuilder.otherPerson;
+        this.thisPerson = messageBuilder.thisPerson;
         this.msgType = messageBuilder.msgType;
+        this.isRead = messageBuilder.isRead;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setIsRead(boolean read) {
+        this.isRead = read;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public boolean isRead() {
+        return isRead;
     }
 
     public String getText() {
@@ -68,7 +68,9 @@ public class Message extends Model {
         private Date date;
         private String text;
         private int msgType;
-        private String name;
+        private String otherPerson;
+        private String thisPerson;
+        private boolean isRead;
 
         public MessageBuilder(MessageType type) {
             this.type = type;
@@ -85,8 +87,18 @@ public class Message extends Model {
             return this;
         }
 
-        public MessageBuilder name(String name) {
-            this.name = name;
+        public MessageBuilder otherPerson(String name) {
+            this.otherPerson = name;
+            return this;
+        }
+
+        public MessageBuilder thisPerson(String name) {
+            this.thisPerson = name;
+            return this;
+        }
+
+        public MessageBuilder isRead(boolean isRead) {
+            this.isRead = isRead;
             return this;
         }
 
