@@ -65,8 +65,11 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
 
   def onEvent(event: SummonerCardClicked): Unit = {
     info("[*]onEvent: "+event.summoner.name+" summoner card clicked")
-    MyApp.activeFriendChat = event.summoner.name
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner), "CHAT_FRAG").commit()
+    // don't re-initialize fragment if the opening chat pane is the same as the active one
+    if (MyApp.activeFriendChat != event.summoner.name) {
+      MyApp.activeFriendChat = event.summoner.name
+      getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner), "CHAT_FRAG").commit()
+    }
     slidingLayout.closePane()
   }
 }
