@@ -30,21 +30,26 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
     val summ = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
 
     // save received message to DB
-    val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date()).name(summ.name).build()
-    m.save()
+    // create Message object with the received chat message
+    val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
+      .otherPerson(summ.name).thisPerson(app.currentUser).isRead(true).build()
 
     // show notification when chat pane fragment is not open
     // or the current chat is not with sender of the message
     if (!app.isChatOpen || app.activeFriendChat != summ.name) {
+      m.setIsRead(false) // set to false because user has not seen it
+      m.save() // save to DB
+
+      // create notification
       val builder = new Notification.Builder(ctx)
         .setSmallIcon(R.drawable.mlv__default_avatar)
         .setContentText(summ.name + ": " + m.getText)
-
       val notification = builder.build()
       notificationManager.notify(1, notification)
       return
     }
 
+    m.save() // save to DB
     EventBus.getDefault.post(new Events.ReceivedMessage(summ, m))
   }
 }

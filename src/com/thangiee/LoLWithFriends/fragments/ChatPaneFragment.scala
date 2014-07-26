@@ -12,7 +12,7 @@ import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
-import com.thangiee.LoLWithFriends.R
+import com.thangiee.LoLWithFriends.{MyApplication, R}
 import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
@@ -24,6 +24,7 @@ import scala.concurrent.Future
 
 class ChatPaneFragment private extends Fragment {
   private var view: View = _
+  private lazy val app = getActivity.getApplication.asInstanceOf[MyApplication]
   private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
   private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
   private lazy val friendName = getArguments.getString("name-key")
@@ -40,7 +41,7 @@ class ChatPaneFragment private extends Fragment {
     msgField.setHint("send to " + friendName)
 
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
-    messageAdapter.addAll(DataBaseHandler.getMessageLog(friendName))
+    messageAdapter.addAll(DataBaseHandler.getMessageLog(app.currentUser, friendName))
     messageListView.setAdapter(messageAdapter)
 
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
@@ -48,12 +49,10 @@ class ChatPaneFragment private extends Fragment {
     view
   }
 
-
   override def onResume(): Unit = {
     super.onResume()
     EventBus.getDefault.register(this)
   }
-
 
   override def onPause(): Unit = {
     super.onPause()
@@ -69,7 +68,7 @@ class ChatPaneFragment private extends Fragment {
       if (LoLChat.sendMessage(LoLChat.getFriendByName(friendName).get, msgField.getText.toString)) {
         // if message sent, then save that message to DB
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
-          .date(new Date()).name(friendName).build()
+          .date(new Date()).otherPerson(friendName).thisPerson(app.currentUser).isRead(true).build()
         msg.save() // save to DB
 
         runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
