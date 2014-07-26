@@ -57,10 +57,8 @@ class ChatPaneFragment private extends Fragment {
   }
 
   def setMessagesRead() {
-    println("setting read"+messageAdapter.getCount)
     for (i <- messageAdapter.getCount-1 to 0 by -1) {
       val msg = messageAdapter.getItem(i)
-      println(">>" + msg.getText)
       if (msg.isRead) return else msg.setIsRead(true).save()
     }
   }

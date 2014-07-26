@@ -45,9 +45,6 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendStatusChange(summoner: Summoner): Unit = {
-    println("fl =>" + MyApp.isFriendListOpen)
-    println("chat =>" + MyApp.isChatOpen)
-    println(summoner.status)
     println(LoLStatus.get(summoner, LoLStatus.ProfileIcon))
   }
 }

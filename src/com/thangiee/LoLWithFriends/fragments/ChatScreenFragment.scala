@@ -7,6 +7,7 @@ import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view.inputmethod.InputMethodManager
 import android.view.{LayoutInflater, View, ViewGroup}
+import com.thangiee.LoLWithFriends.utils.Events
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.utils.Events.SummonerCardClicked
 import de.greenrobot.event.EventBus
@@ -55,12 +56,15 @@ class ChatScreenFragment extends Fragment with PanelSlideListener {
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = false
     MyApp.isChatOpen = true
-    getFragmentManager.findFragmentByTag("CHAT_FRAG").asInstanceOf[ChatPaneFragment].setMessagesRead()
+
+    if (!MyApp.activeFriendChat.isEmpty)
+      getFragmentManager.findFragmentByTag("CHAT_FRAG").asInstanceOf[ChatPaneFragment].setMessagesRead()
   }
 
   override def onPanelOpened(panel: View): Unit = { // friend list pane open
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = true
     MyApp.isChatOpen = false
+    EventBus.getDefault.postSticky(new Events.RefreshFriendList)
   }
 }
