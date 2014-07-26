@@ -36,7 +36,7 @@ class FriendListFragment extends Fragment with TagUtil {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, classOf[RefreshFriendList])
+    EventBus.getDefault.unregister(this, classOf[RefreshFriendList], classOf[RefreshSummonerCard])
     super.onDestroy()
   }
 
@@ -69,12 +69,16 @@ class FriendListFragment extends Fragment with TagUtil {
     cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerOffCard(getActivity, f))
   }
 
-  def onEvent(event: RefreshFriendList): Unit = refreshFriendList()
+  def onEvent(event: RefreshFriendList): Unit = {
+    info("[*]onEvent: request to refresh friend list")
+    refreshFriendList()
+  }
 
   def onEventMainThread(event: RefreshSummonerCard): Unit = {
+    info("[*]onEvent: request to refresh "+event.summoner.name+"summoner card")
     findCardByName(event.summoner.name) match {
-      case Some(card) => info("Found card"); card.refreshCard()
-      case None       => warn("No card found")
+      case Some(card) => info("[+]Found card"); card.refreshCard()
+      case None       => warn("[-]No card found")
     }
     cardArrayAdapter.notifyDataSetChanged()
   }

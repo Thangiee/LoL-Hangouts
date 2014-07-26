@@ -22,14 +22,14 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     this.view = view
 
     nameTextView.setText(summoner.name)
+    // set profile icon
+    ImageLoader.getInstance().displayImage(SummonerUtils.profileIconUrl(summoner.name, MyApp.selectedServer), iconImageView)
     refreshCard()
   }
 
   override def getType: Int = 0
 
   override def refreshCard(): Unit = {
-    // set profile icon
-    ImageLoader.getInstance().displayImage(SummonerUtils.profileIconUrl(summoner.name, MyApp.selectedServer), iconImageView)
     updateLastMessage()
     updateStatus()
   }
