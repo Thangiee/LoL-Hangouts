@@ -3,14 +3,13 @@ package com.thangiee.LoLWithFriends.services
 import android.app.Notification
 import android.content.Intent
 import android.os.IBinder
-import com.thangiee.LoLWithFriends.{R, MyApplication}
-import com.thangiee.LoLWithFriends.api.{FriendListListener, LoLChat, Summoner}
+import com.thangiee.LoLWithFriends.api.{LoLStatus, FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.Events
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.scaloid.common.{SService, SystemService, UnregisterReceiver}
 
 class FriendListService extends SService with UnregisterReceiver with FriendListListener with SystemService {
-  private lazy val app = ctx.getApplication.asInstanceOf[MyApplication]
 
   override def onBind(intent: Intent): IBinder = null
 
@@ -26,7 +25,7 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
 
     // show notification when friendList fragment is not in view
-    if (!app.isFriendListOpen) {
+    if (!MyApp.isFriendListOpen) {
       val builder = new Notification.Builder(ctx)
         .setSmallIcon(R.drawable.mlv__default_avatar)
         .setContentText(summoner.name+" Login")
@@ -46,7 +45,9 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendStatusChange(summoner: Summoner): Unit = {
-    println("fl =>" + app.isFriendListOpen)
-    println("chat =>" + app.isChatOpen)
+    println("fl =>" + MyApp.isFriendListOpen)
+    println("chat =>" + MyApp.isChatOpen)
+    println(summoner.status)
+    println(LoLStatus.get(summoner, LoLStatus.ProfileIcon))
   }
 }
