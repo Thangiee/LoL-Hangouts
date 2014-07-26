@@ -28,7 +28,6 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
   override def processMessage(chat: Chat, msg: Message): Unit = {
     val summ = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
 
-    // save received message to DB
     // create Message object with the received chat message
     val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
       .otherPerson(summ.name).thisPerson(MyApp.currentUser).isRead(true).build()
@@ -45,6 +44,7 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
         .setContentText(summ.name + ": " + m.getText)
       val notification = builder.build()
       notificationManager.notify(1, notification)
+      EventBus.getDefault.post(new Events.ReceivedMessage(summ, m))
       return
     }
 
