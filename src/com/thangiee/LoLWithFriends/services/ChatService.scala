@@ -45,10 +45,12 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
       val notification = builder.build()
       notificationManager.notify(1, notification)
       EventBus.getDefault.post(new Events.ReceivedMessage(summ, m))
+      EventBus.getDefault.postSticky(new Events.RefreshFriendList)    //todo: improve performance by refreshing 1 card
       return
     }
 
     m.save() // save to DB
     EventBus.getDefault.post(new Events.ReceivedMessage(summ, m))
+    EventBus.getDefault.postSticky(new Events.RefreshFriendList)      //todo: improve performance by refreshing 1 card
   }
 }
