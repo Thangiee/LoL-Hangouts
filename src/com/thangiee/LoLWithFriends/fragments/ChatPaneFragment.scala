@@ -65,7 +65,12 @@ class ChatPaneFragment private extends Fragment with TagUtil {
   }
 
   private def sendMessage() {
-    if (msgField.getText.length() == 0) return // don't send if blank
+    // don't send if blank
+    if (msgField.getText.length() == 0) {
+      Crouton.makeText(getActivity, "Can't send empty message", Style.INFO).show()
+      return
+    }
+
     sendButton.setProgress(50)
     sendButton.setEnabled(false)
     Future {
