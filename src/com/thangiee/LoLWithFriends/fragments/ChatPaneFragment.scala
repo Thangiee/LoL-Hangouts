@@ -12,7 +12,7 @@ import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
-import com.thangiee.LoLWithFriends.{MyApplication, R}
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
@@ -24,7 +24,6 @@ import scala.concurrent.Future
 
 class ChatPaneFragment private extends Fragment {
   private var view: View = _
-  private lazy val app = getActivity.getApplication.asInstanceOf[MyApplication]
   private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
   private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
   private lazy val friendName = getArguments.getString("name-key")
@@ -41,7 +40,7 @@ class ChatPaneFragment private extends Fragment {
     msgField.setHint("send to " + friendName)
 
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
-    messageAdapter.addAll(DataBaseHandler.getMessageLog(app.currentUser, friendName))
+    messageAdapter.addAll(DataBaseHandler.getMessageLog(MyApp.currentUser, friendName))
     messageListView.setAdapter(messageAdapter)
 
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)

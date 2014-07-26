@@ -1,8 +1,6 @@
 package com.thangiee.LoLWithFriends
 
-import com.activeandroid.app.Application
-
-class MyApplication extends Application {
+object MyApp {
   var currentUser = ""
   var isFriendListOpen = false
   var isChatOpen = false
