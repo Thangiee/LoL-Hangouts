@@ -27,6 +27,6 @@ object LoLStatus extends Enumeration {
   def get(summoner: Summoner, value: LoLStatus): String = {
     if (!summoner.isOnline) return ""
     val xml = XML.loadString(summoner.status)
-    (xml \\ "body" \\ value.toString).map(_.text).mkString("")
+    (xml \\ "body" \\ value.toString).map(_.text).mkString
   }
 }
