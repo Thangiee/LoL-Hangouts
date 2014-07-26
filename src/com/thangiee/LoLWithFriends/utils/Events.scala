@@ -7,5 +7,5 @@ object Events {
   case class RefreshFriendList()
   case class ReceivedMessage(summoner: Summoner, msg: Message)
   case class SummonerCardClicked(summoner: Summoner)
-  case class SummonerCardUpdated(summoner: Summoner)
+  case class RefreshSummonerCard(summoner: Summoner)
 }

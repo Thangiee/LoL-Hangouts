@@ -17,5 +17,5 @@ abstract class SummonerBaseCard(ctx: Context, val summ: Summoner, layoutId: Int)
 
   def cardName: String = summ.name
 
-  def updateCard()
+  def refreshCard()
 }

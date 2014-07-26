@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
-import com.thangiee.LoLWithFriends.utils.Events.{RefreshFriendList, SummonerCardUpdated}
+import com.thangiee.LoLWithFriends.utils.Events.{RefreshFriendList, RefreshSummonerCard}
 import com.thangiee.LoLWithFriends.views.{SummonerBaseCard, SummonerOnCard, SummonerOffCard}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
@@ -71,9 +71,9 @@ class FriendListFragment extends Fragment with TagUtil {
 
   def onEvent(event: RefreshFriendList): Unit = refreshFriendList()
 
-  def onEventMainThread(event: SummonerCardUpdated): Unit = {
+  def onEventMainThread(event: RefreshSummonerCard): Unit = {
     findCardByName(event.summoner.name) match {
-      case Some(card) => info("Found card"); card.updateCard()
+      case Some(card) => info("Found card"); card.refreshCard()
       case None       => warn("No card found")
     }
     cardArrayAdapter.notifyDataSetChanged()
