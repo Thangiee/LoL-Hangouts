@@ -6,6 +6,7 @@ import android.view.{Menu, MenuItem}
 import android.widget.ListView
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.nostra13.universalimageloader.core.{ImageLoader, ImageLoaderConfiguration, DisplayImageOptions}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
@@ -15,8 +16,8 @@ import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common.SActivity
 
 import scala.collection.JavaConverters._
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class MainActivity extends SActivity {
 
@@ -24,6 +25,7 @@ class MainActivity extends SActivity {
     super.onCreate(b)
     setContentView(R.layout.main_screen)
 
+    initImageLoader()
     startService[FriendListService]
     startService[ChatService]
 
@@ -60,6 +62,20 @@ class MainActivity extends SActivity {
     stopService[ChatService]
     Future {LoLChat.disconnect()}
     super.onOptionsItemSelected(item)
+  }
+
+  private def initImageLoader() {
+    val options = new DisplayImageOptions.Builder()
+      .cacheInMemory(true)
+      .cacheOnDisk(true)
+      .build()
+
+    val config = new ImageLoaderConfiguration.Builder(ctx)
+      .defaultDisplayImageOptions(options)
+      .threadPoolSize(3)
+      .build()
+
+    ImageLoader.getInstance().init(config)
   }
 }
 
