@@ -13,7 +13,8 @@ object DataBaseHandler {
       .execute[Message]()
   }
 
-  def getLastMessage(userName:String, otherName: String): Message = {
-    getMessageLog(userName, otherName).reduceRight((m1, m2) => if (m1.getDate.after(m2.getDate)) m1 else m2)
+  def getLastMessage(userName:String, otherName: String): Option[Message] = {
+    val msgLog = getMessageLog(userName, otherName)
+    if (!msgLog.isEmpty) Some(msgLog.last) else None
   }
 }
