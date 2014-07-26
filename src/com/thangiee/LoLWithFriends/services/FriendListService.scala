@@ -8,9 +8,9 @@ import com.thangiee.LoLWithFriends.utils.Events
 import com.thangiee.LoLWithFriends.utils.Events.RefreshSummonerCard
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
-import org.scaloid.common.{SService, SystemService, UnregisterReceiver}
+import org.scaloid.common._
 
-class FriendListService extends SService with UnregisterReceiver with FriendListListener with SystemService {
+class FriendListService extends SService with UnregisterReceiver with FriendListListener with SystemService with TagUtil{
 
   override def onBind(intent: Intent): IBinder = null
 
@@ -20,6 +20,7 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendAvailable(summoner: Summoner): Unit = {
+    info("[*]Available: "+summoner.name)
     EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
@@ -38,10 +39,12 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendBusy(summoner: Summoner): Unit = {
+    info("[*]Busy: "+summoner.name)
     EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
   override def onFriendAway(summoner: Summoner): Unit = {
+    info("[*]Away: "+summoner.name)
     EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
@@ -50,6 +53,7 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendStatusChange(summoner: Summoner): Unit = {
+    info("[*]Change Status: "+summoner.name)
     println(summoner.status)
   }
 }
