@@ -38,8 +38,9 @@ public class Message extends Model {
         return date;
     }
 
-    public void setIsRead(boolean read) {
+    public Message setIsRead(boolean read) {
         this.isRead = read;
+        return this;
     }
 
     public boolean isRead() {
@@ -50,8 +51,9 @@ public class Message extends Model {
         return text;
     }
 
-    public void setText(String text) {
+    public Message setText(String text) {
         this.text = text;
+        return this;
     }
 
     public MessageType getType() {

@@ -45,19 +45,20 @@ class ChatScreenFragment extends Fragment with PanelSlideListener {
 
   def onEvent(event: SummonerCardClicked): Unit = {
     MyApp.activeFriendChat = event.summoner.name
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner), "CHAT_FRAG").commit()
     slidingLayout.closePane()
   }
 
   override def onPanelSlide(panel: View, slideOffset: Float): Unit = {}
 
-  override def onPanelClosed(panel: View): Unit = {
+  override def onPanelClosed(panel: View): Unit = { // chat pane open
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = false
     MyApp.isChatOpen = true
+    getFragmentManager.findFragmentByTag("CHAT_FRAG").asInstanceOf[ChatPaneFragment].setMessagesRead()
   }
 
-  override def onPanelOpened(panel: View): Unit = {
+  override def onPanelOpened(panel: View): Unit = { // friend list pane open
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = true
     MyApp.isChatOpen = false

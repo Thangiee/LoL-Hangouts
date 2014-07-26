@@ -12,10 +12,10 @@ import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
-import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 
@@ -31,6 +31,7 @@ class ChatPaneFragment private extends Fragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
+    EventBus.getDefault.register(this)
     view = inflater.inflate(R.layout.chat_pane, container, false)
 
     sendButton.setOnClickListener(new OnClickListener {
@@ -39,8 +40,10 @@ class ChatPaneFragment private extends Fragment {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
+    val messageLog = DataBaseHandler.getMessageLog(MyApp.currentUser, friendName)
+    messageAdapter.addAll(messageLog) // add all messages
+    setMessagesRead()
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
-    messageAdapter.addAll(DataBaseHandler.getMessageLog(MyApp.currentUser, friendName))
     messageListView.setAdapter(messageAdapter)
 
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
@@ -48,14 +51,18 @@ class ChatPaneFragment private extends Fragment {
     view
   }
 
-  override def onResume(): Unit = {
-    super.onResume()
-    EventBus.getDefault.register(this)
+  override def onDestroy(): Unit = {
+    EventBus.getDefault.unregister(this, classOf[ReceivedMessage])
+    super.onDestroy()
   }
 
-  override def onPause(): Unit = {
-    super.onPause()
-    EventBus.getDefault.unregister(this, classOf[ReceivedMessage])
+  def setMessagesRead() {
+    println("setting read"+messageAdapter.getCount)
+    for (i <- messageAdapter.getCount-1 to 0 by -1) {
+      val msg = messageAdapter.getItem(i)
+      println(">>" + msg.getText)
+      if (msg.isRead) return else msg.setIsRead(true).save()
+    }
   }
 
   private def sendMessage() {
