@@ -22,5 +22,5 @@ class SummonerOffCard(ctx: Context, summoner: Summoner) extends SummonerBaseCard
 
   override def getType: Int = 1
 
-  override def updateCard(): Unit = {}
+  override def refreshCard(): Unit = {}
 }

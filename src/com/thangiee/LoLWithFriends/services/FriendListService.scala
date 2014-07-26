@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import com.thangiee.LoLWithFriends.api.{FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.Events
-import com.thangiee.LoLWithFriends.utils.Events.SummonerCardUpdated
+import com.thangiee.LoLWithFriends.utils.Events.RefreshSummonerCard
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.scaloid.common.{SService, SystemService, UnregisterReceiver}
@@ -20,7 +20,7 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendAvailable(summoner: Summoner): Unit = {
-    EventBus.getDefault.post(new SummonerCardUpdated(summoner))
+    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
   override def onFriendLogin(summoner: Summoner): Unit = {
@@ -38,11 +38,11 @@ class FriendListService extends SService with UnregisterReceiver with FriendList
   }
 
   override def onFriendBusy(summoner: Summoner): Unit = {
-    EventBus.getDefault.post(new SummonerCardUpdated(summoner))
+    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
   override def onFriendAway(summoner: Summoner): Unit = {
-    EventBus.getDefault.post(new SummonerCardUpdated(summoner))
+    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
   }
 
   override def onFriendLogOff(summoner: Summoner): Unit = {
