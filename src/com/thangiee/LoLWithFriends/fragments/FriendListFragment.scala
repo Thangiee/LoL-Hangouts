@@ -5,29 +5,31 @@ import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
-import com.thangiee.LoLWithFriends.utils.Events.RefreshFriendList
-import com.thangiee.LoLWithFriends.views.SummonerCard
+import com.thangiee.LoLWithFriends.utils.Events.{RefreshFriendList, SummonerCardUpdated}
+import com.thangiee.LoLWithFriends.views.{SummonerBaseCard, SummonerOnCard, SummonerOffCard}
 import de.greenrobot.event.EventBus
-import it.gmariotti.cardslib.library.internal.{Card, CardArrayAdapter}
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
+import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FriendListFragment extends Fragment {
-  private val cards = scala.collection.mutable.ArrayBuffer[Card]()
+class FriendListFragment extends Fragment with TagUtil {
+  private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
-    EventBus.getDefault.registerSticky(this)
+    EventBus.getDefault.register(this)
     val view = inflater.inflate(R.layout.friend_list_pane, container, false)
     val listView = view.findViewById(R.id.list_summoner_card).asInstanceOf[CardListView]
 
     Thread.sleep(200)
     cards ++= getOrderedFriendCardList
     cardArrayAdapter.setNotifyOnChange(false)
+    cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
     listView.setAdapter(cardArrayAdapter)
 
     view
@@ -36,6 +38,14 @@ class FriendListFragment extends Fragment {
   override def onDestroy(): Unit = {
     EventBus.getDefault.unregister(this, classOf[RefreshFriendList])
     super.onDestroy()
+  }
+
+  def findCardByName(name: String): Option[SummonerBaseCard] =  {
+    for (i <- 0 until cardArrayAdapter.getCount) {
+      val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[SummonerBaseCard]
+      if (baseCard.cardName == name) return Some(baseCard)
+    }
+    None
   }
 
   private def refreshFriendList() {
@@ -53,11 +63,19 @@ class FriendListFragment extends Fragment {
    *
    * @return  list of cards
    */
-  private def getOrderedFriendCardList: scala.collection.mutable.ArrayBuffer[Card] = {
-    val cards = scala.collection.mutable.ArrayBuffer[Card]()
-    cards.++=(for (f <- LoLChat.onlineFriends) yield new SummonerCard(getActivity, f))
-    cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerCard(getActivity, f))
+  private def getOrderedFriendCardList: scala.collection.mutable.ArrayBuffer[SummonerBaseCard] = {
+    val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
+    cards.++=(for (f <- LoLChat.onlineFriends) yield new SummonerOnCard(getActivity, f))
+    cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerOffCard(getActivity, f))
   }
 
   def onEvent(event: RefreshFriendList): Unit = refreshFriendList()
+
+  def onEventMainThread(event: SummonerCardUpdated): Unit = {
+    findCardByName(event.summoner.name) match {
+      case Some(card) => info("Found card"); card.updateCard()
+      case None       => warn("No card found")
+    }
+    cardArrayAdapter.notifyDataSetChanged()
+  }
 }
