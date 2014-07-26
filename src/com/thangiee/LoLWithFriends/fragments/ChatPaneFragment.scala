@@ -67,7 +67,7 @@ class ChatPaneFragment private extends Fragment {
       if (LoLChat.sendMessage(LoLChat.getFriendByName(friendName).get, msgField.getText.toString)) {
         // if message sent, then save that message to DB
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
-          .date(new Date()).otherPerson(friendName).thisPerson(app.currentUser).isRead(true).build()
+          .date(new Date()).otherPerson(friendName).thisPerson(MyApp.currentUser).isRead(true).build()
         msg.save() // save to DB
 
         runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
