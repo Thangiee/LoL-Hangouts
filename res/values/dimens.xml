@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_base_empty_height">10dp</dimen>
+    <dimen name="summoner_name_txt_size">15sp</dimen>
+    <dimen name="summoner_last_msg_txt_size">14sp</dimen>
+</resources>
