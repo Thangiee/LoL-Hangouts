@@ -19,8 +19,8 @@ class LoginActivity extends SActivity with UpButton {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.login)
-    setTitle(getIntent.getStringExtra("server-name"))
-    getActionBar.setIcon(getIntent.getIntExtra("server-flag", 0))
+    setTitle(MyApp.selectedServer.name)
+    getActionBar.setIcon(MyApp.selectedServer.flag)
     logInButton.setIndeterminateProgressMode(true)
   }
 
@@ -32,7 +32,7 @@ class LoginActivity extends SActivity with UpButton {
       SystemClock.sleep(1000)
 
       // try to connect to server and warn the user if fail to connect
-      if (!LoLChat.connect(getIntent.getStringExtra("server-url"))) {
+      if (!LoLChat.connect(MyApp.selectedServer.url)) {
         runOnUiThread(Crouton.makeText(this, "Fail to connect to server", Style.ALERT).show())
         runOnUiThread(logInButton.setProgress(-1))
         logInButton.enable
