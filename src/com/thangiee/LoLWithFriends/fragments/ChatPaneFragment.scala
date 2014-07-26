@@ -18,11 +18,12 @@ import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
+import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ChatPaneFragment private extends Fragment {
+class ChatPaneFragment private extends Fragment with TagUtil {
   private var view: View = _
   private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
   private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
@@ -92,6 +93,7 @@ class ChatPaneFragment private extends Fragment {
   }
 
   def onEventMainThread(event: ReceivedMessage): Unit = {
+    info("[*]onEvent: received message from "+event.summoner.name)
     messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
   }
 
