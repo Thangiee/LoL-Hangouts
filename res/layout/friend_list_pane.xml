@@ -10,6 +10,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/list_summoner_card"
-            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" />
+            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" android:paddingRight="32dp"/>
 
 </LinearLayout>

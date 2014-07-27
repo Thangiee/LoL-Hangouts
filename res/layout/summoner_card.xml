@@ -35,6 +35,8 @@
             android:textSize="@dimen/summoner_last_msg_txt_size"
             android:text="message"
             android:singleLine="true"
+            android:ellipsize="end"
             android:id="@+id/tv_summoner_last_msg"
-            android:layout_alignBottom="@+id/img_profile_icon" android:layout_toRightOf="@+id/img_profile_icon"/>
+            android:layout_alignBottom="@+id/img_profile_icon" android:layout_toRightOf="@+id/img_profile_icon"
+            android:paddingRight="8dp"/>
 </RelativeLayout>
