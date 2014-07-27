@@ -6,7 +6,7 @@ import android.view.{View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.ruenzuo.messageslistview.models.MessageType._
-import com.thangiee.LoLWithFriends.api.Summoner
+import com.thangiee.LoLWithFriends.api.{LoLStatus, Summoner}
 import com.thangiee.LoLWithFriends.utils.{SummonerUtils, DataBaseHandler}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import org.jivesoftware.smack.packet.Presence
@@ -55,13 +55,22 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
   private def changeToOnline() {
     statusTextView.setText("Online")
+    statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_available))
   }
 
   private def changeToAway() {
     statusTextView.setText("Away")
+    statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_away))
   }
 
   private def changeToBusy() {
-    statusTextView.setText("Busy")
+    val status = LoLStatus.get(summoner, LoLStatus.GameStatus)
+    status match {
+      case "inGame"     => statusTextView.setText("In Game as: " + LoLStatus.get(summoner, LoLStatus.SkinName))
+      case "teamSelect" => statusTextView.setText("Champion Selection")
+      case "inQueue"    => statusTextView.setText("In Queue")
+      case _            => statusTextView.setText(status)
+    }
+    statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_busy))
   }
 }

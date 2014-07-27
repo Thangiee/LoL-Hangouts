@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="status_available">#1DB143</color>
+    <color name="status_busy">#ffe368</color>
+    <color name="status_away">@android:color/holo_red_dark</color>
+</resources>
