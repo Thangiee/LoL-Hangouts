@@ -78,6 +78,36 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_busy))
   }
 
+  /**
+   *  ====================
+   *      INNER CLASS
+   *  ====================
+   */
   private class SummonerCardExpand extends CardExpand(ctx, R.layout.summoner_card_expand) {
+    override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
+      val levelTextView = view.findViewById(R.id.tv_level).asInstanceOf[TextView]
+      val statusMsgTextView = view.findViewById(R.id.tv_status_msg).asInstanceOf[TextView]
+      val rankTextView = view.findViewById(R.id.tv_rank_tier).asInstanceOf[TextView]
+      val leagueTextView = view.findViewById(R.id.tv_league_name).asInstanceOf[TextView]
+      val winTextView = view.findViewById(R.id.tv_wins).asInstanceOf[TextView]
+      val badgeImageView = view.findViewById(R.id.img_badge).asInstanceOf[ImageView]
+
+      // set additional summoner infomations
+      levelTextView.setText("Level " + LoLStatus.get(summoner, LoLStatus.Level))
+      statusMsgTextView.setText(LoLStatus.get(summoner, LoLStatus.StatusMsg))
+      rankTextView.setText(LoLStatus.get(summoner, LoLStatus.RankedLeagueTier)+" "+LoLStatus.get(summoner, LoLStatus.RankedLeagueDivision))
+      leagueTextView.setText(LoLStatus.get(summoner, LoLStatus.RankedLeagueName))
+      winTextView.setText(LoLStatus.get(summoner, LoLStatus.Wins)+" wins")
+
+      // set summoner rank badge
+      LoLStatus.get(summoner, LoLStatus.RankedLeagueTier) match {
+        case "BRONZE"       => badgeImageView.setImageResource(R.drawable.badge_bronze)
+        case "SILVER"       => badgeImageView.setImageResource(R.drawable.badge_silver)
+        case "GOLD"         => badgeImageView.setImageResource(R.drawable.badge_gold)
+        case "PLATINUM"     => badgeImageView.setImageResource(R.drawable.badge_platinum)
+        case "CHALLENGER"   => badgeImageView.setImageResource(R.drawable.badge_challenger)
+        case _              => badgeImageView.setImageResource(R.drawable.badge_unranked)
+      }
+    }
   }
 }
