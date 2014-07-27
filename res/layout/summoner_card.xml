@@ -39,4 +39,10 @@
             android:id="@+id/tv_summoner_last_msg"
             android:layout_alignBottom="@+id/img_profile_icon" android:layout_toRightOf="@+id/img_profile_icon"
             android:paddingRight="8dp"/>
+    <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/img_info" android:src="@drawable/ic_summoner_info"
+            android:layout_alignTop="@+id/tv_summoner_name" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" android:layout_marginRight="8dp"/>
 </RelativeLayout>

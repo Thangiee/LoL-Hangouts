@@ -7,8 +7,9 @@ import android.widget.{ImageView, TextView}
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLWithFriends.api.{LoLStatus, Summoner}
-import com.thangiee.LoLWithFriends.utils.{SummonerUtils, DataBaseHandler}
+import com.thangiee.LoLWithFriends.utils.{DataBaseHandler, SummonerUtils}
 import com.thangiee.LoLWithFriends.{MyApp, R}
+import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence
 
 class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseCard(ctx, summoner, R.layout.summoner_card) {
@@ -17,6 +18,8 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
   private lazy val statusTextView = view.findViewById(R.id.tv_summoner_status).asInstanceOf[TextView]
   private lazy val iconImageView = view.findViewById(R.id.img_profile_icon).asInstanceOf[ImageView]
   private lazy val lastMsgTextView = view.findViewById(R.id.tv_summoner_last_msg).asInstanceOf[TextView]
+  private lazy val infoImageView = view.findViewById(R.id.img_info).asInstanceOf[ImageView]
+  addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     this.view = view
@@ -24,6 +27,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     nameTextView.setText(summoner.name)
     // set profile icon
     ImageLoader.getInstance().displayImage(SummonerUtils.profileIconUrl(summoner.name, MyApp.selectedServer), iconImageView)
+    setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
   }
 
@@ -72,5 +76,8 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       case _            => statusTextView.setText(status)
     }
     statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_busy))
+  }
+
+  private class SummonerCardExpand extends CardExpand(ctx, R.layout.summoner_card_expand) {
   }
 }
