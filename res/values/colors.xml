@@ -3,4 +3,6 @@
     <color name="status_available">#1DB143</color>
     <color name="status_busy">#ffe368</color>
     <color name="status_away">@android:color/holo_red_dark</color>
+
+    <color name="slider_fade">#f10f2c43</color>
 </resources>
