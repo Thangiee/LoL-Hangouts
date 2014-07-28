@@ -1,25 +1,26 @@
 package com.thangiee.LoLWithFriends.activities
 
 import android.graphics.Color
-import android.os.Bundle
+import android.os.{Bundle, Handler}
 import android.view.{Menu, MenuItem}
 import android.widget.ListView
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.nostra13.universalimageloader.core.{ImageLoader, ImageLoaderConfiguration, DisplayImageOptions}
+import com.nostra13.universalimageloader.core.{DisplayImageOptions, ImageLoader, ImageLoaderConfiguration}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
-import org.scaloid.common.SActivity
+import org.scaloid.common._
 
 import scala.collection.JavaConverters._
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class MainActivity extends SActivity {
+  private var doubleBackToExitPressedOnce = false
 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -57,9 +58,7 @@ class MainActivity extends SActivity {
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    stopService[FriendListService]
-    stopService[ChatService]
-    Future {LoLChat.disconnect()}
+    cleanUpAndDisconnect()
     super.onOptionsItemSelected(item)
   }
 
@@ -77,6 +76,27 @@ class MainActivity extends SActivity {
       .build()
 
     ImageLoader.getInstance().init(config)
+  }
+
+  private def cleanUpAndDisconnect() {
+    stopService[FriendListService]
+    stopService[ChatService]
+    Future {LoLChat.disconnect()}
+  }
+
+  // exit the app after quickly double clicking the back button
+  override def onBackPressed(): Unit = {
+    if (doubleBackToExitPressedOnce) {
+      cleanUpAndDisconnect()
+      super.onBackPressed()
+      return
+    }
+
+    doubleBackToExitPressedOnce = true
+    toast("Click BACK again to exit")
+    new Handler().postDelayed(new Runnable {
+      override def run(): Unit = doubleBackToExitPressedOnce = false
+    }, 2000)
   }
 }
 
