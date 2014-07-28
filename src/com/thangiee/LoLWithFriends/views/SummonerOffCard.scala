@@ -1,9 +1,11 @@
 package com.thangiee.LoLWithFriends.views
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.{View, ViewGroup}
 import android.widget.TextView
-import com.thangiee.LoLWithFriends.R
+import com.ruenzuo.messageslistview.models.MessageType._
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.api.Summoner
 import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 
@@ -11,13 +13,16 @@ class SummonerOffCard(ctx: Context, summoner: Summoner) extends SummonerBaseCard
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     view.findViewById(R.id.tv_summoner_name).asInstanceOf[TextView].setText(summoner.name)
-    val a = view.findViewById(R.id.tv_summoner_last_msg).asInstanceOf[TextView]
+    val lastMsgTextView = view.findViewById(R.id.tv_summoner_last_msg).asInstanceOf[TextView]
 
-    val last = DataBaseHandler.getLastMessage("thangiee", summoner.name)
-    last match {
-      case Some(m) => a.setText(m.getText)
-      case None => a.setText("No active chat")
+    val lastMsg = DataBaseHandler.getLastMessage(MyApp.currentUser, summoner.name)
+    lastMsg match {
+      case Some(msg) => lastMsgTextView.setText((if (msg.getType == MESSAGE_TYPE_SENT) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+                        lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read
+      case None => lastMsgTextView.setText("")
     }
+
+    view
   }
 
   override def getType: Int = 1
