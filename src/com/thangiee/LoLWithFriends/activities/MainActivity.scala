@@ -21,6 +21,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class MainActivity extends SActivity {
   private var doubleBackToExitPressedOnce = false
+  private lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -40,10 +41,11 @@ class MainActivity extends SActivity {
     val listView = new ListView(this)
     listView.setAdapter(adapter)
 
-    val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
     sideDrawer.setContentView(R.layout.main_screen)
     sideDrawer.setMenuView(listView)
     sideDrawer.getMenuView.setBackgroundColor(Color.WHITE)
+    sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
+    sideDrawer.setDrawerIndicatorEnabled(true)
 
     getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
   }
@@ -58,7 +60,10 @@ class MainActivity extends SActivity {
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    cleanUpAndDisconnect()
+    item.getItemId match {
+      case R.id.exit         => cleanUpAndDisconnect(); finish(); true;
+      case android.R.id.home => sideDrawer.toggleMenu(); true
+    }
     super.onOptionsItemSelected(item)
   }
 
