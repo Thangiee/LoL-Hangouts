@@ -3,6 +3,8 @@ package com.thangiee.LoLWithFriends.fragments
 import android.app.Fragment
 import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.utils.Events.{RefreshFriendList, RefreshSummonerCard}
@@ -25,6 +27,7 @@ class FriendListFragment extends Fragment with TagUtil {
     EventBus.getDefault.register(this)
     val view = inflater.inflate(R.layout.friend_list_pane, container, false)
     val listView = view.findViewById(R.id.list_summoner_card).asInstanceOf[CardListView]
+    listView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true))
 
     Thread.sleep(200)
     cards ++= getOrderedFriendCardList

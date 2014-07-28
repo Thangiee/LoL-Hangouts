@@ -6,7 +6,8 @@ import android.view.{View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.ruenzuo.messageslistview.models.MessageType._
-import com.thangiee.LoLWithFriends.api.{LoLStatus, Summoner}
+import com.thangiee.LoLWithFriends.api.LoLStatus._
+import com.thangiee.LoLWithFriends.api.Summoner
 import com.thangiee.LoLWithFriends.utils.{DataBaseHandler, SummonerUtils}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
@@ -68,12 +69,12 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
   }
 
   private def changeToBusy() {
-    val status = LoLStatus.get(summoner, LoLStatus.GameStatus)
+    val status = parse(summoner, GameStatus).getOrElse("")
     status match {
-      case "inGame"     => statusTextView.setText("In Game as: " + LoLStatus.get(summoner, LoLStatus.SkinName))
-      case "teamSelect" => statusTextView.setText("Champion Selection")
-      case "inQueue"    => statusTextView.setText("In Queue")
-      case _            => statusTextView.setText(status)
+      case "inGame"         => statusTextView.setText("In Game as: " + parse(summoner, SkinName))
+      case "championSelect" => statusTextView.setText("Champion Selection")
+      case "inQueue"        => statusTextView.setText("In Queue")
+      case _                => statusTextView.setText(status)
     }
     statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_busy))
   }
@@ -93,14 +94,14 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       val badgeImageView = view.findViewById(R.id.img_badge).asInstanceOf[ImageView]
 
       // set additional summoner infomations
-      levelTextView.setText("Level " + LoLStatus.get(summoner, LoLStatus.Level))
-      statusMsgTextView.setText(LoLStatus.get(summoner, LoLStatus.StatusMsg))
-      rankTextView.setText(LoLStatus.get(summoner, LoLStatus.RankedLeagueTier)+" "+LoLStatus.get(summoner, LoLStatus.RankedLeagueDivision))
-      leagueTextView.setText(LoLStatus.get(summoner, LoLStatus.RankedLeagueName))
-      winTextView.setText(LoLStatus.get(summoner, LoLStatus.Wins)+" wins")
+      levelTextView.setText("Level " + parse(summoner, Level).get)
+      statusMsgTextView.setText(parse(summoner, StatusMsg).getOrElse("No Status Message"))
+      rankTextView.setText(parse(summoner, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(summoner, RankedLeagueDivision).getOrElse(""))
+      leagueTextView.setText(parse(summoner, RankedLeagueName).getOrElse("NO LEAGUE"))
+      winTextView.setText(parse(summoner, Wins).getOrElse("0") + " wins")
 
       // set summoner rank badge
-      LoLStatus.get(summoner, LoLStatus.RankedLeagueTier) match {
+      parse(summoner, RankedLeagueTier).getOrElse("") match {
         case "BRONZE"       => badgeImageView.setImageResource(R.drawable.badge_bronze)
         case "SILVER"       => badgeImageView.setImageResource(R.drawable.badge_silver)
         case "GOLD"         => badgeImageView.setImageResource(R.drawable.badge_gold)
