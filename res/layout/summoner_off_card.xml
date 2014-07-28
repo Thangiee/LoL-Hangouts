@@ -24,5 +24,6 @@
             android:textColor="@android:color/white"
             android:id="@+id/tv_summoner_last_msg"
             android:layout_below="@+id/tv_summoner_name" android:layout_alignLeft="@+id/tv_summoner_name"
-            android:layout_alignStart="@+id/tv_summoner_name" android:layout_marginBottom="4dp"/>
+            android:layout_alignStart="@+id/tv_summoner_name" android:layout_marginBottom="4dp"
+            android:singleLine="true"/>
 </RelativeLayout>
