@@ -13,7 +13,7 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
-import com.thangiee.LoLWithFriends.utils.DataBaseHandler
+import com.thangiee.LoLWithFriends.utils.{SummonerUtils, DataBaseHandler}
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
@@ -43,10 +43,13 @@ class ChatPaneFragment private extends Fragment with TagUtil {
 
     val messageLog = DataBaseHandler.getMessageLog(MyApp.currentUser, friendName)
     messageAdapter.addAll(messageLog) // add all messages
+    messageAdapter.setSenderImgUrl(SummonerUtils.profileIconUrl(MyApp.currentUser, MyApp.selectedServer))
+    messageAdapter.setRecipientImgUrl(SummonerUtils.profileIconUrl(friendName, MyApp.selectedServer))
+
     setMessagesRead()
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
     messageListView.setAdapter(messageAdapter)
-
+    messageListView.setBackground(getResources.getDrawable(R.drawable.league_dark_blue_bg_pattern))
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view

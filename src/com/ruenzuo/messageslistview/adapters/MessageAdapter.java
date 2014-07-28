@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.ruenzuo.messageslistview.models.Message;
 import com.ruenzuo.messageslistview.models.MessageType;
 import com.thangiee.LoLWithFriends.R;
@@ -34,6 +35,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private int recipientColor;
     private int messageTextColor;
     private int dateTextColor;
+    private String senderImgUrl;
+    private String recipientImgUrl;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE h:mm a");
 
     public MessageAdapter(Context context, int resource) {
@@ -85,6 +88,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         path.close();
         canvas.drawPath(path, paint);
         this.senderDrawable = new BitmapDrawable(getContext().getResources(), bitmap);
+    }
+
+    public void setSenderImgUrl(String url) {
+       this.senderImgUrl = url;
+    }
+
+    public void setRecipientImgUrl(String url) {
+        this.recipientImgUrl = url;
     }
 
     public void setRecipientDrawable(Drawable drawable) {
@@ -156,10 +167,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.message_text.setText(message.getText());
         viewHolder.message_date.setText(simpleDateFormat.format(message.getDate()));
         if (message.getType() == MessageType.MESSAGE_TYPE_SENT) {
-            viewHolder.avatar.setImageDrawable(senderDrawable);
+//            viewHolder.avatar.setImageDrawable(senderDrawable);
+            ImageLoader.getInstance().displayImage(senderImgUrl, viewHolder.avatar);
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
-            viewHolder.avatar.setImageDrawable(recipientDrawable);
+//            viewHolder.avatar.setImageDrawable(recipientDrawable);
+            ImageLoader.getInstance().displayImage(recipientImgUrl, viewHolder.avatar);
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;

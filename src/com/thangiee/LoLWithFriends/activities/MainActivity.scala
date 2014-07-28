@@ -66,6 +66,7 @@ class MainActivity extends SActivity {
   private def initImageLoader() {
     val options = new DisplayImageOptions.Builder()
       .cacheInMemory(true)
+      .showImageOnFail(R.drawable.mlv__default_avatar)
       .build()
 
     val config = new ImageLoaderConfiguration.Builder(ctx)

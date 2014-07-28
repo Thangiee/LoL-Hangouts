@@ -8,8 +8,8 @@ import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view.inputmethod.InputMethodManager
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.utils.Events
-import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.utils.Events.SummonerCardClicked
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.scaloid.common._
 
@@ -25,6 +25,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
     slidingLayout.openPane()    // show the friend list fragment
     slidingLayout.setPanelSlideListener(this)
     slidingLayout.setParallaxDistance(250)
+    slidingLayout.setSliderFadeColor(getResources.getColor(R.color.slider_fade))
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
     getFragmentManager.beginTransaction().add(R.id.chat_left_pane, new FriendListFragment).commit()
