@@ -21,8 +21,6 @@ class SummonerOffCard(ctx: Context, summoner: Summoner) extends SummonerBaseCard
                         lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read
       case None => lastMsgTextView.setText("")
     }
-
-    view
   }
 
   override def getType: Int = 1
