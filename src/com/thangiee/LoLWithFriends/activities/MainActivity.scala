@@ -57,7 +57,6 @@ class MainActivity extends SActivity {
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    println(">>> stoping services")
     stopService[FriendListService]
     stopService[ChatService]
     Future {LoLChat.disconnect()}
@@ -67,10 +66,11 @@ class MainActivity extends SActivity {
   private def initImageLoader() {
     val options = new DisplayImageOptions.Builder()
       .cacheInMemory(true)
-      .cacheOnDisk(true)
       .build()
 
     val config = new ImageLoaderConfiguration.Builder(ctx)
+      .threadPriority(Thread.NORM_PRIORITY - 2)
+      .denyCacheImageMultipleSizesInMemory()
       .defaultDisplayImageOptions(options)
       .threadPoolSize(3)
       .build()
