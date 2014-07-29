@@ -8,4 +8,11 @@ object MyApp {
   var isFriendListOpen = false
   var isChatOpen = false
   var activeFriendChat = ""
+
+  def reset() {
+    currentUser = ""
+    isFriendListOpen = false
+    isChatOpen = false
+    activeFriendChat = ""
+  }
 }

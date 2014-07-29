@@ -5,7 +5,7 @@ import java.util.Date
 import android.app.Fragment
 import android.os.{Bundle, SystemClock}
 import android.view.View.OnClickListener
-import android.view.{LayoutInflater, View, ViewGroup}
+import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
 import com.ruenzuo.messageslistview.adapters.MessageAdapter
@@ -32,6 +32,7 @@ class ChatPaneFragment private extends Fragment with TagUtil {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
+    setHasOptionsMenu(true)
     EventBus.getDefault.register(this)
     view = inflater.inflate(R.layout.chat_pane, container, false)
 
@@ -98,6 +99,19 @@ class ChatPaneFragment private extends Fragment with TagUtil {
         runOnUiThread(sendButton.setEnabled(true))
       }
     }
+  }
+
+  override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater): Unit = {
+    inflater.inflate(R.menu.menu_delete, menu)
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    item.getItemId match {
+      case R.id.menu_delete => println("DELETE");
+      case _ => return false
+    }
+    super.onOptionsItemSelected(item)
   }
 
   def onEventMainThread(event: ReceivedMessage): Unit = {
