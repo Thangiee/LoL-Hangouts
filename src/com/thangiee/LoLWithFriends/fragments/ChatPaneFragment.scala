@@ -42,7 +42,7 @@ class ChatPaneFragment private extends Fragment with TagUtil {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
-    val messageLog = DataBaseHandler.getMessageLog(MyApp.currentUser, friendName)
+    val messageLog = DataBaseHandler.getMessageLog
     messageAdapter.addAll(messageLog) // add all messages
     messageAdapter.setSenderImgUrl(SummonerUtils.profileIconUrl(MyApp.currentUser, MyApp.selectedServer))
     messageAdapter.setRecipientImgUrl(SummonerUtils.profileIconUrl(friendName, MyApp.selectedServer))

@@ -6,18 +6,17 @@ import android.view.{Menu, MenuItem}
 import android.widget.ListView
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.nostra13.universalimageloader.core.{DisplayImageOptions, ImageLoader, ImageLoaderConfiguration}
-import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
 
 import scala.collection.JavaConverters._
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class MainActivity extends SActivity {
   private var doubleBackToExitPressedOnce = false
@@ -27,7 +26,6 @@ class MainActivity extends SActivity {
     super.onCreate(b)
     setContentView(R.layout.main_screen)
 
-    initImageLoader()
     startService[FriendListService]
     startService[ChatService]
 
@@ -68,23 +66,8 @@ class MainActivity extends SActivity {
     super.onOptionsItemSelected(item)
   }
 
-  private def initImageLoader() {
-    val options = new DisplayImageOptions.Builder()
-      .cacheInMemory(true)
-      .showImageOnFail(R.drawable.mlv__default_avatar)
-      .build()
-
-    val config = new ImageLoaderConfiguration.Builder(ctx)
-      .threadPriority(Thread.NORM_PRIORITY - 2)
-      .denyCacheImageMultipleSizesInMemory()
-      .defaultDisplayImageOptions(options)
-      .threadPoolSize(3)
-      .build()
-
-    ImageLoader.getInstance().init(config)
-  }
-
   private def cleanUpAndDisconnect() {
+    info("[*]cleaning up and disconnecting...")
     stopService[FriendListService]
     stopService[ChatService]
     MyApp.reset()

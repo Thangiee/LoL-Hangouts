@@ -69,11 +69,13 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
     if (!MyApp.activeFriendChat.isEmpty) {
       getFragmentManager.findFragmentById(R.id.chat_content_pane).asInstanceOf[ChatPaneFragment].setMessagesRead()
       getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(true)
+      getActivity.getActionBar.setTitle(MyApp.activeFriendChat)
     }
   }
 
   override def onPanelOpened(panel: View): Unit = { // friend list pane open
     getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
+    getActivity.getActionBar.setTitle(getResources.getString(R.string.app_name))
     getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = true
