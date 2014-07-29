@@ -7,7 +7,7 @@ import android.widget.ListView
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.nostra13.universalimageloader.core.{DisplayImageOptions, ImageLoader, ImageLoaderConfiguration}
-import com.thangiee.LoLWithFriends.R
+import com.thangiee.LoLWithFriends.{MyApp, R}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
@@ -21,7 +21,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class MainActivity extends SActivity {
   private var doubleBackToExitPressedOnce = false
-  private lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
+  lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -61,8 +61,9 @@ class MainActivity extends SActivity {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.exit         => cleanUpAndDisconnect(); finish(); true;
-      case android.R.id.home => sideDrawer.toggleMenu(); true
+      case R.id.exit         => cleanUpAndDisconnect(); finish()
+      case android.R.id.home => if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
+      case _ => return false
     }
     super.onOptionsItemSelected(item)
   }
@@ -86,6 +87,7 @@ class MainActivity extends SActivity {
   private def cleanUpAndDisconnect() {
     stopService[FriendListService]
     stopService[ChatService]
+    MyApp.reset()
     Future {LoLChat.disconnect()}
   }
 
