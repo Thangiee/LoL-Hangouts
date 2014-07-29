@@ -108,7 +108,7 @@ class ChatPaneFragment private extends Fragment with TagUtil {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_delete => println("DELETE");
+      case R.id.menu_delete => DataBaseHandler.deleteMessageLog(); messageAdapter.clear()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
