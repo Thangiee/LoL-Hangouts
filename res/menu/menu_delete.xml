@@ -4,7 +4,7 @@
     <item
             android:id="@+id/menu_delete"
             android:title="delete all messages"
-            android:icon="@drawable/ic_content_discard"
+            android:icon="@drawable/ic_action_trash"
             android:orderInCategory="100"
             android:showAsAction="always"/>
 </menu>
