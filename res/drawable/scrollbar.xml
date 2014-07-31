@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient android:startColor="@color/scroll_bar" android:endColor="@color/scroll_bar"
+              android:angle="45"/>
+    <size android:width="4dp"/>
+    <corners android:radius="6dp" />
+
+</shape>

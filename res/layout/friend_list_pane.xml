@@ -10,6 +10,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/list_summoner_card"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
             card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout" android:paddingRight="32dp"
             />
 

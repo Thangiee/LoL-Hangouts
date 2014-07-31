@@ -11,5 +11,7 @@
     <color name="action_bar_bottom_boarder">#fb3</color>
     <color name="action_bar_text_color">#fb3</color>
 
+    <color name="scroll_bar">#fb3</color>
+
     <color name="summoner_card">#0f2c43</color>
 </resources>
