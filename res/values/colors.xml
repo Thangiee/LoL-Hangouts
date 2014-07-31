@@ -4,6 +4,6 @@
     <color name="status_busy">#ffe368</color>
     <color name="status_away">@android:color/holo_red_dark</color>
 
-    <color name="slider_fade">#f10f2c43</color>
+    <color name="slider_fade">#0f2c43</color>
     <color name="friend_list_bg">#000A1A</color>
 </resources>
