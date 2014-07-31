@@ -26,6 +26,7 @@ object LoLStatus extends Enumeration {
 
   def parse(summoner: Summoner, value: LoLStatus): Option[String] = {
     if (!summoner.isOnline) return None
+    if (summoner.status == null) return None
     val xml = XML.loadString(summoner.status)
     val result = (xml \\ "body" \\ value.toString).map(_.text).mkString
     if (!result.isEmpty) Some(result) else None

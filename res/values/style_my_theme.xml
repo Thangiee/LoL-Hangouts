@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.MyTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/ActionBar.Custom.Image</item>
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyTheme.ActionButton.Overflow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_previous</item>
     </style>
 
-    <style name="ActionBar.Custom.Image" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+    <style name="MyTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/ab_background</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleText</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/action_bar_text_color</item>
+    </style>
+
+    <style name="MyTheme.ActionButton.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
     </style>
 </resources>
