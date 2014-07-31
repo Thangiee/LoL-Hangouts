@@ -2,11 +2,7 @@ package com.ruenzuo.messageslistview.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
+import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -16,10 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.ruenzuo.messageslistview.models.Message;
 import com.ruenzuo.messageslistview.models.MessageType;
+import com.squareup.picasso.Picasso;
 import com.thangiee.LoLWithFriends.R;
 
 import java.text.SimpleDateFormat;
@@ -168,11 +163,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.message_date.setText(simpleDateFormat.format(message.getDate()));
         if (message.getType() == MessageType.MESSAGE_TYPE_SENT) {
 //            viewHolder.avatar.setImageDrawable(senderDrawable);
-            ImageLoader.getInstance().displayImage(senderImgUrl, viewHolder.avatar);
+            Picasso.with(getContext()).load(senderImgUrl).into(viewHolder.avatar);
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
 //            viewHolder.avatar.setImageDrawable(recipientDrawable);
-            ImageLoader.getInstance().displayImage(recipientImgUrl, viewHolder.avatar);
+            Picasso.with(getContext()).load(recipientImgUrl).into(viewHolder.avatar);
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;

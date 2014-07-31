@@ -16,6 +16,7 @@ proguardCache in Android ++= Seq(
 
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
   "-dontwarn scala.**", "-keep class org.scaloid.common.**",
+  "-dontwarn com.squareup.okhttp.**",
   "-keep class org.jivesoftware.smack.** {*;}",
   "-keep class com.nostra13.universalimageloader.** {*;}",
   "-keep class net.simonvt.menudrawer.** {*;}",

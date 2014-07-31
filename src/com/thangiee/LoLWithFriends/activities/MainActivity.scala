@@ -9,6 +9,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
+import com.thangiee.LoLWithFriends.views.SideDrawerView
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
@@ -40,7 +41,7 @@ class MainActivity extends SActivity {
     listView.setAdapter(adapter)
 
     sideDrawer.setContentView(R.layout.main_screen)
-    sideDrawer.setMenuView(listView)
+    sideDrawer.setMenuView(new SideDrawerView())
     sideDrawer.getMenuView.setBackgroundColor(Color.WHITE)
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
