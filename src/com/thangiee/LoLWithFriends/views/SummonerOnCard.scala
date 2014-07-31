@@ -43,7 +43,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     // set last message
     val lastMsg = DataBaseHandler.getLastMessage(MyApp.currentUser, summoner.name)
     lastMsg match {
-      case Some(msg) => lastMsgTextView.setText((if(msg.getType == MESSAGE_TYPE_SENT) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+      case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read
       case None      => lastMsgTextView.setText("")
     }
@@ -95,7 +95,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       val badgeImageView = view.findViewById(R.id.img_badge).asInstanceOf[ImageView]
 
       // set additional summoner infomations
-      levelTextView.setText("Level " + parse(summoner, Level).get)
+      levelTextView.setText("Level " + parse(summoner, Level).getOrElse("0"))
       statusMsgTextView.setText(parse(summoner, StatusMsg).getOrElse("No Status Message"))
       rankTextView.setText(parse(summoner, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(summoner, RankedLeagueDivision).getOrElse(""))
       leagueTextView.setText(parse(summoner, RankedLeagueName).getOrElse("NO LEAGUE"))
