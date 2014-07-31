@@ -6,4 +6,9 @@
 
     <color name="slider_fade">#0f2c43</color>
     <color name="friend_list_bg">#000A1A</color>
+
+    <color name="action_bar">#0f2c43</color>
+    <color name="action_bar_bottom_boarder">#BB9C33</color>
+
+    <color name="summoner_card">#0f2c43</color>
 </resources>

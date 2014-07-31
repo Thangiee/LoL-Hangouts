@@ -17,7 +17,7 @@ class SummonerOffCard(ctx: Context, summoner: Summoner) extends SummonerBaseCard
 
     val lastMsg = DataBaseHandler.getLastMessage(MyApp.currentUser, summoner.name)
     lastMsg match {
-      case Some(msg) => lastMsgTextView.setText((if (msg.getType == MESSAGE_TYPE_SENT) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+      case Some(msg) => lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read
       case None => lastMsgTextView.setText("")
     }
