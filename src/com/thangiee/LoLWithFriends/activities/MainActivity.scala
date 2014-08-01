@@ -1,11 +1,7 @@
 package com.thangiee.LoLWithFriends.activities
 
-import android.graphics.Color
 import android.os.{Bundle, Handler}
 import android.view.{Menu, MenuItem}
-import android.widget.ListView
-import com.ami.fundapter.extractors.StringExtractor
-import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
@@ -15,7 +11,6 @@ import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
 
-import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -30,19 +25,8 @@ class MainActivity extends SActivity {
     startService[FriendListService]
     startService[ChatService]
 
-    val serverDictionary = new BindDictionary[String]()
-    serverDictionary.addStringField(R.id.tv_server_name, new StringExtractor[String] {
-      override def getStringValue(item: String, position: Int): String = item
-    })
-
-    val adapter = new FunDapter[String](this, List("one", "two").asJava, R.layout.server_item, serverDictionary)
-
-    val listView = new ListView(this)
-    listView.setAdapter(adapter)
-
     sideDrawer.setContentView(R.layout.main_screen)
     sideDrawer.setMenuView(new SideDrawerView())
-    sideDrawer.getMenuView.setBackgroundColor(Color.WHITE)
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
 
