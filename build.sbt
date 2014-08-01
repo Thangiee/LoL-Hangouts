@@ -34,7 +34,8 @@ libraryDependencies ++= Seq(
   "de.greenrobot" % "eventbus" % "2.2.1",
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.0.5"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
-  aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"))
+  aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
+  aar("info.hoang8f" % "android-segmented" % "1.0.2"))
 
 run <<= run in Android
 
