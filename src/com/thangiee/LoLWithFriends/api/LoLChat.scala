@@ -10,6 +10,8 @@ import scala.collection.JavaConversions._
 object LoLChat {
   private var _connection: Option[XMPPConnection] = None
   private var _friendListListener: Option[FriendListListener] = None
+  private var _statusMsg = "Using LoLWithFriends App"
+  private var _username = ""
 
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
     "Connection is not setup! Make sure you call LoLChat.connect(...) first."))
@@ -30,10 +32,11 @@ object LoLChat {
   def login(user: String, pass: String): Boolean = login(user, pass, replaceLeague = false)
 
   def login(user: String, pass: String, replaceLeague: Boolean): Boolean = {
+    _username = user
     if (replaceLeague)
-      XMPPExceptionHandler(connection.login(user, "AIR_"+pass, "xiff"))
+      XMPPExceptionHandler(connection.login(user, "AIR_" + pass, "xiff"))
     else
-      XMPPExceptionHandler(connection.login(user, "AIR_"+pass))
+      XMPPExceptionHandler(connection.login(user, "AIR_" + pass))
   }
 
   def disconnect() = connection.disconnect()
@@ -58,11 +61,15 @@ object LoLChat {
 
   def appearAway() = updateStatus(Presence.Type.available, Presence.Mode.away)
 
-  def sendMessage(summoner: Summoner, msg: String):Boolean = {
+  def sendMessage(summoner: Summoner, msg: String): Boolean = {
     val message = new Message(summoner.id, Type.chat)
     message.setBody(msg)
     XMPPExceptionHandler(connection.sendPacket(message))
   }
+
+  def statusMsg(): String = _statusMsg
+
+  def changeStatusMsg(msg: String) = _statusMsg = msg
 
   def initChatListener(listener: MessageListener) {
     connection.getChatManager.addChatListener(new ChatManagerListener {
@@ -79,7 +86,20 @@ object LoLChat {
   }
 
   private[api] def updateStatus(`type`: Presence.Type, mode: Presence.Mode = Mode.chat) {
-    val p = new Presence(`type`, "This is a Test", 1, mode) // todo: change message
+    val status = "<body>" +
+      "<profileIcon>" + 1 + "</profileIcon>" +
+      "<level>" + 30 + "</level>" +
+      "<wins>" + 1337 + "</wins>" +
+      "<tier>CHALLENGER</tier>" +
+      "<rankedLeagueDivision>" + "I" + "</rankedLeagueDivision>" +
+      "<rankedLeagueTier>" + "CHALLENGER" + "</rankedLeagueTier>" +
+      "<rankedLeagueQueue>" + "RANKED_SOLO_5x5" + "</rankedLeagueQueue>" +
+      "<rankedWins>" + 1337 + "</rankedWins>" +
+      "<statusMsg>" + _statusMsg + "</statusMsg>" +
+      "<gameStatus>outOfGame</gameStatus>" +
+      "</body>"
+
+    val p = new Presence(`type`, status, 1, mode) // todo: change message
     try {
       connection.sendPacket(p)
     } catch {

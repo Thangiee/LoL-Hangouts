@@ -18,18 +18,19 @@ import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
   with SystemService with AdapterView.OnItemClickListener {
+  val drawerItems = List(DrawerItem("Chat", R.drawable.ic_action_dialog),
+    DrawerItem("My Profile", R.drawable.ic_action_user))
 
   init()
-  val drawerItems = List(DrawerItem("Chat", R.drawable.ic_action_dialog),
-                         DrawerItem("My Profile", R.drawable.ic_action_user))
 
   override def basis: SideDrawerView = this
 
   private def init() {
     layoutInflater(ctx).inflate(R.layout.side_menu, this)
 
-    // set username
+    // set username and status message
     find[TextView](R.id.tv_username).setText(MyApp.currentUser)
+    find[TextView](R.id.tv_status_msg).setText(LoLChat.statusMsg())
 
     // load account icon
     val iconImageView = find[ImageView](R.id.img_my_profile_icon)
@@ -38,7 +39,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
     editStatusBtn.setOnClickListener(new OnClickListener {
-      override def onClick(v: View): Unit = println("AAAAAAAAAAA")
+      override def onClick(v: View): Unit = {} //todo: to be implement
     })
 
     // setup the radio group and button to control online/away status
