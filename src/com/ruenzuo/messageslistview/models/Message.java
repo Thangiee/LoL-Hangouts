@@ -56,6 +56,8 @@ public class Message extends Model {
         return this;
     }
 
+    public String getOtherPerson() { return otherPerson; }
+
     public MessageType getType() {
         return msgType == 0 ? MessageType.MESSAGE_TYPE_SENT : MessageType.MESSAGE_TYPE_RECEIVED;
     }

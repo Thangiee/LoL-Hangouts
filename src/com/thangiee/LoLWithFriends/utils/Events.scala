@@ -8,4 +8,5 @@ object Events {
   case class ReceivedMessage(summoner: Summoner, msg: Message)
   case class SummonerCardClicked(summoner: Summoner)
   case class RefreshSummonerCard(summoner: Summoner)
+  case class ClearChatNotification()
 }

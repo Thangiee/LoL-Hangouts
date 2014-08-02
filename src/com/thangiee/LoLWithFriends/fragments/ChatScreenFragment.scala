@@ -40,6 +40,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
     EventBus.getDefault.register(this)
     MyApp.isFriendListOpen = slidingLayout.isOpen
     MyApp.isChatOpen = !slidingLayout.isOpen
+    EventBus.getDefault.postSticky(new Events.ClearChatNotification)
   }
 
   override def onPause(): Unit = {
@@ -60,27 +61,29 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
   override def onPanelSlide(panel: View, slideOffset: Float): Unit = {}
 
   override def onPanelClosed(panel: View): Unit = { // chat pane open
-    getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_previous)
+    getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_previous) // chage AB home icon
     setHasOptionsMenu(true)
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = false
     MyApp.isChatOpen = true
+    EventBus.getDefault.postSticky(new Events.ClearChatNotification) // clear notification
 
-    if (!MyApp.activeFriendChat.isEmpty) {
+    if (!MyApp.activeFriendChat.isEmpty) { // if in chat with a friend
       getFragmentManager.findFragmentById(R.id.chat_content_pane).asInstanceOf[ChatPaneFragment].setMessagesRead()
-      getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(true)
-      getActivity.getActionBar.setTitle(MyApp.activeFriendChat)
+      getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(true) // change AB menu items
+      getActivity.getActionBar.setTitle(MyApp.activeFriendChat) // set AB title to name of friend in chat with
     }
   }
 
   override def onPanelOpened(panel: View): Unit = { // friend list pane open
-    getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
-    getActivity.getActionBar.setTitle(getResources.getString(R.string.app_name))
-    getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)
+    getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer) // change AB home icon
+    getActivity.getActionBar.setTitle(getResources.getString(R.string.app_name))  // change AB title to app name
+    getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)  // change AB menu items
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = true
     MyApp.isChatOpen = false
-    EventBus.getDefault.postSticky(new Events.RefreshFriendList)
+    EventBus.getDefault.postSticky(new Events.ClearChatNotification)  // clear notification
+    EventBus.getDefault.postSticky(new Events.RefreshFriendList)  // refresh friend list
   }
 
   def onEvent(event: SummonerCardClicked): Unit = {
