@@ -29,7 +29,7 @@ class LoginActivity extends SActivity with UpButton {
     logInButton.disable // disable to prevent multiple login attempt
     Future {
       runOnUiThread(logInButton.setProgress(50))
-      SystemClock.sleep(1000)
+      SystemClock.sleep(500)
 
       // try to connect to server and warn the user if fail to connect
       if (!LoLChat.connect(MyApp.selectedServer.url)) {
@@ -39,11 +39,15 @@ class LoginActivity extends SActivity with UpButton {
         return
       }
 
+      SystemClock.sleep(500)
+
       // after successfully connecting to server, try to login
-      if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
+      if (LoLChat.login("thangiee", "Eequalsmc2")) {
         runOnUiThread(logInButton.setProgress(100))
-        MyApp.currentUser = userEditText.getText.toString
+        MyApp.currentUser = "thangiee"
         startActivity[MainActivity]
+        getParent.finish()
+        finish()
       } else {
         runOnUiThread(Crouton.makeText(this, "Invalid username/passwoard", Style.ALERT).show())
         runOnUiThread(logInButton.setProgress(-1))
