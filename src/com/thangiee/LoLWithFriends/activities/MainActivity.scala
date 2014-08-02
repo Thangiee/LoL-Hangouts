@@ -22,6 +22,8 @@ class MainActivity extends SActivity {
     super.onCreate(b)
     setContentView(R.layout.main_screen)
 
+    LoLChat.appearOnline()
+
     startService[FriendListService]
     startService[ChatService]
 
