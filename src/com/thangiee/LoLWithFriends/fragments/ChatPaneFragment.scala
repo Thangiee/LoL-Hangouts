@@ -23,7 +23,7 @@ import org.scaloid.common._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ChatPaneFragment private extends Fragment with TagUtil {
+class ChatPaneFragment extends Fragment with TagUtil {
   private var view: View = _
   private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
   private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
@@ -50,7 +50,7 @@ class ChatPaneFragment private extends Fragment with TagUtil {
     setMessagesRead()
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
     messageListView.setAdapter(messageAdapter)
-    messageListView.setBackground(R.drawable.league_dark_blue_bg_pattern.r2Drawable)
+    messageListView.setBackground(getActivity.getResources.getDrawable(R.drawable.league_dark_blue_bg_pattern))
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view
