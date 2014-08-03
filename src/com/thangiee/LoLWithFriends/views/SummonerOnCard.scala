@@ -44,7 +44,8 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     val lastMsg = DataBaseHandler.getLastMessage(MyApp.currentUser, summoner.name)
     lastMsg match {
       case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
-                        lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read
+                        lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
+                        lastMsgTextView.setTextColor(ctx.getResources.getColor(if(!msg.isRead) R.color.summoner_card_last_msg_unread else  R.color.summoner_card_last_msg)) // different color for read/unread
       case None      => lastMsgTextView.setText("")
     }
   }

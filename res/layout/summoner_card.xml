@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/summoner_last_msg_txt_size"
             android:text="message"
-            android:textColor="@android:color/white"
+            android:textColor="@color/summoner_card_last_msg"
             android:singleLine="true"
             android:ellipsize="end"
             android:id="@+id/tv_summoner_last_msg"

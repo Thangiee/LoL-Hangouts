@@ -14,4 +14,6 @@
     <color name="scroll_bar">#fb3</color>
 
     <color name="summoner_card">#0f2c43</color>
+    <color name="summoner_card_last_msg">@android:color/darker_gray</color>
+    <color name="summoner_card_last_msg_unread">@android:color/white</color>
 </resources>
