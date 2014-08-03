@@ -77,7 +77,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
 
   override def onPanelOpened(panel: View): Unit = { // friend list pane open
     getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer) // change AB home icon
-    getActivity.getActionBar.setTitle(getResources.getString(R.string.app_name))  // change AB title to app name
+    getActivity.getActionBar.setTitle(R.string.app_name)  // change AB title to app name
     getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)  // change AB menu items
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     MyApp.isFriendListOpen = true
