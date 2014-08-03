@@ -10,7 +10,7 @@ import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.scaloid.common._
 
-class FriendListService extends SService with UnregisterReceiver with FriendListListener with SystemService with TagUtil{
+class FriendListService extends SService with FriendListListener {
 
   override def onBind(intent: Intent): IBinder = null
 

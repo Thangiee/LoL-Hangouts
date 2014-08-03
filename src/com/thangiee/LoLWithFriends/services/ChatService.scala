@@ -17,11 +17,11 @@ import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.util.StringUtils
 import org.jivesoftware.smack.{Chat, MessageListener}
-import org.scaloid.common.{SService, SystemService, TagUtil, UnregisterReceiver, info}
+import org.scaloid.common._
 
 import scala.util.Random
 
-class ChatService extends SService with UnregisterReceiver with MessageListener with SystemService with TagUtil {
+class ChatService extends SService with MessageListener {
   private val id = Random.nextInt()
 
   override def onBind(intent: Intent): IBinder = null
@@ -39,30 +39,28 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
   }
 
   override def processMessage(chat: Chat, msg: Message): Unit = {
-    val summ = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
+    val friend = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
 
     // create Message object with the received chat message
     val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
-      .otherPerson(summ.name).thisPerson(MyApp.currentUser).isRead(true).build()
+      .otherPerson(friend.name).thisPerson(MyApp.currentUser).isRead(true).build()
 
     // show notification when chat pane fragment is not open
-    // or the current chat is not with sender of the message
-    if (!MyApp.isChatOpen || MyApp.activeFriendChat != summ.name) {
+    // or the current open chat is not with sender of the message
+    if (!MyApp.isChatOpen || MyApp.activeFriendChat != friend.name) {
       m.setIsRead(false) // set to false because user has not seen it
       m.save() // save message to DB
-
-      createNotification(m)
-
-      EventBus.getDefault.post(new Events.RefreshSummonerCard(summ))
+      showNotification(m)
+      EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
       return
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(new Events.ReceivedMessage(summ, m))
-    EventBus.getDefault.post(new Events.RefreshSummonerCard(summ))
+    EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
+    EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
   }
 
-  private def createNotification(newestMsg: models.Message) {
+  private def showNotification(newestMsg: models.Message) {
     val unReadMsg = DataBaseHandler.getUnReadMessages
 
     // intent to bring the app to foreground
@@ -78,9 +76,8 @@ class ChatService extends SService with UnregisterReceiver with MessageListener 
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
 
-
     if (Build.VERSION.SDK_INT >= 16) {
-      val inboxStyle = new Notification.InboxStyle()
+      val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16
         .setSummaryText("Touch to view friend list")
 
       // show at most the 5 newest unread messages

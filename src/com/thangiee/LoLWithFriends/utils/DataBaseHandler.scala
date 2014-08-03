@@ -31,6 +31,6 @@ object DataBaseHandler {
   def getLastMessage: Option[Message] = getLastMessage(MyApp.currentUser, MyApp.activeFriendChat)
 
   def getUnReadMessages: List[Message] = {
-    new Select().from(classOf[Message]).where("isRead = 0").execute[Message]().toList
+    new Select().from(classOf[Message]).where("thisPerson = ? AND isRead = 0", MyApp.currentUser).execute[Message]().toList
   }
 }
