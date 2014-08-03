@@ -42,9 +42,9 @@ class LoginActivity extends SActivity with UpButton {
       SystemClock.sleep(500)
 
       // after successfully connecting to server, try to login
-      if (LoLChat.login("thangiee", "Eequalsmc2")) {
+      if (LoLChat.login(userEditText.getText.toString, userEditText.getText.toString)) {
         runOnUiThread(logInButton.setProgress(100))
-        MyApp.currentUser = "thangiee"
+        MyApp.currentUser = userEditText.getText.toString
         startActivity[MainActivity]
         getParent.finish()
         finish()
