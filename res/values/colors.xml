@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="status_available">#1DB143</color>
-    <color name="status_busy">#ffe368</color>
+    <color name="status_available">@color/my_green</color>
+    <color name="status_busy">@color/my_yellow</color>
     <color name="status_away">@android:color/holo_red_dark</color>
 
-    <color name="slider_fade">#0f2c43</color>
-    <color name="friend_list_bg">#000A1A</color>
+    <color name="slider_fade">@color/my_dark_blue</color>
+    <color name="friend_list_bg">@color/my_darker_blue</color>
 
-    <color name="action_bar">#0f2c43</color>
-    <color name="action_bar_bottom_boarder">#fb3</color>
-    <color name="action_bar_text_color">#fb3</color>
+    <color name="action_bar">@color/my_dark_blue</color>
+    <color name="action_bar_bottom_boarder">@color/my_orange</color>
+    <color name="action_bar_text_color">@color/my_orange</color>
 
-    <color name="scroll_bar">#fb3</color>
+    <color name="scroll_bar">@color/my_orange</color>
 
-    <color name="summoner_card">#0f2c43</color>
+    <color name="summoner_card">@color/my_dark_blue</color>
     <color name="summoner_card_last_msg">@android:color/darker_gray</color>
-    <color name="summoner_card_last_msg_unread">@android:color/white</color>
+    <color name="summoner_card_last_msg_unread">@color/white</color>
+
+    <color name="server_select_bg">@color/my_dark_blue</color>
+    <color name="server_select_text">@color/white</color>
+
+    <!--custom colors-->
+    <color name="my_orange">#fb3</color>
+    <color name="my_yellow">#ffe368</color>
+    <color name="my_green">#1DB143</color>
+    <color name="my_dark_blue">#0f2c43</color>
+    <color name="my_darker_blue">#000A1A</color>
+
+    <!--default colors-->
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="fuchsia">#FF00FF</color>
+    <color name="red">#FF0000</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="gray">#808080</color>
+    <color name="olive">#808000</color>
+    <color name="purple">#800080</color>
+    <color name="maroon">#800000</color>
+    <color name="aqua">#00FFFF</color>
+    <color name="lime">#00FF00</color>
+    <color name="teal">#008080</color>
+    <color name="green">#008000</color>
+    <color name="navy">#000080</color>
+    <color name="black">#000000</color>
 </resources>
