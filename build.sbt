@@ -36,7 +36,8 @@ libraryDependencies ++= Seq(
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
   aar("info.hoang8f" % "android-segmented" % "1.0.2"),
-  aar("com.makeramen" % "roundedimageview" % "1.3.0"))
+  aar("com.makeramen" % "roundedimageview" % "1.3.0"),
+  aar("com.pixplicity.easyprefs" % "library" % "1.3"))
 
 run <<= run in Android
 
