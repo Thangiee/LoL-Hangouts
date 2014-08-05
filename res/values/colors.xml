@@ -17,6 +17,8 @@
     <color name="summoner_card_last_msg">@android:color/darker_gray</color>
     <color name="summoner_card_last_msg_unread">@color/white</color>
 
+    <color name="login_screen_bg">@color/my_dark_blue</color>
+
     <!--custom colors-->
     <color name="my_orange">#fb3</color>
     <color name="my_yellow">#ffe368</color>
