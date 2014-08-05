@@ -12,8 +12,7 @@
             android:id="@+id/tv_menu_item_name"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/img_drawer_item"
-            android:textColor="@android:color/white"/>
+            android:layout_toRightOf="@+id/img_drawer_item" />
 
     <ImageView
             android:layout_width="wrap_content"

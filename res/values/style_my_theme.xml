@@ -4,6 +4,8 @@
         <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
         <item name="android:actionOverflowButtonStyle">@style/MyTheme.ActionButton.Overflow</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_navigation_previous</item>
+        <item name="android:listViewStyle">@style/MyTheme.listView</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="MyTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -17,5 +19,12 @@
 
     <style name="MyTheme.ActionButton.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_action_overflow</item>
+    </style>
+
+    <style name="MyTheme.listView" parent="android:Widget.ListView">
+        <item name="android:divider">@color/my_orange</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar</item>
+        <item name="android:background">@color/my_dark_blue</item>
     </style>
 </resources>

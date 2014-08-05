@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:text="Status:"
             android:id="@+id/tv_status_msg"
-            android:textColor="@android:color/white"
             android:textSize="11dp"
             android:singleLine="true"
             android:layout_below="@+id/img_my_profile_icon"
