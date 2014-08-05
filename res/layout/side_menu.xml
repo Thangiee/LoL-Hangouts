@@ -64,7 +64,7 @@
 
     <View
             android:id="@+id/divider"
-            android:background="@color/action_bar_bottom_boarder"
+            android:background="@color/my_orange"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:clickable="false"
@@ -76,7 +76,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@android:id/list"
-            android:divider="@color/action_bar_bottom_boarder"
+            android:divider="@color/my_orange"
             android:dividerHeight="1dp"
             android:layout_below="@+id/divider"
             android:paddingRight="8dp"
