@@ -96,10 +96,12 @@
     <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New CheckBox"
-            android:id="@+id/checkBox"
+            android:text="Remember"
+            android:id="@+id/cb_remember_account"
             android:layout_alignTop="@+id/btn_login"
             android:layout_alignLeft="@+id/et_password"
-            android:layout_alignStart="@+id/et_password"/>
+            android:layout_alignStart="@+id/et_password"
+            android:checked="false"
+            android:textColor="@color/my_dark_blue"/>
 
 </RelativeLayout>
