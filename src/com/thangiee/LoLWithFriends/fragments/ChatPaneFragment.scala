@@ -76,7 +76,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
     }
 
     sendButton.setProgress(50)
-    sendButton.setEnabled(false)
+//    sendButton.setEnabled(false) // library bug atm
     Future {
       SystemClock.sleep(750)
       if (LoLChat.sendMessage(LoLChat.getFriendByName(friendName).get, msgField.getText.toString)) {
@@ -96,7 +96,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
         SystemClock.sleep(150)
         runOnUiThread(Crouton.makeText(getActivity, "Fail to send message", Style.ALERT).show()) // alert the user
         runOnUiThread(sendButton.setProgress(0)) // normal state
-        runOnUiThread(sendButton.setEnabled(true))
+//        runOnUiThread(sendButton.setEnabled(true))
       }
     }
   }
