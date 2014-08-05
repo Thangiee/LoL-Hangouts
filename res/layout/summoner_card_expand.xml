@@ -1,54 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:background="@drawable/league_yellow_background"
-              android:layout_height="124dp">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@drawable/league_yellow_background"
+                android:layout_height="124dp">
 
     <ImageView
             android:layout_width="112dp"
             android:layout_height="112dp"
-            android:id="@+id/img_badge" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:id="@+id/img_badge"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="8dp"/>
+
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:textColor="@android:color/holo_green_dark"
-            android:id="@+id/tv_status_msg" android:layout_alignParentTop="true" android:layout_toRightOf="@+id/img_badge"
-            android:gravity="center_horizontal" android:singleLine="true" android:layout_marginRight="8dp"
+            android:id="@+id/tv_status_msg"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_badge"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"/>
+
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/tv_level" android:layout_below="@+id/tv_status_msg"
+            android:id="@+id/tv_level"
+            android:layout_below="@+id/tv_status_msg"
             android:textColor="@android:color/darker_gray"
-            android:layout_toRightOf="@+id/img_badge" android:gravity="center_horizontal" android:singleLine="true"
+            android:layout_toRightOf="@+id/img_badge"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
             android:layout_marginRight="8dp"/>
+
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:textColor="@android:color/holo_orange_dark"
-            android:id="@+id/tv_rank_tier" android:layout_below="@+id/tv_level" android:layout_toRightOf="@+id/img_badge"
-            android:gravity="center_horizontal" android:singleLine="true" android:layout_marginRight="8dp"/>
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:textColor="@android:color/holo_orange_dark"
-            android:id="@+id/tv_league_name" android:layout_below="@+id/tv_rank_tier"
-            android:layout_toRightOf="@+id/img_badge" android:gravity="center_horizontal" android:singleLine="true"
+            android:id="@+id/tv_rank_tier"
+            android:layout_below="@+id/tv_level"
+            android:layout_toRightOf="@+id/img_badge"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
             android:layout_marginRight="8dp"/>
+
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:textColor="@android:color/holo_orange_dark"
-            android:id="@+id/tv_wins" android:layout_below="@+id/tv_league_name"
-            android:layout_toRightOf="@+id/img_badge" android:gravity="center_horizontal" android:singleLine="true"
-            android:layout_marginRight="8dp" android:layout_marginBottom="16dp"/>
+            android:id="@+id/tv_league_name"
+            android:layout_below="@+id/tv_rank_tier"
+            android:layout_toRightOf="@+id/img_badge"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:layout_marginRight="8dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textColor="@android:color/holo_orange_dark"
+            android:id="@+id/tv_wins"
+            android:layout_below="@+id/tv_league_name"
+            android:layout_toRightOf="@+id/img_badge"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"/>
 </RelativeLayout>
