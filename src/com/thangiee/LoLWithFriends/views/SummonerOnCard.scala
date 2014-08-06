@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.view.{View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
-import com.squareup.picasso.Picasso
 import com.thangiee.LoLWithFriends.api.LoLStatus._
 import com.thangiee.LoLWithFriends.api.Summoner
 import com.thangiee.LoLWithFriends.utils.{DataBaseHandler, SummonerUtils}
@@ -27,7 +26,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
     nameTextView.setText(summoner.name)
     // set profile icon
-    Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(summoner.name, MyApp.selectedServer)).into(iconImageView)
+    SummonerUtils.loadIconInto(ctx, summoner.name, iconImageView)
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
   }

@@ -8,7 +8,6 @@ import android.widget._
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.squareup.picasso.Picasso
 import com.thangiee.LoLWithFriends.activities.PreferenceSettings
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.utils.SummonerUtils
@@ -38,7 +37,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
 
     // load account icon
     val iconImageView = find[ImageView](R.id.img_my_profile_icon)
-    Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(MyApp.currentUser, MyApp.selectedServer)).into(iconImageView)
+    SummonerUtils.loadIconInto(ctx, MyApp.currentUser, iconImageView)
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
