@@ -38,8 +38,10 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
   override def getType: Int = 0
 
   override def refreshCard(): Unit = {
-    updateLastMessage()
-    updateStatus()
+    if (view != null) {
+      updateLastMessage()
+      updateStatus()
+    }
   }
 
   private def updateLastMessage() {
