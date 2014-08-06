@@ -4,7 +4,8 @@
                 xmlns:progress="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
     <com.ruenzuo.messageslistview.widget.MessagesListView
             android:id="@+id/lsv_chat"
@@ -41,7 +42,8 @@
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/btn_send_msg"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:textColor="@color/black"/>
 
     <com.dd.CircularProgressButton
             android:id="@+id/btn_send_msg"
@@ -53,11 +55,12 @@
             progress:cpb_iconComplete="@drawable/ic_action_accept"
             progress:cpb_iconError="@drawable/ic_action_cancel"
             progress:cpb_textIdle="send"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/divider"
+            android:layout_alignBottom="@+id/et_msg_field"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="4dp"/>
+            android:layout_margin="4dp"
+            />
 
 
 </RelativeLayout>

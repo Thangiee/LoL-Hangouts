@@ -1,10 +1,20 @@
 package com.thangiee.LoLWithFriends.utils
 
-import com.thangiee.LoLWithFriends.api.Server
+import android.content.Context
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
+import com.thangiee.LoLWithFriends.{R, MyApp}
 
 object SummonerUtils {
 
-  def profileIconUrl(name: String, server: Server): String = {
-    "http://avatar.leagueoflegends.com/"+server+"/"+name+".png"
+  def loadIconInto(ctx: Context, name: String, imageView: ImageView, placeholder: Int = R.drawable.league_icon): Unit = {
+    Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(name))
+      .placeholder(placeholder)
+      .error(R.drawable.load_error)
+      .into(imageView)
+  }
+
+  def profileIconUrl(name: String): String = {
+    "http://avatar.leagueoflegends.com/" + MyApp.selectedServer + "/" + name + ".png"
   }
 }

@@ -44,8 +44,8 @@ class ChatPaneFragment extends Fragment with TagUtil {
 
     val messageLog = DataBaseHandler.getMessageLog
     messageAdapter.addAll(messageLog) // add all messages
-    messageAdapter.setSenderImgUrl(SummonerUtils.profileIconUrl(MyApp.currentUser, MyApp.selectedServer))
-    messageAdapter.setRecipientImgUrl(SummonerUtils.profileIconUrl(friendName, MyApp.selectedServer))
+    messageAdapter.setSenderName(MyApp.currentUser)
+    messageAdapter.setRecipientName(friendName)
 
     setMessagesRead()
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]

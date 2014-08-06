@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/summoner_last_msg_txt_size"
+            android:textColor="@android:color/darker_gray"
             android:text="message"
             android:id="@+id/tv_summoner_last_msg"
             android:layout_below="@+id/tv_summoner_name"

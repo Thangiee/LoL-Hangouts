@@ -16,6 +16,7 @@ import com.ruenzuo.messageslistview.models.Message;
 import com.ruenzuo.messageslistview.models.MessageType;
 import com.squareup.picasso.Picasso;
 import com.thangiee.LoLWithFriends.R;
+import com.thangiee.LoLWithFriends.utils.SummonerUtils;
 
 import java.text.SimpleDateFormat;
 
@@ -30,8 +31,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private int recipientColor;
     private int messageTextColor;
     private int dateTextColor;
-    private String senderImgUrl;
-    private String recipientImgUrl;
+    private String senderName;
+    private String recipientName;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE h:mm a");
 
     public MessageAdapter(Context context, int resource) {
@@ -85,12 +86,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         this.senderDrawable = new BitmapDrawable(getContext().getResources(), bitmap);
     }
 
-    public void setSenderImgUrl(String url) {
-       this.senderImgUrl = url;
+    public void setSenderName(String url) {
+       this.senderName = url;
     }
 
-    public void setRecipientImgUrl(String url) {
-        this.recipientImgUrl = url;
+    public void setRecipientName(String url) {
+        this.recipientName = url;
     }
 
     public void setRecipientDrawable(Drawable drawable) {
@@ -163,11 +164,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.message_date.setText(simpleDateFormat.format(message.getDate()));
         if (message.getType() == MessageType.MESSAGE_TYPE_SENT) {
 //            viewHolder.avatar.setImageDrawable(senderDrawable);
-            Picasso.with(getContext()).load(senderImgUrl).into(viewHolder.avatar);
+            SummonerUtils.loadIconInto(getContext(), senderName, viewHolder.avatar, R.drawable.mlv__default_avatar);
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
 //            viewHolder.avatar.setImageDrawable(recipientDrawable);
-            Picasso.with(getContext()).load(recipientImgUrl).into(viewHolder.avatar);
+            SummonerUtils.loadIconInto(getContext(), senderName, viewHolder.avatar, R.drawable.mlv__default_avatar);
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;
