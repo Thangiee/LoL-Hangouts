@@ -32,9 +32,11 @@ class FriendListService extends SService with FriendListListener {
   override def onFriendLogin(summoner: Summoner): Unit = {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
 
-    // show notification when friendList fragment is not in view or screen is not on
-    if (!MyApp.isFriendListOpen || !powerManager.isScreenOn) {
-      showNotification(summoner)
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_login.r2String, true)) {
+      // show notification when friendList fragment is not in view or screen is not on
+      if (!MyApp.isFriendListOpen || !powerManager.isScreenOn) { // check setting
+        showNotification(summoner)
+      }
     }
   }
 
@@ -67,9 +69,10 @@ class FriendListService extends SService with FriendListListener {
       .setContentIntent(pendingIntent)
       .setContentTitle(friend.name + " has logged in!")
       .setContentText("Touch to view friend list")
-      .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
     val notification = builder.build()
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration

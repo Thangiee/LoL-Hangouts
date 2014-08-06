@@ -4,20 +4,20 @@
     <PreferenceCategory android:title="Notification">
         <SwitchPreference
                 android:defaultValue="true"
-                android:key="pref_notify_login"
+                android:key="@string/pref_notify_login"
                 android:textColor="@android:color/darker_gray"
                 android:title="Notify friend login"/>
         <SwitchPreference
                 android:defaultValue="true"
-                android:key="pref_notify_msg"
+                android:key="@string/pref_notify_msg"
                 android:title="Notify receive MSG"/>
         <SwitchPreference
                 android:defaultValue="true"
-                android:key="pref_notify_sound"
+                android:key="@string/pref_notify_sound"
                 android:title="Sound"/>
         <SwitchPreference
                 android:defaultValue="true"
-                android:key="pref_notify_vibrate"
+                android:key="@string/pref_notify_vibrate"
                 android:title="Vibration"/>
     </PreferenceCategory>
 
@@ -33,7 +33,7 @@
         <ListPreference
                 android:title="History"
                 android:summary="Auto delete message after a time period."
-                android:key="pref_history"
+                android:key="@string/pref_history"
                 android:entries="@array/history"
                 android:entryValues="@array/history"
                 android:defaultValue="3 days"/>

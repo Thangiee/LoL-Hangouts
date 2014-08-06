@@ -5,7 +5,14 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="server_selection_header">Please select your server</string>
+
+    <!--preference keys-->
     <string name="pref_load_icon">pref_load_icon</string>
+    <string name="pref_history">pref_history</string>
+    <string name="pref_notify_vibrate">pref_notify_vibrate</string>
+    <string name="pref_notify_sound">pref_notify_sound</string>
+    <string name="pref_notify_msg">pref_notify_msg</string>
+    <string name="pref_notify_login">pref_notify_login</string>
 
     <string-array name="history">
         <item>1 day</item>

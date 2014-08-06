@@ -50,7 +50,7 @@ class ChatService extends SService with MessageListener {
     if (!MyApp.isChatOpen || MyApp.activeFriendChat != friend.name) {
       m.setIsRead(false) // set to false because user has not seen it
       m.save() // save message to DB
-      showNotification(m)
+      if (defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)) showNotification(m) // check setting before notify
       EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
       return
     }
@@ -72,9 +72,10 @@ class ChatService extends SService with MessageListener {
       .setContentIntent(pendingIntent)
       .setContentTitle(unReadMsg.size + " New Messages")
       .setContentText(newestMsg.getOtherPerson +": " + newestMsg.getText)
-      .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true)) // check setting
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
     if (Build.VERSION.SDK_INT >= 16) {
       val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16
@@ -88,7 +89,8 @@ class ChatService extends SService with MessageListener {
     }
 
     val notification = builder.build()
-    notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
+      notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(id, notification)
   }
