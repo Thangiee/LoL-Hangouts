@@ -2,9 +2,11 @@ package com.ruenzuo.messageslistview.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,7 +170,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
 //            viewHolder.avatar.setImageDrawable(recipientDrawable);
-            SummonerUtils.loadIconInto(getContext(), senderName, viewHolder.avatar, R.drawable.mlv__default_avatar);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            if (prefs.getBoolean(getContext().getResources().getString(R.string.pref_load_icon), true))
+                SummonerUtils.loadIconInto(getContext(), recipientName, viewHolder.avatar, R.drawable.mlv__default_avatar);
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;
