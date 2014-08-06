@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="MyTheme" parent="@android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
         <item name="android:actionOverflowButtonStyle">@style/MyTheme.ActionButton.Overflow</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_navigation_previous</item>
