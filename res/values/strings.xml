@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">LoLWithFriends</string>
+    <string name="app_name">LoLWithFriends</string>
     <string name="server_name">Server name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="server_selection_header">Please select your server</string>
+
+    <string-array name="history">
+        <item>1 day</item>
+        <item>3 days</item>
+        <item>7 days</item>
+        <item>never</item>
+    </string-array>
 </resources>
 

@@ -4,40 +4,55 @@
           android:versionCode="1"
           android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="14"
-              android:targetSdkVersion="19"/>
+    <uses-sdk
+            android:minSdkVersion="14"
+            android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <application android:label="@string/app_name"
-                 android:theme="@style/MyTheme"
-                 android:allowBackup="true"
-                 android:name="com.activeandroid.app.Application">
-        <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
+    <application
+            android:label="@string/app_name"
+            android:theme="@style/MyTheme"
+            android:allowBackup="true"
+            android:name="com.activeandroid.app.Application">
+        <meta-data
+                android:name="AA_DB_NAME"
+                android:value="MessageLogs.db"/>
 
-        <service android:name=".services.FriendListService" />
-        <service android:name=".services.ChatService" />
+        <service android:name=".services.FriendListService"/>
+        <service android:name=".services.ChatService"/>
 
-        <activity android:name=".activities.ServerSelection"
-                  android:label="@string/app_name"
-                  android:noHistory="true">
+        <activity
+                android:name=".activities.ServerSelection"
+                android:label="@string/app_name"
+                android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.LoginActivity"
-                  android:label="LogIn"
-                  android:noHistory="true">
+        <activity
+                android:name=".activities.LoginActivity"
+                android:label="LogIn"
+                android:noHistory="true">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ServerSelection"/>
         </activity>
 
-        <activity android:name=".activities.MainActivity"
-                  android:label="@string/app_name"
-                  android:launchMode="singleTop"/>
+        <activity
+                android:name=".activities.MainActivity"
+                android:label="@string/app_name"
+                android:launchMode="singleTop"/>
+
+        <activity
+                android:name=".activities.PreferenceSettings"
+                android:label="Settings">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.MainActivity"/>
+        </activity>
     </application>
 </manifest>

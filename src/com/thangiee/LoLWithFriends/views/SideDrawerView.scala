@@ -1,25 +1,29 @@
 package com.thangiee.LoLWithFriends.views
 
-import android.content.Context
+import android.content.{Context, Intent}
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
-import com.ami.fundapter.interfaces.StaticImageLoader
-import com.ami.fundapter.{FunDapter, BindDictionary}
 import com.ami.fundapter.extractors.StringExtractor
+import com.ami.fundapter.interfaces.StaticImageLoader
+import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.squareup.picasso.Picasso
+import com.thangiee.LoLWithFriends.activities.PreferenceSettings
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.utils.SummonerUtils
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
 import org.scaloid.common.{SystemService, TraitView}
+
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
   with SystemService with AdapterView.OnItemClickListener {
-  val drawerItems = List(DrawerItem("Chat", R.drawable.ic_action_dialog),
-    DrawerItem("My Profile", R.drawable.ic_action_user))
+  val drawerItems = List(
+    DrawerItem("Chat", R.drawable.ic_action_dialog),
+    DrawerItem("My Profile", R.drawable.ic_action_user),
+    DrawerItem("Settings", R.drawable.ic_action_settings))
 
   init()
 
@@ -39,7 +43,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
     editStatusBtn.setOnClickListener(new OnClickListener {
-      override def onClick(v: View): Unit = {} //todo: to be implement
+      override def onClick(v: View): Unit = showChangeStatusMsgDialog()
     })
 
     // setup the radio group and button to control online/away status
@@ -81,10 +85,15 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     listView.setOnItemClickListener(this)
   }
 
+  private def showChangeStatusMsgDialog() {
+    // todo: implement
+  }
+
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
     drawerItems(position).title match {
-      case "Chat" =>
-      case "My Profile" =>
+      case "Chat" ⇒
+      case "My Profile" ⇒
+      case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings]))
     }
   }
 
