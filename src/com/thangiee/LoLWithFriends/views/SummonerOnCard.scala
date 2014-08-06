@@ -76,7 +76,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     val status = parse(summoner, GameStatus).getOrElse("")
     status match {
       case "inGame"         => val gameTime = (System.currentTimeMillis() - parse(summoner, TimeStamp).get.toLong) / 60000
-                               statusTextView.setText("In Game as: "+parse(summoner, SkinName).get+" (" + Math.round(gameTime)+" mins)")
+                               statusTextView.setText("In Game as: "+parse(summoner, SkinName).getOrElse("???")+" (" + Math.round(gameTime)+" mins)")
       case "championSelect" => statusTextView.setText("Champion Selection")
       case "inQueue"        => statusTextView.setText("In Queue")
       case _                => statusTextView.setText(status)
