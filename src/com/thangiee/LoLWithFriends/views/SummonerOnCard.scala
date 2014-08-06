@@ -2,6 +2,7 @@ package com.thangiee.LoLWithFriends.views
 
 import android.content.Context
 import android.graphics.Typeface
+import android.preference.PreferenceManager
 import android.view.{View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
@@ -23,10 +24,13 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     this.view = view
-
     nameTextView.setText(summoner.name)
-    // set profile icon
-    SummonerUtils.loadIconInto(ctx, summoner.name, iconImageView)
+
+    // load profile icon
+    val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
+    if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
+      SummonerUtils.loadIconInto(ctx, summoner.name, iconImageView)
+
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
   }

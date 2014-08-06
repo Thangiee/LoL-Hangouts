@@ -29,6 +29,7 @@ class LoginActivity extends SActivity with UpButton {
     Prefs.initPrefs(this)
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
+    R.string.server_name.r2String
 
     rememberCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener {
       override def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {

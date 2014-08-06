@@ -24,7 +24,7 @@
     <PreferenceCategory android:title="Friend">
         <SwitchPreference
                 android:defaultValue="true"
-                android:key="pref_load_icon"
+                android:key="@string/pref_load_icon"
                 android:title="Load friend icon"
                 android:summary="Turn off to reduce memory and data usage."/>
     </PreferenceCategory>
