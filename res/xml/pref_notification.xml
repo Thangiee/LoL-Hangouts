@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Notification">
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="pref_notify_login"
+                android:textColor="@android:color/darker_gray"
+                android:title="Notify friend login"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="pref_notify_msg"
+                android:title="Notify receive MSG"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="pref_notify_sound"
+                android:title="Sound"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="pref_notify_vibrate"
+                android:title="Vibration"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Friend">
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="pref_load_icon"
+                android:title="Load friend icon"
+                android:summary="Turn off to reduce memory and data usage."/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Chat">
+        <ListPreference
+                android:title="History"
+                android:summary="Auto delete message after a time period."
+                android:key="pref_history"
+                android:entries="@array/history"
+                android:entryValues="@array/history"
+                android:defaultValue="3 days"/>
+    </PreferenceCategory>
+</PreferenceScreen>
