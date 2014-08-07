@@ -7,7 +7,7 @@ import android.os.IBinder
 import com.thangiee.LoLWithFriends.activities.MainActivity
 import com.thangiee.LoLWithFriends.api.{FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLWithFriends.utils.Events
-import com.thangiee.LoLWithFriends.utils.Events.RefreshSummonerCard
+import com.thangiee.LoLWithFriends.utils.Events.{ClearLoginNotification, RefreshSummonerCard}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.scaloid.common._
@@ -22,6 +22,13 @@ class FriendListService extends SService with FriendListListener {
   override def onCreate(): Unit = {
     super.onCreate()
     LoLChat.initFriendListListener(this)
+    EventBus.getDefault.registerSticky(ctx)
+  }
+
+
+  override def onDestroy(): Unit = {
+    EventBus.getDefault.unregister(this, classOf[ClearLoginNotification])
+    super.onDestroy()
   }
 
   override def onFriendAvailable(summoner: Summoner): Unit = {
@@ -78,5 +85,10 @@ class FriendListService extends SService with FriendListListener {
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(id, notification)
+  }
+
+  def onEvent(event: Events.ClearLoginNotification): Unit = {
+    info("[*]onEvent: clear login notification")
+    notificationManager.cancel(id)  // clear notification
   }
 }

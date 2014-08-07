@@ -83,6 +83,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
     MyApp.isFriendListOpen = true
     MyApp.isChatOpen = false
     EventBus.getDefault.postSticky(new Events.ClearChatNotification)  // clear notification
+    EventBus.getDefault.postSticky(new Events.ClearLoginNotification)  // clear notification
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)  // refresh friend list
   }
 

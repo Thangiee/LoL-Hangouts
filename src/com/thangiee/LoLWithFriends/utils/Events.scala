@@ -9,4 +9,5 @@ object Events {
   case class SummonerCardClicked(summoner: Summoner)
   case class RefreshSummonerCard(summoner: Summoner)
   case class ClearChatNotification()
+  case class ClearLoginNotification()
 }
