@@ -5,8 +5,10 @@ import android.view.{Menu, MenuItem}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
+import com.thangiee.LoLWithFriends.utils.Events.{ClearLoginNotification, ClearChatNotification}
 import com.thangiee.LoLWithFriends.views.SideDrawerView
 import com.thangiee.LoLWithFriends.{MyApp, R}
+import de.greenrobot.event.EventBus
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
@@ -55,6 +57,8 @@ class MainActivity extends SActivity {
 
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
+    EventBus.getDefault.postSticky(new ClearChatNotification)
+    EventBus.getDefault.postSticky(new ClearLoginNotification)
     stopService[FriendListService]
     stopService[ChatService]
     MyApp.reset()
