@@ -1,11 +1,17 @@
 package com.thangiee.LoLWithFriends.activities
 
-import android.os.{Bundle, Handler}
+import java.util.concurrent.TimeUnit
+
+import android.app.{AlarmManager, PendingIntent}
+import android.content.Intent
+import android.os.{SystemClock, Bundle, Handler}
 import android.view.{Menu, MenuItem}
+import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
+import com.thangiee.LoLWithFriends.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
-import com.thangiee.LoLWithFriends.utils.Events.{ClearLoginNotification, ClearChatNotification}
+import com.thangiee.LoLWithFriends.utils.Events.{ClearChatNotification, ClearLoginNotification}
 import com.thangiee.LoLWithFriends.views.SideDrawerView
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
@@ -23,8 +29,8 @@ class MainActivity extends SActivity {
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
     setContentView(R.layout.main_screen)
-
     LoLChat.appearOnline()
+    Prefs.initPrefs(this)
 
     startService[FriendListService]
     startService[ChatService]
@@ -34,6 +40,7 @@ class MainActivity extends SActivity {
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
 
+    setUpFirstTimeLaunch()
     getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
   }
 
@@ -78,6 +85,22 @@ class MainActivity extends SActivity {
     new Handler().postDelayed(new Runnable {
       override def run(): Unit = doubleBackToExitPressedOnce = false
     }, 2000)
+  }
+
+  private def setUpFirstTimeLaunch() {
+    if (Prefs.getBoolean("first_launch", true)) {
+      // This will animate the drawer open and closed until the user manually drags it
+      sideDrawer.peekDrawer()
+
+      // setup alarm to delete msg older than a time period
+      val millis = TimeUnit.DAYS.toMillis(3)
+      val i = new Intent(ctx, classOf[DeleteOldMsgReceiver])
+      i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
+      val p = PendingIntent.getBroadcast(ctx, 0, i, 0)
+      alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), millis, p)
+
+      Prefs.putBoolean("first_launch", false)
+    }
   }
 }
 

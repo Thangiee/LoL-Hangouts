@@ -54,5 +54,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.MainActivity"/>
         </activity>
+
+        <receiver android:name=".receivers.DeleteOldMsgReceiver" />
     </application>
 </manifest>

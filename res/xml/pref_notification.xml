@@ -32,7 +32,7 @@
     <PreferenceCategory android:title="Chat">
         <ListPreference
                 android:title="History"
-                android:summary="Auto delete message after a time period."
+                android:summary="Auto delete message older than the specify period."
                 android:key="@string/pref_history"
                 android:entries="@array/history"
                 android:entryValues="@array/history"

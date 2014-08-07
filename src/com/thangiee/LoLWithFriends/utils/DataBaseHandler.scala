@@ -10,6 +10,8 @@ import scala.collection.JavaConversions._
 
 object DataBaseHandler {
 
+  def getAllMessages: List[Message] = new Select().from(classOf[Message]).execute[Message]().toList
+
   def getMessageLog(userName:String, otherName: String): util.List[Message] = {
     new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", userName, otherName)
       .execute[Message]()
@@ -27,8 +29,6 @@ object DataBaseHandler {
     val msgLog = getMessageLog(userName, otherName)
     if (!msgLog.isEmpty) Some(msgLog.last) else None
   }
-
-  def getLastMessage: Option[Message] = getLastMessage(MyApp.currentUser, MyApp.activeFriendChat)
 
   def getUnReadMessages: List[Message] = {
     new Select().from(classOf[Message]).where("thisPerson = ? AND isRead = 0", MyApp.currentUser).execute[Message]().toList
