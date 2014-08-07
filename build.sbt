@@ -14,6 +14,13 @@ proguardCache in Android ++= Seq(
   ProguardCache("org.scaloid") % "org.scaloid"
 )
 
+apkbuildExcludes in Android ++= Seq(
+  "META-INF/notice.txt",
+  "META-INF/license.txt",
+  "META-INF/LICENSE",
+  "META-INF/NOTICE"
+)
+
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
   "-dontwarn scala.**", "-keep class org.scaloid.common.**",
   "-dontwarn com.squareup.okhttp.**",
@@ -32,6 +39,7 @@ libraryDependencies ++= Seq(
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
   "de.greenrobot" % "eventbus" % "2.2.1",
+  "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.0"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
