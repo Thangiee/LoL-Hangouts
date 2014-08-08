@@ -4,17 +4,15 @@ import java.util.concurrent.TimeUnit
 
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
-import android.os.{SystemClock, Bundle, Handler}
+import android.os.{Bundle, Handler, SystemClock}
 import android.view.{Menu, MenuItem}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
 import com.thangiee.LoLWithFriends.receivers.DeleteOldMsgReceiver
-import com.thangiee.LoLWithFriends.services.{ChatService, FriendListService}
-import com.thangiee.LoLWithFriends.utils.Events.{ClearChatNotification, ClearLoginNotification}
+import com.thangiee.LoLWithFriends.services.LoLWithFriendsService
 import com.thangiee.LoLWithFriends.views.SideDrawerView
 import com.thangiee.LoLWithFriends.{MyApp, R}
-import de.greenrobot.event.EventBus
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
@@ -32,8 +30,7 @@ class MainActivity extends SActivity {
     LoLChat.appearOnline()
     Prefs.initPrefs(this)
 
-    startService[FriendListService]
-    startService[ChatService]
+    startService[LoLWithFriendsService]
 
     sideDrawer.setContentView(R.layout.main_screen)
     sideDrawer.setMenuView(new SideDrawerView())
@@ -64,10 +61,7 @@ class MainActivity extends SActivity {
 
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
-    EventBus.getDefault.postSticky(new ClearChatNotification)
-    EventBus.getDefault.postSticky(new ClearLoginNotification)
-    stopService[FriendListService]
-    stopService[ChatService]
+    stopService[LoLWithFriendsService]
     MyApp.reset()
     Future {LoLChat.disconnect()}
   }
