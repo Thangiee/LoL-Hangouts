@@ -4,7 +4,7 @@ android.Plugin.androidBuild
 
 name := "LoLWithFriends"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.11.2"
 
 minSdkVersion in Android := "14"
 
