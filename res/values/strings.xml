@@ -13,6 +13,7 @@
     <string name="pref_notify_sound">pref_notify_sound</string>
     <string name="pref_notify_msg">pref_notify_msg</string>
     <string name="pref_notify_login">pref_notify_login</string>
+    <string name="pref_history_summary">Auto delete message older than the specified period.</string>
 
     <string-array name="history">
         <item>1 day</item>
