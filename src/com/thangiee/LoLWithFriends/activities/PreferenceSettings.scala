@@ -43,6 +43,7 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
     lazy val p = PendingIntent.getBroadcast(ctx, 0, i, 0)
     var millis = TimeUnit.DAYS.toMillis(3)
 
+    // get the milliseconds to be used to calculate which message to delete
     value match {
       case "1 day"  ⇒ millis = TimeUnit.DAYS.toMillis(1)
       case "3 days" ⇒ millis = TimeUnit.DAYS.toMillis(3)
@@ -53,7 +54,8 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
     i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
 
-    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), millis, p)
+    // check to delete old message base on the millis every 2 hours
+    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(2), p)
     info("[*] Preference-History changed to: " + value)
   }
 }
