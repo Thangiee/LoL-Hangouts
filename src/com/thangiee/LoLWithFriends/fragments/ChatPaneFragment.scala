@@ -3,7 +3,9 @@ package com.thangiee.LoLWithFriends.fragments
 import java.util.Date
 
 import android.app.Fragment
+import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
+import android.preference.PreferenceManager
 import android.view.View.OnClickListener
 import android.view._
 import android.widget.EditText
@@ -84,6 +86,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
           .date(new Date()).otherPerson(friendName).thisPerson(MyApp.currentUser).isRead(true).build()
         msg.save() // save to DB
+        MediaPlayer.create(getActivity, R.raw.alert_pm_sent).start() // play sound
 
         runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
         runOnUiThread(msgField.setText("")) // clear the message field
@@ -117,6 +120,10 @@ class ChatPaneFragment extends Fragment with TagUtil {
   def onEventMainThread(event: ReceivedMessage): Unit = {
     info("[*]onEvent: received message from "+event.summoner.name)
     messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
+
+    // check notification preference to play sound
+    if (PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(getResources.getString(R.string.pref_notify_sound), true))
+      MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
   }
 
   private def runOnUiThread(f: => Unit) {

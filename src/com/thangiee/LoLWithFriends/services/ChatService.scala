@@ -4,7 +4,7 @@ import java.util.Date
 
 import android.app.{Notification, PendingIntent}
 import android.content.Intent
-import android.media.RingtoneManager
+import android.media.MediaPlayer
 import android.os.{Build, IBinder}
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
@@ -45,19 +45,26 @@ class ChatService extends SService with MessageListener {
     val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
       .otherPerson(friend.name).thisPerson(MyApp.currentUser).isRead(true).build()
 
-    // show notification when chat pane fragment is not open
+    // chat pane fragment is not open
     // or the current open chat is not with sender of the message
     if (!MyApp.isChatOpen || MyApp.activeFriendChat != friend.name) {
       m.setIsRead(false) // set to false because user has not seen it
-      m.save() // save message to DB
-      if (defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)) showNotification(m) // check setting before notify
-      EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
-      return
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
     EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
+
+    // check notification preference
+    val isNotify = defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)
+
+    if (MyApp.isChatOpen && MyApp.activeFriendChat == friend.name) {  // open & right -> post received msg
+      EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
+    } else if (!MyApp.isChatOpen && MyApp.activeFriendChat == friend.name){ // close & right -> post received msg and notification
+      EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
+      if (isNotify) showNotification(m)
+    } else {                                                          // wrong friend -> post notification
+      if (isNotify) showNotification(m)
+    }
   }
 
   private def showNotification(newestMsg: models.Message) {
@@ -75,7 +82,7 @@ class ChatService extends SService with MessageListener {
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true)) // check setting
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+      MediaPlayer.create(ctx, R.raw.alert_pm_receive).start()
 
     if (Build.VERSION.SDK_INT >= 16) {
       val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16

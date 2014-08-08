@@ -34,6 +34,7 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
     key match {
       case HistoryKey ⇒ onHistoryChanged(sharedPreferences.getString(key, "3 days"))
+      case _          ⇒ // do nothing
     }
   }
 
