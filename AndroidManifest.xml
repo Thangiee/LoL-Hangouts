@@ -20,8 +20,7 @@
                 android:name="AA_DB_NAME"
                 android:value="MessageLogs.db"/>
 
-        <service android:name=".services.FriendListService"/>
-        <service android:name=".services.ChatService"/>
+        <service android:name=".services.LoLWithFriendsService"/>
 
         <activity
                 android:name=".activities.ServerSelection"
