@@ -1,6 +1,7 @@
 package com.thangiee.LoLWithFriends.views
 
-import android.content.{Context, Intent}
+import android.app.AlertDialog
+import android.content.{Context, DialogInterface, Intent}
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.RadioGroup.OnCheckedChangeListener
@@ -84,8 +85,23 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     listView.setOnItemClickListener(this)
   }
 
-  private def showChangeStatusMsgDialog() {
-    // todo: implement
+  private def showChangeStatusMsgDialog(): Unit = {
+    val view = View.inflate(ctx, R.layout.change_status_msg_dialog, null)
+    val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
+
+    new AlertDialog.Builder(ctx)
+    .setTitle("New Status Message")
+    .setView(view)
+    .setPositiveButton("Ok", new DialogInterface.OnClickListener {
+      override def onClick(dialog: DialogInterface, which: Int): Unit = {
+        LoLChat.changeStatusMsg(input.getText.toString)
+        find[TextView](R.id.tv_status_msg).setText(input.getText)
+      }
+    })
+    .setNegativeButton("Cancel", new DialogInterface.OnClickListener {
+      override def onClick(dialog: DialogInterface, which: Int): Unit = dialog.cancel()
+    })
+    .show()
   }
 
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
