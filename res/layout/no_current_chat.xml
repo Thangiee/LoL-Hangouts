@@ -4,7 +4,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/league_dark_blue_bg_pattern">
+                android:background="@color/my_darker_blue">
 
     <TextView
             android:layout_width="wrap_content"

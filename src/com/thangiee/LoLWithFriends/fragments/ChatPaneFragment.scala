@@ -50,7 +50,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
     setMessagesRead()
     val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
     messageListView.setAdapter(messageAdapter)
-    messageListView.setBackground(getActivity.getResources.getDrawable(R.drawable.league_dark_blue_bg_pattern))
+    messageListView.setBackgroundColor(getActivity.getResources.getColor(R.color.my_darker_blue))
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view
