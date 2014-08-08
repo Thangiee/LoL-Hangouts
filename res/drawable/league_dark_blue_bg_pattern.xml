@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<bitmap
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:src="@drawable/league_dark_blue_bg"
-        android:tileMode="repeat"
-        android:dither="true"
-        android:antialias="true"/>
