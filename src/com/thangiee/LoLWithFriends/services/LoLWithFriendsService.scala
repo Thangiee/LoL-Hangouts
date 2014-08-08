@@ -4,19 +4,20 @@ import java.util.Date
 
 import android.app.{Notification, PendingIntent}
 import android.content.Intent
-import android.media.{RingtoneManager, MediaPlayer}
+import android.graphics.Color
+import android.media.{MediaPlayer, RingtoneManager}
 import android.os.{Build, IBinder}
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
-import com.thangiee.LoLWithFriends.activities.MainActivity
-import com.thangiee.LoLWithFriends.api.{Summoner, FriendListListener, LoLChat}
-import com.thangiee.LoLWithFriends.utils.Events.{ClearLoginNotification, RefreshSummonerCard, ClearChatNotification}
+import com.thangiee.LoLWithFriends.activities.{LoginActivity, MainActivity}
+import com.thangiee.LoLWithFriends.api.{FriendListListener, LoLChat, Summoner}
+import com.thangiee.LoLWithFriends.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
 import com.thangiee.LoLWithFriends.utils.{DataBaseHandler, Events}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.util.StringUtils
-import org.jivesoftware.smack.{ConnectionListener, Chat, MessageListener}
+import org.jivesoftware.smack.{Chat, ConnectionListener, MessageListener}
 import org.scaloid.common._
 
 import scala.util.Random
@@ -24,11 +25,13 @@ import scala.util.Random
 class LoLWithFriendsService extends SService with MessageListener with FriendListListener with ConnectionListener {
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
+  private val disconnectNotificationId = Random.nextInt()
 
   override def onBind(intent: Intent): IBinder = null
 
   override def onCreate(): Unit = {
     super.onCreate()
+    info("[*] Service started")
     LoLChat.initChatListener(this)
     LoLChat.initFriendListListener(this)
     LoLChat.connection.addConnectionListener(this)
@@ -36,8 +39,10 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
   }
 
   override def onDestroy(): Unit = {
-    notificationManager.cancelAll()
+    notificationManager.cancel(msgNotificationId)
+    notificationManager.cancel(loginNotificationId)
     EventBus.getDefault.unregister(this, classOf[ClearChatNotification], classOf[ClearLoginNotification])
+    info("[*] Service stop")
     super.onDestroy()
   }
 
@@ -67,9 +72,9 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
     } else if (!MyApp.isChatOpen && MyApp.activeFriendChat == friend.name){ // close & right -> post received msg and notification
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
-      if (isNotify) showNotification(m)
+      if (isNotify) showMsgNotification(m)
     } else {                                                          // wrong friend -> post notification
-      if (isNotify) showNotification(m)
+      if (isNotify) showMsgNotification(m)
     }
   }
 
@@ -87,7 +92,7 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_login.r2String, true)) {
       // show notification when friendList fragment is not in view or screen is not on
       if (!MyApp.isFriendListOpen || !powerManager.isScreenOn) { // check setting
-        showNotification(summoner)
+        showLogInNotification(summoner)
       }
     }
   }
@@ -120,13 +125,13 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
 
   override def reconnectionSuccessful(): Unit = { info("[*] Reconnection successful") }
 
-  override def connectionClosedOnError(p1: Exception): Unit = { warn("[!] Connection lost")}
+  override def connectionClosedOnError(p1: Exception): Unit = { warn("[!] Connection lost"); showDisconnectionNotification(); stopSelf() }
 
   override def reconnectingIn(sec: Int): Unit = { info("Connecting in " + sec)}
 
   //=============================================
 
-  private def showNotification(friend: Summoner) {
+  private def showLogInNotification(friend: Summoner) {
     // intent to bring the app to foreground
     val i = new Intent(ctx, classOf[MainActivity])
     val pendingIntent = PendingIntent.getActivity(ctx, 0, i, Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
@@ -147,7 +152,7 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
     notificationManager.notify(loginNotificationId, notification)
   }
 
-  private def showNotification(newestMsg: models.Message) {
+  private def showMsgNotification(newestMsg: models.Message) {
     val unReadMsg = DataBaseHandler.getUnReadMessages
 
     // intent to bring the app to foreground
@@ -180,6 +185,28 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(msgNotificationId, notification)
+  }
+
+  private def showDisconnectionNotification(): Unit = {
+    val i = new Intent(ctx, classOf[LoginActivity])
+    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP) // kill all the previous activities
+    val pendingIntent = PendingIntent.getActivity(ctx, 0, i, 0)
+
+    val builder = new Notification.Builder(ctx)
+      .setSmallIcon(R.drawable.ic_action_warning)
+      .setContentIntent(pendingIntent)
+      .setContentTitle(R.string.app_name.r2String)
+      .setContentText("Connection lost. Touch to reconnect.")
+      .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
+      .setAutoCancel(true)
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+
+    val notification = builder.build()
+    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
+      notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
+
+    notificationManager.notify(disconnectNotificationId, notification)
   }
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
