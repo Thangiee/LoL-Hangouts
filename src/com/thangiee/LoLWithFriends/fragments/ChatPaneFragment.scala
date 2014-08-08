@@ -86,7 +86,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
           .date(new Date()).otherPerson(friendName).thisPerson(MyApp.currentUser).isRead(true).build()
         msg.save() // save to DB
-        MediaPlayer.create(getActivity, R.raw.alert_pm_sent).start() // play sound
+        if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_sent).start() // play sound
 
         runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
         runOnUiThread(msgField.setText("")) // clear the message field
@@ -121,15 +121,18 @@ class ChatPaneFragment extends Fragment with TagUtil {
     info("[*]onEvent: received message from "+event.summoner.name)
     messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
 
-    // check notification preference to play sound
-    if (PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(getResources.getString(R.string.pref_notify_sound), true))
-      MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
+    // check sound preference before playing sound
+    if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
   }
 
   private def runOnUiThread(f: => Unit) {
     getActivity.runOnUiThread(new Runnable {
       override def run(): Unit = f
     })
+  }
+
+  private def isSoundPreferenceOn: Boolean = {
+    PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(getResources.getString(R.string.pref_notify_sound), true)
   }
 }
 

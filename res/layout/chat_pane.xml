@@ -36,6 +36,7 @@
             android:background="@android:color/white"
             android:hint="Write here"
             android:layout_gravity="center_vertical"
+            android:textCursorDrawable="@null"
             android:paddingLeft="8dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
