@@ -11,6 +11,7 @@ object LoLChat {
   private var _connection: Option[XMPPConnection] = None
   private var _friendListListener: Option[FriendListListener] = None
   private var _statusMsg = "Using LoLWithFriends App"
+  private var _presenceMode = Presence.Mode.away
   private var _username = ""
 
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
@@ -39,7 +40,7 @@ object LoLChat {
       XMPPExceptionHandler(connection.login(user, "AIR_" + pass))
   }
 
-  def disconnect() = connection.disconnect()
+  def disconnect() = { connection.disconnect(); _statusMsg = "Using LoLWithFriends App" }
 
   def friends: List[Summoner] = for (entry <- connection.getRoster.getEntries.toList) yield new Summoner(entry)
 
@@ -55,11 +56,11 @@ object LoLChat {
 
   def isLogin: Boolean = connection.isAuthenticated
 
-  def appearOnline() = updateStatus(Presence.Type.available)
+  def appearOnline() = { updateStatus(Presence.Type.available); _presenceMode = Presence.Mode.available }
 
   def appearOffline() = updateStatus(Presence.Type.unavailable)
 
-  def appearAway() = updateStatus(Presence.Type.available, Presence.Mode.away)
+  def appearAway() = { updateStatus(Presence.Type.available, Presence.Mode.away); _presenceMode = Presence.Mode.away }
 
   def sendMessage(summoner: Summoner, msg: String): Boolean = {
     val message = new Message(summoner.id, Type.chat)
@@ -69,7 +70,7 @@ object LoLChat {
 
   def statusMsg(): String = _statusMsg
 
-  def changeStatusMsg(msg: String) = _statusMsg = msg
+  def changeStatusMsg(msg: String) { _statusMsg = msg; updateStatus(Presence.Type.available, _presenceMode) }
 
   def initChatListener(listener: MessageListener) {
     connection.getChatManager.addChatListener(new ChatManagerListener {
@@ -99,7 +100,7 @@ object LoLChat {
       "<gameStatus>outOfGame</gameStatus>" +
       "</body>"
 
-    val p = new Presence(`type`, status, 1, mode) // todo: change message
+    val p = new Presence(`type`, status, 1, mode)
     try {
       connection.sendPacket(p)
     } catch {
