@@ -1,6 +1,6 @@
 package com.thangiee.LoLWithFriends.views
 
-import android.app.AlertDialog
+import android.app.{Activity, AlertDialog, Fragment}
 import android.content.{Context, DialogInterface, Intent}
 import android.view.View
 import android.view.View.OnClickListener
@@ -9,22 +9,26 @@ import android.widget._
 import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.thangiee.LoLWithFriends.activities.PreferenceSettings
+import com.thangiee.LoLWithFriends.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLWithFriends.api.LoLChat
+import com.thangiee.LoLWithFriends.fragments.{ChatScreenFragment, SummonerProfileFragment}
 import com.thangiee.LoLWithFriends.utils.SummonerUtils
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
+import net.simonvt.menudrawer.MenuDrawer
+import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener
 import org.scaloid.common.{SystemService, TraitView}
 
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
   with SystemService with AdapterView.OnItemClickListener {
-  val drawerItems = List(
+  private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog),
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Settings", R.drawable.ic_action_settings))
 
+  private var currentDrawerItem = drawerItems(0)
   init()
 
   override def basis: SideDrawerView = this
@@ -105,11 +109,31 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
   }
 
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
-    drawerItems(position).title match {
-      case "Chat" ⇒
-      case "My Profile" ⇒
-      case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings]))
+    val drawer = ctx.asInstanceOf[MainActivity].sideDrawer
+    drawer.closeMenu()
+    var fragment: Fragment = new Fragment
+    val selectedDrawerItem = drawerItems(position)
+
+    selectedDrawerItem.title match {
+      case "Chat"       ⇒ fragment = new ChatScreenFragment
+      case "My Profile" ⇒ fragment = new SummonerProfileFragment
+      case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
     }
+
+    drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener {
+      override def onDrawerStateChange(oldState: Int, newState: Int): Unit = {
+        // wait til drawer close animation complete and check that the selected drawer item
+        // is not the same as the current one before changing fragment.
+        if (newState == MenuDrawer.STATE_CLOSED && selectedDrawerItem != currentDrawerItem) {
+          val transaction = ctx.asInstanceOf[Activity].getFragmentManager.beginTransaction()
+          transaction.replace(R.id.screen_container, fragment).commit()
+
+          currentDrawerItem = selectedDrawerItem // update current with the selected
+        }
+      }
+
+      override def onDrawerSlide(p1: Float, p2: Int): Unit = {}
+    })
   }
 
   case class DrawerItem(title: String, icon: Int)
