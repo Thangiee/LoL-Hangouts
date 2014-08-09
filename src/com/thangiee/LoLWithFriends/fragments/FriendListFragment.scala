@@ -1,7 +1,7 @@
 package com.thangiee.LoLWithFriends.fragments
 
 import android.app.Fragment
-import android.os.Bundle
+import android.os.{SystemClock, Bundle}
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
@@ -26,7 +26,7 @@ class FriendListFragment extends Fragment with TagUtil {
     val view = inflater.inflate(R.layout.friend_list_pane, container, false)
     val listView = view.findViewById(R.id.list_summoner_card).asInstanceOf[CardListView]
 
-    Thread.sleep(200)
+    SystemClock.sleep(100)
     cards ++= getOrderedFriendCardList
     cardArrayAdapter.setNotifyOnChange(false)
     cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
