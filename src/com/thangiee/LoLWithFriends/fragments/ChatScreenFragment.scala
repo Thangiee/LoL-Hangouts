@@ -26,7 +26,6 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
 
     slidingLayout.openPane()    // show the friend list fragment
     slidingLayout.setPanelSlideListener(this)
-    slidingLayout.setParallaxDistance(250)
     slidingLayout.setSliderFadeColor(getResources.getColor(R.color.slider_fade))
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
