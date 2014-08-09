@@ -66,7 +66,6 @@ class LoginActivity extends SActivity with UpButton {
         runOnUiThread(logInButton.setProgress(100))
         MyApp.currentUser = userEditText.getText.toString
         startActivity[MainActivity]
-        getParent.finish()
         finish()
       } else {
         runOnUiThread(Crouton.makeText(this, "Invalid username/passwoard", Style.ALERT).show())
