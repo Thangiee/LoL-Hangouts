@@ -1,7 +1,5 @@
 package com.thangiee.LoLWithFriends.api
 
-import scala.xml.XML
-
 object LoLStatus extends Enumeration {
   type LoLStatus = Value
   val ProfileIcon = Value("profileIcon")
@@ -27,8 +25,8 @@ object LoLStatus extends Enumeration {
   def parse(summoner: Summoner, value: LoLStatus): Option[String] = {
     if (!summoner.isOnline) return None
     if (summoner.status == null) return None
-    val xml = XML.loadString(summoner.status)
-    val result = (xml \\ "body" \\ value.toString).map(_.text).mkString
+    val pattern = "(?<=" + value.toString + ">).*?(?=</" + value.toString + ")"
+    val result = pattern.r.findFirstIn(summoner.status).getOrElse("")
     if (!result.isEmpty) Some(result) else None
   }
 }
