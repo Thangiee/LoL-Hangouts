@@ -21,6 +21,7 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
+    setRetainInstance(true)
     view = inflater.inflate(R.layout.chat_screen, container, false)
 
     slidingLayout.openPane()    // show the friend list fragment
@@ -68,10 +69,12 @@ class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
     MyApp.isChatOpen = true
     EventBus.getDefault.postSticky(new Events.ClearChatNotification) // clear notification
 
-    if (!MyApp.activeFriendChat.isEmpty) { // if in chat with a friend
-      getFragmentManager.findFragmentById(R.id.chat_content_pane).asInstanceOf[ChatPaneFragment].setMessagesRead()
-      getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(true) // change AB menu items
-      getActivity.getActionBar.setTitle(MyApp.activeFriendChat) // set AB title to name of friend in chat with
+    getFragmentManager.findFragmentById(R.id.chat_content_pane) match {
+      case fragment: ChatPaneFragment ⇒
+        fragment.setMessagesRead()
+        fragment.setHasOptionsMenu(true) // change AB menu items
+        getActivity.getActionBar.setTitle(MyApp.activeFriendChat) // set AB title to name of friend in chat with
+      case _ ⇒
     }
   }
 

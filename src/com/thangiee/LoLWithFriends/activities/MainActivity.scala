@@ -24,8 +24,8 @@ class MainActivity extends SActivity {
   private var doubleBackToExitPressedOnce = false
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
 
-  protected override def onCreate(b: Bundle): Unit = {
-    super.onCreate(b)
+  protected override def onCreate(savedInstanceState: Bundle): Unit = {
+    super.onCreate(savedInstanceState)
     setContentView(R.layout.main_screen)
     LoLChat.appearOnline()
     Prefs.initPrefs(this)
@@ -38,11 +38,20 @@ class MainActivity extends SActivity {
     sideDrawer.setDrawerIndicatorEnabled(true)
 
     setUpFirstTimeLaunch()
-    getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
+
+    if (savedInstanceState != null){
+      val contentFrag = getFragmentManager.getFragment(savedInstanceState, "contentFrag")
+      getFragmentManager.beginTransaction().replace(R.id.screen_container, contentFrag).commit()
+      MyApp.activeFriendChat = ""
+    } else {
+      getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
+    }
   }
 
-  override def onPause(): Unit = {
-    super.onPause()
+  override def onSaveInstanceState(outState: Bundle): Unit = {
+    super.onSaveInstanceState(outState)
+    val frag = getFragmentManager.findFragmentById(R.id.screen_container)
+    getFragmentManager.putFragment(outState, "contentFrag", frag)
   }
 
   override def onCreateOptionsMenu(menu: Menu): Boolean = {
