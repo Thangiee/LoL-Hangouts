@@ -33,8 +33,8 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
-  "org.scaloid" %% "scaloid-support-v4" % "3.4-10",
-  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
+//  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
+  "com.android.support" % "support-v13" % "13.0.0",
   "com.android.support" % "support-v4" % "13.0.0",
   "com.google.code.gson" % "gson" % "2.2.4",
   "com.github.amigold.fundapter2" % "library" % "1.01",
@@ -47,7 +47,8 @@ libraryDependencies ++= Seq(
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
   aar("info.hoang8f" % "android-segmented" % "1.0.2"),
   aar("com.makeramen" % "roundedimageview" % "1.3.0"),
-  aar("com.pixplicity.easyprefs" % "library" % "1.3"))
+  aar("com.pixplicity.easyprefs" % "library" % "1.3"),
+  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1"))
 
 run <<= run in Android
 
