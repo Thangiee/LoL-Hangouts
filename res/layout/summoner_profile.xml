@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        >
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/header"
+            android:background="@drawable/summoner_header"
+            android:layout_margin="8dp">
+
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/img_profile_icon"
+                android:src="@drawable/league_icon"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:id="@+id/tv_profile_name"
+                android:layout_alignTop="@+id/img_profile_icon"
+                android:layout_toRightOf="@+id/img_profile_icon"
+                android:textSize="22sp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level"
+                android:id="@+id/tv_profile_lvl"
+                android:textSize="16dp"
+                android:layout_alignBottom="@+id/img_profile_icon"
+                android:layout_toRightOf="@+id/img_profile_icon"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignLeft="@+id/header"
+            android:layout_alignStart="@+id/header"
+            android:background="@drawable/bg_league_yellow"
+            android:layout_alignRight="@+id/header"
+            android:layout_alignEnd="@+id/header"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/textView"
+            android:id="@+id/relativeLayout">
+
+        <ImageView
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:id="@+id/img_profile_badge"
+                android:src="@drawable/badge_bronze"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="tier"
+                android:id="@+id/tv_profile_tier"
+                android:layout_below="@+id/img_profile_badge"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="League"
+                android:id="@+id/tv_profile_league_name"
+                android:layout_below="@+id/tv_profile_tier"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="points"
+                android:id="@+id/tv_profile_league_point"
+                android:layout_below="@+id/tv_profile_league_name"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="KDA"
+                android:id="@+id/tv_profile_kda"
+                android:layout_below="@+id/tv_profile_league_point"
+                android:layout_centerHorizontal="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Lost"
+                android:id="@+id/tv_profile_lost"
+                android:layout_alignTop="@+id/tv_profile_rate"
+                android:layout_toLeftOf="@+id/tv_profile_rate"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="win rate"
+                android:id="@+id/tv_profile_rate"
+                android:layout_below="@+id/tv_profile_kda"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Win"
+                android:id="@+id/tv_profile_win"
+                android:layout_alignTop="@+id/tv_profile_rate"
+                android:layout_toRightOf="@+id/tv_profile_rate"/>
+
+    </RelativeLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Ranked Solo Queue"
+            android:id="@+id/textView"
+            android:layout_below="@+id/header"
+            android:layout_alignLeft="@+id/relativeLayout"
+            android:layout_alignStart="@+id/relativeLayout"/>
+
+</RelativeLayout>
