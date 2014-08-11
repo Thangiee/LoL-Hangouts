@@ -1,28 +1,26 @@
 package com.thangiee.LoLWithFriends.api
 
-import scala.util.Try
-
 trait LoLStatistics {
 
-  def level(): Try[Int]
+  def level(): Int
 
-  def win(): Try[Int]
+  def win(): Int
 
-  def lose(): Try[Int]
+  def lose(): Int
 
-  def kda(): Try[String]
+  def kda(): String
 
-  def leagueName(): Try[String]
+  def leagueName(): String
 
-  def leagueTier(): Try[String]
+  def leagueTier(): String
 
-  def leagueDivision(): Try[String]
+  def leagueDivision(): String
 
-  def leaguePoints(): Try[String]
+  def leaguePoints(): String
 
-  def topChampions(): List[Try[Champion]]
+  def topChampions(): List[Champion]
 
-  def matchHistory(): List[Try[Match]]
+  def matchHistory(): List[Match]
 }
 
 case class Champion(name: String, iconUrl: String = "", numOfGame: Int, stats: Stats, avgBetterStats: AvgBetterStats = AvgBetterStats())

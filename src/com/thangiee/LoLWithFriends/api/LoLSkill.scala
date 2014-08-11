@@ -1,5 +1,7 @@
 package com.thangiee.LoLWithFriends.api
 
+import java.io.IOException
+
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -15,31 +17,31 @@ import scala.util.Try
  */
 class LoLSkill(name: String, region: String) extends LoLStatistics {
   private val baseServerUrl = "http://www.lolskill.net/summoner/"
-  private val doc: Try[Document] = Try(Jsoup.connect(baseServerUrl + region + "/" + name).get)
+  private val doc: Document = Try(Jsoup.connect(baseServerUrl + region + "/" + name).get).getOrElse(throw new IOException())
 
-  override def level(): Try[Int] = parse("div[class=realm]").flatMap[Int](getNumber[Int])
+  override def level(): Int = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(0)
 
-  override def win(): Try[Int] = parse("span[class=wins]").flatMap[Int](getNumber[Int])
+  override def win(): Int = parse("span[class=wins]").flatMap[Int](getNumber[Int]).getOrElse(0)
 
-  override def lose(): Try[Int] = parse("span[class=losses]").flatMap[Int](getNumber[Int])
+  override def lose(): Int = parse("span[class=losses]").flatMap[Int](getNumber[Int]).getOrElse(0)
 
-  override def kda(): Try[String] = parse("p[class=kda]")
+  override def kda(): String = parse("p[class=kda]").getOrElse("N/A")
 
-  override def leagueName(): Try[String] = parse("p[class=leaguename]")
+  override def leagueName(): String = parse("p[class=leaguename]").getOrElse("N/A")
 
-  override def leaguePoints(): Try[String] = parse("p[class=leaguepoints]")
+  override def leaguePoints(): String = parse("p[class=leaguepoints]").getOrElse("N/A")
 
-  override def leagueTier(): Try[String] = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").head))
+  override def leagueTier(): String = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").head)).getOrElse("N/A")
 
-  override def leagueDivision(): Try[String] = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").last))
+  override def leagueDivision(): String = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").last)).getOrElse("N/A")
 
-  override def topChampions(): List[Try[Champion]] = {
+  override def topChampions(): List[Champion] = {
     // 0  |    1   |    2     |  3    |4 |5   |  6   |7   |8     |9   |10    | 11 |12   |13    | 14
     //Rank|Champion|SkillScore|Perf.  |G |K   |      |D   |      |A   |      |CS  |     |Gold  |
     //1   |  Yasuo |  2,659   |+10.8% |14|7.9 |(+0.2)|5.6 |(-2.3)|6.6 |(-0.2)|179 |(+10)|11,944|(-137)
 
-    val champRows = doc.get.select("table[id=championsTable]").first().select("tr").tail.toList
-    for (row <- champRows.map(_.text().split(" "))) yield Try(
+    val champRows = doc.select("table[id=championsTable]").first().select("tr").tail.toList
+    for (row <- champRows.map(_.text().split(" "))) yield
       Champion(
         row(1), // name
         "http://www.mobafire.com/images/champion/icon/" + row(1) + ".png", // icon url
@@ -60,12 +62,12 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
           getNumber[Int](row(14)).getOrElse(0) // gold
         )
       )
-    )
+
   }
 
-  override def matchHistory(): List[Try[Match]] = {
-    val matches = ListBuffer[Try[Match]]()
-    val matchRows = doc.get.select("table[id=matchHistory]").first().select("tr[class^=match]").toList
+  override def matchHistory(): List[Match] = {
+    val matches = ListBuffer[Match]()
+    val matchRows = doc.select("table[id=matchHistory]").first().select("tr[class^=match]").toList
 
     for (row <- matchRows) {
       //    0   |1 |    2 | 3 |   4   |5  |  6    |7  |  8  |   9   |  10     | 11  | 12
@@ -73,7 +75,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
       // +85.8% |5 |(+2.8)| 5 |(-1.5) |28 |(+14.0)|52 |(+26)|15,893 |(+6,631) | 1   | 1
       val statsElements = row.select("td[class=stats]").select("tr").text().split(" ").toList
 
-      matches.append(Try(
+      matches.append(
         Match(
           row.select("td[class=champion tooltip]").attr("data-championid").toInt,
           row.select("td[class=info]").select("div[class=queue]").text(),
@@ -96,14 +98,14 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
             getNumber[Int](statsElements(10)).getOrElse(0)
           )
         )
-      ))
+      )
     }
 
     matches.toList
   }
 
   private def parse(pattern: String): Try[String] = {
-    Try(doc.get.select(pattern).first().text())
+    Try(doc.select(pattern).first().text)
   }
 
   private case class NumberOp[T](op: String => T)

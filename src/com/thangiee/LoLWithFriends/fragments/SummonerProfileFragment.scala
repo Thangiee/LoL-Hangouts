@@ -47,10 +47,8 @@ object SummonerProfileFragment {
   def newInstance(summonerName: String, stats: LoLStatistics): SummonerProfileFragment = {
     val bundle = new Bundle()
     val data = Data(
-      summonerName, stats.kda().getOrElse("KDA"), stats.leagueDivision().getOrElse("Division"),
-      stats.leagueName().getOrElse("League Name"), stats.leaguePoints().getOrElse("League Point"),
-      stats.leagueTier().getOrElse("League Tier"), stats.level().getOrElse(0),
-      stats.lose().getOrElse(0), stats.win().getOrElse(0)
+      summonerName, stats.kda(), stats.leagueDivision(), stats.leagueName(), stats.leaguePoints(),
+      stats.leagueTier(), stats.level(), stats.lose(), stats.win()
     )
     bundle.putSerializable("data", data)
     val frag = new SummonerProfileFragment

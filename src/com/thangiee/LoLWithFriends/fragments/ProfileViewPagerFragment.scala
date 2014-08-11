@@ -25,7 +25,14 @@ class ProfileViewPagerFragment extends SFragment {
     pager.setAdapter(adapter)
     tabs.setViewPager(pager)
     var wait = true
-    Future { userStats = new LoLSkill(name, region); wait = false }
+    Future {
+      try {
+        userStats = new LoLSkill(name, region)
+        wait = false
+      } catch {
+        case _: Throwable ⇒ wait = false; wtf("NO Connection")
+      }
+    }
     while (wait) {Thread.sleep(100)}
     view
   }
