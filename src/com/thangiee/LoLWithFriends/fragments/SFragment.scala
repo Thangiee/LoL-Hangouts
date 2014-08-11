@@ -4,6 +4,7 @@ import android.app.Fragment
 import android.content.Context
 import android.view.View
 import com.thangiee.LoLWithFriends.utils.ConversionImplicits
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import org.scaloid.common.{InterfaceImplicits, TagUtil}
 
 trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicits with TagUtil {
@@ -26,5 +27,17 @@ trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicit
     getActivity.runOnUiThread(new Runnable {
       override def run(): Unit = code
     })
+  }
+
+  override def onDestroy(): Unit = {
+    info("[*] Canceling any remaining croutons.")
+    Crouton.cancelAllCroutons()
+    super.onDestroy()
+  }
+
+  implicit class StringTo(string: String) {
+    def makeCrouton(style: Style, duration: Int = Configuration.DURATION_SHORT) {
+      Crouton.makeText(getActivity, string, style).setConfiguration(new Configuration.Builder().setDuration(duration).build()).show()
+    }
   }
 }
