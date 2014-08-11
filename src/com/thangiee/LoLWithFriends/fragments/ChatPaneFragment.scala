@@ -2,7 +2,6 @@ package com.thangiee.LoLWithFriends.fragments
 
 import java.util.Date
 
-import android.app.Fragment
 import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
 import android.preference.PreferenceManager
@@ -15,20 +14,18 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLWithFriends.api.{LoLChat, Summoner}
-import com.thangiee.LoLWithFriends.utils.{SummonerUtils, DataBaseHandler}
+import com.thangiee.LoLWithFriends.utils.DataBaseHandler
 import com.thangiee.LoLWithFriends.utils.Events.ReceivedMessage
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
-import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ChatPaneFragment extends Fragment with TagUtil {
-  private var view: View = _
-  private lazy val sendButton = view.findViewById(R.id.btn_send_msg).asInstanceOf[CircularProgressButton]
-  private lazy val msgField = view.findViewById(R.id.et_msg_field).asInstanceOf[EditText]
+class ChatPaneFragment extends SFragment {
+  private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
+  private lazy val msgField = find[EditText](R.id.et_msg_field)
   private lazy val friendName = getArguments.getString("name-key")
   private lazy val messageAdapter = new MessageAdapter(getActivity, 0)
 
@@ -50,7 +47,7 @@ class ChatPaneFragment extends Fragment with TagUtil {
     messageAdapter.setRecipientName(friendName)
 
     setMessagesRead()
-    val messageListView = view.findViewById(R.id.lsv_chat).asInstanceOf[MessagesListView]
+    val messageListView = find[MessagesListView](R.id.lsv_chat)
     messageListView.setAdapter(messageAdapter)
     messageListView.setBackgroundColor(getActivity.getResources.getColor(R.color.my_darker_blue))
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
@@ -88,17 +85,23 @@ class ChatPaneFragment extends Fragment with TagUtil {
         msg.save() // save to DB
         if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_sent).start() // play sound
 
-        runOnUiThread(messageAdapter.add(msg)) // add to adapter to show the message on the chat
-        runOnUiThread(msgField.setText("")) // clear the message field
-        runOnUiThread(sendButton.setProgress(100)) // success state
+        runOnUiThread {
+          messageAdapter.add(msg) // add to adapter to show the message on the chat
+          msgField.setText("") // clear the message field
+          sendButton.setProgress(100) // success state
+        }
         SystemClock.sleep(150)
-        runOnUiThread(sendButton.setProgress(0)) // normal state
-        runOnUiThread(sendButton.setEnabled(true))
+        runOnUiThread {
+          sendButton.setProgress(0) // normal state
+          sendButton.setEnabled(true)
+        }
       } else {  // message failed to send
         runOnUiThread(sendButton.setProgress(-1)) // error state
         SystemClock.sleep(150)
-        runOnUiThread(Crouton.makeText(getActivity, "Fail to send message", Style.ALERT).show()) // alert the user
-        runOnUiThread(sendButton.setProgress(0)) // normal state
+        runOnUiThread {
+          Crouton.makeText(getActivity, "Fail to send message", Style.ALERT).show() // alert the user
+          sendButton.setProgress(0) // normal state
+        }
 //        runOnUiThread(sendButton.setEnabled(true))
       }
     }
@@ -123,12 +126,6 @@ class ChatPaneFragment extends Fragment with TagUtil {
 
     // check sound preference before playing sound
     if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
-  }
-
-  private def runOnUiThread(f: => Unit) {
-    getActivity.runOnUiThread(new Runnable {
-      override def run(): Unit = f
-    })
   }
 
   private def isSoundPreferenceOn: Boolean = {

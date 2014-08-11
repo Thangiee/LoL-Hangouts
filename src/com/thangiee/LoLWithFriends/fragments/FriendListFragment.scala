@@ -1,7 +1,6 @@
 package com.thangiee.LoLWithFriends.fragments
 
-import android.app.Fragment
-import android.os.{SystemClock, Bundle}
+import android.os.{Bundle, SystemClock}
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
@@ -10,21 +9,20 @@ import com.thangiee.LoLWithFriends.views.{SummonerBaseCard, SummonerOffCard, Sum
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
-import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FriendListFragment extends Fragment with TagUtil {
+class FriendListFragment extends SFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     EventBus.getDefault.register(this)
-    val view = inflater.inflate(R.layout.friend_list_pane, container, false)
-    val listView = view.findViewById(R.id.list_summoner_card).asInstanceOf[CardListView]
+    view = inflater.inflate(R.layout.friend_list_pane, container, false)
+    val listView = find[CardListView](R.id.list_summoner_card)
 
     SystemClock.sleep(100)
     cards ++= getOrderedFriendCardList

@@ -1,22 +1,19 @@
 package com.thangiee.LoLWithFriends.fragments
 
-import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
-import android.view.inputmethod.InputMethodManager
 import android.view._
+import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLWithFriends.activities.MainActivity
 import com.thangiee.LoLWithFriends.utils.Events
 import com.thangiee.LoLWithFriends.utils.Events.SummonerCardClicked
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
-import org.scaloid.common._
 
-class ChatScreenFragment extends Fragment with PanelSlideListener with TagUtil {
-  private var view: View = _
-  private lazy val slidingLayout = view.findViewById(R.id.chat_sliding_pane).asInstanceOf[SlidingPaneLayout]
+class ChatScreenFragment extends SFragment with PanelSlideListener {
+  private lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
   private lazy val imm = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
