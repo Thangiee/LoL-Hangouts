@@ -11,7 +11,7 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLWithFriends.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLWithFriends.api.LoLChat
-import com.thangiee.LoLWithFriends.fragments.{ChatScreenFragment, SummonerProfileFragment}
+import com.thangiee.LoLWithFriends.fragments.{ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLWithFriends.utils.SummonerUtils
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
@@ -116,7 +116,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
 
     selectedDrawerItem.title match {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = new SummonerProfileFragment
+      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(MyApp.currentUser, MyApp.selectedServer.toString)
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
     }
 
