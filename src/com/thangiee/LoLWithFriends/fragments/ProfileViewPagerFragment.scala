@@ -6,13 +6,14 @@ import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.astuetz.PagerSlidingTabStrip
+import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.{LoLSkill, LoLStatistics}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class ProfileViewPagerFragment extends SFragment {
+class ProfileViewPagerFragment extends ProgressFragment with SFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
   private lazy val pager = find[ViewPager](R.id.pager)
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
@@ -21,20 +22,31 @@ class ProfileViewPagerFragment extends SFragment {
   private var userStats: LoLStatistics = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
-    view = inflater.inflate(R.layout.view_pager_profile, container, false)
+    view = inflater.inflate(R.layout.view_pager_profile, null)
+
+    inflater.inflate(R.layout.progress_container, container, false)
+  }
+
+  override def onActivityCreated(savedInstanceState: Bundle): Unit = {
+    super.onActivityCreated(savedInstanceState)
+    setContentView(view)
     pager.setAdapter(adapter)
     tabs.setViewPager(pager)
-    var wait = true
+    setContentShown(false) // show loading bar
     Future {
       try {
         userStats = new LoLSkill(name, region)
-        wait = false
+        runOnUiThread(setContentShown(true))
+        info("[*] Got user stats successfully")
       } catch {
-        case _: Throwable ⇒ wait = false; wtf("NO Connection")
+        case e: Exception ⇒ runOnUiThread {
+          warn("[*] Failed to get user stats because: " + e.getMessage)
+          setEmptyText("Could not get data.")
+          setContentEmpty(true)
+          setContentShown(true)
+        }
       }
     }
-    while (wait) {Thread.sleep(100)}
-    view
   }
 
   class MyPagerAdapter(fm: FragmentManager) extends FragmentStatePagerAdapter(fm) {
@@ -44,15 +56,17 @@ class ProfileViewPagerFragment extends SFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Profile"    ⇒ SummonerProfileFragment.newInstance(name, userStats)
-        case "Champions"  ⇒ SummonerTopChampFragment.newInstance(userStats.topChampions())
-        case "History"    ⇒ SummonerMatchesFragment.newInstance(userStats.matchHistory())
+        case "Profile" ⇒ SummonerProfileFragment.newInstance(name, userStats)
+        case "Champions" ⇒ SummonerTopChampFragment.newInstance(userStats.topChampions())
+        case "History" ⇒ SummonerMatchesFragment.newInstance(userStats.matchHistory())
       }
     }
 
     override def getCount: Int = titles.size
   }
+
 }
+
 
 object ProfileViewPagerFragment {
   def newInstance(summonerName: String, region: String): ProfileViewPagerFragment = {

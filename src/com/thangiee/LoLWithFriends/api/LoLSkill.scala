@@ -1,7 +1,5 @@
 package com.thangiee.LoLWithFriends.api
 
-import java.io.IOException
-
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -17,7 +15,7 @@ import scala.util.Try
  */
 class LoLSkill(name: String, region: String) extends LoLStatistics {
   private val baseServerUrl = "http://www.lolskill.net/summoner/"
-  private val doc: Document = Try(Jsoup.connect(baseServerUrl + region + "/" + name).get).getOrElse(throw new IOException())
+  private val doc: Document = Try(Jsoup.connect(baseServerUrl + region + "/" + name).timeout(10000).get).get
 
   override def level(): Int = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(0)
 
