@@ -49,6 +49,7 @@ libraryDependencies ++= Seq(
   aar("info.hoang8f" % "android-segmented" % "1.0.2"),
   aar("com.makeramen" % "roundedimageview" % "1.3.0"),
   aar("com.pixplicity.easyprefs" % "library" % "1.3"),
+  aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1"))
 
 run <<= run in Android

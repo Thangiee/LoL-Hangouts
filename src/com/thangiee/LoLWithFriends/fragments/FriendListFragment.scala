@@ -2,6 +2,7 @@ package com.thangiee.LoLWithFriends.fragments
 
 import android.os.{Bundle, SystemClock}
 import android.view.{LayoutInflater, View, ViewGroup}
+import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.utils.Events.{RefreshFriendList, RefreshSummonerCard}
@@ -14,23 +15,32 @@ import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FriendListFragment extends SFragment {
+class FriendListFragment extends ProgressFragment with SFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
-    super.onCreateView(inflater, container, savedInstanceState)
     EventBus.getDefault.register(this)
-    view = inflater.inflate(R.layout.friend_list_pane, container, false)
+    view = inflater.inflate(R.layout.friend_list_pane, null)
+    inflater.inflate(R.layout.progress_container, container, false)
+  }
+
+  override def onActivityCreated(savedInstanceState: Bundle): Unit = {
+    super.onActivityCreated(savedInstanceState)
+    setContentView(view)
+    setContentShown(false)
     val listView = find[CardListView](R.id.list_summoner_card)
 
-    SystemClock.sleep(100)
-    cards ++= getOrderedFriendCardList
-    cardArrayAdapter.setNotifyOnChange(false)
-    cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
-    listView.setAdapter(cardArrayAdapter)
-
-    view
+    Future {
+      SystemClock.sleep(200)
+      cards ++= getOrderedFriendCardList
+      cardArrayAdapter.setNotifyOnChange(false)
+      cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
+      runOnUiThread {
+        listView.setAdapter(cardArrayAdapter)
+        setContentShown(true)
+      }
+    }
   }
 
   override def onDestroy(): Unit = {
