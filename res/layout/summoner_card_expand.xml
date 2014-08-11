@@ -3,17 +3,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:background="@drawable/bg_league_yellow"
-                android:layout_height="124dp">
+                android:layout_height="124dp"
+                android:background="@color/my_dark_blue">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/bg_league_yellow">
+    </LinearLayout>
 
     <ImageView
             android:layout_width="112dp"
             android:layout_height="112dp"
             android:id="@+id/img_badge"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/badge_unranked"/>
 
     <TextView
             android:layout_width="fill_parent"
