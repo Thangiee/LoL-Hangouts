@@ -1,10 +1,13 @@
 package com.thangiee.LoLWithFriends.fragments
 
 import android.app.Fragment
+import android.content.Context
 import android.view.View
-import org.scaloid.common.TagUtil
+import com.thangiee.LoLWithFriends.utils.ConversionImplicits
+import org.scaloid.common.{InterfaceImplicits, TagUtil}
 
-trait SFragment extends Fragment with TagUtil {
+trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicits with TagUtil {
+  implicit lazy val context: Context = getActivity
   var view: View = _
 
   def find[V <: View](id: Int): V = view.findViewById(id).asInstanceOf[V]
