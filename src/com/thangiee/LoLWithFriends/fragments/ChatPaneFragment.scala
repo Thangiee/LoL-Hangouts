@@ -5,7 +5,6 @@ import java.util.Date
 import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
 import android.preference.PreferenceManager
-import android.view.View.OnClickListener
 import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
@@ -35,9 +34,7 @@ class ChatPaneFragment extends SFragment {
     EventBus.getDefault.register(this)
     view = inflater.inflate(R.layout.chat_pane, container, false)
 
-    sendButton.setOnClickListener(new OnClickListener {
-      override def onClick(v: View): Unit = sendMessage()
-    })
+    sendButton.setOnClickListener((v: View) ⇒ sendMessage())
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
@@ -49,7 +46,7 @@ class ChatPaneFragment extends SFragment {
     setMessagesRead()
     val messageListView = find[MessagesListView](R.id.lsv_chat)
     messageListView.setAdapter(messageAdapter)
-    messageListView.setBackgroundColor(getActivity.getResources.getColor(R.color.my_darker_blue))
+    messageListView.setBackgroundColor(R.color.my_darker_blue.r2Color)
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view
@@ -129,7 +126,7 @@ class ChatPaneFragment extends SFragment {
   }
 
   private def isSoundPreferenceOn: Boolean = {
-    PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(getResources.getString(R.string.pref_notify_sound), true)
+    PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(R.string.pref_notify_sound.r2String, true)
   }
 }
 

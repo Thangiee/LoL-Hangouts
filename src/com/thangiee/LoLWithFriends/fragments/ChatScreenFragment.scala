@@ -23,7 +23,7 @@ class ChatScreenFragment extends SFragment with PanelSlideListener {
 
     slidingLayout.openPane()    // show the friend list fragment
     slidingLayout.setPanelSlideListener(this)
-    slidingLayout.setSliderFadeColor(getResources.getColor(R.color.slider_fade))
+    slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
     getFragmentManager.beginTransaction().add(R.id.chat_left_pane, new FriendListFragment).commit()

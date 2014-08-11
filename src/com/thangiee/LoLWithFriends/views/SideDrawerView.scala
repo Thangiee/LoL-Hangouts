@@ -3,7 +3,6 @@ package com.thangiee.LoLWithFriends.views
 import android.app.{Activity, AlertDialog, Fragment}
 import android.content.{Context, DialogInterface, Intent}
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.extractors.StringExtractor
@@ -12,7 +11,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLWithFriends.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.{ChatScreenFragment, ProfileViewPagerFragment}
-import com.thangiee.LoLWithFriends.utils.SummonerUtils
+import com.thangiee.LoLWithFriends.utils.{ConversionImplicits, SummonerUtils}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
@@ -22,7 +21,7 @@ import org.scaloid.common.{SystemService, TraitView}
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
-  with SystemService with AdapterView.OnItemClickListener {
+  with SystemService with AdapterView.OnItemClickListener with ConversionImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog),
     DrawerItem("My Profile", R.drawable.ic_action_user),
@@ -46,21 +45,19 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
-    editStatusBtn.setOnClickListener(new OnClickListener {
-      override def onClick(v: View): Unit = showChangeStatusMsgDialog()
-    })
+    editStatusBtn.setOnClickListener((v: View) ⇒ showChangeStatusMsgDialog())
 
     // setup the radio group and button to control online/away status
     val seg = find[SegmentedGroup](R.id.seg_presence)
-    seg.setTintColor(getResources.getColor(R.color.status_available))
+    seg.setTintColor(R.color.status_available.r2Color)
     seg.setOnCheckedChangeListener(new OnCheckedChangeListener {
       override def onCheckedChanged(group: RadioGroup, checkedId: Int): Unit = {
         val onlineBtn = find[RadioButton](R.id.btn_online)
         if (onlineBtn.isChecked) {
-          seg.setTintColor(getResources.getColor(R.color.status_available))
+          seg.setTintColor(R.color.status_available.r2Color)
           LoLChat.appearOnline()
         } else {
-          seg.setTintColor(getResources.getColor(R.color.status_away))
+          seg.setTintColor(R.color.status_away.r2Color)
           LoLChat.appearAway()
         }
       }
