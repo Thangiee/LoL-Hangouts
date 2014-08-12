@@ -18,6 +18,7 @@ import scala.concurrent.Future
 class FriendListFragment extends ProgressFragment with SFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
+  private var isRefreshing = false
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     EventBus.getDefault.register(this)
@@ -32,6 +33,7 @@ class FriendListFragment extends ProgressFragment with SFragment {
     val listView = find[CardListView](R.id.list_summoner_card)
 
     Future {
+      isRefreshing = true
       SystemClock.sleep(200)
       cards ++= getOrderedFriendCardList
       cardArrayAdapter.setNotifyOnChange(false)
@@ -40,6 +42,7 @@ class FriendListFragment extends ProgressFragment with SFragment {
         listView.setAdapter(cardArrayAdapter)
         setContentShown(true)
       }
+      isRefreshing = true
     }
   }
 
@@ -58,8 +61,10 @@ class FriendListFragment extends ProgressFragment with SFragment {
 
   private def refreshFriendList() {
     Future {
+      isRefreshing = true
       cards.clear()
       cards ++= getOrderedFriendCardList
+      isRefreshing = false
       getActivity.runOnUiThread(new Runnable {
         override def run(): Unit = cardArrayAdapter.notifyDataSetChanged()
       })
@@ -75,11 +80,12 @@ class FriendListFragment extends ProgressFragment with SFragment {
     val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
     cards.++=(for (f <- LoLChat.onlineFriends) yield new SummonerOnCard(getActivity, f))
     cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerOffCard(getActivity, f))
+    cards
   }
 
   def onEvent(event: RefreshFriendList): Unit = {
     info("[*]onEvent: request to refresh friend list")
-    refreshFriendList()
+    if (!isRefreshing) refreshFriendList() else info("[-] onEvent: request denied, is already refreshing.")
   }
 
   def onEventMainThread(event: RefreshSummonerCard): Unit = {
