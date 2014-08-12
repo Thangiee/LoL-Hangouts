@@ -26,7 +26,7 @@ object LoLStatus extends Enumeration {
     if (!summoner.isOnline) return None
     if (summoner.status == null) return None
     val pattern = "(?<=" + value.toString + ">).*?(?=</" + value.toString + ")"
-    val result = pattern.r.findFirstIn(summoner.status).getOrElse("")
+    val result = pattern.r.findFirstIn(summoner.status).getOrElse("").replace("&apos;", "")
     if (!result.isEmpty) Some(result) else None
   }
 }

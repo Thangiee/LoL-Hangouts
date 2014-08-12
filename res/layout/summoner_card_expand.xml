@@ -7,10 +7,22 @@
                 android:background="@color/my_dark_blue">
 
     <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/sq_yellow"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="4dp">
+    </LinearLayout>
+
+    <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/bg_league_yellow">
+
     </LinearLayout>
 
     <ImageView
@@ -81,4 +93,5 @@
             android:singleLine="true"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="16dp"/>
+
 </RelativeLayout>
