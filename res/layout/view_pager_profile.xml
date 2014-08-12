@@ -7,6 +7,9 @@
 
     <com.astuetz.PagerSlidingTabStrip
             tab:pstsShouldExpand="true"
+            tab:pstsIndicatorColor="@color/my_orange"
+            tab:pstsDividerColor="@color/my_orange"
+            tab:pstsUnderlineColor="@color/my_orange"
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="48dip" />
