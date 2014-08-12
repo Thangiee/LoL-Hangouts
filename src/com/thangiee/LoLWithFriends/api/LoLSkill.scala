@@ -42,7 +42,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
     for (row <- champRows.map(_.text().split(" "))) yield
       Champion(
         row(1), // name
-        "http://www.mobafire.com/images/champion/icon/" + row(1) + ".png", // icon url
+        "http://www.mobafire.com/images/champion/icon/" + row(1).toLowerCase + ".png", // icon url
         getNumber[Int](row(4)).getOrElse(0), // # of game
         Stats(
           getNumber[Double](row(5)).getOrElse(0), // kills
@@ -111,7 +111,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
   private implicit val getDouble = NumberOp[Double](_.toDouble)
 
   private def getNumber[T: NumberOp](s: String): Try[T] = {
-    val token = "[-0-9,/+/.]+".r
+    val token = "[-0-9,/.]+".r
     Try(implicitly[NumberOp[T]].op(token.findFirstIn(s).get.replace(",", "")))
   }
 }
