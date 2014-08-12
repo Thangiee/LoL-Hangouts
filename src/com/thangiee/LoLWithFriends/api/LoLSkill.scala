@@ -78,7 +78,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
 
         matches.append(
           Match(
-            row.select("td[class=champion tooltip]").attr("data-championid").toInt,
+            "/.*?/".r.findFirstIn(row.select("td[class=champion tooltip]").select("a").attr("href")).getOrElse("").replace("/", ""), // get champion name
             row.select("td[class=info]").select("div[class=queue]").text(),
             row.select("td[class=info]").select("div[class=outcome]").text(),
             row.select("td[class=info]").select("div[class=date tooltip]").text(),

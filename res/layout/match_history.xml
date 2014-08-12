@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:minWidth="25dp"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp">
+
+    <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:id="@+id/img_match_champ"
+            android:src="@drawable/league_icon"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/imageView6"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="K"
+            android:id="@+id/tv_match_avg_k"
+            android:minWidth="27dp"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_perf"
+            android:layout_alignLeft="@+id/tv_match_avg_d"
+            android:layout_alignStart="@+id/tv_match_avg_d"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="D"
+            android:id="@+id/tv_match_avg_d"
+            android:minWidth="27dp"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_avg_k"
+            android:layout_alignLeft="@+id/tv_match_avg_a"
+            android:layout_alignStart="@+id/tv_match_avg_a"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="A0"
+            android:id="@+id/tv_match_avg_a"
+            android:minWidth="27dp"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_avg_d"
+            android:layout_alignLeft="@+id/tv_match_avg_cs"
+            android:layout_alignStart="@+id/tv_match_avg_cs"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="CS"
+            android:id="@+id/tv_match_avg_cs"
+            android:minWidth="27dp"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_avg_a"
+            android:layout_alignLeft="@+id/tv_match_avg_g"
+            android:layout_alignStart="@+id/tv_match_avg_g"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="gold0"
+            android:id="@+id/tv_match_avg_g"
+            android:minWidth="40dp"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_avg_cs"
+            android:layout_toLeftOf="@+id/tv_match_avg_more_g"
+            android:gravity="bottom"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="K"
+            android:id="@+id/tv_match_avg_more_k"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/tv_match_perf"
+            android:layout_alignLeft="@+id/tv_match_avg_more_d"
+            android:layout_alignStart="@+id/tv_match_avg_more_d"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="D"
+            android:id="@+id/tv_match_avg_more_d"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"
+            android:layout_above="@+id/tv_match_avg_a"
+            android:layout_alignLeft="@+id/tv_match_avg_more_a"
+            android:layout_alignStart="@+id/tv_match_avg_more_a"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A"
+            android:id="@+id/tv_match_avg_more_a"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/tv_match_avg_more_d"
+            android:layout_alignLeft="@+id/tv_match_avg_more_cs"
+            android:layout_alignStart="@+id/tv_match_avg_more_cs"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="CS"
+            android:id="@+id/tv_match_avg_more_cs"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/tv_match_avg_more_a"
+            android:layout_toRightOf="@+id/tv_match_avg_g"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="(gold0)"
+            android:id="@+id/tv_match_avg_more_g"
+            android:textSize="12dp"
+            android:layout_below="@+id/tv_match_avg_more_cs"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:minWidth="50dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="performance"
+            android:id="@+id/tv_match_perf"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/tv_match_avg_k"
+            android:layout_alignStart="@+id/tv_match_avg_k"
+            android:textSize="12dp"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Normal 5v5"
+            android:id="@+id/tv_match_type"
+            android:minWidth="100dp"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Win"
+            android:id="@+id/tv_match_outcome"
+            android:layout_below="@+id/tv_match_type"
+            android:layout_alignRight="@+id/tv_match_type"
+            android:layout_alignEnd="@+id/tv_match_type"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/tv_match_type"
+            android:layout_alignStart="@+id/tv_match_type"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="3 days agon"
+            android:id="@+id/tv_match_date"
+            android:layout_below="@+id/tv_match_outcome"
+            android:layout_alignRight="@+id/tv_match_outcome"
+            android:layout_alignEnd="@+id/tv_match_outcome"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/tv_match_outcome"
+            android:layout_alignStart="@+id/tv_match_outcome"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="= 55 mins"
+            android:id="@+id/tv_match_len"
+            android:layout_below="@+id/tv_match_date"
+            android:layout_alignRight="@+id/tv_match_date"
+            android:layout_alignEnd="@+id/tv_match_date"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/tv_match_date"
+            android:layout_alignStart="@+id/tv_match_date"/>
+
+    <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_preformace_graph"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/tv_match_perf"
+            android:layout_marginRight="4dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_above="@+id/tv_match_avg_d"
+            android:layout_toLeftOf="@+id/tv_match_avg_k"
+            android:src="@drawable/ic_kills"
+            android:layout_below="@+id/tv_match_perf"
+            android:layout_alignLeft="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_marginRight="4dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:layout_below="@+id/tv_match_avg_k"
+            android:layout_toLeftOf="@+id/tv_match_avg_d"
+            android:src="@drawable/ic_deaths"
+            android:layout_alignBottom="@+id/tv_match_avg_d"
+            android:layout_alignLeft="@+id/imageView2"
+            android:layout_alignStart="@+id/imageView2"
+            android:layout_marginRight="4dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView4"
+            android:src="@drawable/ic_assists"
+            android:layout_alignTop="@+id/tv_match_avg_a"
+            android:layout_alignRight="@+id/imageView3"
+            android:layout_alignEnd="@+id/imageView3"
+            android:layout_above="@+id/tv_match_avg_cs"
+            android:layout_alignLeft="@+id/imageView3"
+            android:layout_alignStart="@+id/imageView3"
+            android:layout_marginRight="4dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:layout_below="@+id/tv_match_avg_a"
+            android:layout_toLeftOf="@+id/tv_match_avg_cs"
+            android:src="@drawable/ic_cs"
+            android:layout_above="@+id/tv_match_avg_g"
+            android:layout_alignLeft="@+id/imageView4"
+            android:layout_alignStart="@+id/imageView4"
+            android:layout_marginRight="4dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:layout_below="@+id/tv_match_avg_cs"
+            android:layout_toLeftOf="@+id/tv_match_avg_g"
+            android:src="@drawable/ic_gold"
+            android:layout_alignBottom="@+id/tv_match_avg_g"
+            android:layout_alignLeft="@+id/imageView5"
+            android:layout_alignStart="@+id/imageView5"
+            android:layout_marginRight="4dp"/>
+
+</RelativeLayout>
