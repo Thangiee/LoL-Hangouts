@@ -8,7 +8,7 @@ import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import org.scaloid.common.{InterfaceImplicits, TagUtil}
 
 trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicits with TagUtil {
-  implicit lazy val context: Context = getActivity
+  implicit lazy val ctx: Context = getActivity
   var view: View = _
 
   def find[V <: View](id: Int): V = view.findViewById(id).asInstanceOf[V]
