@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="124dp"
+                android:layout_height="168dp"
                 android:background="@color/my_dark_blue">
 
     <LinearLayout
@@ -14,7 +14,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="4dp"
+            android:id="@+id/linearLayout">
     </LinearLayout>
 
     <LinearLayout
@@ -22,7 +23,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/bg_league_yellow">
-
     </LinearLayout>
 
     <ImageView
@@ -42,8 +42,9 @@
             android:layout_toRightOf="@+id/img_badge"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -55,7 +56,8 @@
             android:layout_toRightOf="@+id/img_badge"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:layout_marginRight="8dp"/>
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -67,7 +69,8 @@
             android:layout_toRightOf="@+id/img_badge"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:layout_marginRight="8dp"/>
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -79,7 +82,8 @@
             android:layout_toRightOf="@+id/img_badge"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:layout_marginRight="8dp"/>
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -91,7 +95,36 @@
             android:layout_toRightOf="@+id/img_badge"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout"/>
+
+    <Button
+            android:layout_width="56dp"
+            android:layout_height="24dp"
+            android:text="View"
+            android:id="@+id/bbb"
+            android:background="@drawable/league_btn_selector"
+            android:textSize="14dp"
+            android:layout_marginLeft="16dp"
+            android:layout_below="@+id/imageView"
+            android:layout_alignLeft="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_marginTop="4dp"/>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="9dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="bottom"
+            android:background="@drawable/text_boarder"
+            android:layout_below="@+id/img_badge"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout"
+            android:layout_alignRight="@+id/tv_wins"
+            android:layout_alignEnd="@+id/tv_wins"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"/>
 
 </RelativeLayout>

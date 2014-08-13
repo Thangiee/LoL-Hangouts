@@ -1,11 +1,13 @@
 package com.thangiee.LoLWithFriends.views
 
-import android.content.Context
+import android.content.{Intent, Context}
 import android.graphics.Typeface
 import android.preference.PreferenceManager
+import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
+import com.thangiee.LoLWithFriends.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLWithFriends.api.LoLStatus._
 import com.thangiee.LoLWithFriends.api.Summoner
 import com.thangiee.LoLWithFriends.utils.{DataBaseHandler, SummonerUtils}
@@ -106,6 +108,12 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       rankTextView.setText(parse(summoner, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(summoner, RankedLeagueDivision).getOrElse(""))
       leagueTextView.setText(parse(summoner, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(summoner, Wins).getOrElse("0") + " wins")
+
+      view.findViewById(R.id.bbb).asInstanceOf[TextView].setOnClickListener(new OnClickListener {
+        override def onClick(v: View): Unit = ctx.startActivity(
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name)
+        )
+      })
 
       // set summoner rank badge
       parse(summoner, RankedLeagueTier).getOrElse("") match {
