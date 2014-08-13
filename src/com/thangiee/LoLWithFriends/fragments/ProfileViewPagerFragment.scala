@@ -37,10 +37,10 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
       try {
         userStats = new LoLSkill(name, region)
         runOnUiThread(setContentShown(true))
-        info("[*] Got user stats successfully")
+        info("[+] Got user stats successfully")
       } catch {
         case e: Exception ⇒ runOnUiThread {
-          warn("[*] Failed to get user stats because: " + e.getMessage)
+          warn("[!] Failed to get user stats because: " + e.getMessage)
           setEmptyText("Could not get data.")
           setContentEmpty(true)
           setContentShown(true)
