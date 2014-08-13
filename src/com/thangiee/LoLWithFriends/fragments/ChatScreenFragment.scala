@@ -45,6 +45,7 @@ class ChatScreenFragment extends SFragment with PanelSlideListener {
     EventBus.getDefault.unregister(this, classOf[SummonerCardClicked])
     MyApp.isChatOpen = false
     MyApp.isFriendListOpen = false
+    MyApp.activeFriendChat = ""
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
