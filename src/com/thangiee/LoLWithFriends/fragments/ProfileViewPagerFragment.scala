@@ -9,6 +9,7 @@ import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.{LoLSkill, LoLStatistics}
+import de.keyboardsurfer.android.widget.crouton.Style
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -41,7 +42,8 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
       } catch {
         case e: Exception ⇒ runOnUiThread {
           warn("[!] Failed to get user stats because: " + e.getMessage)
-          setEmptyText("Could not get data.")
+          R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
+          setEmptyText(R.string.connection_error_long.r2String)
           setContentEmpty(true)
           setContentShown(true)
         }
@@ -56,15 +58,16 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Profile" ⇒ SummonerProfileFragment.newInstance(name, userStats)
-        case "Champions" ⇒ SummonerTopChampFragment.newInstance(userStats.topChampions())
-        case "History" ⇒ SummonerMatchesFragment.newInstance(userStats.matchHistory())
+        case "Profile"    ⇒ SummonerProfileFragment.newInstance(name, userStats)
+        case "Champions"  ⇒ if (userStats.topChampions().size != 0) SummonerTopChampFragment.newInstance(userStats.topChampions())
+                            else BlankFragment.newInstance(R.string.no_champion.r2String)
+        case "History"    ⇒ if (userStats.matchHistory().size != 0) SummonerMatchesFragment.newInstance(userStats.matchHistory())
+                            else BlankFragment.newInstance(R.string.no_match_hist.r2String)
       }
     }
 
     override def getCount: Int = titles.size
   }
-
 }
 
 
