@@ -39,27 +39,30 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
     //1   |  Yasuo |  2,659   |+10.8% |14|7.9 |(+0.2)|5.6 |(-2.3)|6.6 |(-0.2)|179 |(+10)|11,944|(-137)
     try {
       val champRows = doc.select("table[id=championsTable]").first().select("tr").tail.toList
-      for (row <- champRows.map(_.text().split(" "))) yield
-        Champion(
-          row(1), // name
-          "http://www.mobafire.com/images/champion/icon/" + row(1).toLowerCase + ".png", // icon url
-          getNumber[Int](row(4)).getOrElse(0), // # of game
-          Stats(
-            getNumber[Double](row(5)).getOrElse(0), // kills
-            getNumber[Double](row(7)).getOrElse(0), // deaths
-            getNumber[Double](row(9)).getOrElse(0), // assists
-            getNumber[Int](row(11)).getOrElse(0), // cs
-            getNumber[Int](row(13)).getOrElse(0) // gold
-          ),
-          AvgBetterStats(
-            getNumber[Double](row(3)).getOrElse(0), // performance
-            getNumber[Double](row(6)).getOrElse(0), // kills
-            getNumber[Double](row(8)).getOrElse(0), // deaths
-            getNumber[Double](row(10)).getOrElse(0), // assists
-            getNumber[Int](row(12)).getOrElse(0), //cs
-            getNumber[Int](row(14)).getOrElse(0) // gold
-          )
+      for (row <- champRows.map(_.text()                      // format special name that has space, period, and/or apostrophe
+        .replaceFirst("(?<=[a-zA-z])\\.? (?=[a-zA-z])", "-")  // ex. Dr. Mundo -> Dr-Mundo  and Lee Sin -> LeeSin
+        .replaceFirst("(?<=[a-zA-z])'(?=[a-zA-z])", "")      // ex. Kog'maw -> Kogmaw
+        .split(" ")))
+      yield Champion(
+        row(1), // name
+        "http://www.mobafire.com/images/champion/icon/" + row(1).toLowerCase + ".png", // icon url
+        getNumber[Int](row(4)).getOrElse(0), // # of game
+        Stats(
+          getNumber[Double](row(5)).getOrElse(0), // kills
+          getNumber[Double](row(7)).getOrElse(0), // deaths
+          getNumber[Double](row(9)).getOrElse(0), // assists
+          getNumber[Int](row(11)).getOrElse(0), // cs
+          getNumber[Int](row(13)).getOrElse(0) // gold
+        ),
+        AvgBetterStats(
+          getNumber[Double](row(3)).getOrElse(0), // performance
+          getNumber[Double](row(6)).getOrElse(0), // kills
+          getNumber[Double](row(8)).getOrElse(0), // deaths
+          getNumber[Double](row(10)).getOrElse(0), // assists
+          getNumber[Int](row(12)).getOrElse(0), //cs
+          getNumber[Int](row(14)).getOrElse(0) // gold
         )
+      )
     } catch {
       case e: NullPointerException ⇒ List[Champion]() // didn't find any champion
     }
@@ -78,7 +81,15 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
 
         matches.append(
           Match(
-            "/.*?/".r.findFirstIn(row.select("td[class=champion tooltip]").select("a").attr("href")).getOrElse("").replace("/", ""), // get champion name
+            "/.*?/".r.findFirstIn(row.select("td[class=champion tooltip]").select("a").attr("href")).getOrElse("") // get champion name
+              .replace("/", "") // formatting
+              // special case
+              .replace("leesin", "lee-sin")
+              .replace("missfortune", "miss-fortune")
+              .replace("xinzhao", "xin-zhao")
+              .replace("drmundo", " ddr-mundo")
+              .replace("masteryi", "master-yi")
+              .replace("twisted fate", "twisted-fate"),
             row.select("td[class=info]").select("div[class=queue]").text(),
             row.select("td[class=info]").select("div[class=outcome]").text(),
             row.select("td[class=info]").select("div[class=date tooltip]").text(),
