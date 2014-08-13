@@ -104,6 +104,7 @@ class SummonerMatchesFragment extends SFragment {
     }, R.color.green.r2Color, R.color.red.r2Color)
 
     val adapter = new FunDapter[Match](ctx, matches, R.layout.match_history, matchDictionary)
+    adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
     matchListView.setAdapter(adapter)
   }
 }

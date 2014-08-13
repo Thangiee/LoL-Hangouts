@@ -177,7 +177,9 @@
             android:layout_alignEnd="@+id/tv_match_type"
             android:gravity="center"
             android:layout_alignLeft="@+id/tv_match_type"
-            android:layout_alignStart="@+id/tv_match_type"/>
+            android:layout_alignStart="@+id/tv_match_type"
+            android:textSize="22dp"
+            android:textStyle="bold"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -190,7 +192,9 @@
             android:layout_alignEnd="@+id/tv_match_outcome"
             android:gravity="center"
             android:layout_alignLeft="@+id/tv_match_outcome"
-            android:layout_alignStart="@+id/tv_match_outcome"/>
+            android:layout_alignStart="@+id/tv_match_outcome"
+            android:textSize="14dp"
+            android:textIsSelectable="true"/>
 
     <TextView
             android:layout_width="wrap_content"
