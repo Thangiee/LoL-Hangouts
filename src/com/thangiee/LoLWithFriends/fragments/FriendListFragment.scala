@@ -42,7 +42,7 @@ class FriendListFragment extends ProgressFragment with SFragment {
         listView.setAdapter(cardArrayAdapter)
         setContentShown(true)
       }
-      isRefreshing = true
+      isRefreshing = false
     }
   }
 
