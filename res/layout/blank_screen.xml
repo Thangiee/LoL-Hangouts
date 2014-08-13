@@ -10,8 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Select a friend in your friend list to start a chat"
-            android:id="@+id/textView"
+            android:id="@+id/tv_blank_screen_msg"
             android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"/>
