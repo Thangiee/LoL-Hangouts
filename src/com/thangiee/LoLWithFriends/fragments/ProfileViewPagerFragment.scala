@@ -4,7 +4,7 @@ import android.app.{Fragment, FragmentManager}
 import android.os.Bundle
 import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.{LayoutInflater, View, ViewGroup}
+import android.view._
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLWithFriends.R
@@ -24,7 +24,7 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     view = inflater.inflate(R.layout.view_pager_profile, null)
-
+    setHasOptionsMenu(true)
     inflater.inflate(R.layout.progress_container, container, false)
   }
 
@@ -33,6 +33,27 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
     setContentView(view)
     pager.setAdapter(adapter)
     tabs.setViewPager(pager)
+    loadData()
+  }
+
+  override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater): Unit = {
+    menu.clear()
+    inflater.inflate(R.menu.overflow, menu)
+    inflater.inflate(R.menu.refresh, menu)
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    if (item.getItemId == R.id.menu_refresh) {
+      loadData()
+      return true
+    }
+
+    super.onOptionsItemSelected(item)
+  }
+
+  private def loadData(): Unit = {
     setContentShown(false) // show loading bar
     Future {
       try {
@@ -44,8 +65,8 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
           warn("[!] Failed to get user stats because: " + e.getMessage)
           R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
           setEmptyText(R.string.connection_error_long.r2String)
-          setContentEmpty(true)
-          setContentShown(true)
+          setContentEmpty(true) // show error msg
+          setContentShown(true) // hide loading bar
         }
       }
     }

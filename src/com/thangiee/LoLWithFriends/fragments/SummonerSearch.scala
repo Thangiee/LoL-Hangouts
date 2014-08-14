@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view._
 import android.widget._
 import com.thangiee.LoLWithFriends.R
-import com.thangiee.LoLWithFriends.activities.ViewOtherSummonerActivity
+import com.thangiee.LoLWithFriends.activities.{MainActivity, ViewOtherSummonerActivity}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -16,6 +16,8 @@ trait SummonerSearch extends SFragment with SearchView.OnQueryTextListener {
   private var regionSpinner: Spinner = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
+    getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
+    getActivity.getActionBar.setTitle(R.string.app_name.r2String)
     setHasOptionsMenu(true)
     super.onCreateView(inflater, container, savedInstanceState)
   }
