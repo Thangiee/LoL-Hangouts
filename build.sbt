@@ -30,6 +30,7 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
   "-keep class net.simonvt.menudrawer.** {*;}",
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
+  "-keep class com.google.android.gms.** {*;}",
   "-keepclassmembers class ** {public void onEvent*(**);}")
 
 libraryDependencies ++= Seq(
@@ -43,6 +44,7 @@ libraryDependencies ++= Seq(
   "de.greenrobot" % "eventbus" % "2.2.1",
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   "org.jsoup" % "jsoup" % "1.7.3",
+  aar("com.google.android.gms" % "play-services" % "5.0.+"),
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.0"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
