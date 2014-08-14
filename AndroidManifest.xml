@@ -9,6 +9,7 @@
             android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
@@ -19,6 +20,9 @@
         <meta-data
                 android:name="AA_DB_NAME"
                 android:value="MessageLogs.db"/>
+
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version" />
 
         <service android:name=".services.LoLWithFriendsService"/>
 
@@ -66,6 +70,9 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.MainActivity"/>
         </activity>
+
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <receiver android:name=".receivers.DeleteOldMsgReceiver"/>
     </application>

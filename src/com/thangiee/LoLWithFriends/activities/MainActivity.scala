@@ -5,7 +5,8 @@ import java.util.concurrent.TimeUnit
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
 import android.os.{Bundle, Handler, SystemClock}
-import android.view.{Menu, MenuItem}
+import android.view.{ViewGroup, Menu, MenuItem}
+import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
@@ -20,9 +21,10 @@ import org.scaloid.common._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class MainActivity extends SActivity {
+class MainActivity extends SActivity with Ads {
   private var doubleBackToExitPressedOnce = false
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
+  override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
 
   protected override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -46,6 +48,8 @@ class MainActivity extends SActivity {
     } else {
       getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
     }
+
+    setupAds()
   }
 
   override def onSaveInstanceState(outState: Bundle): Unit = {

@@ -15,7 +15,9 @@ import scala.util.Try
  */
 class LoLSkill(name: String, region: String) extends LoLStatistics {
   private val baseServerUrl = "http://www.lolskill.net/summoner/"
-  private val doc: Document = Try(Jsoup.connect(baseServerUrl + region + "/" + name).timeout(10000).get).get
+  private val url = baseServerUrl + region + "/" + name
+  private val doc: Document = Try(Jsoup.connect(url).timeout(10000).get).get
+  println("[*] Connecting to: " + url)
   if (doc.body().text().contains("currently unavailable")) throw new IllegalStateException("Service is currently unavailable. Please try again later!")
 
   override def level(): Int = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(1)
