@@ -89,6 +89,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
               .replace("xinzhao", "xin-zhao")
               .replace("drmundo", " ddr-mundo")
               .replace("masteryi", "master-yi")
+              .replace("jarvaniv", "jarvan-iv")
               .replace("twisted fate", "twisted-fate"),
             row.select("td[class=info]").select("div[class=queue]").text(),
             row.select("td[class=info]").select("div[class=outcome]").text(),
