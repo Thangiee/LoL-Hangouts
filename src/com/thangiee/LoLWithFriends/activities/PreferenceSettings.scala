@@ -54,8 +54,8 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
     i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
 
-    // check to delete old message base on the millis every 2 hours
-    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(2), p)
+    // check to delete old message base on the millis every 1 hours
+    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(1), p)
     info("[*] Preference-History changed to: " + value)
   }
 }

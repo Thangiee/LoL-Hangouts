@@ -55,14 +55,14 @@ class MainActivity extends SActivity {
   }
 
   override def onCreateOptionsMenu(menu: Menu): Boolean = {
-    getMenuInflater.inflate(R.menu.exit, menu)
+    getMenuInflater.inflate(R.menu.overflow, menu)
     super.onCreateOptionsMenu(menu)
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.exit         => cleanUpAndDisconnect(); finish()
-      case android.R.id.home => if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
+      case R.id.menu_exit     ⇒ cleanUpAndDisconnect(); finish()
+      case android.R.id.home  ⇒ if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
@@ -100,7 +100,7 @@ class MainActivity extends SActivity {
       val i = new Intent(ctx, classOf[DeleteOldMsgReceiver])
       i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
       val p = PendingIntent.getBroadcast(ctx, 0, i, 0)
-      alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), millis, p)
+      alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(1), p)
 
       Prefs.putBoolean("first_launch", false)
     }

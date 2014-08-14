@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
-import android.widget.{ImageView, TextView}
+import android.widget.{Button, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLWithFriends.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLWithFriends.api.LoLStatus._
@@ -109,9 +109,9 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       leagueTextView.setText(parse(summoner, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(summoner, Wins).getOrElse("0") + " wins")
 
-      view.findViewById(R.id.bbb).asInstanceOf[TextView].setOnClickListener(new OnClickListener {
+      view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name)
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", MyApp.selectedServer.toString)
         )
       })
 

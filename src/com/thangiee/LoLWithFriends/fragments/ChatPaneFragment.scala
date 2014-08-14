@@ -105,7 +105,7 @@ class ChatPaneFragment extends SFragment {
   }
 
   override def onCreateOptionsMenu(menu: Menu, inflater: MenuInflater): Unit = {
-    inflater.inflate(R.menu.menu_delete, menu)
+    inflater.inflate(R.menu.delete, menu)
     super.onCreateOptionsMenu(menu, inflater)
   }
 

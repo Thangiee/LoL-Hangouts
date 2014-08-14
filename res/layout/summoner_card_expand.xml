@@ -79,7 +79,7 @@
             android:layout_width="56dp"
             android:layout_height="24dp"
             android:text="View"
-            android:id="@+id/bbb"
+            android:id="@+id/btn_view_profile"
             android:background="@drawable/league_btn_selector"
             android:textSize="14dp"
             android:layout_marginLeft="23dp"
