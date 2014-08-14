@@ -10,7 +10,7 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLWithFriends.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLWithFriends.api.LoLChat
-import com.thangiee.LoLWithFriends.fragments.{ChatScreenFragment, ProfileViewPagerFragment}
+import com.thangiee.LoLWithFriends.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLWithFriends.utils.{ConversionImplicits, SummonerUtils}
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
@@ -25,6 +25,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog),
     DrawerItem("My Profile", R.drawable.ic_action_user),
+    DrawerItem("Search Summoner", R.drawable.ic_action_search),
     DrawerItem("Settings", R.drawable.ic_action_settings))
 
   private var currentDrawerItem = drawerItems(0)
@@ -114,6 +115,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     selectedDrawerItem.title match {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(MyApp.currentUser, MyApp.selectedServer.toString)
+      case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
     }
 

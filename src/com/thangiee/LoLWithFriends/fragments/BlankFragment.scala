@@ -24,4 +24,12 @@ object BlankFragment {
     frag.setArguments(bundle)
     frag
   }
+
+  def newInstanceWithSummonerSearch(message: String = ""): BlankFragment = {
+    val bundle = new Bundle()
+    bundle.putString("msg-key", message)
+    val frag = new BlankFragment with SummonerSearch
+    frag.setArguments(bundle)
+    frag
+  }
 }
