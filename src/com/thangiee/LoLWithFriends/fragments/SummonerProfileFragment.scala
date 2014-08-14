@@ -37,6 +37,7 @@ class SummonerProfileFragment extends SFragment {
       case "BRONZE"   ⇒ badgeImageView.setImageResource(R.drawable.badge_bronze)
       case "SILVER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_silver)
       case "GOLD"     ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)
+      case "DIAMOND"  ⇒ badgeImageView.setImageResource(R.drawable.badge_diamond)
       case "PLATINUM" ⇒ badgeImageView.setImageResource(R.drawable.badge_platinum)
       case "CHALLENGER" ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
       case _          ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
