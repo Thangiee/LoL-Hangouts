@@ -11,7 +11,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-trait SummonerSearch extends SFragment with SearchView.OnQueryTextListener {
+trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener {
   private var searchView: SearchView = _
   private var regionSpinner: Spinner = _
 

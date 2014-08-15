@@ -10,7 +10,7 @@ import com.thangiee.LoLWithFriends.api.LoLStatistics
 import com.thangiee.LoLWithFriends.fragments.SummonerProfileFragment.Data
 import com.thangiee.LoLWithFriends.utils.SummonerUtils
 
-class SummonerProfileFragment extends SFragment {
+class SummonerProfileFragment extends TFragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)

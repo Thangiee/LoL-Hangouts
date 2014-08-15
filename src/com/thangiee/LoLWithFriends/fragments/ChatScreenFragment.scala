@@ -12,7 +12,7 @@ import com.thangiee.LoLWithFriends.utils.Events.SummonerCardClicked
 import com.thangiee.LoLWithFriends.{MyApp, R}
 import de.greenrobot.event.EventBus
 
-class ChatScreenFragment extends SFragment with PanelSlideListener {
+class ChatScreenFragment extends TFragment with PanelSlideListener {
   private lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
   private lazy val imm = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
 

@@ -22,7 +22,7 @@ import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ChatPaneFragment extends SFragment {
+class ChatPaneFragment extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
   private lazy val msgField = find[EditText](R.id.et_msg_field)
   private lazy val friendName = getArguments.getString("name-key")
