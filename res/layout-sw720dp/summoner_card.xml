@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@color/summoner_card">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textSize="@dimen/summoner_name_txt_size"
+            android:id="@+id/tv_summoner_name"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_profile_icon"
+            android:layout_marginTop="8dp"/>
+
+    <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:id="@+id/img_profile_icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:cropToPadding="false"
+            android:src="@drawable/league_icon"
+            android:layout_margin="8dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textSize="@dimen/summoner_last_msg_txt_size"
+            android:id="@+id/tv_summoner_status"
+            android:layout_below="@+id/tv_summoner_name"
+            android:layout_toRightOf="@id/img_profile_icon"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/summoner_last_msg_txt_size"
+            android:text="message"
+            android:textColor="@color/summoner_card_last_msg"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:id="@+id/tv_summoner_last_msg"
+            android:layout_alignBottom="@+id/img_profile_icon"
+            android:layout_toRightOf="@+id/img_profile_icon"
+            android:paddingRight="8dp"/>
+
+    <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:id="@+id/img_info"
+            android:src="@drawable/ic_summoner_info"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="12dp"/>
+</RelativeLayout>

@@ -15,12 +15,12 @@
             android:layout_height="match_parent">
 
         <FrameLayout
-                android:layout_width="600dp"
+                android:layout_width="460dp"
                 android:layout_height="match_parent"
                 android:id="@+id/chat_left_pane"/>
 
         <FrameLayout
-                android:layout_width="800dp"
+                android:layout_width="600dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/chat_content_pane"/>

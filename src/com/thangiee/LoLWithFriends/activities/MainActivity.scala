@@ -147,8 +147,8 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
       Prefs.putBoolean("is_ads_enable", false)
       "Restart app to Disable ads!".makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+      bp.release()
     }
-    bp.release()
   }
 
   override def onBillingError(errorCode: Int, error: Throwable): Unit = {

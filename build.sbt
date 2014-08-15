@@ -30,7 +30,6 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
   "-keep class net.simonvt.menudrawer.** {*;}",
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
-  "-keep class com.google.android.gms.** {*;}",
   "-keepclassmembers class ** {public void onEvent*(**);}")
 
 libraryDependencies ++= Seq(
