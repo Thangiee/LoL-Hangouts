@@ -5,7 +5,7 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.TextView
 import com.thangiee.LoLWithFriends.R
 
-class BlankFragment extends SFragment {
+class BlankFragment extends TFragment {
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     view = inflater.inflate(R.layout.blank_screen, container, false)

@@ -7,7 +7,7 @@ import com.thangiee.LoLWithFriends.utils.ConversionImplicits
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import org.scaloid.common.{SystemService, InterfaceImplicits, TagUtil}
 
-trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicits with SystemService with TagUtil {
+trait TFragment extends Fragment with InterfaceImplicits with ConversionImplicits with SystemService with TagUtil {
   implicit lazy val ctx: Context = getActivity
   var view: View = _
 

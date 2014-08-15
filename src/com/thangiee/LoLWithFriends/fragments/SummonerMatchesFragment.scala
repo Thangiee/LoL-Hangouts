@@ -12,7 +12,7 @@ import com.thangiee.LoLWithFriends.api.Match
 
 import scala.collection.JavaConversions._
 
-class SummonerMatchesFragment extends SFragment {
+class SummonerMatchesFragment extends TFragment {
   private lazy val matchListView = find[ListView](R.id.listView)
   
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {

@@ -12,7 +12,7 @@ import com.thangiee.LoLWithFriends.api.Champion
 
 import scala.collection.JavaConversions._
 
-class SummonerTopChampFragment extends SFragment {
+class SummonerTopChampFragment extends TFragment {
   private lazy val champListView = find[ListView](R.id.listView)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {

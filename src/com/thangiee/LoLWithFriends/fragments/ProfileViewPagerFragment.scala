@@ -14,7 +14,7 @@ import de.keyboardsurfer.android.widget.crouton.Style
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ProfileViewPagerFragment extends ProgressFragment with SFragment {
+class ProfileViewPagerFragment extends ProgressFragment with TFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
   private lazy val pager = find[ViewPager](R.id.pager)
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)

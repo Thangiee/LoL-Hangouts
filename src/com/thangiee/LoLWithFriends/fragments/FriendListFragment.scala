@@ -15,7 +15,7 @@ import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FriendListFragment extends ProgressFragment with SFragment {
+class FriendListFragment extends ProgressFragment with TFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
   private var isRefreshing = false
