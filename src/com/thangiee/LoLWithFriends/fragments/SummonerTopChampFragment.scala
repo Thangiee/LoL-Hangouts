@@ -17,8 +17,12 @@ class SummonerTopChampFragment extends SFragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     view = inflater.inflate(R.layout.summoner_top_champ, container, false)
-    populateList()
     view
+  }
+
+  override def onActivityCreated(savedInstanceState: Bundle): Unit = {
+    super.onActivityCreated(savedInstanceState)
+    populateList()
   }
 
   private def populateList(): Unit = {
