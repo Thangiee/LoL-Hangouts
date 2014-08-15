@@ -16,7 +16,7 @@ import com.thangiee.LoLWithFriends.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
 import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener
-import org.scaloid.common.{SystemService, TraitView}
+import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 
@@ -26,7 +26,8 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     DrawerItem("Chat", R.drawable.ic_action_dialog),
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
-    DrawerItem("Settings", R.drawable.ic_action_settings))
+    DrawerItem("Settings", R.drawable.ic_action_settings),
+    DrawerItem("Remove Ads", R.drawable.ic_action_like))
 
   private var currentDrawerItem = drawerItems(0)
   init()
@@ -107,16 +108,19 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
   }
 
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
-    val drawer = ctx.asInstanceOf[MainActivity].sideDrawer
-    drawer.closeMenu()
+    val mainActivity = ctx.asInstanceOf[MainActivity]
+    val drawer = mainActivity.sideDrawer
     var fragment: Fragment = new Fragment
     val selectedDrawerItem = drawerItems(position)
+
+    drawer.closeMenu()
 
     selectedDrawerItem.title match {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(MyApp.currentUser, MyApp.selectedServer.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
+      case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
     }
 
     drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener {

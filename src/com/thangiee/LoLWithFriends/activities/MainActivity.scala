@@ -5,8 +5,9 @@ import java.util.concurrent.TimeUnit
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
 import android.os.{Bundle, Handler, SystemClock}
-import android.view.{ViewGroup, Menu, MenuItem}
+import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
+import com.anjlab.android.iab.v3.BillingProcessor
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLWithFriends.api.LoLChat
 import com.thangiee.LoLWithFriends.fragments.ChatScreenFragment
@@ -14,6 +15,7 @@ import com.thangiee.LoLWithFriends.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLWithFriends.services.LoLWithFriendsService
 import com.thangiee.LoLWithFriends.views.SideDrawerView
 import com.thangiee.LoLWithFriends.{MyApp, R}
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
@@ -21,10 +23,12 @@ import org.scaloid.common._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class MainActivity extends SActivity with Ads {
+class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
   private var doubleBackToExitPressedOnce = false
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
   override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
+  var bp: BillingProcessor = _
+  val SKU_REMOVE_ADS = "remove.ads"
 
   protected override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -39,6 +43,7 @@ class MainActivity extends SActivity with Ads {
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
 
+    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
 
     if (savedInstanceState != null){
@@ -48,8 +53,11 @@ class MainActivity extends SActivity with Ads {
     } else {
       getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
     }
+  }
 
-    setupAds()
+  override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
+    if (!bp.handleActivityResult(requestCode, resultCode, data))
+      super.onActivityResult(requestCode, resultCode, data)
   }
 
   override def onSaveInstanceState(outState: Bundle): Unit = {
@@ -108,6 +116,44 @@ class MainActivity extends SActivity with Ads {
 
       Prefs.putBoolean("first_launch", false)
     }
+  }
+
+  def setUpBilling(): Unit = {
+    val key = "google-play-service-key"
+
+    bp = new BillingProcessor(ctx, key, this)
+  }
+
+  override def onProductPurchased(productId: String): Unit = {
+    info("[+] Product purchased: " + productId)
+    Prefs.putBoolean("is_ads_enable", false)
+    "Restart app to Disable ads!".makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+    bp.release()
+  }
+
+  override def onBillingInitialized(): Unit = {
+    info("[*] Billing Initialized")
+    if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
+      "Ads already removed.".makeCrouton(Style.INFO)
+      bp.release()
+    } else {
+      Prefs.putBoolean("is_ads_enable", true)
+      bp.purchase(SKU_REMOVE_ADS)
+    }
+  }
+
+  override def onPurchaseHistoryRestored(): Unit = {
+    info("[+] Purchase history restored: " + bp.listOwnedProducts())
+    if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
+      Prefs.putBoolean("is_ads_enable", false)
+      "Restart app to Disable ads!".makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+    }
+    bp.release()
+  }
+
+  override def onBillingError(errorCode: Int, error: Throwable): Unit = {
+    warn("[!] Billing Error: " + errorCode)
+    bp.release()
   }
 }
 

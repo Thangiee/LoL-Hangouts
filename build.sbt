@@ -45,6 +45,7 @@ libraryDependencies ++= Seq(
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   "org.jsoup" % "jsoup" % "1.7.3",
   aar("com.google.android.gms" % "play-services" % "5.0.+"),
+  aar("com.anjlab.android.iab.v3" % "library" % "1.0.+"),
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.0"),
   aar("net.simonvt.menudrawer" % "menudrawer" % "3.0.6"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.8.0"),
