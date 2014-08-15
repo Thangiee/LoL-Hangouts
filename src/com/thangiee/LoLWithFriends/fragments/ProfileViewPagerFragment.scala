@@ -11,8 +11,8 @@ import com.thangiee.LoLWithFriends.R
 import com.thangiee.LoLWithFriends.api.{LoLSkill, LoLStatistics}
 import de.keyboardsurfer.android.widget.crouton.Style
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ProfileViewPagerFragment extends ProgressFragment with SFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
@@ -49,7 +49,6 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
       loadData()
       return true
     }
-
     super.onOptionsItemSelected(item)
   }
 
@@ -58,15 +57,20 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
     Future {
       try {
         userStats = new LoLSkill(name, region)
-        runOnUiThread(setContentShown(true))
+        runOnUiThread {
+          setContentEmpty(false) // hide error msg if currently showing
+          setContentShown(true) // hide loading bar
+        }
         info("[+] Got user stats successfully")
       } catch {
         case e: Exception ⇒ runOnUiThread {
           warn("[!] Failed to get user stats because: " + e.getMessage)
           R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
           setEmptyText(R.string.connection_error_long.r2String)
-          setContentEmpty(true) // show error msg
-          setContentShown(true) // hide loading bar
+          runOnUiThread {
+            setContentEmpty(true) // show error msg
+            setContentShown(true) // hide loading bar
+          }
         }
       }
     }
@@ -86,11 +90,9 @@ class ProfileViewPagerFragment extends ProgressFragment with SFragment {
                             else BlankFragment.newInstance(R.string.no_match_hist.r2String)
       }
     }
-
     override def getCount: Int = titles.size
   }
 }
-
 
 object ProfileViewPagerFragment {
   def newInstance(summonerName: String, region: String): ProfileViewPagerFragment = {
