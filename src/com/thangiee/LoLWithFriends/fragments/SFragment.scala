@@ -30,7 +30,6 @@ trait SFragment extends Fragment with InterfaceImplicits with ConversionImplicit
   }
 
   override def onDestroy(): Unit = {
-    info("[*] Canceling any remaining croutons.")
     Crouton.cancelAllCroutons()
     super.onDestroy()
   }
