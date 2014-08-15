@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 /**
  * Class implementation to retrieve statistics for a player from http://www.lolskill.net
@@ -16,9 +16,26 @@ import scala.util.Try
 class LoLSkill(name: String, region: String) extends LoLStatistics {
   private val baseServerUrl = "http://www.lolskill.net/summoner/"
   private val url = baseServerUrl + region + "/" + name
-  private val doc: Document = Try(Jsoup.connect(url).timeout(10000).get).get
-  println("[*] Connecting to: " + url)
-  if (doc.body().text().contains("currently unavailable")) throw new IllegalStateException("Service is currently unavailable. Please try again later!")
+  private var doc: Document = _
+  fetchDocument()
+
+  private def fetchDocument(): Unit = {
+    // do multiple attempts to get the document(aka html stuff)
+    for (attempt ← 1 to 5) {
+      println("[*] Attempt " + attempt + "|Connecting to: " + url)
+      Try(Jsoup.connect(url).timeout(5000).get()) match {
+        case Success(respond) ⇒    // got respond from website
+          if (!respond.text().contains("currently unavailable")) {  // website respond with it been busy
+            doc = respond; return
+          } else if (attempt == 5) {  // all atempts used up
+            throw new IllegalStateException("Service is currently unavailable. Please try again later!")
+          } else {
+            Thread.sleep(150)
+          }
+        case Failure(e) ⇒ throw e // no respond
+      }
+    }
+  }
 
   override def level(): Int = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(1)
 
