@@ -16,7 +16,7 @@ object BR extends Server {
 }
 
 object EUNE extends Server {
-  override val url: String = "chat.eun1.riotgames.com"
+  override val url: String = "chat.eun1.lol.riotgames.com"
   override val name: String = "Europe Nordic and East"
   override val flag: Int = R.drawable.ic_eune
   override def toString: String = "eune"
