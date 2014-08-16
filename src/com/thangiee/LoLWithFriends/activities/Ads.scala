@@ -7,7 +7,7 @@ import org.scaloid.common.SActivity
 
 trait Ads extends SActivity {
   private lazy val adView = new AdView(ctx)
-  private val AD_UNIT_ID = "ca-app-pub-4297755621988601/1349577574"
+  val AD_UNIT_ID: String
   val layout: ViewGroup
 
  def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = {
