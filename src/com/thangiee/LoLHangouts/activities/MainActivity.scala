@@ -27,7 +27,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   private var doubleBackToExitPressedOnce = false
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
   var bp: BillingProcessor = _
-  val SKU_REMOVE_ADS = "remove.ads"
+  val SKU_REMOVE_ADS = "lolhangouts.remove.ads"
 
   override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
   override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/1349577574"
