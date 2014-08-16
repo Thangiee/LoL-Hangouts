@@ -1,10 +1,10 @@
 make:
 	sbt android:package-release
-	cp bin/LoLWithFriends-release.apk /home/thangiee/Data/Google\ Drive/LoLWithFriends-release.apk
+	cp bin/LoL\ Hangouts-release.apk /home/thangiee/Data/Google\ Drive/LoL\ Hangouts-release.apk
 
 clean:
 	sbt clean
 	make
 	
 install:
-	adb install -r bin/LoLWithFriends-release.apk
+	adb install -r bin/LoL\ Hangouts-release.apk
