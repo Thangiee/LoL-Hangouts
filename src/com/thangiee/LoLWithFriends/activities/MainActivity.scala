@@ -75,6 +75,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     item.getItemId match {
       case R.id.menu_exit     ⇒ cleanUpAndDisconnect(); finish()
       case android.R.id.home  ⇒ if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
+      case R.id.menu_about    ⇒ startActivity[AboutActivity]
       case _ => return false
     }
     super.onOptionsItemSelected(item)
