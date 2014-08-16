@@ -18,7 +18,6 @@ import scala.concurrent.Future
 class FriendListFragment extends ProgressFragment with TFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
   private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
-  private var isRefreshing = false
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     EventBus.getDefault.register(this)
@@ -33,8 +32,6 @@ class FriendListFragment extends ProgressFragment with TFragment {
     val listView = find[CardListView](R.id.list_summoner_card)
 
     Future {
-      isRefreshing = true
-      SystemClock.sleep(200)
       cards ++= getOrderedFriendCardList
       cardArrayAdapter.setNotifyOnChange(false)
       cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
@@ -42,7 +39,6 @@ class FriendListFragment extends ProgressFragment with TFragment {
         listView.setAdapter(cardArrayAdapter)
         setContentShown(true)
       }
-      isRefreshing = false
     }
   }
 
@@ -85,7 +81,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   def onEvent(event: RefreshFriendList): Unit = {
     info("[*]onEvent: request to refresh friend list")
-    if (!isRefreshing) refreshFriendList() else info("[-] onEvent: request denied, is already refreshing.")
+    refreshFriendList()
   }
 
   def onEventMainThread(event: RefreshSummonerCard): Unit = {
