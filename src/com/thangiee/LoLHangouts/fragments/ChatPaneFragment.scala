@@ -18,6 +18,7 @@ import com.thangiee.LoLHangouts.utils.Events.ReceivedMessage
 import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
+import org.scaloid.common.AlertDialogBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -111,7 +112,7 @@ class ChatPaneFragment extends TFragment {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_delete => DataBaseHandler.deleteMessageLog(); messageAdapter.clear()
+      case R.id.menu_delete => confirmDeleteAllMsg()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
@@ -127,6 +128,13 @@ class ChatPaneFragment extends TFragment {
 
   private def isSoundPreferenceOn: Boolean = {
     PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(R.string.pref_notify_sound.r2String, true)
+  }
+
+  private def confirmDeleteAllMsg(): Unit = {
+    new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {
+      positiveButton("Delete", {DataBaseHandler.deleteMessageLog(); messageAdapter.clear()})
+      negativeButton(android.R.string.cancel.r2String)
+    }.show()
   }
 }
 
