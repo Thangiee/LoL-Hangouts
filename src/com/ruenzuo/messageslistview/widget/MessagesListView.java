@@ -9,7 +9,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.ruenzuo.messageslistview.adapters.MessageAdapter;
-import com.thangiee.LoLWithFriends.R;
+import com.thangiee.LoLHangouts.R;
 
 /**
  * Created by ruenzuo on 29/05/14.

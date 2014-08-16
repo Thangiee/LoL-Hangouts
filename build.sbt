@@ -2,7 +2,7 @@ import android.Keys._
 
 android.Plugin.androidBuild
 
-name := "LoLWithFriends"
+name := "LoL Hangouts"
 
 scalaVersion := "2.11.2"
 

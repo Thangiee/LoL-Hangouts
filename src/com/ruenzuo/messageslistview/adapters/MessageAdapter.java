@@ -16,9 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ruenzuo.messageslistview.models.Message;
 import com.ruenzuo.messageslistview.models.MessageType;
-import com.squareup.picasso.Picasso;
-import com.thangiee.LoLWithFriends.R;
-import com.thangiee.LoLWithFriends.utils.SummonerUtils;
+import com.thangiee.LoLHangouts.R;
+import com.thangiee.LoLHangouts.utils.SummonerUtils;
 
 import java.text.SimpleDateFormat;
 
