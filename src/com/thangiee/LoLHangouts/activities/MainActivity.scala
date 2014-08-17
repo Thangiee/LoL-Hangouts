@@ -16,6 +16,7 @@ import com.thangiee.LoLHangouts.services.LoLWithFriendsService
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import com.thangiee.LoLHangouts.{MyApp, R}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
+import fr.nicolaspomepuy.discreetapprate.{RetryPolicy, AppRate}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
@@ -55,6 +56,8 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     } else {
       getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
     }
+
+    rateMyApp()
   }
 
   override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
@@ -119,6 +122,13 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
       Prefs.putBoolean("first_launch", false)
     }
+  }
+
+  private def rateMyApp(): Unit = {
+    AppRate.`with`(this).text(R.string.ask_rate_app.r2String)
+      .initialLaunchCount(4)
+      .retryPolicy(RetryPolicy.EXPONENTIAL)
+      .checkAndShow()
   }
 
   def setUpBilling(): Unit = {

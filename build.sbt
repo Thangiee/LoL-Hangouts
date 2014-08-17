@@ -26,7 +26,6 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
   "-dontwarn com.squareup.okhttp.**",
   "-keep class org.jivesoftware.smack.** {*;}",
   "-keep class org.jsoup.Jsoup.** {*;}",
-  "-keep class com.nostra13.universalimageloader.** {*;}",
   "-keep class net.simonvt.menudrawer.** {*;}",
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
@@ -35,8 +34,9 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "3.4-10",
 //  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
-  "com.android.support" % "support-v13" % "13.0.0",
-  "com.android.support" % "support-v4" % "13.0.0",
+  "com.android.support" % "support-v13" % "19.+",
+  "com.android.support" % "support-v4" % "19.+",
+  "com.android.support" % "appcompat-v7" % "19.+",
   "com.google.code.gson" % "gson" % "2.2.4",
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
@@ -52,6 +52,7 @@ libraryDependencies ++= Seq(
   aar("info.hoang8f" % "android-segmented" % "1.0.2"),
   aar("com.makeramen" % "roundedimageview" % "1.3.0"),
   aar("com.pixplicity.easyprefs" % "library" % "1.3"),
+  aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1"))
 
