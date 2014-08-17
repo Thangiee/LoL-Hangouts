@@ -27,6 +27,8 @@
 
     <string name="ask_rate_app">Like this app? Please took a moment to rate it.</string>
 
+    <string name="crash_toast_text">A crash report was sent to the developer.</string>
+
     <string-array name="history">
         <item>1 day</item>
         <item>3 days</item>
