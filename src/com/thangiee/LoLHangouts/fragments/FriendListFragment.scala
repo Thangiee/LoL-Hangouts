@@ -32,6 +32,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
     val listView = find[CardListView](R.id.list_summoner_card)
 
     Future {
+      SystemClock.sleep(200)
       cards ++= getOrderedFriendCardList
       cardArrayAdapter.setNotifyOnChange(false)
       cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
@@ -57,10 +58,8 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   private def refreshFriendList() {
     Future {
-      isRefreshing = true
       cards.clear()
       cards ++= getOrderedFriendCardList
-      isRefreshing = false
       getActivity.runOnUiThread(new Runnable {
         override def run(): Unit = cardArrayAdapter.notifyDataSetChanged()
       })
