@@ -1,8 +1,9 @@
 package com.thangiee.LoLHangouts.activities
 
+import com.thangiee.LoLHangouts.utils.TLogger
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 
-trait TActivity extends org.scaloid.common.SActivity {
+trait TActivity extends org.scaloid.common.SActivity with TLogger {
   override def onDestroy(): Unit = {
     super.onDestroy()
   }

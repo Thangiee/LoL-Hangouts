@@ -3,25 +3,15 @@ package com.thangiee.LoLHangouts.fragments
 import android.app.Fragment
 import android.content.Context
 import android.view.View
-import com.thangiee.LoLHangouts.utils.ConversionImplicits
+import com.thangiee.LoLHangouts.utils.{TLogger, ConversionImplicits}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
-import org.scaloid.common.{SystemService, InterfaceImplicits, TagUtil}
+import org.scaloid.common.{InterfaceImplicits, SystemService}
 
-trait TFragment extends Fragment with InterfaceImplicits with ConversionImplicits with SystemService with TagUtil {
+trait TFragment extends Fragment with InterfaceImplicits with ConversionImplicits with SystemService with TLogger {
   implicit lazy val ctx: Context = getActivity
   var view: View = _
 
   def find[V <: View](id: Int): V = view.findViewById(id).asInstanceOf[V]
-
-  def info(s: String) = org.scaloid.common.info(s)
-
-  def warn(s: String) = org.scaloid.common.warn(s)
-
-  def debug(s: String) = org.scaloid.common.debug(s)
-
-  def wtf(s: String) = org.scaloid.common.wtf(s)
-
-  def verbose(s: String) = org.scaloid.common.verbose(s)
 
   def runOnUiThread(code: => Unit) = new {
     getActivity.runOnUiThread(new Runnable {

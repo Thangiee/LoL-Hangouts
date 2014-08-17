@@ -25,6 +25,8 @@
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
 
+    <string name="ask_rate_app">Like this app? Please took a moment to rate it.</string>
+
     <string-array name="history">
         <item>1 day</item>
         <item>3 days</item>

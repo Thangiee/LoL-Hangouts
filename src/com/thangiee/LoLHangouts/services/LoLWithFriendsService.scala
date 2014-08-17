@@ -12,7 +12,7 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.{FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
+import com.thangiee.LoLHangouts.utils.{TLogger, DataBaseHandler, Events}
 import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
@@ -22,7 +22,7 @@ import org.scaloid.common._
 
 import scala.util.Random
 
-class LoLWithFriendsService extends SService with MessageListener with FriendListListener with ConnectionListener {
+class LoLWithFriendsService extends SService with MessageListener with FriendListListener with ConnectionListener with TLogger {
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
@@ -113,7 +113,6 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
 
   override def onFriendStatusChange(summoner: Summoner): Unit = {
     info("[*]Change Status: "+summoner.name)
-    println(summoner.status)
   }
 
   //=============================================
