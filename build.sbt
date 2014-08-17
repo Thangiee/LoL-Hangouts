@@ -43,6 +43,7 @@ libraryDependencies ++= Seq(
   "de.greenrobot" % "eventbus" % "2.2.1",
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   "org.jsoup" % "jsoup" % "1.7.3",
+  "ch.acra" % "acra" % "4.5.0",
   aar("de.psdev.licensesdialog" % "licensesdialog" % "1.5.0"),
   aar("com.google.android.gms" % "play-services" % "5.0.+"),
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+"),

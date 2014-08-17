@@ -18,7 +18,7 @@
             android:theme="@style/MyTheme"
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
-            android:name="com.activeandroid.app.Application">
+            android:name="com.thangiee.LoLHangouts.MyApplication">
         <meta-data
                 android:name="AA_DB_NAME"
                 android:value="MessageLogs.db"/>
