@@ -10,7 +10,7 @@ object SummonerUtils {
   def loadIconInto(ctx: Context, name: String, imageView: ImageView, placeholder: Int = R.drawable.league_icon): Unit = {
     Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(name))
       .placeholder(placeholder)
-      .error(R.drawable.load_error)
+      .error(R.drawable.ic_load_error)
       .into(imageView)
   }
 

@@ -32,8 +32,8 @@ class SummonerTopChampFragment extends TFragment {
     champDictionary.addStaticImageField(R.id.img_champ_icon, new StaticImageLoader[Champion] {
       override def loadImage(champ: Champion, image: ImageView, p3: Int): Unit = {
         Picasso.`with`(ctx).load(champ.iconUrl)
-          .placeholder(R.drawable.load_error)
-          .error(R.drawable.load_error)
+          .placeholder(R.drawable.league_icon)
+          .error(R.drawable.ic_load_error)
           .into(image)
       }
     })

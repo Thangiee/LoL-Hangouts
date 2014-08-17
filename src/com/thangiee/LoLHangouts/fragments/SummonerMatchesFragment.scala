@@ -32,8 +32,8 @@ class SummonerMatchesFragment extends TFragment {
     matchDictionary.addStaticImageField(R.id.img_match_champ, new StaticImageLoader[Match] {
       override def loadImage(m: Match, image: ImageView, p3: Int): Unit = {
         Picasso.`with`(ctx).load("http://www.mobafire.com/images/champion/icon/" + m.champName.toLowerCase + ".png")
-          .placeholder(R.drawable.load_error)
-          .error(R.drawable.load_error)
+          .placeholder(R.drawable.league_icon)
+          .error(R.drawable.ic_load_error)
           .into(image)
       }
     })
