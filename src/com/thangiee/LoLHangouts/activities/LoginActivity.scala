@@ -1,6 +1,8 @@
 package com.thangiee.LoLHangouts.activities
 
+import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
+import android.view.Window
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
@@ -13,7 +15,7 @@ import org.scaloid.common._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class LoginActivity extends SActivity with UpButton {
+class LoginActivity extends TActivity with UpButton {
   lazy val userEditText = find[EditText](R.id.et_username)
   lazy val passwordEditText = find[EditText](R.id.et_password)
   lazy val logInButton = find[CircularProgressButton](R.id.btn_login).onClick(login())
@@ -26,7 +28,6 @@ class LoginActivity extends SActivity with UpButton {
     getActionBar.setIcon(MyApp.selectedServer.flag)
     logInButton.setIndeterminateProgressMode(true)
 
-    Prefs.initPrefs(this)
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
     R.string.server_name.r2String
@@ -37,6 +38,12 @@ class LoginActivity extends SActivity with UpButton {
       }
     })
     if (List(userEditText, passwordEditText).forall(_.length() != 0)) rememberCheckBox.setChecked(true)
+
+    val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
+    if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
+      showChangeLog()                           // show change log if updated
+      Prefs.putString("app_version", version)   // update the stored app version value
+    }
   }
 
   private def login() {
@@ -80,4 +87,18 @@ class LoginActivity extends SActivity with UpButton {
   }
 
   private def clearUserAndPass() = List(("user", ""), ("pass", "")).map(p => Prefs.putString(p._1, p._2))
+
+  private def showChangeLog(): Unit = {
+    val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
+
+    val dialog = new AlertDialogBuilder()
+      .setView(changeList)
+      .setPositiveButton(android.R.string.ok, (dialog: DialogInterface) ⇒ dialog.dismiss())
+      .create()
+
+    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
+    dialog.show()
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.my_dark_blue.r2Color)
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.my_orange.r2Color)
+  }
 }

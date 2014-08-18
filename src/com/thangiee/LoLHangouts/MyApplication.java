@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts;
 
 import com.activeandroid.app.Application;
+import com.pixplicity.easyprefs.library.Prefs;
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -30,6 +31,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ACRA.init(this);
+        Prefs.initPrefs(getApplicationContext());
+//        ACRA.init(this);
     }
 }
