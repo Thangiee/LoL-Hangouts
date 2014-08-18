@@ -10,7 +10,7 @@ import scala.collection.JavaConversions._
 object LoLChat {
   private var _connection: Option[XMPPConnection] = None
   private var _friendListListener: Option[FriendListListener] = None
-  private var _statusMsg = "Using LoLWithFriends App"
+  private var _statusMsg = "Using LoL Hangouts App"
   private var _presenceMode = Presence.Mode.away
   private var _username = ""
 
