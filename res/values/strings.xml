@@ -25,7 +25,7 @@
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
 
-    <string name="ask_rate_app">Like this app? Please took a moment to rate it.</string>
+    <string name="ask_rate_app">Like this app? Please take a moment to rate it.</string>
 
     <string name="crash_toast_text">A crash report was sent to the developer.</string>
 
