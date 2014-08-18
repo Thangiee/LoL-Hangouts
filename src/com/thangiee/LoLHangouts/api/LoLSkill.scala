@@ -32,7 +32,7 @@ class LoLSkill(name: String, region: String) extends LoLStatistics {
           } else {
             Thread.sleep(150)
           }
-        case Failure(e) ⇒ throw e // no respond
+        case Failure(e) ⇒ if (attempt == 5) throw e // if no respond, keep trying
       }
     }
   }
