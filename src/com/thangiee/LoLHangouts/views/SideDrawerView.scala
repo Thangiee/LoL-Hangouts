@@ -5,7 +5,7 @@ import android.content.{Context, DialogInterface, Intent}
 import android.view.View
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
-import com.ami.fundapter.extractors.StringExtractor
+import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.activities.{MainActivity, PreferenceSettings}
@@ -23,12 +23,13 @@ import scala.collection.JavaConversions._
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
   with SystemService with AdapterView.OnItemClickListener with ConversionImplicits {
   private val drawerItems = List(
-    DrawerItem("Chat", R.drawable.ic_action_dialog),
+    DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
     DrawerItem("Settings", R.drawable.ic_action_settings),
     DrawerItem("Remove Ads", R.drawable.ic_action_like))
 
+  private var adapter: FunDapter[DrawerItem] = _
   private var currentDrawerItem = drawerItems(0)
   init()
 
@@ -69,19 +70,21 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
   }
 
   private def setupListView() {
-    val serverDictionary = new BindDictionary[DrawerItem]()
+    val menuDictionary = new BindDictionary[DrawerItem]()
 
     // drawer menu item title
-    serverDictionary.addStringField(R.id.tv_menu_item_name, new StringExtractor[DrawerItem] {
+    menuDictionary.addStringField(R.id.tv_menu_item_name, new StringExtractor[DrawerItem] {
       override def getStringValue(item: DrawerItem, position: Int): String = item.title
-    })
+    }).conditionalTextColor(new BooleanExtractor[DrawerItem] {
+      override def getBooleanValue(item: DrawerItem, position: Int): Boolean = item.isSelected
+    }, R.color.my_orange.r2Color, R.color.white.r2Color)
 
     // drawer menu item icon
-    serverDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
+    menuDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
       override def loadImage(item: DrawerItem, imageView: ImageView, position: Int): Unit = imageView.setImageResource(item.icon)
     })
 
-    val adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, serverDictionary)
+    adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, menuDictionary)
 
     val listView = find[ListView](android.R.id.list)
     listView.setAdapter(adapter)
@@ -113,6 +116,13 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     var fragment: Fragment = new Fragment
     val selectedDrawerItem = drawerItems(position)
 
+    // update the text color of the selected menu item in the nav drawer
+    if (!(selectedDrawerItem.title.equals("Settings") || selectedDrawerItem.title.equals("Remove Ads"))) {
+      currentDrawerItem.isSelected = false
+      selectedDrawerItem.isSelected = true
+      adapter.updateData(drawerItems)
+    }
+
     drawer.closeMenu()
 
     selectedDrawerItem.title match {
@@ -139,5 +149,5 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     })
   }
 
-  case class DrawerItem(title: String, icon: Int)
+  case class DrawerItem(title: String, icon: Int, var isSelected: Boolean = false)
 }
