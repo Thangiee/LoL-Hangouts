@@ -31,11 +31,15 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
 
   override def onCreate(): Unit = {
     super.onCreate()
-    info("[*] Service started")
-    LoLChat.initChatListener(this)
-    LoLChat.initFriendListListener(this)
-    LoLChat.connection.addConnectionListener(this)
-    EventBus.getDefault.registerSticky(ctx)
+    try {
+      info("[*] Service started")
+      LoLChat.initChatListener(this)
+      LoLChat.initFriendListListener(this)
+      LoLChat.connection.addConnectionListener(this)
+      EventBus.getDefault.registerSticky(ctx)
+    } catch {
+      case e: IllegalStateException ⇒ error("[!] " + e.getMessage); stopSelf()
+    }
   }
 
   override def onDestroy(): Unit = {
