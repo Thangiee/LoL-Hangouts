@@ -3,9 +3,9 @@ package com.thangiee.LoLHangouts.activities
 import java.util.concurrent.TimeUnit
 
 import android.app.{AlarmManager, PendingIntent}
-import android.content.Intent
+import android.content.{DialogInterface, Intent}
 import android.os.{Bundle, Handler, SystemClock}
-import android.view.{Menu, MenuItem, ViewGroup}
+import android.view.{Menu, MenuItem, ViewGroup, Window}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.pixplicity.easyprefs.library.Prefs
@@ -16,7 +16,7 @@ import com.thangiee.LoLHangouts.services.LoLWithFriendsService
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import com.thangiee.LoLHangouts.{MyApp, R}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
-import fr.nicolaspomepuy.discreetapprate.{RetryPolicy, AppRate}
+import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
@@ -37,7 +37,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main_screen)
     LoLChat.appearOnline()
-    Prefs.initPrefs(this)
 
     startService[LoLWithFriendsService]
 
@@ -45,6 +44,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     sideDrawer.setMenuView(new SideDrawerView())
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
+
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
@@ -81,9 +81,24 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       case R.id.menu_exit     ⇒ cleanUpAndDisconnect(); finish()
       case android.R.id.home  ⇒ if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
       case R.id.menu_about    ⇒ startActivity[AboutActivity]
+      case R.id.menu_changelog ⇒ showChangeLog()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
+  }
+
+  private def showChangeLog(): Unit = {
+    val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
+
+    val dialog = new AlertDialogBuilder()
+      .setView(changeList)
+      .setPositiveButton(android.R.string.ok, (dialog: DialogInterface) ⇒ dialog.dismiss())
+      .create()
+
+    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
+    dialog.show()
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.my_dark_blue.r2Color)
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.my_orange.r2Color)
   }
 
   private def cleanUpAndDisconnect() {
