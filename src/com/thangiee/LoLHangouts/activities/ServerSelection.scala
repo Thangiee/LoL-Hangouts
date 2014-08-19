@@ -33,7 +33,6 @@ class ServerSelection extends ListActivity with SContext with ExtractorImplicits
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
     MyApp.selectedServer = servers(position)
-    Riot.api.setRegion(MyApp.selectedServer.toString)
     startActivity[LoginActivity]
   }
 }
