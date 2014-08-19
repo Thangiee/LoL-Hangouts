@@ -13,8 +13,10 @@ import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLWithFriendsService
+import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import com.thangiee.LoLHangouts.{MyApp, R}
+import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
 import net.simonvt.menudrawer.MenuDrawer.Type
@@ -36,6 +38,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   protected override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main_screen)
+    EventBus.getDefault.register(this)
     LoLChat.appearOnline()
 
     startService[LoLWithFriendsService]
@@ -103,9 +106,10 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
+    EventBus.getDefault.unregister(this, classOf[FinishMainActivity])
     stopService[LoLWithFriendsService]
     MyApp.reset()
-    Future {LoLChat.disconnect()}
+    Future (LoLChat.disconnect())
   }
 
   // exit the app after quickly double clicking the back button
@@ -182,6 +186,12 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onBillingError(errorCode: Int, error: Throwable): Unit = {
     warn("[!] Billing Error: " + errorCode)
     bp.release()
+  }
+
+  def onEvent(event: FinishMainActivity): Unit = {
+    println("EXIT")
+    cleanUpAndDisconnect()
+    finish()
   }
 }
 

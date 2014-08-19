@@ -44,11 +44,7 @@
                 android:name="com.thangiee.LoLHangouts.activities.LoginActivity"
                 android:label="LogIn"
                 android:screenOrientation="portrait"
-                android:noHistory="true">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.ServerSelection"/>
-        </activity>
+                android:noHistory="true"/>
 
         <activity
                 android:name="com.thangiee.LoLHangouts.activities.MainActivity"

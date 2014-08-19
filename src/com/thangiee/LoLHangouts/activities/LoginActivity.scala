@@ -2,14 +2,13 @@ package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
-import android.view.Window
+import android.view.{MenuItem, Window}
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.{MyApp, R}
-import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -60,7 +59,7 @@ class LoginActivity extends TActivity with UpButton {
 
       // try to connect to server and warn the user if fail to connect
       if (!LoLChat.connect(MyApp.selectedServer.url)) {
-        runOnUiThread(Crouton.makeText(this, "Fail to connect to server", Style.ALERT).show())
+        runOnUiThread("Fail to connect to server".makeCrouton())
         runOnUiThread(logInButton.setProgress(-1))
         //        logInButton.enable
         return
@@ -75,10 +74,17 @@ class LoginActivity extends TActivity with UpButton {
         startActivity[MainActivity]
         finish()
       } else {
-        runOnUiThread(Crouton.makeText(this, "Invalid username/passwoard", Style.ALERT).show())
+        runOnUiThread("Invalid username/password".makeCrouton())
         runOnUiThread(logInButton.setProgress(-1))
       }
       //      logInButton.enable
+    }
+  }
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    item.getItemId match {
+      case android.R.id.home ⇒ startActivity[ServerSelection]; true
+      case _                 ⇒ super.onOptionsItemSelected(item)
     }
   }
 
