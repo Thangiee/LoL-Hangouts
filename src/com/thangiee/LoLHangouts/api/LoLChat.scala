@@ -41,7 +41,7 @@ object LoLChat {
       XMPPExceptionHandler(connection.login(user, "AIR_" + pass))
   }
 
-  def disconnect() = { connection.disconnect(); _statusMsg = "Using LoLWithFriends App" }
+  def disconnect() = { connection.disconnect(); _statusMsg = "Using LoL Hangouts App" }
 
   def friends: List[Summoner] = for (entry <- connection.getRoster.getEntries.toList) yield new Summoner(entry)
 
