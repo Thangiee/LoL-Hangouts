@@ -22,6 +22,7 @@ object LoLChat {
 
   def connect(url: String): Boolean = {
     // set up configuration to connect
+    SmackConfiguration.setPacketReplyTimeout(7000)  // 7 sec timeout
     val config = new ConnectionConfiguration(url, 5223, "pvp.net")
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
