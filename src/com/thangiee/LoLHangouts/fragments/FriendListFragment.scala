@@ -60,9 +60,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
     Future {
       cards.clear()
       cards ++= getOrderedFriendCardList
-      getActivity.runOnUiThread(new Runnable {
-        override def run(): Unit = cardArrayAdapter.notifyDataSetChanged()
-      })
+      runOnUiThread(cardArrayAdapter.notifyDataSetChanged())
     }
   }
 

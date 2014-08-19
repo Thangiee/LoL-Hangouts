@@ -5,13 +5,12 @@ import android.content.{Context, DialogInterface, Intent}
 import android.view.View
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
-import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
-import com.thangiee.LoLHangouts.utils.SummonerUtils
+import com.thangiee.LoLHangouts.utils.{ExtractorImplicits, SummonerUtils}
 import com.thangiee.LoLHangouts.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
@@ -21,7 +20,7 @@ import org.scaloid.common._
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
-  with SystemService with AdapterView.OnItemClickListener {
+  with SystemService with AdapterView.OnItemClickListener with ExtractorImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
@@ -73,11 +72,8 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     val menuDictionary = new BindDictionary[DrawerItem]()
 
     // drawer menu item title
-    menuDictionary.addStringField(R.id.tv_menu_item_name, new StringExtractor[DrawerItem] {
-      override def getStringValue(item: DrawerItem, position: Int): String = item.title
-    }).conditionalTextColor(new BooleanExtractor[DrawerItem] {
-      override def getBooleanValue(item: DrawerItem, position: Int): Boolean = item.isSelected
-    }, R.color.my_orange.r2Color, R.color.white.r2Color)
+    menuDictionary.addStringField(R.id.tv_menu_item_name, (item: DrawerItem) ⇒ item.title)
+                  .conditionalTextColor((item: DrawerItem) ⇒ item.isSelected, R.color.my_orange.r2Color, R.color.white.r2Color)
 
     // drawer menu item icon
     menuDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
