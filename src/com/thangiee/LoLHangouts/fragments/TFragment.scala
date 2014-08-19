@@ -3,12 +3,12 @@ package com.thangiee.LoLHangouts.fragments
 import android.app.Fragment
 import android.content.Context
 import android.view.View
-import com.thangiee.LoLHangouts.utils.{TLogger, ConversionImplicits}
-import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
-import org.scaloid.common.{InterfaceImplicits, SystemService}
+import com.thangiee.LoLHangouts.utils.{TContext, TLogger}
+import de.keyboardsurfer.android.widget.crouton.Crouton
+import org.scaloid.common.{Implicits, SystemService}
 
-trait TFragment extends Fragment with InterfaceImplicits with ConversionImplicits with SystemService with TLogger {
-  implicit lazy val ctx: Context = getActivity
+trait TFragment extends Fragment with TContext with Implicits with SystemService with TLogger {
+  override implicit lazy val ctx: Context = getActivity
   var view: View = _
 
   def find[V <: View](id: Int): V = view.findViewById(id).asInstanceOf[V]
@@ -22,11 +22,5 @@ trait TFragment extends Fragment with InterfaceImplicits with ConversionImplicit
   override def onDestroy(): Unit = {
     Crouton.cancelAllCroutons()
     super.onDestroy()
-  }
-
-  implicit class StringTo(string: String) {
-    def makeCrouton(style: Style = Style.ALERT, duration: Int = Configuration.DURATION_SHORT) {
-      Crouton.makeText(getActivity, string, style).setConfiguration(new Configuration.Builder().setDuration(duration).build()).show()
-    }
   }
 }

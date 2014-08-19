@@ -3,8 +3,8 @@ package com.thangiee.LoLHangouts.utils
 import org.scaloid.common.TagUtil
 
 trait TLogger extends TagUtil {
-  val LOGLEVE = 1
-  val DEBUG = LOGLEVE == 0
+  val LOGLEVEL = 0
+  val DEBUG = LOGLEVEL == 0
 
   def verbose(s: String) = if (DEBUG) org.scaloid.common.verbose(s)
 
