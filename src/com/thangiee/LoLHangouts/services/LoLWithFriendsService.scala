@@ -12,7 +12,7 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.{FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
-import com.thangiee.LoLHangouts.utils.{TLogger, DataBaseHandler, Events}
+import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TLogger}
 import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
@@ -191,13 +191,11 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
   }
 
   private def showDisconnectionNotification(): Unit = {
-    val i = new Intent(ctx, classOf[LoginActivity])
-    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP) // kill all the previous activities
-    val pendingIntent = PendingIntent.getActivity(ctx, 0, i, 0)
+    EventBus.getDefault.post(new Events.FinishMainActivity) // kill the main activity
 
     val builder = new Notification.Builder(ctx)
       .setSmallIcon(R.drawable.ic_action_warning)
-      .setContentIntent(pendingIntent)
+      .setContentIntent(pendingActivity[LoginActivity])
       .setContentTitle(R.string.app_name.r2String)
       .setContentText("Connection lost. Touch to reconnect.")
       .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
