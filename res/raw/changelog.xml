@@ -2,7 +2,7 @@
 <changelog bulletedList="true">
 
     <changelogversion versionName="1.0.1" changeDate="Aug 18,2014">
-        <changelogtext>Selected navigation drawer item now changes to a different color</changelogtext>
+        <changelogtext>Selected navigation drawer item now changes to a different text color</changelogtext>
         <changelogtext>Add change log</changelogtext>
         <changelogtext>Small bug fixes</changelogtext>
     </changelogversion>
