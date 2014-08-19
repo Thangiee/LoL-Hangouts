@@ -25,8 +25,13 @@
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
 
-    <string name="ask_rate_app">Like this app? Please take a moment to rate it.</string>
+    <!--ads related-->
+    <string name="ads_disabled">Restart app to Disable ads!</string>
+    <string name="ads_already_disabled">Ads already removed.</string>
 
+    <string name="back_to_exit">Click BACK again to exit</string>
+
+    <string name="ask_rate_app">Like this app? Please take a moment to rate it.</string>
     <string name="crash_toast_text">A crash report was sent to the developer.</string>
 
     <string-array name="history">
