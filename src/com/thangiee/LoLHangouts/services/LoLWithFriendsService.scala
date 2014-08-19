@@ -167,6 +167,7 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
       .setContentIntent(pendingIntent)
       .setContentTitle(unReadMsg.size + " New Messages")
       .setContentText(newestMsg.getOtherPerson +": " + newestMsg.getText)
+      .setTicker(newestMsg.getOtherPerson +": " + newestMsg.getText)
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true)) // check setting

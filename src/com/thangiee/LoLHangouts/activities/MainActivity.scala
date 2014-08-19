@@ -121,7 +121,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     }
 
     doubleBackToExitPressedOnce = true
-    toast("Click BACK again to exit")
+    toast(R.string.back_to_exit.r2String)
     new Handler().postDelayed(new Runnable {
       override def run(): Unit = doubleBackToExitPressedOnce = false
     }, 2000)
@@ -159,14 +159,14 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onProductPurchased(productId: String): Unit = {
     info("[+] Product purchased: " + productId)
     Prefs.putBoolean("is_ads_enable", false)
-    "Restart app to Disable ads!".makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+    R.string.ads_disabled.r2String.makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
     bp.release()
   }
 
   override def onBillingInitialized(): Unit = {
     info("[*] Billing Initialized")
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
-      "Ads already removed.".makeCrouton(Style.INFO)
+      R.string.ads_already_disabled.r2String.makeCrouton(Style.INFO)
       bp.release()
     } else {
       Prefs.putBoolean("is_ads_enable", true)
@@ -178,7 +178,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     info("[+] Purchase history restored: " + bp.listOwnedProducts())
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
       Prefs.putBoolean("is_ads_enable", false)
-      "Restart app to Disable ads!".makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+      R.string.ads_disabled.r2String.makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
       bp.release()
     }
   }
@@ -189,7 +189,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   }
 
   def onEvent(event: FinishMainActivity): Unit = {
-    println("EXIT")
     cleanUpAndDisconnect()
     finish()
   }
