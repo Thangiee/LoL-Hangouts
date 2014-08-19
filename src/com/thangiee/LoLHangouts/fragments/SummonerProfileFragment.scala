@@ -42,7 +42,6 @@ class SummonerProfileFragment extends TFragment {
       case "CHALLENGER" ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
       case _          ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
     }
-
     view
   }
 }
