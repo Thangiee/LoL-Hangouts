@@ -164,7 +164,8 @@
             android:minWidth="100dp"
             android:gravity="center"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:textSize="16dp"/>
 
     <TextView
             android:layout_width="wrap_content"
