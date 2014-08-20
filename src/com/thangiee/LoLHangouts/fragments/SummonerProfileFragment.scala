@@ -14,6 +14,7 @@ import com.thangiee.LoLHangouts.utils.SummonerUtils
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.collection.JavaConversions._
 
 class SummonerProfileFragment extends TFragment {
   private lazy val pieGraph = find[PieGraph](R.id.pie_graph_win_rate)
@@ -74,8 +75,10 @@ class SummonerProfileFragment extends TFragment {
     super.onActivityCreated(savedInstanceState)
     // delay starting the animation
     Future {
-      SystemClock.sleep(1000)
-      runOnUiThread(pieGraph.animateToGoalValues())
+      if (!pieGraph.getSlices.forall(slice ⇒ slice.getGoalValue == 0)) {  // dont animate if 0 win and 0 lose
+        SystemClock.sleep(1000)
+        runOnUiThread(pieGraph.animateToGoalValues())
+      }
     }
   }
 }
