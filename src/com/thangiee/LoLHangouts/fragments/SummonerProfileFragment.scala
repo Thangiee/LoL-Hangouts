@@ -2,15 +2,21 @@ package com.thangiee.LoLHangouts.fragments
 
 import java.text.DecimalFormat
 
-import android.os.Bundle
+import android.os.{Bundle, SystemClock}
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.{ImageView, TextView}
+import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.LoLStatistics
 import com.thangiee.LoLHangouts.fragments.SummonerProfileFragment.Data
 import com.thangiee.LoLHangouts.utils.SummonerUtils
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
 class SummonerProfileFragment extends TFragment {
+  private lazy val pieGraph = find[PieGraph](R.id.pie_graph_win_rate)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -24,8 +30,8 @@ class SummonerProfileFragment extends TFragment {
     find[TextView](R.id.tv_profile_league_name).setText(data.leagueName)
     find[TextView](R.id.tv_profile_league_point).setText(data.leaguePoints)
     find[TextView](R.id.tv_profile_kda).setText(data.kda)
-    find[TextView](R.id.tv_profile_lost).setText(data.lose.toString + " L")
-    find[TextView](R.id.tv_profile_win).setText(data.win.toString + " W")
+    find[TextView](R.id.tv_profile_lost).setText(data.lose.toString + "L")
+    find[TextView](R.id.tv_profile_win).setText(data.win.toString + "W")
     SummonerUtils.loadIconInto(getActivity, data.name, find[ImageView](R.id.img_profile_icon))
 
     val rateTextView = find[TextView](R.id.tv_profile_rate)
@@ -42,7 +48,35 @@ class SummonerProfileFragment extends TFragment {
       case "CHALLENGER" ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
       case _          ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
     }
+
+    // setup the pie graph
+    val winSlice = new PieSlice
+    winSlice.setColor(android.R.color.holo_green_dark.r2Color)
+    winSlice.setValue(5)
+    winSlice.setGoalValue(data.win)
+    pieGraph.addSlice(winSlice)
+
+    val loseSlice = new PieSlice
+    loseSlice.setColor(R.color.red.r2Color)
+    loseSlice.setValue(5)
+    loseSlice.setGoalValue(data.lose)
+    pieGraph.addSlice(loseSlice)
+
+    pieGraph.setPadding(2)
+    pieGraph.setInnerCircleRatio(R.integer.inner_circle_ratio.r2Integer)
+    pieGraph.setInterpolator(new AccelerateDecelerateInterpolator())
+    pieGraph.setDuration(1000)
+
     view
+  }
+
+  override def onActivityCreated(savedInstanceState: Bundle): Unit = {
+    super.onActivityCreated(savedInstanceState)
+    // delay starting the animation
+    Future {
+      SystemClock.sleep(1000)
+      runOnUiThread(pieGraph.animateToGoalValues())
+    }
   }
 }
 
