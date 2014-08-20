@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="Level"
                 android:id="@+id/tv_profile_lvl"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:layout_alignBottom="@+id/img_profile_icon"
                 android:layout_toRightOf="@+id/img_profile_icon"/>
 
@@ -104,7 +104,7 @@
                     android:textColor="#A68FE6"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     android:layout_marginTop="28dp"/>
 
@@ -114,7 +114,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="League"
                     android:id="@+id/tv_profile_league_name"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#8e8058"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/pie_graph_win_rate"
@@ -126,7 +126,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="points"
                     android:id="@+id/tv_profile_league_point"
-                    android:textSize="19dp"
+                    android:textSize="19sp"
                     android:textColor="#8e8058"
                     android:visibility="visible"
                     android:layout_below="@+id/tv_profile_league_name"
@@ -138,26 +138,11 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="KDA"
                     android:id="@+id/tv_profile_kda"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textColor="#8e8058"
                     android:visibility="visible"
                     android:layout_below="@+id/tv_profile_league_point"
                     android:layout_centerHorizontal="true"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="win rate"
-                    android:id="@+id/tv_profile_rate"
-                    android:textSize="18dp"
-                    android:layout_alignTop="@+id/pie_graph_win_rate"
-                    android:layout_alignRight="@+id/pie_graph_win_rate"
-                    android:layout_alignEnd="@+id/pie_graph_win_rate"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="55dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -169,12 +154,11 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/linearLayout"
+                    android:layout_toRightOf="@+id/img_profile_badge"
                     android:layout_alignRight="@+id/pie_graph_win_rate"
-                    android:layout_alignEnd="@+id/pie_graph_win_rate"
-                    android:layout_below="@+id/tv_profile_rate"
-                    android:layout_alignLeft="@+id/pie_graph_win_rate"
-                    android:layout_alignStart="@+id/pie_graph_win_rate"
-                    android:gravity="center">
+                    android:layout_alignEnd="@+id/pie_graph_win_rate">
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -183,11 +167,8 @@
                         android:textColor="@color/red"
                         android:text="Lost"
                         android:id="@+id/tv_profile_lost"
-                        android:textSize="11dp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        android:layout_below="@+id/tv_profile_rate"
-                        android:layout_alignLeft="@+id/tv_profile_rate"
-                        android:layout_alignStart="@+id/tv_profile_rate"
                         android:gravity="right"
                         android:paddingRight="2dp"/>
 
@@ -196,11 +177,8 @@
                         android:layout_height="wrap_content"
                         android:text="-"
                         android:id="@+id/textView2"
-                        android:layout_alignTop="@+id/tv_profile_lost"
-                        android:layout_toRightOf="@+id/tv_profile_lost"
-                        android:layout_toLeftOf="@+id/tv_profile_win"
                         android:gravity="center"
-                        android:textSize="11dp"
+                        android:textSize="12sp"
                         android:textColor="@android:color/holo_purple"/>
 
                 <TextView
@@ -210,13 +188,33 @@
                         android:text="Win0"
                         android:id="@+id/tv_profile_win"
                         android:textColor="@android:color/holo_green_dark"
-                        android:textSize="11dp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        android:layout_below="@+id/tv_profile_rate"
-                        android:layout_alignRight="@+id/tv_profile_rate"
-                        android:layout_alignEnd="@+id/tv_profile_rate"
                         android:gravity="left"
                         android:paddingLeft="2dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/pie_graph_win_rate"
+                    android:layout_marginTop="55dp"
+                    android:layout_toRightOf="@+id/img_profile_badge"
+                    android:layout_alignRight="@+id/pie_graph_win_rate"
+                    android:layout_alignEnd="@+id/pie_graph_win_rate"
+                    android:id="@+id/linearLayout">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="win rate"
+                        android:id="@+id/tv_profile_rate"
+                        android:textSize="18sp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:gravity="center"/>
             </LinearLayout>
 
         </RelativeLayout>
