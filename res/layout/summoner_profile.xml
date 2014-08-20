@@ -148,20 +148,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/red"
-                    android:text="Lost"
-                    android:id="@+id/tv_profile_lost"
-                    android:textSize="11dp"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/tv_profile_rate"
-                    android:layout_alignLeft="@+id/tv_profile_rate"
-                    android:layout_alignStart="@+id/tv_profile_rate"
-                    android:gravity="center|left"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="win rate"
                     android:id="@+id/tv_profile_rate"
                     android:textSize="18dp"
@@ -176,33 +162,62 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Win0"
-                    android:id="@+id/tv_profile_win"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:textSize="11dp"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/tv_profile_rate"
-                    android:layout_alignRight="@+id/tv_profile_rate"
-                    android:layout_alignEnd="@+id/tv_profile_rate"
-                    android:gravity="center|right"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/center"
                     android:layout_centerInParent="true"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="-"
-                    android:id="@+id/textView2"
-                    android:layout_alignTop="@+id/tv_profile_lost"
-                    android:layout_toRightOf="@+id/tv_profile_lost"
-                    android:layout_toLeftOf="@+id/tv_profile_win"
-                    android:gravity="center"
-                    android:textSize="11dp"/>
+                    android:layout_alignRight="@+id/pie_graph_win_rate"
+                    android:layout_alignEnd="@+id/pie_graph_win_rate"
+                    android:layout_below="@+id/tv_profile_rate"
+                    android:layout_alignLeft="@+id/pie_graph_win_rate"
+                    android:layout_alignStart="@+id/pie_graph_win_rate"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/red"
+                        android:text="Lost"
+                        android:id="@+id/tv_profile_lost"
+                        android:textSize="11dp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/tv_profile_rate"
+                        android:layout_alignLeft="@+id/tv_profile_rate"
+                        android:layout_alignStart="@+id/tv_profile_rate"
+                        android:gravity="right"
+                        android:paddingRight="2dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:id="@+id/textView2"
+                        android:layout_alignTop="@+id/tv_profile_lost"
+                        android:layout_toRightOf="@+id/tv_profile_lost"
+                        android:layout_toLeftOf="@+id/tv_profile_win"
+                        android:gravity="center"
+                        android:textSize="11dp"
+                        android:textColor="@android:color/holo_purple"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Win0"
+                        android:id="@+id/tv_profile_win"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="11dp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/tv_profile_rate"
+                        android:layout_alignRight="@+id/tv_profile_rate"
+                        android:layout_alignEnd="@+id/tv_profile_rate"
+                        android:gravity="left"
+                        android:paddingLeft="2dp"/>
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
