@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.fragments
 import android.os.{Bundle, SystemClock}
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.devspark.progressfragment.ProgressFragment
+import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, RefreshSummonerCard}
@@ -37,7 +38,9 @@ class FriendListFragment extends ProgressFragment with TFragment {
       cardArrayAdapter.setNotifyOnChange(false)
       cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
       runOnUiThread {
-        listView.setAdapter(cardArrayAdapter)
+        val animationAdapter = new AlphaInAnimationAdapter(cardArrayAdapter)
+        animationAdapter.setAbsListView(listView)
+        listView.setExternalAdapter(animationAdapter, cardArrayAdapter)
         setContentShown(true)
       }
     }
