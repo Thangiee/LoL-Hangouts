@@ -4,17 +4,17 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/my_dark_blue">
+              android:background="@color/my_dark_blue"
+              android:paddingRight="64dp"
+              android:paddingLeft="64dp">
 
     <RelativeLayout
-            android:layout_width="680dp"
+            android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:layout_alignParentEnd="true"
             android:id="@+id/header"
             android:background="@drawable/summoner_header"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp">
+            android:layout_margin="8dp">
 
         <ImageView
                 android:layout_width="48dp"
@@ -23,9 +23,9 @@
                 android:src="@drawable/league_icon"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
+                android:layout_alignParentStart="false"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 />
 
         <TextView
@@ -61,119 +61,165 @@
             android:layout_alignRight="@+id/header"
             android:layout_alignEnd="@+id/header"
             android:gravity="center"
-            android:textSize="28dp"/>
+            android:textSize="32dp"/>
 
-    <RelativeLayout
+    <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout"
-            android:background="@drawable/bg_sq_league_paper"
+            android:id="@+id/scrollView"
             android:layout_below="@+id/textView"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView"
-            android:layout_alignRight="@+id/textView"
-            android:layout_alignEnd="@+id/textView">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp">
 
-        <ImageView
-                android:layout_width="158dp"
-                android:layout_height="158dp"
-                android:id="@+id/img_profile_badge"
-                android:layout_below="@+id/tv_profile_tier"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/badge_bronze"/>
-
-        <TextView
-                android:layout_width="wrap_content"
+        <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="tier divison"
-                android:id="@+id/tv_profile_tier"
-                android:textColor="#A68FE6"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:layout_marginTop="28dp"/>
+                android:id="@+id/relativeLayout"
+                android:background="@drawable/bg_sq_league_paper"
+                >
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="League"
-                android:id="@+id/tv_profile_league_name"
-                android:textSize="20dp"
-                android:layout_below="@+id/tv_profile_rate"
-                android:layout_centerHorizontal="true"
-                android:textColor="#8e8058"/>
+            <com.echo.holographlibrary.PieGraph
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:id="@+id/pie_graph_win_rate"
+                    android:layout_below="@+id/tv_profile_tier"
+                    android:layout_toRightOf="@+id/center"
+                    android:layout_marginLeft="56dp"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="points"
-                android:id="@+id/tv_profile_league_point"
-                android:layout_below="@+id/tv_profile_league_name"
-                android:layout_centerHorizontal="true"
-                android:textSize="19dp"
-                android:textColor="#8e8058"/>
+            <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:id="@+id/img_profile_badge"
+                    android:src="@drawable/badge_bronze"
+                    android:layout_alignTop="@+id/pie_graph_win_rate"
+                    android:layout_toLeftOf="@+id/pie_graph_win_rate"
+                    android:layout_marginRight="56dp"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="KDA"
-                android:id="@+id/tv_profile_kda"
-                android:layout_below="@+id/tv_profile_league_point"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="#8e8058"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="gold"
+                    android:id="@+id/tv_profile_tier"
+                    android:textColor="#A68FE6"
+                    android:textSize="36dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="56dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/img_profile_badge"
+                    android:layout_alignStart="@+id/img_profile_badge"
+                    android:gravity="center"
+                    android:layout_alignRight="@+id/img_profile_badge"
+                    android:layout_alignEnd="@+id/img_profile_badge"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/red"
-                android:text="Lost"
-                android:id="@+id/tv_profile_lost"
-                android:textSize="28dp"
-                android:textStyle="bold"
-                android:layout_alignTop="@+id/img_profile_badge"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="80dp"
-                android:layout_marginLeft="100dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="League"
+                    android:id="@+id/tv_profile_league_name"
+                    android:textSize="18dp"
+                    android:textColor="#8e8058"
+                    android:layout_alignStart="@+id/img_profile_badge"
+                    android:layout_below="@+id/img_profile_badge"
+                    android:gravity="left"
+                    android:layout_alignLeft="@+id/img_profile_badge"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="win rate"
-                android:id="@+id/tv_profile_rate"
-                android:textSize="24dp"
-                android:layout_below="@+id/img_profile_badge"
-                android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="points"
+                    android:id="@+id/tv_profile_league_point"
+                    android:textSize="18dp"
+                    android:textColor="#8e8058"
+                    android:layout_below="@+id/tv_profile_league_name"
+                    android:layout_alignLeft="@+id/tv_profile_league_name"
+                    android:layout_alignStart="@+id/tv_profile_league_name"
+                    android:gravity="left"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Win0"
-                android:id="@+id/tv_profile_win"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="28dp"
-                android:textStyle="bold"
-                android:layout_alignTop="@+id/img_profile_badge"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="80dp"
-                android:layout_marginRight="100dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="KDA"
+                    android:id="@+id/tv_profile_kda"
+                    android:textSize="18dp"
+                    android:textColor="#8e8058"
+                    android:visibility="visible"
+                    android:layout_below="@+id/tv_profile_league_point"
+                    android:layout_alignLeft="@+id/tv_profile_league_point"
+                    android:layout_alignStart="@+id/tv_profile_league_point"
+                    android:gravity="left"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/center"
-                android:layout_centerInParent="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/red"
+                    android:text="Lost"
+                    android:id="@+id/tv_profile_lost"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/tv_profile_rate"
+                    android:layout_alignLeft="@+id/tv_profile_rate"
+                    android:layout_alignStart="@+id/tv_profile_rate"
+                    android:gravity="center|right"
+                    android:layout_toLeftOf="@+id/textView2"/>
 
-    </RelativeLayout>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="win rate"
+                    android:id="@+id/tv_profile_rate"
+                    android:textSize="24dp"
+                    android:layout_alignTop="@+id/pie_graph_win_rate"
+                    android:layout_alignRight="@+id/pie_graph_win_rate"
+                    android:layout_alignEnd="@+id/pie_graph_win_rate"
+                    android:layout_marginRight="43dp"
+                    android:layout_marginTop="76dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Win0"
+                    android:id="@+id/tv_profile_win"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:gravity="center|left"
+                    android:layout_alignTop="@+id/tv_profile_lost"
+                    android:layout_alignRight="@+id/tv_profile_rate"
+                    android:layout_alignEnd="@+id/tv_profile_rate"
+                    android:paddingRight="20dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/center"
+                    android:layout_centerInParent="true"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:id="@+id/textView2"
+                    android:textSize="14dp"
+                    android:textColor="@android:color/holo_purple"
+                    android:gravity="center"
+                    android:layout_alignTop="@+id/tv_profile_win"
+                    android:layout_toLeftOf="@+id/tv_profile_win"
+                    android:paddingRight="2dp"
+                    android:paddingLeft="2dp"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
