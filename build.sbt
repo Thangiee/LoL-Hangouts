@@ -21,8 +21,11 @@ apkbuildExcludes in Android ++= Seq(
   "META-INF/NOTICE"
 )
 
+resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+
 proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
-  "-dontwarn scala.**", "-keep class org.scaloid.common.**",
+  "-dontwarn scala.**",
+  "-keep class org.scaloid.common.**",
   "-dontwarn com.squareup.okhttp.**",
   "-keep class org.jivesoftware.smack.** {*;}",
   "-keep class org.jsoup.Jsoup.** {*;}",
@@ -32,7 +35,7 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
   "-keepclassmembers class ** {public void onEvent*(**);}")
 
 libraryDependencies ++= Seq(
-  "org.scaloid" %% "scaloid" % "3.4-10",
+  "org.scaloid" %% "scaloid" % "3.5-10",
 //  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
   "com.android.support" % "support-v13" % "19.+",
   "com.android.support" % "support-v4" % "19.+",
@@ -44,6 +47,8 @@ libraryDependencies ++= Seq(
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   "org.jsoup" % "jsoup" % "1.7.3",
   "ch.acra" % "acra" % "4.5.0",
+//  "org.scalaj" %% "scalaj-http" % "0.3.16",
+//  "com.typesafe.play" %% "play-json" % "2.3.3",
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
   aar("de.psdev.licensesdialog" % "licensesdialog" % "1.5.0"),
   aar("com.google.android.gms" % "play-services" % "5.0.+"),
