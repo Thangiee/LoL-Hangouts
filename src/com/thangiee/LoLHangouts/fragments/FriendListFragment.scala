@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.fragments
 
-import android.os.{Bundle, SystemClock}
+import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
@@ -32,12 +32,10 @@ class FriendListFragment extends ProgressFragment with TFragment {
     setContentShown(false)
     val listView = find[CardListView](R.id.list_summoner_card)
 
-    Future {
-      SystemClock.sleep(200)
-      cards ++= getOrderedFriendCardList
-      cardArrayAdapter.setNotifyOnChange(false)
-      cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
+    populateFriendCardList.onComplete { _ ⇒
       runOnUiThread {
+        cardArrayAdapter.setNotifyOnChange(false)
+        cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
         val animationAdapter = new AlphaInAnimationAdapter(cardArrayAdapter)
         animationAdapter.setAbsListView(listView)
         listView.setExternalAdapter(animationAdapter, cardArrayAdapter)
@@ -51,7 +49,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
     super.onDestroy()
   }
 
-  def findCardByName(name: String): Option[SummonerBaseCard] =  {
+  def findCardByName(name: String): Option[SummonerBaseCard] = {
     for (i <- 0 until cardArrayAdapter.getCount) {
       val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[SummonerBaseCard]
       if (baseCard.cardName == name) return Some(baseCard)
@@ -59,24 +57,19 @@ class FriendListFragment extends ProgressFragment with TFragment {
     None
   }
 
-  private def refreshFriendList() {
-    Future {
-      cards.clear()
-      cards ++= getOrderedFriendCardList
-      runOnUiThread(cardArrayAdapter.notifyDataSetChanged())
-    }
+  private def refreshFriendList(): Unit = {
+    populateFriendCardList.onComplete(_ ⇒ runOnUiThread(cardArrayAdapter.notifyDataSetChanged()))
   }
 
-  /**
-   * get a list of cards with online friend cards ordered first
-   *
-   * @return  list of cards
-   */
-  private def getOrderedFriendCardList: scala.collection.mutable.ArrayBuffer[SummonerBaseCard] = {
-    val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
-    cards.++=(for (f <- LoLChat.onlineFriends) yield new SummonerOnCard(getActivity, f))
-    cards.++=(for (f <- LoLChat.offlineFriends) yield new SummonerOffCard(getActivity, f))
-    cards
+  private def populateFriendCardList: Future[Unit] = {
+    Future[Unit] {
+      val (friendsOn, friendsOff) = (LoLChat.onlineFriends, LoLChat.offlineFriends)
+      runOnUiThread {
+        cards.clear()
+        cards.++=(for (f <- friendsOn) yield new SummonerOnCard(getActivity, f)) // online friends first
+        cards.++=(for (f <- friendsOff) yield new SummonerOffCard(getActivity, f))
+      }
+    }
   }
 
   def onEvent(event: RefreshFriendList): Unit = {
@@ -85,10 +78,10 @@ class FriendListFragment extends ProgressFragment with TFragment {
   }
 
   def onEventMainThread(event: RefreshSummonerCard): Unit = {
-    info("[*]onEvent: request to refresh "+event.summoner.name+"summoner card")
+    info("[*]onEvent: request to refresh " + event.summoner.name + "summoner card")
     findCardByName(event.summoner.name) match {
       case Some(card) => info("[+]Found card"); card.refreshCard()
-      case None       => warn("[-]No card found")
+      case None => warn("[-]No card found")
     }
     cardArrayAdapter.notifyDataSetChanged()
   }
