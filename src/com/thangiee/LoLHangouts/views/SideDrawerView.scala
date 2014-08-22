@@ -8,10 +8,11 @@ import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{MainActivity, PreferenceSettings}
+import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
-import com.thangiee.LoLHangouts.utils.{ExtractorImplicits, SummonerUtils}
+import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
+import de.greenrobot.event.EventBus
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
 import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener
@@ -26,7 +27,8 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
     DrawerItem("Settings", R.drawable.ic_action_settings),
-    DrawerItem("Remove Ads", R.drawable.ic_action_like))
+    DrawerItem("Remove Ads", R.drawable.ic_action_like),
+    DrawerItem("Logout", R.drawable.ic_action_exit))
 
   private var adapter: FunDapter[DrawerItem] = _
   private var currentDrawerItem = drawerItems(0)
@@ -106,28 +108,35 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
     .show()
   }
 
+  private def showLogoutDialog() = {
+    new AlertDialogBuilder(R.string.dialog_logout_title, R.string.dialog_logout_message)
+      .positiveButton(android.R.string.yes, (d: DialogInterface, i: Int) ⇒ {
+        EventBus.getDefault.post(new Events.FinishMainActivity)
+        ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))})
+      .negativeButton(android.R.string.no, (d: DialogInterface, i: Int) ⇒ d.dismiss())
+    .show()
+  }
+
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
     val mainActivity = ctx.asInstanceOf[MainActivity]
     val drawer = mainActivity.sideDrawer
     var fragment: Fragment = new Fragment
     val selectedDrawerItem = drawerItems(position)
 
-    // update the text color of the selected menu item in the nav drawer
-    if (!(selectedDrawerItem.title.equals("Settings") || selectedDrawerItem.title.equals("Remove Ads"))) {
-      currentDrawerItem.isSelected = false
-      selectedDrawerItem.isSelected = true
-      adapter.updateData(drawerItems)
-    }
-
     drawer.closeMenu()
-
     selectedDrawerItem.title match {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
+      case "Logout"     ⇒ showLogoutDialog(); return
     }
+
+    //update the text color of the selected menu item in the nav drawer
+    currentDrawerItem.isSelected = false
+    selectedDrawerItem.isSelected = true
+    adapter.updateData(drawerItems)
 
     drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener {
       override def onDrawerStateChange(oldState: Int, newState: Int): Unit = {

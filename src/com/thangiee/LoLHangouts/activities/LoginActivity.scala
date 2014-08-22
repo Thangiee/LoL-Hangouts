@@ -24,13 +24,6 @@ class LoginActivity extends TActivity with UpButton {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.login)
 
-    if (appCtx.selectedRegion == null) {
-      startActivity[RegionSelectionActivity]
-      finish()
-    }
-
-    setTitle(appCtx.selectedRegion.name)
-    getActionBar.setIcon(appCtx.selectedRegion.flag)
     logInButton.setIndeterminateProgressMode(true)
 
     userEditText.setText(Prefs.getString("user", ""))
@@ -49,6 +42,17 @@ class LoginActivity extends TActivity with UpButton {
       showChangeLog()                           // show change log if updated
       Prefs.putString("app_version", version)   // update the stored app version value
     }
+  }
+
+  override def onResume(): Unit = {
+    super.onResume()
+    if (appCtx.selectedRegion == null) {
+      startActivity[RegionSelectionActivity]
+      finish()
+    }
+
+    setTitle(appCtx.selectedRegion.name)
+    getActionBar.setIcon(appCtx.selectedRegion.flag)
   }
 
   private def login() {
