@@ -6,14 +6,14 @@ import android.view.View
 import android.widget.{ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api._
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
-import com.thangiee.LoLHangouts.{MyApp, R}
 import org.scaloid.common.SContext
 
 import scala.collection.JavaConverters._
 
-class ServerSelection extends ListActivity with SContext with ExtractorImplicits {
+class ServerSelectionActivity extends ListActivity with SContext with TActivity with ExtractorImplicits {
   val servers = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -32,7 +32,7 @@ class ServerSelection extends ListActivity with SContext with ExtractorImplicits
   }
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
-    MyApp.selectedServer = servers(position)
+    appCtx.selectedServer = servers(position)
     startActivity[LoginActivity]
   }
 }

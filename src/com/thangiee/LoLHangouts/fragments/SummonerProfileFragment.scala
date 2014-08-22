@@ -12,9 +12,9 @@ import com.thangiee.LoLHangouts.api.LoLStatistics
 import com.thangiee.LoLHangouts.fragments.SummonerProfileFragment.Data
 import com.thangiee.LoLHangouts.utils.SummonerUtils
 
+import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.collection.JavaConversions._
 
 class SummonerProfileFragment extends TFragment {
   private lazy val pieGraph = find[PieGraph](R.id.pie_graph_win_rate)

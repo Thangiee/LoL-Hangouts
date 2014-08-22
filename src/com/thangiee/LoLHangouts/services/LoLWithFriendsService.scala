@@ -9,11 +9,11 @@ import android.media.{MediaPlayer, RingtoneManager}
 import android.os.{Build, IBinder}
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.{FriendListListener, LoLChat, Summoner}
 import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TLogger}
-import com.thangiee.LoLHangouts.{MyApp, R}
+import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.util.StringUtils
@@ -22,7 +22,7 @@ import org.scaloid.common._
 
 import scala.util.Random
 
-class LoLWithFriendsService extends SService with MessageListener with FriendListListener with ConnectionListener with TLogger {
+class LoLWithFriendsService extends SService with TContext with MessageListener with FriendListListener with ConnectionListener with TLogger {
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
@@ -58,11 +58,11 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
 
     // create Message object with the received chat message
     val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
-      .otherPerson(friend.name).thisPerson(MyApp.currentUser).isRead(true).build()
+      .otherPerson(friend.name).thisPerson(appCtx.currentUser).isRead(true).build()
 
     // chat pane fragment is not open
     // or the current open chat is not with sender of the message
-    if (!MyApp.isChatOpen || MyApp.activeFriendChat != friend.name) {
+    if (!appCtx.isChatOpen || appCtx.activeFriendChat != friend.name) {
       m.setIsRead(false) // set to false because user has not seen it
     }
 
@@ -72,9 +72,9 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
     // check notification preference
     val isNotify = defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)
 
-    if (MyApp.isChatOpen && MyApp.activeFriendChat == friend.name) {  // open & right -> post received msg
+    if (appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) {  // open & right -> post received msg
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
-    } else if (!MyApp.isChatOpen && MyApp.activeFriendChat == friend.name){ // close & right -> post received msg and notification
+    } else if (!appCtx.isChatOpen && appCtx.activeFriendChat == friend.name){ // close & right -> post received msg and notification
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
       if (isNotify) showMsgNotification(m)
     } else {                                                          // wrong friend -> post notification
@@ -95,7 +95,7 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
 
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_login.r2String, true)) {
       // show notification when friendList fragment is not in view or screen is not on
-      if (!MyApp.isFriendListOpen || !powerManager.isScreenOn) { // check setting
+      if (!appCtx.isFriendListOpen || !powerManager.isScreenOn) { // check setting
         showLogInNotification(summoner)
       }
     }
@@ -156,7 +156,7 @@ class LoLWithFriendsService extends SService with MessageListener with FriendLis
   }
 
   private def showMsgNotification(newestMsg: models.Message) {
-    val unReadMsg = DataBaseHandler.getUnReadMessages
+    val unReadMsg = DataBaseHandler.getUnReadMessages(appCtx.currentUser)
 
     // intent to bring the app to foreground
     val i = new Intent(ctx, classOf[MainActivity])

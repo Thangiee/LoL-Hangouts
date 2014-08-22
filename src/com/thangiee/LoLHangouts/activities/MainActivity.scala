@@ -9,13 +9,13 @@ import android.view.{Menu, MenuItem, ViewGroup, Window}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.pixplicity.easyprefs.library.Prefs
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLWithFriendsService
 import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
 import com.thangiee.LoLHangouts.views.SideDrawerView
-import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
@@ -55,7 +55,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     if (savedInstanceState != null){
       val contentFrag = getFragmentManager.getFragment(savedInstanceState, "contentFrag")
       getFragmentManager.beginTransaction().replace(R.id.screen_container, contentFrag).commit()
-      MyApp.activeFriendChat = ""
+      appCtx.activeFriendChat = ""
     } else {
       getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
     }
@@ -82,7 +82,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case R.id.menu_exit     ⇒ cleanUpAndDisconnect(); finish()
-      case android.R.id.home  ⇒ if (!MyApp.isChatOpen) sideDrawer.toggleMenu()
+      case android.R.id.home  ⇒ if (!appCtx.isChatOpen) sideDrawer.toggleMenu()
       case R.id.menu_about    ⇒ startActivity[AboutActivity]
       case R.id.menu_changelog ⇒ showChangeLog()
       case _ => return false
@@ -108,7 +108,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     info("[*]cleaning up and disconnecting...")
     EventBus.getDefault.unregister(this, classOf[FinishMainActivity])
     stopService[LoLWithFriendsService]
-    MyApp.reset()
+    appCtx.resetState()
     Future (LoLChat.disconnect())
   }
 

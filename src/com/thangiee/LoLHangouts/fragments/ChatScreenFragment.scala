@@ -6,10 +6,10 @@ import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view._
 import android.view.inputmethod.InputMethodManager
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.utils.Events
 import com.thangiee.LoLHangouts.utils.Events.SummonerCardClicked
-import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 
 class ChatScreenFragment extends TFragment with PanelSlideListener {
@@ -35,17 +35,17 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
   override def onResume(): Unit = {
     super.onResume()
     EventBus.getDefault.register(this)
-    MyApp.isFriendListOpen = slidingLayout.isOpen
-    MyApp.isChatOpen = !slidingLayout.isOpen
+    appCtx.isFriendListOpen = slidingLayout.isOpen
+    appCtx.isChatOpen = !slidingLayout.isOpen
     EventBus.getDefault.postSticky(new Events.ClearChatNotification)
   }
 
   override def onPause(): Unit = {
     super.onPause()
     EventBus.getDefault.unregister(this, classOf[SummonerCardClicked])
-    MyApp.isChatOpen = false
-    MyApp.isFriendListOpen = false
-    MyApp.activeFriendChat = ""
+    appCtx.isChatOpen = false
+    appCtx.isFriendListOpen = false
+    appCtx.activeFriendChat = ""
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
@@ -62,15 +62,15 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_previous) // chage AB home icon
     setHasOptionsMenu(true)
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
-    MyApp.isFriendListOpen = false
-    MyApp.isChatOpen = true
+    appCtx.isFriendListOpen = false
+    appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(new Events.ClearChatNotification) // clear notification
 
     getFragmentManager.findFragmentById(R.id.chat_content_pane) match {
       case fragment: ChatPaneFragment ⇒
         fragment.setMessagesRead()
         fragment.setHasOptionsMenu(true) // change AB menu items
-        getActivity.getActionBar.setTitle(MyApp.activeFriendChat) // set AB title to name of friend in chat with
+        getActivity.getActionBar.setTitle(appCtx.activeFriendChat) // set AB title to name of friend in chat with
       case _ ⇒
     }
   }
@@ -80,8 +80,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     getActivity.getActionBar.setTitle(R.string.app_name)  // change AB title to app name
     getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)  // change AB menu items
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
-    MyApp.isFriendListOpen = true
-    MyApp.isChatOpen = false
+    appCtx.isFriendListOpen = true
+    appCtx.isChatOpen = false
     EventBus.getDefault.postSticky(new Events.ClearChatNotification)  // clear notification
     EventBus.getDefault.postSticky(new Events.ClearLoginNotification)  // clear notification
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)  // refresh friend list
@@ -90,8 +90,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
   def onEvent(event: SummonerCardClicked): Unit = {
     info("[*]onEvent: "+event.summoner.name+" summoner card clicked")
     // don't re-initialize fragment if the opening chat pane is the same as the active one
-    if (MyApp.activeFriendChat != event.summoner.name) {
-      MyApp.activeFriendChat = event.summoner.name
+    if (appCtx.activeFriendChat != event.summoner.name) {
+      appCtx.activeFriendChat = event.summoner.name
       getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
     }
     slidingLayout.closePane()
