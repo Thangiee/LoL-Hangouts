@@ -8,7 +8,7 @@ import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
+import com.thangiee.LoLHangouts.activities.{LiveGameActivity, LoginActivity, MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
@@ -26,6 +26,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
+    DrawerItem("Live Game", R.drawable.ic_action_accept),
     DrawerItem("Settings", R.drawable.ic_action_settings),
     DrawerItem("Remove Ads", R.drawable.ic_action_like),
     DrawerItem("Logout", R.drawable.ic_action_exit))
@@ -128,6 +129,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
+      case "Live Game" ⇒ aaa(); return
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
       case "Logout"     ⇒ showLogoutDialog(); return
@@ -152,6 +154,13 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
 
       override def onDrawerSlide(p1: Float, p2: Int): Unit = {}
     })
+  }
+
+  private def aaa(): Unit ={
+    val i = new Intent(ctx, classOf[LiveGameActivity])
+    i.putExtra("name-key", "skyWater")
+    i.putExtra("region-key", "na")
+    ctx.startActivity(i)
   }
 
   case class DrawerItem(title: String, icon: Int, var isSelected: Boolean = false)

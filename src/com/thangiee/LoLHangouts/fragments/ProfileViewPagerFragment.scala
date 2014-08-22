@@ -8,7 +8,7 @@ import android.view._
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.{LoLSkill, LoLStatistics}
+import com.thangiee.LoLHangouts.api.stats.{LoLSkill, ProfilePlayerStats}
 import de.keyboardsurfer.android.widget.crouton.Style
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -20,7 +20,7 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
   private lazy val name = getArguments.getString("name-key")
   private lazy val region = getArguments.getString("region-key")
-  private var userStats: LoLStatistics = _
+  private var userStats: ProfilePlayerStats = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     view = inflater.inflate(R.layout.view_pager_profile, null)

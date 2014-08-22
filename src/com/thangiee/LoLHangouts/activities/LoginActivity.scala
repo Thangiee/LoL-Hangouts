@@ -49,10 +49,10 @@ class LoginActivity extends TActivity with UpButton {
     if (appCtx.selectedRegion == null) {
       startActivity[RegionSelectionActivity]
       finish()
+    } else {
+      setTitle(appCtx.selectedRegion.name)
+      getActionBar.setIcon(appCtx.selectedRegion.flag)
     }
-
-    setTitle(appCtx.selectedRegion.name)
-    getActionBar.setIcon(appCtx.selectedRegion.flag)
   }
 
   private def login() {
