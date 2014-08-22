@@ -8,7 +8,7 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.{ImageView, TextView}
 import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.LoLStatistics
+import com.thangiee.LoLHangouts.api.stats.ProfilePlayerStats
 import com.thangiee.LoLHangouts.fragments.SummonerProfileFragment.Data
 import com.thangiee.LoLHangouts.utils.SummonerUtils
 
@@ -84,11 +84,11 @@ class SummonerProfileFragment extends TFragment {
 }
 
 object SummonerProfileFragment {
-  def newInstance(summonerName: String, stats: LoLStatistics): SummonerProfileFragment = {
+  def newInstance(summonerName: String, stats: ProfilePlayerStats): SummonerProfileFragment = {
     val bundle = new Bundle()
     val data = Data(
-      summonerName, stats.kda(), stats.leagueDivision(), stats.leagueName(), stats.leaguePoints(),
-      stats.leagueTier(), stats.level(), stats.lose(), stats.win()
+      summonerName, stats.kda(stats.soloQueue), stats.leagueDivision(), stats.leagueName(), stats.leaguePoints(),
+      stats.leagueTier(), stats.level, stats.soloQueue.losses, stats.soloQueue.wins
     )
     bundle.putSerializable("data", data)
     val frag = new SummonerProfileFragment
