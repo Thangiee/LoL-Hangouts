@@ -1,17 +1,17 @@
 package com.thangiee.LoLHangouts.views
 
-import android.content.{Intent, Context}
+import android.content.{Context, Intent}
 import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
 import android.widget.{Button, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.LoLStatus._
 import com.thangiee.LoLHangouts.api.Summoner
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
-import com.thangiee.LoLHangouts.{MyApp, R}
 import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence
 
@@ -48,7 +48,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
   private def updateLastMessage() {
     // set last message
-    val lastMsg = DataBaseHandler.getLastMessage(MyApp.currentUser, summoner.name)
+    val lastMsg = DataBaseHandler.getLastMessage(appCtx.currentUser, summoner.name)
     lastMsg match {
       case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
@@ -111,7 +111,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
       view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", MyApp.selectedServer.toString)
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", appCtx.selectedServer.toString)
         )
       })
 

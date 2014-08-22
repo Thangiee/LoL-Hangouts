@@ -7,11 +7,11 @@ import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{ExtractorImplicits, SummonerUtils}
-import com.thangiee.LoLHangouts.{MyApp, R}
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
 import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener
@@ -19,7 +19,7 @@ import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 
-class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TraitView[SideDrawerView]
+class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TView[SideDrawerView]
   with SystemService with AdapterView.OnItemClickListener with ExtractorImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
@@ -38,12 +38,12 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
     layoutInflater(ctx).inflate(R.layout.side_menu, this)
 
     // set username and status message
-    find[TextView](R.id.tv_username).setText(MyApp.currentUser)
+    find[TextView](R.id.tv_username).setText(appCtx.currentUser)
     find[TextView](R.id.tv_status_msg).setText(LoLChat.statusMsg())
 
     // load account icon
     val iconImageView = find[ImageView](R.id.img_my_profile_icon)
-    SummonerUtils.loadIconInto(ctx, MyApp.currentUser, iconImageView)
+    SummonerUtils.loadIconInto(ctx, appCtx.currentUser, iconImageView)
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
@@ -123,7 +123,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
 
     selectedDrawerItem.title match {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(MyApp.currentUser, MyApp.selectedServer.toString)
+      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedServer.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return

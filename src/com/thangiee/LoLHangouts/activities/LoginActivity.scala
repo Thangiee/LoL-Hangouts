@@ -7,8 +7,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.LoLChat
-import com.thangiee.LoLHangouts.{MyApp, R}
 import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,8 +23,14 @@ class LoginActivity extends TActivity with UpButton {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.login)
-    setTitle(MyApp.selectedServer.name)
-    getActionBar.setIcon(MyApp.selectedServer.flag)
+
+    if (appCtx.selectedServer == null) {
+      startActivity[ServerSelectionActivity]
+      finish()
+    }
+
+    setTitle(appCtx.selectedServer.name)
+    getActionBar.setIcon(appCtx.selectedServer.flag)
     logInButton.setIndeterminateProgressMode(true)
 
     userEditText.setText(Prefs.getString("user", ""))
@@ -58,7 +64,7 @@ class LoginActivity extends TActivity with UpButton {
       SystemClock.sleep(500)
 
       // try to connect to server and warn the user if fail to connect
-      if (!LoLChat.connect(MyApp.selectedServer.url)) {
+      if (!LoLChat.connect(appCtx.selectedServer.url)) {
         runOnUiThread("Fail to connect to server".makeCrouton())
         runOnUiThread(logInButton.setProgress(-1))
         //        logInButton.enable
@@ -70,7 +76,7 @@ class LoginActivity extends TActivity with UpButton {
       // after successfully connecting to server, try to login
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         runOnUiThread(logInButton.setProgress(100))
-        MyApp.currentUser = userEditText.getText.toString
+        appCtx.currentUser = userEditText.getText.toString
         startActivity[MainActivity]
         finish()
       } else {
@@ -83,7 +89,7 @@ class LoginActivity extends TActivity with UpButton {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case android.R.id.home ⇒ startActivity[ServerSelection]; true
+      case android.R.id.home ⇒ startActivity[ServerSelectionActivity]; true
       case _                 ⇒ super.onOptionsItemSelected(item)
     }
   }

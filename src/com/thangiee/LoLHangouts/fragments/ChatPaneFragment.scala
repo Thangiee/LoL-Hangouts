@@ -12,10 +12,10 @@ import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.{LoLChat, Summoner}
 import com.thangiee.LoLHangouts.utils.DataBaseHandler
 import com.thangiee.LoLHangouts.utils.Events.ReceivedMessage
-import com.thangiee.LoLHangouts.{MyApp, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
@@ -39,9 +39,9 @@ class ChatPaneFragment extends TFragment {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
-    val messageLog = DataBaseHandler.getMessageLog
+    val messageLog = DataBaseHandler.getMessageLog(appCtx.currentUser, appCtx.activeFriendChat)
     messageAdapter.addAll(messageLog) // add all messages
-    messageAdapter.setSenderName(MyApp.currentUser)
+    messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 
     setMessagesRead()
@@ -79,7 +79,7 @@ class ChatPaneFragment extends TFragment {
       if (LoLChat.sendMessage(LoLChat.getFriendByName(friendName).get, msgField.getText.toString)) {
         // if message sent, then save that message to DB
         val msg = new models.Message.MessageBuilder(MESSAGE_TYPE_SENT).text(msgField.getText.toString)
-          .date(new Date()).otherPerson(friendName).thisPerson(MyApp.currentUser).isRead(true).build()
+          .date(new Date()).otherPerson(friendName).thisPerson(appCtx.currentUser).isRead(true).build()
         msg.save() // save to DB
         if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_sent).start() // play sound
 
@@ -132,7 +132,7 @@ class ChatPaneFragment extends TFragment {
 
   private def confirmDeleteAllMsg(): Unit = {
     new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {
-      positiveButton("Delete", {DataBaseHandler.deleteMessageLog(); messageAdapter.clear()})
+      positiveButton("Delete", {DataBaseHandler.deleteMessageLog(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
       negativeButton(android.R.string.cancel.r2String)
     }.show()
   }

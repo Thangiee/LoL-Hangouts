@@ -2,6 +2,7 @@ package com.thangiee.LoLHangouts;
 
 import com.activeandroid.app.Application;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.thangiee.LoLHangouts.api.Server;
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -27,11 +28,24 @@ import org.acra.sender.HttpSender;
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text)
 public class MyApplication extends Application {
+    public Server selectedServer;
+    public String currentUser = "";
+    public boolean isFriendListOpen = false;
+    public boolean isChatOpen = false;
+    public String activeFriendChat = "";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         Prefs.initPrefs(getApplicationContext());
 //        ACRA.init(this);
+    }
+
+    public void resetState() {
+        currentUser = "";
+        isFriendListOpen = false;
+        isChatOpen = false;
+        activeFriendChat = "";
     }
 }
