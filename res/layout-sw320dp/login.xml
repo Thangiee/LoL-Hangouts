@@ -70,6 +70,8 @@
             progress:cpb_textIdle="LogIn"
             progress:cpb_selectorIdle="@drawable/idle_state_selector"
             progress:cpb_colorIndicator="@color/blue"
+            progress:cpb_colorIndicatorBackground="@color/gray"
+            progress:cpb_colorProgress="@android:color/transparent"
             android:layout_alignRight="@+id/et_password"
             android:layout_alignEnd="@+id/et_password"
             android:layout_below="@+id/et_password"
