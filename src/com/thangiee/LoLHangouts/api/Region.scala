@@ -2,76 +2,76 @@ package com.thangiee.LoLHangouts.api
 
 import com.thangiee.LoLHangouts.R
 
-trait Server {
+trait Region {
   val name: String
   val url: String
   val flag: Int
 }
 
-object BR extends Server {
+object BR extends Region {
   override val url: String = "chat.br.lol.riotgames.com"
   override val name: String = "Brazil"
   override val flag: Int = R.drawable.ic_br
   override def toString: String = "br"
 }
 
-object EUNE extends Server {
+object EUNE extends Region {
   override val url: String = "chat.eun1.lol.riotgames.com"
   override val name: String = "Europe Nordic and East"
   override val flag: Int = R.drawable.ic_eune
   override def toString: String = "eune"
 }
 
-object EUW extends Server {
+object EUW extends Region {
   override val url: String = "chat.euw1.lol.riotgames.com"
   override val name: String = "Europe West"
   override val flag: Int = R.drawable.ic_euw
   override def toString: String = "euw"
 }
 
-object KR extends Server {
+object KR extends Region {
   override val url: String = "chat.kr.lol.riotgames.com"
   override val name: String = "Korea"
   override val flag: Int = R.drawable.ic_south_korea
   override def toString: String = "kr"
 }
 
-object LAN extends Server {
+object LAN extends Region {
   override val url: String = "chat.la1.lol.riotgames.com"
   override val name: String = "Latin America North"
   override val flag: Int = R.drawable.ic_latamn
   override def toString: String = "lan"
 }
 
-object LAS extends Server {
+object LAS extends Region {
   override val url: String = "chat.la2.lol.riotgames.com"
   override val name: String = "Latin America South"
   override val flag: Int = R.drawable.ic_latams
   override def toString: String = "las"
 }
 
-object NA extends Server {
+object NA extends Region {
   override val url: String = "chat.na1.lol.riotgames.com"
   override val name: String = "North America"
   override val flag: Int = R.drawable.ic_na
   override def toString: String = "na"
 }
 
-object OCE extends Server {
+object OCE extends Region {
   override val url: String = "chat.oc1.lol.riotgames.com"
   override val name: String = "Oceania"
   override val flag: Int = R.drawable.ic_oce
   override def toString: String = "oce"
 }
 
-object RU extends Server {
+object RU extends Region {
   override val url: String = "chat.ru.lol.riotgames.com"
   override val name: String = "Russia"
   override val flag: Int = R.drawable.ic_ru
   override def toString: String = "ru"
 }
 
-object TR extends Server {
+object TR extends Region {
   override val url: String = "chat.tr.lol.riotgames.com"
   override val name: String = "Turkey"
   override val flag: Int = R.drawable.ic_tr

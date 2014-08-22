@@ -29,7 +29,7 @@ object LoLChat {
     XMPPExceptionHandler(connection.connect())
   }
 
-  def connect(server: Server): Boolean = connect(server.url)
+  def connect(region: Region): Boolean = connect(region.url)
 
   def login(user: String, pass: String): Boolean = login(user, pass, replaceLeague = false)
 

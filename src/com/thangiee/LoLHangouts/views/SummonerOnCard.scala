@@ -111,7 +111,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
       view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", appCtx.selectedServer.toString)
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", appCtx.selectedRegion.toString)
         )
       })
 

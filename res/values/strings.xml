@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">LoL Hangouts</string>
     <string name="app_version">1.0.2</string>
-    <string name="server_name">Server name</string>
+    <string name="region_name">region name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
-    <string name="server_selection_header">Please select your server</string>
+    <string name="region_selection_header">Please select your region</string>
 
     <!--preference keys-->
     <string name="pref_load_icon">pref_load_icon</string>
