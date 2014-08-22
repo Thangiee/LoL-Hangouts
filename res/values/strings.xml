@@ -24,6 +24,8 @@
 
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
+    <string name="dialog_logout_title">Logging out?</string>
+    <string name="dialog_logout_message">Sure you want to log out?</string>
 
     <!--ads related-->
     <string name="ads_disabled">Restart app to Disable ads!</string>
