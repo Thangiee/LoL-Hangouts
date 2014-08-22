@@ -33,7 +33,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   val SKU_REMOVE_ADS = "lolhangouts.remove.ads"
 
   override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
-  override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/1349577574"
+  override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/3100022376"
 
   protected override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

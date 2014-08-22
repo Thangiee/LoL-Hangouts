@@ -9,7 +9,7 @@ import com.thangiee.LoLHangouts.fragments.ProfileViewPagerFragment
 
 class ViewOtherSummonerActivity extends TActivity with UpButton with Ads {
   override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
-  override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/6689603971"
+  override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/4576755572"
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
