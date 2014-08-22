@@ -24,18 +24,18 @@ class LoginActivity extends TActivity with UpButton {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.login)
 
-    if (appCtx.selectedServer == null) {
-      startActivity[ServerSelectionActivity]
+    if (appCtx.selectedRegion == null) {
+      startActivity[RegionSelectionActivity]
       finish()
     }
 
-    setTitle(appCtx.selectedServer.name)
-    getActionBar.setIcon(appCtx.selectedServer.flag)
+    setTitle(appCtx.selectedRegion.name)
+    getActionBar.setIcon(appCtx.selectedRegion.flag)
     logInButton.setIndeterminateProgressMode(true)
 
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
-    R.string.server_name.r2String
+    R.string.region_name.r2String
 
     rememberCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener {
       override def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
@@ -64,7 +64,7 @@ class LoginActivity extends TActivity with UpButton {
       SystemClock.sleep(500)
 
       // try to connect to server and warn the user if fail to connect
-      if (!LoLChat.connect(appCtx.selectedServer.url)) {
+      if (!LoLChat.connect(appCtx.selectedRegion.url)) {
         runOnUiThread("Fail to connect to server".makeCrouton())
         runOnUiThread(logInButton.setProgress(-1))
         //        logInButton.enable
@@ -89,7 +89,7 @@ class LoginActivity extends TActivity with UpButton {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case android.R.id.home ⇒ startActivity[ServerSelectionActivity]; true
+      case android.R.id.home ⇒ startActivity[RegionSelectionActivity]; true
       case _                 ⇒ super.onOptionsItemSelected(item)
     }
   }

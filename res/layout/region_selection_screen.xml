@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/server_selection_header"
+            android:text="@string/region_selection_header"
             android:id="@+id/textView"
             android:layout_gravity="center_horizontal"
             android:background="@color/my_dark_blue"

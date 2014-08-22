@@ -13,26 +13,26 @@ import org.scaloid.common.SContext
 
 import scala.collection.JavaConverters._
 
-class ServerSelectionActivity extends ListActivity with SContext with TActivity with ExtractorImplicits {
-  val servers = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
+class RegionSelectionActivity extends ListActivity with SContext with TActivity with ExtractorImplicits {
+  val regions = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.server_selection_screen)
+    setContentView(R.layout.region_selection_screen)
 
-    val serverDictionary = new BindDictionary[Server]()
-    serverDictionary.addStringField(R.id.tv_server_name, (item: Server) ⇒ item.name)
+    val serverDictionary = new BindDictionary[Region]()
+    serverDictionary.addStringField(R.id.tv_region_name, (item: Region) ⇒ item.name)
 
-    serverDictionary.addStaticImageField(R.id.im_flag, new StaticImageLoader[Server] {
-      override def loadImage(item: Server, imageView: ImageView, position: Int) = imageView.setImageResource(item.flag)
+    serverDictionary.addStaticImageField(R.id.im_flag, new StaticImageLoader[Region] {
+      override def loadImage(item: Region, imageView: ImageView, position: Int) = imageView.setImageResource(item.flag)
     })
     
-    val adapter = new FunDapter[Server](this, servers.asJava, R.layout.server_item, serverDictionary)
+    val adapter = new FunDapter[Region](this, regions.asJava, R.layout.region_item, serverDictionary)
     setListAdapter(adapter)
   }
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
-    appCtx.selectedServer = servers(position)
+    appCtx.selectedRegion = regions(position)
     startActivity[LoginActivity]
   }
 }
