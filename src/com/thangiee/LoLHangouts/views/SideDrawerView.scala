@@ -126,13 +126,13 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     drawer.closeMenu()
     selectedDrawerItem.title match {
-      case "Chat"       ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
+      case "Chat"           ⇒ fragment = new ChatScreenFragment
+      case "My Profile"     ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
-      case "Live Game" ⇒  fragment = LiveGamePagerFragment.newInstance("LuvSic", "na")
-      case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
-      case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
-      case "Logout"     ⇒ showLogoutDialog(); return
+      case "Live Game Stats" ⇒  fragment = LiveGamePagerFragment.newInstance("LuvSic", "na")
+      case "Settings"       ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
+      case "Remove Ads"     ⇒ mainActivity.setUpBilling(); return
+      case "Logout"         ⇒ showLogoutDialog(); return
     }
 
     //update the text color of the selected menu item in the nav drawer

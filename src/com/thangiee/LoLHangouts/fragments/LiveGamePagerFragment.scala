@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view._
-import android.webkit.{JavascriptInterface, WebView, WebViewClient}
+import android.webkit.{WebViewClient, JavascriptInterface, WebView}
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
@@ -20,7 +20,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
   private lazy val name = getArguments.getString("name-key")
   private lazy val region = getArguments.getString("region-key")
-  private lazy val browser = new WebView(appCtx)
+  private var browser: WebView = _
   private var liveGame: LoLNexus = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -32,26 +32,12 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   override def onActivityCreated(savedInstanceState: Bundle): Unit = {
     super.onActivityCreated(savedInstanceState)
     setContentView(view)
-    browser.getSettings.setJavaScriptEnabled(true)
-    browser.addJavascriptInterface(new MyJavaScriptInterface, "HTMLOUT")
-    browser.setWebViewClient(new WebViewClient {
-      override def onPageFinished(view: WebView, url: String): Unit = {
-        browser.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
-        info("Finish loading")
-        setContentEmpty(false) // hide error msg if currently showing
-        setContentShown(true) // hide loading bar
-      }
-    })
+    setupBrowser()
     loadData()
   }
 
   override def onStop(): Unit = {
-    if (browser != null) {
-      // clean up/free memory
-      browser.clearCache(true)
-      browser.removeAllViews()
-      browser.destroy()
-    }
+    cleanUpBrowser()
     super.onStop()
   }
 
@@ -65,6 +51,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     if (item.getItemId == R.id.menu_refresh) {
+      setupBrowser()
       loadData()
       return true
     }
@@ -74,7 +61,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   private def loadData(): Unit = {
     setContentShown(false) // show loading bar
     try {
-      browser.loadUrl("http://www.lolnexus.com/" + region + "/search?name=" + "Crumbzz")
+      browser.loadUrl("http://www.lolnexus.com/" + region + "/search?name=" + "Xhojin") //todo: remove hard code value
       info("[*] loading url")
     } catch {
       case e: Exception ⇒
@@ -86,16 +73,38 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     }
   }
 
+  private def setupBrowser(): Unit = {
+    browser = new WebView(appCtx)
+    browser.getSettings.setJavaScriptEnabled(true)
+    browser.addJavascriptInterface(new MyJavaScriptInterface, "HTMLOUT")
+    browser.setWebViewClient(new WebViewClient {
+      override def onPageFinished(view: WebView, url: String): Unit = {
+        browser.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
+        info("Finish loading")
+        setContentEmpty(false) // hide error msg if currently showing
+        setContentShown(true) // hide loading bar
+      }
+    })
+  }
+
+  private def cleanUpBrowser(): Unit ={
+    if (browser != null) {
+      // clean up/free memory
+      browser.clearCache(true)
+      browser.removeAllViews()
+      browser.destroy()
+    }
+  }
+
   class MyJavaScriptInterface {
     @JavascriptInterface
     def processHTML(html: String): Unit = {
       info("[*] processing HTML" + html.length)
       liveGame = new LoLNexus(name, region) {
-        override protected def fetchDocument: Document = {
-          val js = Jsoup.parse(html)
-          js
-        }
+        override protected def fetchDocument: Document = Jsoup.parse(html)
       }
+
+      println(liveGame.doc.text())
 
       runOnUiThread {
         pager.setAdapter(adapter)
@@ -103,22 +112,23 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
 
         // error checking
         if (html.contains("Region Disabled")) {
-          warn("[!] region disabled")
+          warn("[!] Region disabled")
           R.string.connection_error_short.r2String.makeCrouton()
           setEmptyText(R.string.server_down)
           setContentEmpty(true) // show error msg
           pager.removeAllViews()
         } else if (html.contains("not currently in a game")) {
-          warn("[!] player not in game")
+          info("[-] Player not in game")
           setEmptyText(name + " is not currently in a game.")
           setContentEmpty(true)
           pager.removeAllViews()
+        } else if (html.contains("still in champion select")) {
+          info("[-] Still in champion select")
+          setEmptyText(name + " is still in a champion selection. Try again in a bit.")
+          setContentEmpty(true)
+          pager.removeAllViews()
         }
-
-        // clean up/free memory
-        browser.clearCache(true)
-        browser.removeAllViews()
-        browser.destroy()
+        cleanUpBrowser()
       }
       info("[+] Got live game successfully")
     }
@@ -130,7 +140,6 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     override def getPageTitle(position: Int): CharSequence = titles(position)
 
     override def getItem(position: Int): Fragment = {
-      println("here")
       titles(position) match {
         case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.teammates, 1)
         case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.opponents, 2)
