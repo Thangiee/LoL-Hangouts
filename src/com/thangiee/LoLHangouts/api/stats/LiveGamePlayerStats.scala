@@ -2,11 +2,11 @@ package com.thangiee.LoLHangouts.api.stats
 
 trait LiveGamePlayerStats extends  PlayerStats {
 
-  def chosenChamp: String
+  val chosenChamp: String
 
-  def previousLeagueTier(): String
+  val previousLeagueTier: String
 
-  def series(): Option[Series]
+  val series: Option[Series]
 
   case class Series(result: List[Int])
 }

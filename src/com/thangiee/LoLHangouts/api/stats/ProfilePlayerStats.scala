@@ -2,15 +2,15 @@ package com.thangiee.LoLHangouts.api.stats
 
 trait ProfilePlayerStats extends PlayerStats {
 
-  def level: Int
+  val level: Int
 
-  def region: String
+  val region: String
 
-  def leagueName(): String
+  val leagueName: String
 
-  def topChampions(): List[Champion]
+  val topChampions: List[Champion]
 
-  def matchHistory(): List[Match]
+  val matchHistory: List[Match]
 }
 
 sealed case class Champion(name: String, iconUrl: String = "", numOfGame: Int, avgStats: Stats, avgBetterStats: AvgBetterStats = AvgBetterStats())
