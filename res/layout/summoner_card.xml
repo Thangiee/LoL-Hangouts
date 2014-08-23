@@ -14,7 +14,10 @@
             android:id="@+id/tv_summoner_name"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/img_profile_icon"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_alignRight="@+id/tv_summoner_status"
+            android:layout_alignEnd="@+id/tv_summoner_status"
+            android:singleLine="true"/>
 
     <ImageView
             android:layout_width="56dp"
@@ -35,7 +38,8 @@
             android:id="@+id/tv_summoner_status"
             android:layout_below="@+id/tv_summoner_name"
             android:layout_toRightOf="@id/img_profile_icon"
-            android:layout_centerHorizontal="true"/>
+            android:singleLine="true"
+            android:layout_toLeftOf="@+id/img_info"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -51,8 +55,8 @@
             android:paddingRight="8dp"/>
 
     <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:id="@+id/img_info"
             android:src="@drawable/ic_summoner_info"
             android:layout_alignTop="@+id/tv_summoner_name"
