@@ -40,17 +40,17 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     })
 
     playerDictionary.addStaticImageField(R.id.img_s4_badge, new StaticImageLoader[LiveGamePlayerStats] {
-      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.leagueTier(), img)
+      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.leagueTier, img)
     })
 
     playerDictionary.addStaticImageField(R.id.img_s3_badge, new StaticImageLoader[LiveGamePlayerStats] {
-      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.previousLeagueTier(), img)
+      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.previousLeagueTier, img)
     })
 
     // todo: optimize performance
     playerDictionary.addStringField(R.id.tv_live_game_name, (player: LiveGamePlayerStats) ⇒ player.name)
     playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
-    playerDictionary.addStringField(R.id.tv_live_game_s3_leag_info, (player: LiveGamePlayerStats) ⇒ player.previousLeagueTier())
+    playerDictionary.addStringField(R.id.tv_live_game_s3_leag_info, (player: LiveGamePlayerStats) ⇒ player.previousLeagueTier)
     playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + "W")
     playerDictionary.addStringField(R.id.tv_live_game_rank_w_l, (player: LiveGamePlayerStats) ⇒ {
       val soloQueue = player.soloQueue
@@ -78,7 +78,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   }
 
   private def leagueInfo(player: LiveGamePlayerStats): String = {
-    player.leagueTier() + " " + player.leagueDivision() + " (" + player.leaguePoints() + ")"
+    player.leagueTier + " " + player.leagueDivision + " (" + player.leaguePoints + ")"
   }
 
   private def setBadgeDrawable(tier: String, img: ImageView): Unit = {
@@ -86,6 +86,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       case "BRONZE" ⇒ img.setImageResource(R.drawable.badge_bronze)
       case "SILVER" ⇒ img.setImageResource(R.drawable.badge_silver)
       case "GOLD"   ⇒ img.setImageResource(R.drawable.badge_gold)
+      case "DIAMOND" ⇒ img.setImageResource(R.drawable.badge_diamond)
       case "PLATINUM" ⇒ img.setImageResource(R.drawable.badge_platinum)
       case "CHALLENGER" ⇒ img.setImageResource(R.drawable.badge_challenger)
       case _ ⇒ img.setImageResource(R.drawable.badge_unranked)
@@ -93,7 +94,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   }
 
   private def setSeriesDrawable(player: LiveGamePlayerStats, img: ImageView): Unit = {
-    player.series() match {
+    player.series match {
       case Some(s) ⇒ if (s.result.size == 3) {
         if      (s.result.equals(List(1, -1, 0))) img.setImageResource(R.drawable.series_3_wl)
         else if (s.result.equals(List(-1, 1, 0))) img.setImageResource(R.drawable.series_3_lw)
@@ -124,6 +125,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 
 object LiveGameTeamFragment {
   def newInstance(players: List[LiveGamePlayerStats], team: Int): LiveGameTeamFragment = {
+    println(">>>" + players.size)
     // todo: team number
     if (team == 1)
       EventBus.getDefault.postSticky(new TeamOne(players))
