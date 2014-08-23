@@ -23,7 +23,7 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
   private var userStats: ProfilePlayerStats = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
-    view = inflater.inflate(R.layout.view_pager_profile, null)
+    view = inflater.inflate(R.layout.view_pager, null)
     setHasOptionsMenu(true)
     inflater.inflate(R.layout.progress_container, container, false)
   }

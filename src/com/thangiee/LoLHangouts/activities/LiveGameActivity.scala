@@ -30,6 +30,7 @@ class LiveGameActivity extends TActivity {
 
   private def initViews(): Unit = {
     lolNexus.allPlayers.map(p ⇒ println(p.name))
+    lolNexus.opponents
   }
 
   class MyJavaScriptInterface {

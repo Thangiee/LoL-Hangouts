@@ -8,9 +8,9 @@ import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{LiveGameActivity, LoginActivity, MainActivity, PreferenceSettings}
+import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
-import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
+import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, LiveGamePagerFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
 import de.greenrobot.event.EventBus
 import info.hoang8f.android.segmented.SegmentedGroup
@@ -21,7 +21,7 @@ import org.scaloid.common._
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TView[SideDrawerView]
-  with SystemService with AdapterView.OnItemClickListener with ExtractorImplicits {
+with AdapterView.OnItemClickListener with ExtractorImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
@@ -129,7 +129,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
-      case "Live Game" ⇒ aaa(); return
+      case "Live Game" ⇒  fragment = LiveGamePagerFragment.newInstance("PowerZiele", "eune")
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
       case "Logout"     ⇒ showLogoutDialog(); return
@@ -154,13 +154,6 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
 
       override def onDrawerSlide(p1: Float, p2: Int): Unit = {}
     })
-  }
-
-  private def aaa(): Unit ={
-    val i = new Intent(ctx, classOf[LiveGameActivity])
-    i.putExtra("name-key", "skyWater")
-    i.putExtra("region-key", "na")
-    ctx.startActivity(i)
   }
 
   case class DrawerItem(title: String, icon: Int, var isSelected: Boolean = false)

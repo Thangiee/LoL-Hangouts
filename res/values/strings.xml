@@ -21,6 +21,7 @@
     <string name="no_champion">Did not find any ranked champion for this user.</string>
     <string name="connection_error_short">ERROR loading data!</string>
     <string name="connection_error_long">Try refreshing or check your connection. Otherwise, try again later as server could be busy.</string>
+    <string name="server_down">server is currently down. Try again later.</string>
 
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
