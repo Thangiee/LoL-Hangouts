@@ -26,7 +26,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
-    DrawerItem("Live Game", R.drawable.ic_action_accept),
+    DrawerItem("Live Game Stats", R.drawable.ic_action_monitor),
     DrawerItem("Settings", R.drawable.ic_action_settings),
     DrawerItem("Remove Ads", R.drawable.ic_action_like),
     DrawerItem("Logout", R.drawable.ic_action_exit))
