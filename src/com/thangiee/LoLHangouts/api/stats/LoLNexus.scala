@@ -8,24 +8,25 @@ import scala.util.Try
 class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats with Parsing {
   override protected val baseServerUrl: String = "http://www.lolnexus.com/"
   override val url: String = baseServerUrl + playerRegion + "/search?name=" + playerName
-  override var doc: Document = null
+  override val doc: Document = fetchDocument
+  println(doc.text())
 
-  override def allPlayers: List[LiveGamePlayerStats] = teammates ++ opponents
-
-  override def teammates: List[LiveGamePlayerStats] = {
+  override lazy val teammates: List[LiveGamePlayerStats] = {
     for (p <- Try(doc.select("div[class=team-1]").first().select("tbody").select("tr[class]").toList).getOrElse(List())) yield new Player(p)
   }
 
-  override def opponents: List[LiveGamePlayerStats] = {
+  override val opponents: List[LiveGamePlayerStats] = {
     for (p <- Try(doc.select("div[class=team-2]").first().select("tbody").select("tr[class]").toList).getOrElse(List())) yield new Player(p)
   }
+
+  override val allPlayers: List[LiveGamePlayerStats] = teammates ++ opponents
 
   private class Player(html: Element) extends LiveGamePlayerStats {
     val tierTitle = List("Bronze", "Silver", "Gold", "Platinum", "Diamond", "Challenger")
 
-    override def previousLeagueTier(): String = parse("span", html.select("td[class=last-season]").first()).getOrElse("???")
+    override val previousLeagueTier: String = parse("span", html.select("td[class=last-season]").first()).getOrElse("???")
 
-    override def series(): Option[Series] = {
+    override val series: Option[Series] = {
       println("CALL ME AGAIN")
       val series = Try(html.select("td[class=current-season]").select("div[class=ranking]").select("ul").first().select("li").toList)
 
@@ -41,12 +42,12 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
       }
     }
 
-    override def normal5v5: GameModeStats = {
+    override val normal5v5: GameModeStats = {
       val w = getNumber[Int](parse("span", html.select("td[class=normal-wins").first).get).getOrElse(0)
       GameModeStats(w, 0, 0, 0, 0, w)
     }
 
-    override def soloQueue: GameModeStats = {
+    override val soloQueue: GameModeStats = {
       var temp = parse("td[class=ranked-wins-losses", html).getOrElse("").split("/")
       val w = temp.headOption.getOrElse("0").toInt
       val l = temp.lastOption.getOrElse("0").toInt
@@ -60,15 +61,15 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
       GameModeStats(w, l, k, d, a, w + l)
     }
 
-    override def leaguePoints(): String = parse("b", html.select("td[class=current-season]").first()).getOrElse("0 LP")
+    override val leaguePoints: String = parse("b", html.select("td[class=current-season]").first()).getOrElse("0 LP")
 
-    override def name: String = parse("span", html.select("td[class=name]").first()).getOrElse("???")
+    override val name: String = parse("span", html.select("td[class=name]").first()).getOrElse("???")
 
-    override def leagueTier(): String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").head
+    override val leagueTier: String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").head
 
-    override def leagueDivision(): String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").tail.head
+    override val leagueDivision: String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").tail.head
 
-    override def chosenChamp: String = {
+    override val chosenChamp: String = {
       parse("span", html.select("td[class=champion]").first()).getOrElse("???").split(" \\(").head
         .replace("Lee Sin", "lee-sin")  // format cases to download icon URL
         .replace("Miss Fortune", "miss-fortune")
@@ -76,10 +77,12 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
         .replace("Dr. Mundo", "dr-mundo")
         .replace("Master Yi", "master-yi")
         .replace("Jarvan IV", "jarvan-iv")
-        .replace("Twisted fate", "twisted-fate")
+        .replace("Twisted Fate", "twisted-fate")
         .replace("Cho'Gath", "chogath")
         .replace("Kha'Zix", "khazix")
     }
   }
+
+  override protected def fetchDocument: Document = ???
 }
 

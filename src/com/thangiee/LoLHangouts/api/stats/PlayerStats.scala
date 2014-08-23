@@ -6,17 +6,17 @@ import scala.util.Try
 
 trait PlayerStats {
 
-   def name: String
+   val name: String
 
-   def leagueTier(): String
+   val leagueTier: String
 
-   def leagueDivision(): String
+   val leagueDivision: String
 
-   def leaguePoints(): String
+   val leaguePoints: String
 
-   def soloQueue: GameModeStats
+   val soloQueue: GameModeStats
 
-   def normal5v5: GameModeStats
+   val normal5v5: GameModeStats
 
    def kda(gameMode: GameModeStats): String = {
      val (k, d, a) = (gameMode.kills, gameMode.deaths, gameMode.assists)
