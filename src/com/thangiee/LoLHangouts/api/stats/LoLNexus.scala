@@ -9,7 +9,6 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
   override protected val baseServerUrl: String = "http://www.lolnexus.com/"
   override val url: String = baseServerUrl + playerRegion + "/search?name=" + playerName
   override val doc: Document = fetchDocument
-  println(doc.text())
 
   override lazy val teammates: List[LiveGamePlayerStats] = {
     for (p <- Try(doc.select("div[class=team-1]").first().select("tbody").select("tr[class]").toList).getOrElse(List())) yield new Player(p)
@@ -21,13 +20,14 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
   override val allPlayers: List[LiveGamePlayerStats] = teammates ++ opponents
 
+  override protected def fetchDocument: Document = ???
+
   private class Player(html: Element) extends LiveGamePlayerStats {
     val tierTitle = List("Bronze", "Silver", "Gold", "Platinum", "Diamond", "Challenger")
 
     override val previousLeagueTier: String = parse("span", html.select("td[class=last-season]").first()).getOrElse("???")
 
     override val series: Option[Series] = {
-      println("CALL ME AGAIN")
       val series = Try(html.select("td[class=current-season]").select("div[class=ranking]").select("ul").first().select("li").toList)
 
       if (series.isSuccess) {
@@ -82,7 +82,5 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
         .replace("Kha'Zix", "khazix")
     }
   }
-
-  override protected def fetchDocument: Document = ???
 }
 
