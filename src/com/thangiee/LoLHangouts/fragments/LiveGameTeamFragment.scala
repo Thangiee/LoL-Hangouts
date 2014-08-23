@@ -28,7 +28,6 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   }
 
   private def setupListView(players: List[LiveGamePlayerStats]): Unit = {
-    players.map(p ⇒ println(p.name))
     val playerDictionary = new BindDictionary[LiveGamePlayerStats]()
 
     playerDictionary.addStaticImageField(R.id.img_live_game_champ, new StaticImageLoader[LiveGamePlayerStats] {
@@ -125,7 +124,6 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 
 object LiveGameTeamFragment {
   def newInstance(players: List[LiveGamePlayerStats], team: Int): LiveGameTeamFragment = {
-    println(">>>" + players.size)
     // todo: team number
     if (team == 1)
       EventBus.getDefault.postSticky(new TeamOne(players))
