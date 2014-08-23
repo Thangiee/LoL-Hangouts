@@ -129,7 +129,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
       case "Chat"       ⇒ fragment = new ChatScreenFragment
       case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
-      case "Live Game" ⇒  fragment = LiveGamePagerFragment.newInstance("PowerZiele", "eune")
+      case "Live Game" ⇒  fragment = LiveGamePagerFragment.newInstance("LuvSic", "na")
       case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
       case "Logout"     ⇒ showLogoutDialog(); return

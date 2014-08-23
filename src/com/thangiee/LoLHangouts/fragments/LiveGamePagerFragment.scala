@@ -12,6 +12,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.LoLNexus
 import de.keyboardsurfer.android.widget.crouton.Style
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 class LiveGamePagerFragment extends ProgressFragment with TFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
@@ -73,8 +74,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   private def loadData(): Unit = {
     setContentShown(false) // show loading bar
     try {
-      liveGame = new LoLNexus(name, region)
-      browser.loadUrl(liveGame.url)
+      browser.loadUrl("http://www.lolnexus.com/" + region + "/search?name=" + "Crumbzz")
       info("[*] loading url")
     } catch {
       case e: Exception ⇒
@@ -90,7 +90,13 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     @JavascriptInterface
     def processHTML(html: String): Unit = {
       info("[*] processing HTML" + html.length)
-      liveGame.doc = Jsoup.parse(html)
+      liveGame = new LoLNexus(name, region) {
+        override protected def fetchDocument: Document = {
+          val js = Jsoup.parse(html)
+          js
+        }
+      }
+
       runOnUiThread {
         pager.setAdapter(adapter)
         tabs.setViewPager(pager)
@@ -124,6 +130,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     override def getPageTitle(position: Int): CharSequence = titles(position)
 
     override def getItem(position: Int): Fragment = {
+      println("here")
       titles(position) match {
         case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.teammates, 1)
         case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.opponents, 2)

@@ -84,9 +84,9 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
     override def getItem(position: Int): Fragment = {
       titles(position) match {
         case "Profile"    ⇒ SummonerProfileFragment.newInstance(name, userStats)
-        case "Champions"  ⇒ if (userStats.topChampions().size != 0) SummonerTopChampFragment.newInstance(userStats.topChampions())
+        case "Champions"  ⇒ if (userStats.topChampions.size != 0) SummonerTopChampFragment.newInstance(userStats.topChampions)
                             else BlankFragment.newInstance(R.string.no_champion.r2String)
-        case "History"    ⇒ if (userStats.matchHistory().size != 0) SummonerMatchesFragment.newInstance(userStats.matchHistory())
+        case "History"    ⇒ if (userStats.matchHistory.size != 0) SummonerMatchesFragment.newInstance(userStats.matchHistory)
                             else BlankFragment.newInstance(R.string.no_match_hist.r2String)
       }
     }
