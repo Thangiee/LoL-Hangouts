@@ -156,7 +156,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
   }
 
   private def showMsgNotification(newestMsg: models.Message) {
-    val unReadMsg = DataBaseHandler.getUnReadMessages(appCtx.currentUser)
+    val unReadMsg = DataBaseHandler.getAllUnReadMessages(appCtx.currentUser)
 
     // intent to bring the app to foreground
     val i = new Intent(ctx, classOf[MainActivity])

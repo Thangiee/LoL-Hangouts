@@ -39,7 +39,7 @@ class ChatPaneFragment extends TFragment {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
-    val messageLog = DataBaseHandler.getMessageLog(appCtx.currentUser, appCtx.activeFriendChat)
+    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat)
     messageAdapter.addAll(messageLog) // add all messages
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
@@ -132,7 +132,7 @@ class ChatPaneFragment extends TFragment {
 
   private def confirmDeleteAllMsg(): Unit = {
     new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {
-      positiveButton("Delete", {DataBaseHandler.deleteMessageLog(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
+      positiveButton("Delete", {DataBaseHandler.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
       negativeButton(android.R.string.cancel.r2String)
     }.show()
   }
