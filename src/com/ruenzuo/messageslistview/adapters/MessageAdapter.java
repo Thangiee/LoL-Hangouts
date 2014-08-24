@@ -32,6 +32,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private int recipientColor;
     private int messageTextColor;
     private int dateTextColor;
+    private String region;
     private String senderName;
     private String recipientName;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE h:mm a");
@@ -85,6 +86,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         path.close();
         canvas.drawPath(path, paint);
         this.senderDrawable = new BitmapDrawable(getContext().getResources(), bitmap);
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public void setSenderName(String url) {
@@ -165,13 +170,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.message_date.setText(simpleDateFormat.format(message.getDate()));
         if (message.getType() == MessageType.MESSAGE_TYPE_SENT) {
 //            viewHolder.avatar.setImageDrawable(senderDrawable);
-            SummonerUtils.loadIconInto(getContext(), senderName, viewHolder.avatar, R.drawable.mlv__default_avatar);
+            SummonerUtils.loadIconInto(getContext(), senderName, region, viewHolder.avatar, R.drawable.mlv__default_avatar);
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
 //            viewHolder.avatar.setImageDrawable(recipientDrawable);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             if (prefs.getBoolean(getContext().getResources().getString(R.string.pref_load_icon), true))
-                SummonerUtils.loadIconInto(getContext(), recipientName, viewHolder.avatar, R.drawable.mlv__default_avatar);
+                SummonerUtils.loadIconInto(getContext(), recipientName, region, viewHolder.avatar, R.drawable.mlv__default_avatar);
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;

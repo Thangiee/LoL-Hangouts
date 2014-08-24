@@ -33,7 +33,7 @@ class SummonerProfileFragment extends TFragment {
     find[TextView](R.id.tv_profile_kda).setText(data.kda)
     find[TextView](R.id.tv_profile_lost).setText(data.lose.toString + "L")
     find[TextView](R.id.tv_profile_win).setText(data.win.toString + "W")
-    SummonerUtils.loadIconInto(getActivity, data.name, find[ImageView](R.id.img_profile_icon))
+    SummonerUtils.loadIconInto(getActivity, data.name, data.region, find[ImageView](R.id.img_profile_icon))
 
     val rateTextView = find[TextView](R.id.tv_profile_rate)
     rateTextView.setText(new DecimalFormat("###.##").format(percent) + "%")
@@ -84,11 +84,11 @@ class SummonerProfileFragment extends TFragment {
 }
 
 object SummonerProfileFragment {
-  def newInstance(summonerName: String, stats: ProfilePlayerStats): SummonerProfileFragment = {
+  def newInstance(player: ProfilePlayerStats): SummonerProfileFragment = {
     val bundle = new Bundle()
     val data = Data(
-      summonerName, stats.kda(stats.soloQueue), stats.leagueDivision, stats.leagueName, stats.leaguePoints,
-      stats.leagueTier, stats.level, stats.soloQueue.losses, stats.soloQueue.wins
+      player.name, player.region, player.kda(player.soloQueue), player.leagueDivision, player.leagueName, player.leaguePoints,
+      player.leagueTier, player.level, player.soloQueue.losses, player.soloQueue.wins
     )
     bundle.putSerializable("data", data)
     val frag = new SummonerProfileFragment
@@ -96,7 +96,7 @@ object SummonerProfileFragment {
     frag
   }
 
-  private case class Data(name: String, kda: String, leagueDivision: String, leagueName: String, leaguePoints: String,
+  private case class Data(name: String, region: String, kda: String, leagueDivision: String, leagueName: String, leaguePoints: String,
                           leagueTier: String, level: Int, lose: Int, win: Int)
 
 }
