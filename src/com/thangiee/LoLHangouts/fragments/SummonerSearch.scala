@@ -1,19 +1,20 @@
 package com.thangiee.LoLHangouts.fragments
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem.OnActionExpandListener
 import android.view._
 import android.widget._
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{MainActivity, ViewOtherSummonerActivity}
+import com.thangiee.LoLHangouts.activities.MainActivity
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener {
+trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with OnActionExpandListener {
   private var searchView: SearchView = _
   private var regionSpinner: Spinner = _
+  val defaultSearchText: String
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
@@ -33,18 +34,13 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener {
     regionAdapter.setDropDownViewResource(R.layout.spinner_item)
     regionSpinner.setAdapter(regionAdapter)
 
-    // setup summoner search view
+    // setup search menu item
     val menuItems = menu.findItem(R.id.menu_search)
-    searchView = menuItems.getActionView.asInstanceOf[SearchView]
-    searchView.setQueryHint("Summoner")
-    searchView.setOnQueryTextListener(this)
-
-    // change default SearchView's search button icon
-    val searchImgId = getResources.getIdentifier("android:id/search_button", null, null)
-    searchView.findViewById(searchImgId).asInstanceOf[ImageView].setImageResource(R.drawable.ic_action_search)
-
-    super.onCreateOptionsMenu(menu, inflater)
+    menuItems.setOnActionExpandListener(this)
+    menuItems.expandActionView()  // show the search field rather than the icon
   }
+
+  def onSearchCompleted(searchedQuery: String, region: String)
 
   override def onQueryTextSubmit(query: String): Boolean = {
     val regions = R.array.regions.r2StringArray
@@ -57,14 +53,27 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener {
     }
 
     respond onComplete {
-      case Success(s) ⇒ startActivity(new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", query).putExtra("region-key", region))
+      case Success(s) ⇒ onSearchCompleted(query, region)
       case Failure(e) ⇒ ("Could not find " + query + " in " + region).makeCrouton()
     }
-
     false
   }
 
-  override def onQueryTextChange(newText: String): Boolean = {
-    false
+  override def onQueryTextChange(newText: String): Boolean = false
+
+  override def onMenuItemActionExpand(item: MenuItem): Boolean = {
+    searchView = item.getActionView.asInstanceOf[SearchView]
+    searchView.setQueryHint("Summoner")
+    searchView.setOnQueryTextListener(this)
+
+    // change default SearchView's search button icon
+    val searchImgId = getResources.getIdentifier("android:id/search_button", null, null)
+    searchView.findViewById(searchImgId).asInstanceOf[ImageView].setImageResource(R.drawable.ic_action_search)
+
+    searchView.onActionViewExpanded()
+    searchView.setQuery(defaultSearchText, false) // set default text in search field
+    true
   }
+
+  override def onMenuItemActionCollapse(item: MenuItem): Boolean = true
 }

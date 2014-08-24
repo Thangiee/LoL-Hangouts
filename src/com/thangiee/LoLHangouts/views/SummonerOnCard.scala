@@ -117,12 +117,13 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
       // set summoner rank badge
       parse(summoner, RankedLeagueTier).getOrElse("") match {
-        case "BRONZE"       => badgeImageView.setImageResource(R.drawable.badge_bronze)
-        case "SILVER"       => badgeImageView.setImageResource(R.drawable.badge_silver)
-        case "GOLD"         => badgeImageView.setImageResource(R.drawable.badge_gold)
-        case "PLATINUM"     => badgeImageView.setImageResource(R.drawable.badge_platinum)
-        case "CHALLENGER"   => badgeImageView.setImageResource(R.drawable.badge_challenger)
-        case _              => badgeImageView.setImageResource(R.drawable.badge_unranked)
+        case "BRONZE"       ⇒ badgeImageView.setImageResource(R.drawable.badge_bronze)
+        case "SILVER"       ⇒ badgeImageView.setImageResource(R.drawable.badge_silver)
+        case "GOLD"         ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)
+        case "PLATINUM"     ⇒ badgeImageView.setImageResource(R.drawable.badge_platinum)
+        case "DIAMOND"      ⇒  badgeImageView.setImageResource(R.drawable.badge_diamond)
+        case "CHALLENGER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
+        case _              ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
       }
     }
   }

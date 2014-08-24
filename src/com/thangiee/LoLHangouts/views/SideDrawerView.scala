@@ -21,11 +21,12 @@ import org.scaloid.common._
 import scala.collection.JavaConversions._
 
 class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TView[SideDrawerView]
-  with SystemService with AdapterView.OnItemClickListener with ExtractorImplicits {
+with AdapterView.OnItemClickListener with ExtractorImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
     DrawerItem("My Profile", R.drawable.ic_action_user),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
+    DrawerItem("Live Game Stats", R.drawable.ic_action_monitor),
     DrawerItem("Settings", R.drawable.ic_action_settings),
     DrawerItem("Remove Ads", R.drawable.ic_action_like),
     DrawerItem("Logout", R.drawable.ic_action_exit))
@@ -125,12 +126,13 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
 
     drawer.closeMenu()
     selectedDrawerItem.title match {
-      case "Chat"       ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
-      case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
-      case "Settings"   ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
-      case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
-      case "Logout"     ⇒ showLogoutDialog(); return
+      case "Chat"           ⇒ fragment = new ChatScreenFragment
+      case "My Profile"     ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
+      case "Search Summoner" ⇒ fragment = BlankFragment.withSummonerSearch()
+      case "Live Game Stats" ⇒  fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
+      case "Settings"       ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
+      case "Remove Ads"     ⇒ mainActivity.setUpBilling(); return
+      case "Logout"         ⇒ showLogoutDialog(); return
     }
 
     //update the text color of the selected menu item in the nav drawer

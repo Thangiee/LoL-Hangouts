@@ -16,12 +16,15 @@
     <string name="pref_notify_login">pref_notify_login</string>
     <string name="pref_history_summary">Auto delete message older than the specified period.</string>
 
+    <!--error messages-->
     <string name="no_current_chat">Select a friend in your friend list to start a chat</string>
     <string name="no_match_hist">Did not find any match history for this user.</string>
     <string name="no_champion">Did not find any ranked champion for this user.</string>
     <string name="connection_error_short">ERROR loading data!</string>
     <string name="connection_error_long">Try refreshing or check your connection. Otherwise, try again later as server could be busy.</string>
+    <string name="server_down">server is currently down. Try again later.</string>
 
+    <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages</string>
     <string name="dialog_delete_message">Do you really want to delete all messages?</string>
     <string name="dialog_logout_title">Logging out?</string>
@@ -35,6 +38,9 @@
 
     <string name="ask_rate_app">Like this app? Please take a moment to rate it.</string>
     <string name="crash_toast_text">A crash report was sent to the developer.</string>
+
+    <string name="summoner_search_screen_msg">Use the search to find other summoner\'s profile.</string>
+    <string name="live_game_screen_msg">Use the search to view players statistics in a game. (Must be in game or at loading screen)</string>
 
     <string-array name="history">
         <item>1 day</item>
