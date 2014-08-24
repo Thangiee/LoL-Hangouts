@@ -139,8 +139,8 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.teammates, 1, region)
-        case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.opponents, 2, region)
+        case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.blueTeam, 1, region)
+        case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.purpleTeam, 2, region)
       }
     }
 
