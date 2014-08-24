@@ -7,7 +7,7 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.Champion
+import com.thangiee.LoLHangouts.api.stats.Champion
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
 
 import scala.collection.JavaConversions._

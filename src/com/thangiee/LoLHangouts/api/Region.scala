@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.api
 
 import com.thangiee.LoLHangouts.R
 
-trait Region {
+sealed trait Region {
   val name: String
   val url: String
   val flag: Int

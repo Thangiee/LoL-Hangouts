@@ -10,10 +10,6 @@ trait TContext {
 
   def appCtx: MyApplication = ctx.getApplicationContext.asInstanceOf[MyApplication]
 
-//  implicit class ActivityCtxToApp(ctx: Context) {
-//    def toAppCtx = ctx.getApplicationContext.asInstanceOf[MyApplication]
-//  }
-
   implicit class StringTo(string: String) {
     def makeCrouton(style: Style = Style.ALERT, duration: Int = Configuration.DURATION_SHORT) {
       ctx match {
