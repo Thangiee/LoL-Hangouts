@@ -4,17 +4,19 @@ import android.app.{Fragment, FragmentManager}
 import android.os.Bundle
 import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.view._
 import android.webkit.{WebViewClient, JavascriptInterface, WebView}
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.LoLNexus
+import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{PURPLE_TEAM, BLUE_TEAM}
 import de.keyboardsurfer.android.widget.crouton.Style
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class LiveGamePagerFragment extends ProgressFragment with TFragment {
+class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageChangeListener{
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
   private lazy val pager = find[ViewPager](R.id.pager)
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
@@ -104,6 +106,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
       runOnUiThread {
         pager.setAdapter(adapter)
         tabs.setViewPager(pager)
+        tabs.setOnPageChangeListener(LiveGamePagerFragment.this)
 
         // error checking
         if (html.contains("Region Disabled")) {
@@ -133,18 +136,28 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   }
 
   class MyPagerAdapter(fm: FragmentManager) extends FragmentStatePagerAdapter(fm) {
-    private val titles = List("Your Team", "Opponents")
+    private val titles = List("Blue Team", "Purple Team")
 
     override def getPageTitle(position: Int): CharSequence = titles(position)
 
     override def getItem(position: Int): Fragment = {
-      titles(position) match {
-        case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.blueTeam, 1, region)
-        case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.purpleTeam, 2, region)
+      position match {
+        case BLUE_TEAM    ⇒ LiveGameTeamFragment.newInstance(liveGame.blueTeam, BLUE_TEAM, region)
+        case PURPLE_TEAM  ⇒ LiveGameTeamFragment.newInstance(liveGame.purpleTeam, PURPLE_TEAM, region)
       }
     }
 
     override def getCount: Int = titles.size
+  }
+
+  override def onPageScrolled(p1: Int, p2: Float, p3: Int): Unit = {}
+
+  override def onPageScrollStateChanged(position: Int): Unit = {}
+
+  override def onPageSelected(position: Int): Unit = {
+    var color = android.R.color.holo_blue_dark
+    if (position == PURPLE_TEAM) color = android.R.color.holo_purple
+    tabs.setIndicatorColorResource(color)
   }
 }
 
