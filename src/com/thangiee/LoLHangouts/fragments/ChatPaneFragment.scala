@@ -41,6 +41,7 @@ class ChatPaneFragment extends TFragment {
 
     val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat)
     messageAdapter.addAll(messageLog) // add all messages
+    messageAdapter.setRegion(appCtx.selectedRegion.toString)
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 

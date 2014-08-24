@@ -3,7 +3,6 @@ package com.thangiee.LoLHangouts.activities
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.fragments.LiveGamePagerFragment
 
@@ -18,6 +17,6 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     val region = getIntent.getStringExtra("region-key")
     val fragment = LiveGamePagerFragment.newInstance(summonerName, region)
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+//    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
   }
 }

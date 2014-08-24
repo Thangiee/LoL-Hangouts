@@ -31,7 +31,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadIconInto(ctx, summoner.name, iconImageView)
+      SummonerUtils.loadIconInto(ctx, summoner.name, appCtx.selectedRegion.toString, iconImageView)
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
