@@ -7,7 +7,7 @@
 
     <com.astuetz.PagerSlidingTabStrip
             tab:pstsShouldExpand="true"
-            tab:pstsIndicatorColor="@android:color/holo_blue_dark"
+            tab:pstsIndicatorColor="@color/my_orange"
             tab:pstsDividerColor="@color/my_orange"
             tab:pstsUnderlineColor="@color/my_orange"
             android:id="@+id/tabs"
