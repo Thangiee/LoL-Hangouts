@@ -10,7 +10,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.LoLChat
-import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, LiveGamePagerFragment, ProfileViewPagerFragment}
+import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
 import de.greenrobot.event.EventBus
 import info.hoang8f.android.segmented.SegmentedGroup
@@ -128,8 +128,8 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     selectedDrawerItem.title match {
       case "Chat"           ⇒ fragment = new ChatScreenFragment
       case "My Profile"     ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
-      case "Search Summoner" ⇒ fragment = BlankFragment.newInstanceWithSummonerSearch()
-      case "Live Game Stats" ⇒  fragment = LiveGamePagerFragment.newInstance("LuvSic", "na")
+      case "Search Summoner" ⇒ fragment = BlankFragment.withSummonerSearch()
+      case "Live Game Stats" ⇒  fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
       case "Settings"       ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads"     ⇒ mainActivity.setUpBilling(); return
       case "Logout"         ⇒ showLogoutDialog(); return
