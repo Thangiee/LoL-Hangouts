@@ -35,7 +35,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
               .replace("leesin", "lee-sin")
               .replace("missfortune", "miss-fortune")
               .replace("xinzhao", "xin-zhao")
-              .replace("drmundo", " ddr-mundo")
+              .replace("drmundo", "dr-mundo")
               .replace("masteryi", "master-yi")
               .replace("jarvaniv", "jarvan-iv")
               .replace("twisted fate", "twisted-fate"),

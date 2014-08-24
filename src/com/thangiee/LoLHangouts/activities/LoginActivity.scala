@@ -28,7 +28,6 @@ class LoginActivity extends TActivity with UpButton {
 
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
-    R.string.region_name.r2String
 
     rememberCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener {
       override def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
