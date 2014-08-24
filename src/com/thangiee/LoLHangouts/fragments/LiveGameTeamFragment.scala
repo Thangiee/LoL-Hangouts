@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
+import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.BLUE_TEAM
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
 import de.greenrobot.event.EventBus
 
@@ -18,11 +19,11 @@ import scala.collection.JavaConversions._
 class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   private lazy val teamListView = find[ListView](R.id.listView)
   private lazy val region = getArguments.getString("region-key")
+  private lazy val teamColor = getArguments.getInt("team-key")
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
-    val teamNum = getArguments.getInt("team-key")
-    val players = LiveGameTeamFragment.getTeam(teamNum)
+    val players = LiveGameTeamFragment.getTeam(teamColor)
     view = inflater.inflate(R.layout.live_game_team_view, container, false)
     setupListView(players)
     view
@@ -50,8 +51,11 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.previousLeagueTier, img)
     })
 
-    // populate other fields
+    // player's name with color base on which team
     playerDictionary.addStringField(R.id.tv_live_game_name, (player: LiveGamePlayerStats) ⇒ player.name)
+      .conditionalTextColor((player: LiveGamePlayerStats) ⇒ teamColor == BLUE_TEAM, android.R.color.holo_blue_dark.r2Color, android.R.color.holo_purple.r2Color)
+
+    // populate other fields
     playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
     playerDictionary.addStringField(R.id.tv_live_game_s3_leag_info, (player: LiveGamePlayerStats) ⇒ player.previousLeagueTier)
     playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + "W")
@@ -128,12 +132,13 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 }
 
 object LiveGameTeamFragment {
+  val BLUE_TEAM = 0
+  val PURPLE_TEAM = 1
   def newInstance(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
-    // todo: team number
-    if (team == 1)
-      EventBus.getDefault.postSticky(new TeamOne(players))
+    if (team == BLUE_TEAM)
+      EventBus.getDefault.postSticky(new BlueTeam(players))
     else
-      EventBus.getDefault.postSticky(new TeamTwo(players))
+      EventBus.getDefault.postSticky(new PurpleTeam(players))
 
     val b = new Bundle()
     b.putInt("team-key", team)
@@ -144,13 +149,13 @@ object LiveGameTeamFragment {
   }
 
   private def getTeam(n: Int): List[LiveGamePlayerStats] = {
-    if (n == 1)
-      EventBus.getDefault.removeStickyEvent(classOf[TeamOne]).team
+    if (n == BLUE_TEAM)
+      EventBus.getDefault.removeStickyEvent(classOf[BlueTeam]).team
     else
-      EventBus.getDefault.removeStickyEvent(classOf[TeamTwo]).team
+      EventBus.getDefault.removeStickyEvent(classOf[PurpleTeam]).team
   }
 
-  private case class TeamOne(team: List[LiveGamePlayerStats])
+  private case class BlueTeam(team: List[LiveGamePlayerStats])
 
-  private case class TeamTwo(team: List[LiveGamePlayerStats])
+  private case class PurpleTeam(team: List[LiveGamePlayerStats])
 }
