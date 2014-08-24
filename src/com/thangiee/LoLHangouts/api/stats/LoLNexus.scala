@@ -49,13 +49,13 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
     override val soloQueue: GameModeStats = {
       var temp = parse("td[class=ranked-wins-losses", html).getOrElse("").split("/")
-      val w = temp.headOption.getOrElse("0").toInt
-      val l = temp.lastOption.getOrElse("0").toInt
+      val w = getNumber[Int](temp.headOption.get).getOrElse(0)
+      val l = getNumber[Int](temp.lastOption.get).getOrElse(0)
 
       temp = parse("td[class=champion-kda", html).getOrElse("").split("/")
-      val k = temp.headOption.getOrElse("0").toDouble
-      val d = Try(temp(2)).getOrElse("0").toDouble
-      val a = temp.lastOption.getOrElse("0").toDouble
+      val k = getNumber[Double](temp.headOption.get).getOrElse(0.0)
+      val d = getNumber[Double](temp(2)).getOrElse(0.0)
+      val a = getNumber[Double](temp.lastOption.get).getOrElse(0.0)
 
       temp = null
       GameModeStats(w, l, k, d, a, w + l)
