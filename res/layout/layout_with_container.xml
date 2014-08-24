@@ -7,7 +7,7 @@
               android:layout_height="fill_parent">
 
     <FrameLayout
-            android:id="@+id/container_summoner_profile"
+            android:id="@+id/container"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>

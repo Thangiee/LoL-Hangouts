@@ -61,7 +61,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
   private def loadData(): Unit = {
     setContentShown(false) // show loading bar
     try {
-      browser.loadUrl("http://www.lolnexus.com/" + region + "/search?name=" + "Xhojin") //todo: remove hard code value
+      browser.loadUrl("http://www.lolnexus.com/" + region + "/search?name=" + name)
       info("[*] loading url")
     } catch {
       case e: Exception ⇒
@@ -80,9 +80,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     browser.setWebViewClient(new WebViewClient {
       override def onPageFinished(view: WebView, url: String): Unit = {
         browser.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
-        info("Finish loading")
-        setContentEmpty(false) // hide error msg if currently showing
-        setContentShown(true) // hide loading bar
+        info("[*] Finish loading")
       }
     })
   }
@@ -127,8 +125,11 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
           setEmptyText(name + " is still in a champion selection. Try again in a bit.")
           setContentEmpty(true)
           pager.removeAllViews()
+        } else {
+          setContentEmpty(false) // hide error msg if currently showing
         }
         cleanUpBrowser()
+        setContentShown(true) // hide loading bar
       }
       info("[+] Got live game successfully")
     }
