@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="1.1.0" changeDate="Aug 24,2014">
+        <changelogtext>[b][font color=red]New![/font][/b] Add feature to view live game statistics!</changelogtext>
+        <changelogtext>[b][font color=red]New![/font][/b] Add logout button to the navigation drawer</changelogtext>
+        <changelogtext>Optimize performance for screens with list view</changelogtext>
+        <changelogtext>Make the "i" button in your friend list larger on regular screens</changelogtext>
+        <changelogtext>Resize things in region selection and login screen for larger screens</changelogtext>
+        <changelogtext>Fix bugs where sometimes incoming messages don't show up</changelogtext>
+        <changelogtext>Fix Other small bugs and crashes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.0.2" changeDate="Aug 20,2014">
         <changelogtext>[b][font color=red]New![/font][/b] Add win rate pie graph to summoner's profile</changelogtext>
         <changelogtext>Add fade in animation to friend list</changelogtext>

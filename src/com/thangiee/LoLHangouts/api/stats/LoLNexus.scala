@@ -80,6 +80,7 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
         .replace("Twisted Fate", "twisted-fate")
         .replace("Cho'Gath", "chogath")
         .replace("Kha'Zix", "khazix")
+        .replace("Kog'Maw", "kogmaw")
     }
   }
 }
