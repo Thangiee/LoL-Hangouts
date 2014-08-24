@@ -95,6 +95,16 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
     }
   }
 
+  override def onPageScrolled(p1: Int, p2: Float, p3: Int): Unit = {}
+
+  override def onPageScrollStateChanged(position: Int): Unit = {}
+
+  override def onPageSelected(position: Int): Unit = {
+    var color = android.R.color.holo_blue_dark
+    if (position == PURPLE_TEAM) color = android.R.color.holo_purple
+    tabs.setIndicatorColorResource(color)
+  }
+
   class MyJavaScriptInterface {
     @JavascriptInterface
     def processHTML(html: String): Unit = { // this is called after onPageFinished
@@ -107,6 +117,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
         pager.setAdapter(adapter)
         tabs.setViewPager(pager)
         tabs.setOnPageChangeListener(LiveGamePagerFragment.this)
+        tabs.setIndicatorColorResource(android.R.color.holo_blue_dark)
 
         // error checking
         if (html.contains("Region Disabled")) {
@@ -148,16 +159,6 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
     }
 
     override def getCount: Int = titles.size
-  }
-
-  override def onPageScrolled(p1: Int, p2: Float, p3: Int): Unit = {}
-
-  override def onPageScrollStateChanged(position: Int): Unit = {}
-
-  override def onPageSelected(position: Int): Unit = {
-    var color = android.R.color.holo_blue_dark
-    if (position == PURPLE_TEAM) color = android.R.color.holo_purple
-    tabs.setIndicatorColorResource(color)
   }
 }
 
