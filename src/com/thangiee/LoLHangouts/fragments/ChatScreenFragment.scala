@@ -8,9 +8,11 @@ import android.view._
 import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
-import com.thangiee.LoLHangouts.utils.Events
+import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
 import com.thangiee.LoLHangouts.utils.Events.SummonerCardClicked
 import de.greenrobot.event.EventBus
+
+import scala.collection.JavaConversions._
 
 class ChatScreenFragment extends TFragment with PanelSlideListener {
   private lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
@@ -37,6 +39,10 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     EventBus.getDefault.register(this)
     appCtx.isFriendListOpen = slidingLayout.isOpen
     appCtx.isChatOpen = !slidingLayout.isOpen
+
+    if (appCtx.isChatOpen)  // if resume and the chat is open, set read for messages in that chat
+      DataBaseHandler.getUnReadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setIsRead(true).save())
+
     EventBus.getDefault.postSticky(new Events.ClearChatNotification)
   }
 
@@ -45,7 +51,6 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     EventBus.getDefault.unregister(this, classOf[SummonerCardClicked])
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
-    appCtx.activeFriendChat = ""
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {

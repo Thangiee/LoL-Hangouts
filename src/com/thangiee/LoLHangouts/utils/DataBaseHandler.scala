@@ -11,21 +11,26 @@ object DataBaseHandler {
 
   def getAllMessages: List[Message] = new Select().from(classOf[Message]).execute[Message]().toList
 
-  def getMessageLog(userName:String, otherName: String): util.List[Message] = {
+  def getMessages(userName:String, otherName: String): util.List[Message] = {
     new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", userName, otherName)
       .execute[Message]()
   }
 
-  def deleteMessageLog(userName:String, otherName: String) {
+  def deleteMessages(userName:String, otherName: String) {
     new Delete().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", userName, otherName).execute()
   }
 
   def getLastMessage(userName:String, otherName: String): Option[Message] = {
-    val msgLog = getMessageLog(userName, otherName)
+    val msgLog = getMessages(userName, otherName)
     if (!msgLog.isEmpty) Some(msgLog.last) else None
   }
 
-  def getUnReadMessages(userName:String): List[Message] = {
+  def getAllUnReadMessages(userName:String): List[Message] = {
     new Select().from(classOf[Message]).where("thisPerson = ? AND isRead = 0", userName).execute[Message]().toList
+  }
+
+  def getUnReadMessages(userName:String, otherName: String): util.List[Message] = {
+    new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ? AND isRead = 0", userName, otherName)
+      .execute[Message]()
   }
 }
