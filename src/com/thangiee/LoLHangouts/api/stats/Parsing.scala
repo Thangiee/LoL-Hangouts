@@ -21,7 +21,7 @@ trait Parsing {
 
   protected def getNumber[T: NumberOp](s: String): Try[T] = {
     val token = "[-0-9,/.]+".r
-    Try(implicitly[NumberOp[T]].op(token.findFirstIn(s).get.replace(",", "")))
+    Try(implicitly[NumberOp[T]].op(token.findFirstIn(s).getOrElse("0").replace(",", "")))
   }
 
   protected case class NumberOp[T](op: String => T)
