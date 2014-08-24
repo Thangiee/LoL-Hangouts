@@ -94,11 +94,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
 
   def onEvent(event: SummonerCardClicked): Unit = {
     info("[*]onEvent: "+event.summoner.name+" summoner card clicked")
-    // don't re-initialize fragment if the opening chat pane is the same as the active one
-    if (appCtx.activeFriendChat != event.summoner.name) {
-      appCtx.activeFriendChat = event.summoner.name
-      getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
-    }
+    appCtx.activeFriendChat = event.summoner.name
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
     slidingLayout.closePane()
   }
 }
