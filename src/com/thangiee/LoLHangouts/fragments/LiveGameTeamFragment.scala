@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.{ImageView, ListView}
-import com.ami.fundapter.interfaces.{ItemClickListener, StaticImageLoader}
+import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
@@ -17,6 +17,7 @@ import scala.collection.JavaConversions._
 
 class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   private lazy val teamListView = find[ListView](R.id.listView)
+  private lazy val region = getArguments.getString("region-key")
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -30,6 +31,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   private def setupListView(players: List[LiveGamePlayerStats]): Unit = {
     val playerDictionary = new BindDictionary[LiveGamePlayerStats]()
 
+    // load champion icon
     playerDictionary.addStaticImageField(R.id.img_live_game_champ, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         Picasso.`with`(ctx).load("http://www.mobafire.com/images/champion/icon/" + p.chosenChamp.toLowerCase + ".png")
@@ -38,15 +40,17 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
           .into(img)
     })
 
+    // load season 4 badge
     playerDictionary.addStaticImageField(R.id.img_s4_badge, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.leagueTier, img)
     })
 
+    // load season 3 badge
     playerDictionary.addStaticImageField(R.id.img_s3_badge, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.previousLeagueTier, img)
     })
 
-    // todo: optimize performance
+    // populate other fields
     playerDictionary.addStringField(R.id.tv_live_game_name, (player: LiveGamePlayerStats) ⇒ player.name)
     playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
     playerDictionary.addStringField(R.id.tv_live_game_s3_leag_info, (player: LiveGamePlayerStats) ⇒ player.previousLeagueTier)
@@ -59,16 +63,17 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       val soloQueue = player.soloQueue
       soloQueue.kills + "/" + soloQueue.deaths + "/" + soloQueue.assists
     })
+
+    // setup button to view player profile
     playerDictionary.addStringField(R.id.btn_live_game_profile, (player: LiveGamePlayerStats) ⇒ "View Profile")
-      .onClick(new ItemClickListener[LiveGamePlayerStats] {
-      override def onClick(player: LiveGamePlayerStats, p2: Int, view: View): Unit = {
-        val i = new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", player.name).putExtra("region-key", "na") // todo: change region
-        startActivity(i)
-      }
+      .onClick((player: LiveGamePlayerStats) ⇒ {
+      val i = new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", player.name).putExtra("region-key", region)
+      startActivity(i)
     })
 
+    // load series img if up for promotion
     playerDictionary.addStaticImageField(R.id.img_live_game_series, new StaticImageLoader[LiveGamePlayerStats] {
-      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setSeriesDrawable(player, img)
+      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setSeriesImgRes(player, img)
     })
 
     val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view, playerDictionary)
@@ -92,8 +97,8 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     }
   }
 
-  private def setSeriesDrawable(player: LiveGamePlayerStats, img: ImageView): Unit = {
-    player.series match {
+  private def setSeriesImgRes(player: LiveGamePlayerStats, img: ImageView): Unit = {
+    player.series match { // todo: find better way to do this...
       case Some(s) ⇒ if (s.result.size == 3) {
         if      (s.result.equals(List(1, -1, 0))) img.setImageResource(R.drawable.series_3_wl)
         else if (s.result.equals(List(-1, 1, 0))) img.setImageResource(R.drawable.series_3_lw)
@@ -123,7 +128,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 }
 
 object LiveGameTeamFragment {
-  def newInstance(players: List[LiveGamePlayerStats], team: Int): LiveGameTeamFragment = {
+  def newInstance(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
     // todo: team number
     if (team == 1)
       EventBus.getDefault.postSticky(new TeamOne(players))
@@ -132,6 +137,7 @@ object LiveGameTeamFragment {
 
     val b = new Bundle()
     b.putInt("team-key", team)
+    b.putString("region-key", region)
     val frag = new LiveGameTeamFragment
     frag.setArguments(b)
     frag
@@ -147,5 +153,4 @@ object LiveGameTeamFragment {
   private case class TeamOne(team: List[LiveGamePlayerStats])
 
   private case class TeamTwo(team: List[LiveGamePlayerStats])
-
 }

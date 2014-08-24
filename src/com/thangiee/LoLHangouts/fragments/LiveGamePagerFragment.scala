@@ -48,7 +48,6 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     if (item.getItemId == R.id.menu_refresh) {
       setupBrowser()
@@ -96,13 +95,11 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
 
   class MyJavaScriptInterface {
     @JavascriptInterface
-    def processHTML(html: String): Unit = {
+    def processHTML(html: String): Unit = { // this is called after onPageFinished
       info("[*] processing HTML" + html.length)
       liveGame = new LoLNexus(name, region) {
         override protected def fetchDocument: Document = Jsoup.parse(html)
       }
-
-      println(liveGame.doc.text())
 
       runOnUiThread {
         pager.setAdapter(adapter)
@@ -125,13 +122,13 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
           setEmptyText(name + " is still in a champion selection. Try again in a bit.")
           setContentEmpty(true)
           pager.removeAllViews()
-        } else {
+        } else {  // no error (that was checked)
           setContentEmpty(false) // hide error msg if currently showing
+          info("[+] Got live game successfully")
         }
         cleanUpBrowser()
         setContentShown(true) // hide loading bar
       }
-      info("[+] Got live game successfully")
     }
   }
 
@@ -142,8 +139,8 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.teammates, 1)
-        case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.opponents, 2)
+        case "Your Team" ⇒ LiveGameTeamFragment.newInstance(liveGame.teammates, 1, region)
+        case "Opponents" ⇒ LiveGameTeamFragment.newInstance(liveGame.opponents, 2, region)
       }
     }
 

@@ -71,12 +71,9 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with 
     searchView.findViewById(searchImgId).asInstanceOf[ImageView].setImageResource(R.drawable.ic_action_search)
 
     searchView.onActionViewExpanded()
-    searchView.setQuery(defaultSearchText, false)
+    searchView.setQuery(defaultSearchText, false) // set default text in search field
     true
   }
 
-  override def onMenuItemActionCollapse(item: MenuItem): Boolean = {
-    println("COLLAPSE")
-    true
-  }
+  override def onMenuItemActionCollapse(item: MenuItem): Boolean = true
 }
