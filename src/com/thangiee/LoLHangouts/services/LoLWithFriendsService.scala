@@ -136,6 +136,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
 
   private def showLogInNotification(friend: Summoner) {
     val builder = new Notification.Builder(ctx)
+      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_action_user)
       .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(friend.name + " has logged in!")
@@ -155,6 +156,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     val unReadMsg = DataBaseHandler.getAllUnReadMessages(appCtx.currentUser)
 
     val builder = new Notification.Builder(ctx)
+      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_action_dialog)
       .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(unReadMsg.size + " New Messages")
@@ -190,6 +192,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     val p = PendingIntent.getActivity(ctx, 0, i, 0)
 
     val builder = new Notification.Builder(ctx)
+      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_action_warning)
       .setContentIntent(p)
       .setContentTitle(R.string.app_name.r2String)
