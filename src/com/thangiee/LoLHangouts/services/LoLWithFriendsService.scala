@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.services
 
 import java.util.Date
 
-import android.app.Notification
+import android.app.{PendingIntent, Notification}
 import android.content.Intent
 import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
@@ -185,10 +185,13 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
 
   private def showDisconnectionNotification(): Unit = {
     EventBus.getDefault.post(new Events.FinishMainActivity) // kill the main activity
+    val i = new Intent(ctx, classOf[LoginActivity])
+    i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
+    val p = PendingIntent.getActivity(ctx, 0, i, 0)
 
     val builder = new Notification.Builder(ctx)
       .setSmallIcon(R.drawable.ic_action_warning)
-      .setContentIntent(pendingActivity[LoginActivity])
+      .setContentIntent(p)
       .setContentTitle(R.string.app_name.r2String)
       .setContentText("Connection lost. Touch to log in again.")
       .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
