@@ -9,7 +9,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
     if (b != null) {
-      appCtx.selectedRegion = b.getSerializable("region").asInstanceOf[Region]
+      appCtx.selectedRegion = Region.getFromString(b.getString("region"))
       appCtx.currentUser = b.getString("user")
       appCtx.activeFriendChat = b.getString("friend-chat")
     }
@@ -17,7 +17,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
 
   override def onSaveInstanceState(outState: Bundle): Unit = {
     super.onSaveInstanceState(outState)
-    outState.putSerializable("region", appCtx.selectedRegion)
+    outState.putString("region", appCtx.selectedRegion.name)
     outState.putString("user", appCtx.currentUser)
     outState.putString("friend-chat", appCtx.activeFriendChat)
   }
