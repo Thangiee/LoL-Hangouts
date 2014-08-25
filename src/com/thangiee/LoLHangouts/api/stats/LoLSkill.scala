@@ -106,7 +106,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
 
   override lazy val soloQueue: GameModeStats = {
     try {
-      val statsTable = Try(doc.select("div[id=stats]").first().select("table[Class=skinned]").get(1).select("tr")) // todo: why is it throwing NPE something
+      val statsTable = Try(doc.select("div[id=stats]").first().select("table[Class=skinned]").get(1).select("tr"))
       val g = getNumber[Int](statsTable.get.get(1).select("td[class=right]").first().text()).getOrElse(0) // # games
       val k = getNumber[Double](statsTable.get.get(2).select("td[class=right]").first().text()).getOrElse(0.0) / g
       val d = getNumber[Double](statsTable.get.get(3).select("td[class=right]").first().text()).getOrElse(0.0) / g

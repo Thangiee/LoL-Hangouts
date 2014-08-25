@@ -116,8 +116,15 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     Future (LoLChat.disconnect())
   }
 
-  // exit the app after quickly double clicking the back button
   override def onBackPressed(): Unit = {
+    // if in chat panel slide back to the friend list panel
+    if (appCtx.isChatOpen) {
+      val chatScreenFragment = getFragmentManager.findFragmentById(R.id.screen_container).asInstanceOf[ChatScreenFragment]
+      chatScreenFragment.slidingLayout.openPane()
+      return
+    }
+
+    // exit the app after quickly double clicking the back button
     if (doubleBackToExitPressedOnce) {
       cleanUpAndDisconnect()
       super.onBackPressed()

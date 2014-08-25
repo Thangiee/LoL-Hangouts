@@ -15,8 +15,8 @@ import de.greenrobot.event.EventBus
 import scala.collection.JavaConversions._
 
 class ChatScreenFragment extends TFragment with PanelSlideListener {
-  private lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
   private lazy val imm = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
+  lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
