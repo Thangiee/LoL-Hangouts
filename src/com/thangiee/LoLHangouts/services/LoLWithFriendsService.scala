@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.services
 
 import java.util.Date
 
-import android.app.{Notification, PendingIntent}
+import android.app.Notification
 import android.content.Intent
 import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
@@ -135,15 +135,11 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
   //=============================================
 
   private def showLogInNotification(friend: Summoner) {
-    // intent to bring the app to foreground
-    val i = new Intent(ctx, classOf[MainActivity])
-    val pendingIntent = PendingIntent.getActivity(ctx, 0, i, Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-
     val builder = new Notification.Builder(ctx)
       .setSmallIcon(R.drawable.ic_action_user)
-      .setContentIntent(pendingIntent)
+      .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(friend.name + " has logged in!")
-      .setContentText("Touch to view friend list")
+      .setContentText("Touch to open application")
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
@@ -158,13 +154,9 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
   private def showMsgNotification(newestMsg: models.Message) {
     val unReadMsg = DataBaseHandler.getAllUnReadMessages(appCtx.currentUser)
 
-    // intent to bring the app to foreground
-    val i = new Intent(ctx, classOf[MainActivity])
-    val pendingIntent = PendingIntent.getActivity(ctx, 0, i, Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-
     val builder = new Notification.Builder(ctx)
       .setSmallIcon(R.drawable.ic_action_dialog)
-      .setContentIntent(pendingIntent)
+      .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(unReadMsg.size + " New Messages")
       .setContentText(newestMsg.getOtherPerson +": " + newestMsg.getText)
       .setTicker(newestMsg.getOtherPerson +": " + newestMsg.getText)
@@ -175,7 +167,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
 
     if (Build.VERSION.SDK_INT >= 16) {
       val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16
-        .setSummaryText("Touch to view friend list")
+        .setSummaryText("Touch to open application")
 
       // show at most the 5 newest unread messages
       unReadMsg.reverse.slice(0, 5).map((msg) => inboxStyle.addLine(msg.getOtherPerson+": "+msg.getText))
@@ -220,5 +212,4 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     info("[*]onEvent: clear login notification")
     notificationManager.cancel(loginNotificationId)  // clear notification
   }
-
 }

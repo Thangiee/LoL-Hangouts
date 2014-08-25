@@ -14,10 +14,13 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.layout_with_container)
+
     val summonerName = getIntent.getStringExtra("name-key")
     val region = getIntent.getStringExtra("region-key")
+
     val fragment = LiveGamePagerFragment.newInstance(summonerName, region)
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
   }
 }
