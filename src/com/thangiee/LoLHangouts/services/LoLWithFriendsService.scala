@@ -145,7 +145,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
-    val notification = builder.build()
+    val notification = builder.getNotification
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(loginNotificationId, notification)
@@ -176,7 +176,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
       builder.setPriority(Notification.PRIORITY_MAX)
     }
 
-    val notification = builder.build()
+    val notification = builder.getNotification
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
@@ -196,7 +196,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
-    val notification = builder.build()
+    val notification = builder.getNotification
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
