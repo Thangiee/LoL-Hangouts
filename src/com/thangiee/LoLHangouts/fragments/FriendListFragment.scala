@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.devspark.progressfragment.ProgressFragment
@@ -18,7 +19,12 @@ import scala.concurrent.Future
 
 class FriendListFragment extends ProgressFragment with TFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
-  private lazy val cardArrayAdapter = new CardArrayAdapter(getActivity, cards)
+  private var cardArrayAdapter: CardArrayAdapter = _
+
+  override def onAttach(activity: Activity): Unit = {
+    super.onAttach(activity)
+    cardArrayAdapter = new CardArrayAdapter(activity, cards)
+  }
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     EventBus.getDefault.register(this)
@@ -26,10 +32,10 @@ class FriendListFragment extends ProgressFragment with TFragment {
     inflater.inflate(R.layout.progress_container, container, false)
   }
 
-  override def onActivityCreated(savedInstanceState: Bundle): Unit = {
-    super.onActivityCreated(savedInstanceState)
+  override def onResume(): Unit = {
+    super.onResume()
     setContentView(view)
-    setContentShown(false)
+    setContentShown(false)  // show loading bar
     val listView = find[CardListView](R.id.list_summoner_card)
 
     populateFriendCardList.onComplete { _ ⇒
@@ -39,7 +45,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
         val animationAdapter = new AlphaInAnimationAdapter(cardArrayAdapter)
         animationAdapter.setAbsListView(listView)
         listView.setExternalAdapter(animationAdapter, cardArrayAdapter)
-        setContentShown(true)
+        setContentShown(true) // hide loading bar and show content
       }
     }
   }
@@ -51,7 +57,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   def findCardByName(name: String): Option[SummonerBaseCard] = {
     for (i <- 0 until cardArrayAdapter.getCount) {
-      val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[SummonerBaseCard]
+      val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[SummonerBaseCard] // get the card view
       if (baseCard.cardName == name) return Some(baseCard)
     }
     None
