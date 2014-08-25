@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="1.1.2" changeDate="Aug 25,2014">
+        <changelogtext>
+            Fix a bug where it sometimes crashes when coming back to the app after it being in the background for a while.
+        </changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.1.1" changeDate="Aug 24,2014">
         <changelogtext>Change tabs name and show the team color in live game statistics.</changelogtext>
     </changelogversion>
