@@ -2,6 +2,11 @@
 <changelog bulletedList="true">
 
     <changelogversion versionName="1.1.2" changeDate="Aug 25,2014">
+        <changelogtext>Clicking back button from the chat screen will now slide back to the friend list screen</changelogtext>
+        <changelogtext>Fix crash for devices on Ice Cream Sandwich when receiving a notification</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="1.1.2" changeDate="Aug 25,2014">
         <changelogtext>
             Fix a bug where it sometimes crashes when coming back to the app after it being in the background for a while.
         </changelogtext>
