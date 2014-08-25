@@ -39,15 +39,20 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main_screen)
     EventBus.getDefault.register(this)
-    LoLChat.appearOnline()
 
+    if (!LoLChat.isConnected) {
+      startActivity[LoginActivity]
+      finish()
+      return
+    }
+
+    LoLChat.appearOnline()
     startService[LoLWithFriendsService]
 
     sideDrawer.setContentView(R.layout.main_screen)
     sideDrawer.setMenuView(new SideDrawerView())
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
-
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
@@ -59,7 +64,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     } else {
       getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
     }
-
     rateMyApp()
   }
 

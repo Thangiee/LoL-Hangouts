@@ -6,6 +6,7 @@ import org.jivesoftware.smack.packet.Presence.Mode
 import org.jivesoftware.smack.packet.{Message, Presence}
 
 import scala.collection.JavaConversions._
+import scala.util.{Failure, Success, Try}
 
 object LoLChat {
   private var _connection: Option[XMPPConnection] = None
@@ -53,9 +54,15 @@ object LoLChat {
 
   def offlineFriends: List[Summoner] = friends.filter((friend) => !friend.isOnline)
 
-  def isConnected: Boolean = connection.isConnected
+  def isConnected: Boolean = Try(connection) match {
+    case Success(c) ⇒ c.isConnected
+    case Failure(e) ⇒ false
+  }
 
-  def isLogin: Boolean = connection.isAuthenticated
+  def isLogin: Boolean = Try(connection) match {
+    case Success(c) ⇒ c.isAuthenticated
+    case Failure(e) ⇒ false
+  }
 
   def appearOnline() = { updateStatus(Presence.Type.available); _presenceMode = Presence.Mode.available }
 

@@ -38,7 +38,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
       LoLChat.connection.addConnectionListener(this)
       EventBus.getDefault.registerSticky(ctx)
     } catch {
-      case e: IllegalStateException ⇒ error("[!] " + e.getMessage); stopSelf()
+      case e: IllegalStateException ⇒ error("[!] " + e.getMessage); showDisconnectionNotification(); stopSelf()
     }
   }
 
@@ -198,7 +198,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
       .setSmallIcon(R.drawable.ic_action_warning)
       .setContentIntent(pendingActivity[LoginActivity])
       .setContentTitle(R.string.app_name.r2String)
-      .setContentText("Connection lost. Touch to reconnect.")
+      .setContentText("Connection lost. Touch to log in again.")
       .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
       .setAutoCancel(true)
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))

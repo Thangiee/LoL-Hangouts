@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.api
 
 import com.thangiee.LoLHangouts.R
 
-sealed trait Region {
+sealed trait Region extends Serializable {
   val name: String
   val url: String
   val flag: Int

@@ -28,8 +28,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
-    getFragmentManager.beginTransaction().add(R.id.chat_left_pane, new FriendListFragment).commit()
-    getFragmentManager.beginTransaction().add(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
+    getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, new FriendListFragment).commit()
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
 
     view
   }
