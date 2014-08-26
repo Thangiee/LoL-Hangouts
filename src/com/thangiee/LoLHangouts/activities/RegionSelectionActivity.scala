@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.{ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api._
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
@@ -32,7 +33,7 @@ class RegionSelectionActivity extends ListActivity with SContext with TActivity 
   }
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
-    appCtx.selectedRegion = regions(position)
+    Prefs.putString("region-key", regions(position).name)
     startActivity[LoginActivity]
   }
 }

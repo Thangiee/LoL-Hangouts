@@ -8,7 +8,7 @@ import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.LoLChat
+import com.thangiee.LoLHangouts.api.{Region, LoLChat}
 import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,9 +23,9 @@ class LoginActivity extends TActivity with UpButton {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.login)
-
     logInButton.setIndeterminateProgressMode(true)
 
+    // load account info if saved
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
 
@@ -34,6 +34,8 @@ class LoginActivity extends TActivity with UpButton {
         if (isChecked) saveUserAndPass() else clearUserAndPass()
       }
     })
+
+    // check the checkbox if those fields are not empty
     if (List(userEditText, passwordEditText).forall(_.length() != 0)) rememberCheckBox.setChecked(true)
 
     val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
@@ -45,12 +47,12 @@ class LoginActivity extends TActivity with UpButton {
 
   override def onResume(): Unit = {
     super.onResume()
-    if (appCtx.selectedRegion == null) {
-      startActivity[RegionSelectionActivity]
-      finish()
-    } else {
-      setTitle(appCtx.selectedRegion.name)
-      getActionBar.setIcon(appCtx.selectedRegion.flag)
+    Region.getFromString(Prefs.getString("region-key", "")) match {  // check if a region was previously selected
+      case Some(region) ⇒
+        appCtx.selectedRegion = region
+        setTitle(region.name)
+        getActionBar.setIcon(region.flag)
+      case None ⇒ startActivity[RegionSelectionActivity]; finish()  // otherwise, go to the region selection screen
     }
   }
 

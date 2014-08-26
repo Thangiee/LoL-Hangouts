@@ -40,6 +40,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     setContentView(R.layout.main_screen)
     EventBus.getDefault.register(this)
 
+    // make sure is connected or else go back to login screen
     if (!LoLChat.isConnected) {
       startActivity[LoginActivity]
       finish()
@@ -48,6 +49,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
     LoLChat.appearOnline()
     startService[LoLWithFriendsService]
+    notificationManager.cancelAll() // clear any left over notification
 
     sideDrawer.setContentView(R.layout.main_screen)
     sideDrawer.setMenuView(new SideDrawerView())
@@ -204,4 +206,3 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     finish()
   }
 }
-

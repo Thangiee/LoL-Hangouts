@@ -9,17 +9,18 @@ sealed trait Region {
 }
 
 object Region {
-  def getFromString(regionName: String): Region = regionName match {
-    case BR.name ⇒ BR
-    case EUNE.name ⇒ EUNE
-    case EUW.name ⇒ EUW
-    case KR.name ⇒ KR
-    case LAN.name ⇒ LAN
-    case LAS.name ⇒ LAS
-    case NA.name ⇒ NA
-    case OCE.name ⇒ OCE
-    case RU.name ⇒ RU
-    case TR.name ⇒ TR
+  def getFromString(regionName: String): Option[Region] = regionName match {
+    case BR.name ⇒ Some(BR)
+    case EUNE.name ⇒ Some(EUNE)
+    case EUW.name ⇒ Some(EUW)
+    case KR.name ⇒ Some(KR)
+    case LAN.name ⇒ Some(LAN)
+    case LAS.name ⇒ Some(LAS)
+    case NA.name ⇒ Some(NA)
+    case OCE.name ⇒ Some(OCE)
+    case RU.name ⇒ Some(RU)
+    case TR.name ⇒ Some(TR)
+    case _ ⇒ None
   }
 }
 
