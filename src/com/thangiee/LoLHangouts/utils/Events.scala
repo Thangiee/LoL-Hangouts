@@ -10,5 +10,6 @@ object Events {
   case class RefreshSummonerCard(summoner: Summoner)
   case class ClearChatNotification()
   case class ClearLoginNotification()
+  case class ClearDisConnectNotification()
   case class FinishMainActivity()
 }
