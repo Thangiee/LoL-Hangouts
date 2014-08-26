@@ -89,7 +89,6 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
   private def cleanUpBrowser(): Unit ={
     if (browser != null) {
       // clean up/free memory
-      browser.clearCache(true)
       browser.removeAllViews()
       browser.destroy()
     }
