@@ -3,12 +3,11 @@ package com.thangiee.LoLHangouts.activities
 import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
 import android.view.{MenuItem, Window}
-import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.{Region, LoLChat}
+import com.thangiee.LoLHangouts.api.{LoLChat, Region}
 import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,7 +17,8 @@ class LoginActivity extends TActivity with UpButton {
   lazy val userEditText = find[EditText](R.id.et_username)
   lazy val passwordEditText = find[EditText](R.id.et_password)
   lazy val logInButton = find[CircularProgressButton](R.id.btn_login).onClick(login())
-  lazy val rememberCheckBox = find[CheckBox](R.id.cb_remember_account)
+  lazy val saveUserCheckBox = find[CheckBox](R.id.cb_save_user)
+  lazy val savePassCheckBox = find[CheckBox](R.id.cb_save_pass)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -29,14 +29,12 @@ class LoginActivity extends TActivity with UpButton {
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
 
-    rememberCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener {
-      override def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        if (isChecked) saveUserAndPass() else clearUserAndPass()
-      }
-    })
+    saveUserCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) saveUser() else clearUser())
+    savePassCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) savePass() else clearPass())
 
     // check the checkbox if those fields are not empty
-    if (List(userEditText, passwordEditText).forall(_.length() != 0)) rememberCheckBox.setChecked(true)
+    if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
+    if (passwordEditText.length() != 0) savePassCheckBox.setChecked(true)
 
     val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
     if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
@@ -57,7 +55,8 @@ class LoginActivity extends TActivity with UpButton {
   }
 
   private def login() {
-    if (rememberCheckBox.isChecked) saveUserAndPass()
+    if (saveUserCheckBox.isChecked) saveUser()
+    if (savePassCheckBox.isChecked) savePass()
 
     if (logInButton.getProgress == -1) {
       logInButton.setProgress(0)
@@ -99,11 +98,13 @@ class LoginActivity extends TActivity with UpButton {
     }
   }
 
-  private def saveUserAndPass() {
-    List(("user", userEditText), ("pass", passwordEditText)).map(p => Prefs.putString(p._1, p._2.getText.toString))
-  }
+  private def saveUser(): Unit = Prefs.putString("user", userEditText.getText.toString)
 
-  private def clearUserAndPass() = List(("user", ""), ("pass", "")).map(p => Prefs.putString(p._1, p._2))
+  private def clearUser(): Unit = Prefs.putString("user", "")
+
+  private def savePass(): Unit = Prefs.putString("pass", passwordEditText.getText.toString)
+
+  private def clearPass(): Unit = Prefs.putString("pass", "")
 
   private def showChangeLog(): Unit = {
     val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
