@@ -20,7 +20,7 @@
 
     <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="180dp"
+            android:layout_height="190dp"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
@@ -70,7 +70,6 @@
                 android:layout_alignStart="@+id/et_username"
                 android:layout_alignRight="@+id/et_username"
                 android:layout_alignEnd="@+id/et_username"
-                android:layout_marginBottom="8dp"
                 android:textSize="24dp"/>
 
         <com.dd.CircularProgressButton
@@ -90,19 +89,33 @@
                 android:layout_alignRight="@+id/et_password"
                 android:layout_alignEnd="@+id/et_password"
                 android:layout_below="@+id/et_password"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remember"
-                android:id="@+id/cb_remember_account"
-                android:layout_alignTop="@+id/btn_login"
-                android:layout_alignLeft="@+id/et_password"
-                android:layout_alignStart="@+id/et_password"
+                android:text="Save Username"
+                android:id="@+id/cb_save_user"
                 android:checked="false"
                 android:textColor="@color/my_dark_blue"
-                android:textSize="22dp"/>
+                android:layout_below="@+id/et_password"
+                android:layout_alignLeft="@+id/et_password"
+                android:layout_alignStart="@+id/et_password"
+                android:textSize="22sp"
+                android:layout_marginTop="4dp"/>
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save password"
+                android:id="@+id/cb_save_pass"
+                android:checked="false"
+                android:textColor="@color/my_dark_blue"
+                android:layout_below="@+id/cb_save_user"
+                android:layout_alignLeft="@+id/cb_save_user"
+                android:layout_alignStart="@+id/cb_save_user"
+                android:textSize="22sp"/>
     </RelativeLayout>
 
 </RelativeLayout>
