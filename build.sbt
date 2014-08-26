@@ -18,7 +18,9 @@ apkbuildExcludes in Android ++= Seq(
   "META-INF/notice.txt",
   "META-INF/license.txt",
   "META-INF/LICENSE",
-  "META-INF/NOTICE"
+  "META-INF/NOTICE",
+  "META-INF/LICENSE.txt",
+  "META-INF/NOTICE.txt"
 )
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
