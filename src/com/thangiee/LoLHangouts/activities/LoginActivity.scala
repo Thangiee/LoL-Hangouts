@@ -8,10 +8,13 @@ import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.{LoLChat, Region}
+import play.api.libs.json.Json
 import org.scaloid.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Try, Failure, Success}
+import scalaj.http.{HttpOptions, Http}
 
 class LoginActivity extends TActivity with UpButton {
   lazy val userEditText = find[EditText](R.id.et_username)
@@ -35,12 +38,6 @@ class LoginActivity extends TActivity with UpButton {
     // check the checkbox if those fields are not empty
     if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
     if (passwordEditText.length() != 0) savePassCheckBox.setChecked(true)
-
-    val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
-    if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
-      showChangeLog()                           // show change log if updated
-      Prefs.putString("app_version", version)   // update the stored app version value
-    }
   }
 
   override def onResume(): Unit = {
@@ -50,6 +47,13 @@ class LoginActivity extends TActivity with UpButton {
         appCtx.selectedRegion = region
         setTitle(region.name)
         getActionBar.setIcon(region.flag)
+
+        // check to show change log
+        val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
+        if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
+          showChangeLog() // show change log if updated
+          Prefs.putString("app_version", version) // update the stored app version value
+        }
       case None ⇒ startActivity[RegionSelectionActivity]; finish()  // otherwise, go to the region selection screen
     }
   }
@@ -65,7 +69,7 @@ class LoginActivity extends TActivity with UpButton {
     //    logInButton.disable // disable to prevent multiple login attempt
     Future {
       runOnUiThread(logInButton.setProgress(50))
-      SystemClock.sleep(500)
+      SystemClock.sleep(500)  // give time to animation to animate
 
       // try to connect to server and warn the user if fail to connect
       if (!LoLChat.connect(appCtx.selectedRegion.url)) {
@@ -79,8 +83,10 @@ class LoginActivity extends TActivity with UpButton {
 
       // after successfully connecting to server, try to login
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
-        runOnUiThread(logInButton.setProgress(100))
         appCtx.currentUser = userEditText.getText.toString
+        findInGameName()  // try to find in game name in case the login name is different than the in game name
+        SystemClock.sleep(150)
+        runOnUiThread(logInButton.setProgress(100))
         startActivity[MainActivity]
         finish()
       } else {
@@ -118,5 +124,31 @@ class LoginActivity extends TActivity with UpButton {
     dialog.show()
     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.my_dark_blue.r2Color)
     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.my_orange.r2Color)
+  }
+
+  private def findInGameName(): Unit = {
+    val cacheName = Prefs.getString("cache-" + appCtx.currentUser.toLowerCase, "")
+
+    if (cacheName.isEmpty) {
+      info("[-] cache name miss")
+      val request = Try(Http("https://teemojson.p.mashape.com/misc/summoner-name/" + appCtx.selectedRegion + "/" + LoLChat.summonerId().getOrElse(""))
+          .header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
+          .option(HttpOptions.connTimeout(1500)))
+
+      request match {
+        case Success(response) ⇒  // got response
+          (Json.parse(response.asString) \ "data" \ "array").asOpt[List[String]] match { // go through the json
+            case Some(names) ⇒    // found what was looking for
+              Prefs.putString("cache-" + appCtx.currentUser.toLowerCase, names.head) // cache the name for future usage
+              appCtx.currentUser = names.head
+            case None ⇒           // did not find what was looking for
+              warn("[!] Something when wrong with the response, didn't find name.")
+          }
+        case Failure(e) ⇒ error("[!] Did not get a respond!"); e.printStackTrace() // no response
+      }
+    } else {
+      info("[+] cache name hit")
+      appCtx.currentUser = cacheName
+    }
   }
 }
