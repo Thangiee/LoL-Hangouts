@@ -38,12 +38,6 @@ class LoginActivity extends TActivity with UpButton {
     // check the checkbox if those fields are not empty
     if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
     if (passwordEditText.length() != 0) savePassCheckBox.setChecked(true)
-
-    val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
-    if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
-      showChangeLog()                           // show change log if updated
-      Prefs.putString("app_version", version)   // update the stored app version value
-    }
   }
 
   override def onResume(): Unit = {
@@ -53,6 +47,13 @@ class LoginActivity extends TActivity with UpButton {
         appCtx.selectedRegion = region
         setTitle(region.name)
         getActionBar.setIcon(region.flag)
+
+        // check to show change log
+        val version = getPackageManager.getPackageInfo(getPackageName, 0).versionName
+        if (!Prefs.getString("app_version", "0").equals(version)) { // check if app updated
+          showChangeLog() // show change log if updated
+          Prefs.putString("app_version", version) // update the stored app version value
+        }
       case None ⇒ startActivity[RegionSelectionActivity]; finish()  // otherwise, go to the region selection screen
     }
   }
