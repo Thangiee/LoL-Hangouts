@@ -6,12 +6,11 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.{ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.BLUE_TEAM
-import com.thangiee.LoLHangouts.utils.ExtractorImplicits
+import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -35,10 +34,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     // load champion icon
     playerDictionary.addStaticImageField(R.id.img_live_game_champ, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
-        Picasso.`with`(ctx).load("http://www.mobafire.com/images/champion/icon/" + p.chosenChamp.toLowerCase + ".png")
-          .placeholder(R.drawable.league_icon)
-          .error(R.drawable.ic_load_error)
-          .into(img)
+        img.setImageDrawable(ChampIconAssetFile(p.chosenChamp).toDrawable)
     })
 
     // load season 4 badge
