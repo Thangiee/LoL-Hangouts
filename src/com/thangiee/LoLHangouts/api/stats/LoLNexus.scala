@@ -71,16 +71,6 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
     override val chosenChamp: String = {
       parse("span", html.select("td[class=champion]").first()).getOrElse("???").split(" \\(").head
-        .replace("Lee Sin", "lee-sin")  // format cases to download icon URL
-        .replace("Miss Fortune", "miss-fortune")
-        .replace("Xin Zhao", "xin-zhao")
-        .replace("Dr. Mundo", "dr-mundo")
-        .replace("Master Yi", "master-yi")
-        .replace("Jarvan IV", "jarvan-iv")
-        .replace("Twisted Fate", "twisted-fate")
-        .replace("Cho'Gath", "chogath")
-        .replace("Kha'Zix", "khazix")
-        .replace("Kog'Maw", "kogmaw")
     }
   }
 }

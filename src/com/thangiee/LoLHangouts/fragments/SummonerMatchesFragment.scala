@@ -5,10 +5,9 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.{ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.Match
-import com.thangiee.LoLHangouts.utils.ExtractorImplicits
+import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
 
 import scala.collection.JavaConversions._
 
@@ -32,12 +31,8 @@ class SummonerMatchesFragment extends TFragment with ExtractorImplicits {
     val matchDictionary = new BindDictionary[Match]()
 
     matchDictionary.addStaticImageField(R.id.img_match_champ, new StaticImageLoader[Match] {
-      override def loadImage(m: Match, image: ImageView, p3: Int): Unit = {
-        Picasso.`with`(ctx).load("http://www.mobafire.com/images/champion/icon/" + m.champName.toLowerCase + ".png")
-          .placeholder(R.drawable.league_icon)
-          .error(R.drawable.ic_load_error)
-          .into(image)
-      }
+      override def loadImage(m: Match, image: ImageView, p3: Int): Unit =
+        image.setImageDrawable(ChampIconAssetFile(m.champName).toDrawable)
     })
 
     matchDictionary.addStringField(R.id.tv_match_type, (m: Match) ⇒ m.queueType)

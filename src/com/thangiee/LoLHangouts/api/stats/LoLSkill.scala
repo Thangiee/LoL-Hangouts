@@ -29,16 +29,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
 
         matches.append(
           Match(
-            "/.*?/".r.findFirstIn(row.select("td[class=champion tooltip]").select("a").attr("href")).getOrElse("") // get champion name
-              .replace("/", "") // formatting
-              // special case
-              .replace("leesin", "lee-sin")
-              .replace("missfortune", "miss-fortune")
-              .replace("xinzhao", "xin-zhao")
-              .replace("drmundo", "dr-mundo")
-              .replace("masteryi", "master-yi")
-              .replace("jarvaniv", "jarvan-iv")
-              .replace("twisted fate", "twisted-fate"),
+            "/.*?/".r.findFirstIn(row.select("td[class=champion tooltip]").select("a").attr("href")).getOrElse(""), // get champion name
             row.select("td[class=info]").select("div[class=queue]").text(),
             row.select("td[class=info]").select("div[class=outcome]").text(),
             row.select("td[class=info]").select("div[class=date tooltip]").text(),

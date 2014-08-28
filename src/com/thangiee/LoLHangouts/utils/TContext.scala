@@ -2,11 +2,14 @@ package com.thangiee.LoLHangouts.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.graphics.{BitmapFactory, Bitmap}
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
-import com.thangiee.LoLHangouts.MyApplication
+import com.thangiee.LoLHangouts.{R, MyApplication}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
+
+import scala.util.Try
 
 trait TContext {
   implicit val ctx: Context
@@ -30,5 +33,10 @@ trait TContext {
         case _ ⇒  println("[!] Cant make Crouton. Context is not instance of Activity.")
       }
     }
+  }
+
+  implicit class Asset2Drawable(assetFile: AssetFile) {
+    def toDrawable: Drawable = Try(Drawable.createFromStream(appCtx.getAssets.open(assetFile.path), null))
+                                .getOrElse(appCtx.getResources.getDrawable(R.drawable.ic_load_error))
   }
 }
