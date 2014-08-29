@@ -42,18 +42,12 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.leagueTier, img)
     })
 
-    // load season 3 badge
-    playerDictionary.addStaticImageField(R.id.img_s3_badge, new StaticImageLoader[LiveGamePlayerStats] {
-      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setBadgeDrawable(player.previousLeagueTier, img)
-    })
-
     // player's name with color base on which team
     playerDictionary.addStringField(R.id.tv_live_game_name, (player: LiveGamePlayerStats) ⇒ player.name)
       .conditionalTextColor((player: LiveGamePlayerStats) ⇒ teamColor == BLUE_TEAM, android.R.color.holo_blue_dark.r2Color, android.R.color.holo_purple.r2Color)
 
     // populate other fields
     playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
-    playerDictionary.addStringField(R.id.tv_live_game_s3_leag_info, (player: LiveGamePlayerStats) ⇒ player.previousLeagueTier)
     playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + "W")
     playerDictionary.addStringField(R.id.tv_live_game_rank_w_l, (player: LiveGamePlayerStats) ⇒ {
       val soloQueue = player.soloQueue
@@ -61,7 +55,8 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     })
     playerDictionary.addStringField(R.id.tv_live_game_kda, (player: LiveGamePlayerStats) ⇒ {
       val soloQueue = player.soloQueue
-      soloQueue.kills + "/" + soloQueue.deaths + "/" + soloQueue.assists
+      val games = soloQueue.gameTotal
+      "%.1f/%.1f/%.1f".format(soloQueue.kills / games, soloQueue.deaths / games, soloQueue.assists / games)
     })
 
     // setup button to view player profile
@@ -76,7 +71,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setSeriesImgRes(player, img)
     })
 
-    val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view, playerDictionary)
+    val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view2, playerDictionary)
     adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
     teamListView.setAdapter(adapter)
   }

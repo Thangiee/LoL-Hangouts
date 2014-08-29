@@ -85,6 +85,7 @@ class LoginActivity extends TActivity with UpButton {
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         appCtx.currentUser = userEditText.getText.toString
         findInGameName()  // try to find in game name in case the login name is different than the in game name
+        appCtx.riot.setRegion(appCtx.selectedRegion.toString)
         SystemClock.sleep(150)
         runOnUiThread(logInButton.setProgress(100))
         startActivity[MainActivity]

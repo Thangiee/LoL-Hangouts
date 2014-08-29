@@ -123,8 +123,8 @@ public class JRiot {
      */
     public List<League> getLeagueEntries(long summonerId) throws JRiotException {
         ApiCaller caller = new ApiCaller();
-        ArrayList<Long> id = new ArrayList<>();
-        id.add(summonerId);
+        ArrayList<String> id = new ArrayList<>();
+        id.add(summonerId + "");
         Map<String, List<League>> leagueEntries = getLeagueEntries(id);
         return leagueEntries.get(Long.toString(summonerId));
     }
@@ -137,10 +137,10 @@ public class JRiot {
      * @return Returns a Lists containing all league entries mapped by summoner;
      * @throws JRiotException
      */
-    public Map<String, List<League>> getLeagueEntries(List<Long> summonerIds) throws JRiotException {
+    public Map<String, List<League>> getLeagueEntries(List<String> summonerIds) throws JRiotException {
         ApiCaller caller = new ApiCaller();
         String ids = "";
-        for (long i : summonerIds) {
+        for (String i : summonerIds) {
             ids = ids + i + ",";
         }
         String response = caller.request(generateBaseUrl() + "/v2.4/league/by-summoner/" + ids + "/entry" + "?api_key=" + apiKey);
