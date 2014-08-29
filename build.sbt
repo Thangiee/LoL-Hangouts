@@ -31,6 +31,7 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
   "-dontwarn com.squareup.okhttp.**",
   "-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry",
   "-dontwarn javax.xml.bind.DatatypeConverter",
+  "-keep class com.thangiee.LoLHangouts.api.stats.RiotLiveStats",
   "-keep class org.scaloid.common.**",
   "-keep class org.jivesoftware.smack.** {*;}",
   "-keep class org.jsoup.Jsoup.** {*;}",

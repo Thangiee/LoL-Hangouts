@@ -10,7 +10,7 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
   override val url: String = baseServerUrl + playerRegion + "/search?name=" + playerName
   override val doc: Document = fetchDocument
 
-  override lazy val blueTeam: List[LiveGamePlayerStats] = {
+  override val blueTeam: List[LiveGamePlayerStats] = {
     for (p <- Try(doc.select("div[class=team-1]").first().select("tbody").select("tr[class]").toList).getOrElse(List())) yield new Player(p)
   }
 
@@ -72,6 +72,7 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
     override val chosenChamp: String = {
       parse("span", html.select("td[class=champion]").first()).getOrElse("???").split(" \\(").head
     }
+    override val id: Long = ???
   }
 }
 
