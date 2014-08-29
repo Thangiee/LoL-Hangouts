@@ -3,7 +3,7 @@ package com.jriot.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import jriot.objects.*;
+import com.jriot.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +188,7 @@ public class JRiot {
      *
      * @param summonerIds Ids of summoners
      * @return Returns a Lists containing all leagues mapped by summoner;
-     * @throws jriot.main.JRiotException
+     * @throws JRiotException
      */
     public Map<String, List<League>> getLeagues(List<String> summonerIds) throws JRiotException {
         ApiCaller caller = new ApiCaller();
@@ -207,7 +207,7 @@ public class JRiot {
      *
      * @param summonerId Id of summoner
      * @return Returns a List containing all leagues of a summoner.
-     * @throws jriot.main.JRiotException
+     * @throws JRiotException
      */
     public List<League> getLeagues(long summonerId) throws JRiotException {
         ArrayList<String> id = new ArrayList<>();
@@ -221,7 +221,7 @@ public class JRiot {
      *
      * @param teamIds Ids of team
      * @return Returns a Lists containing all leagues mapped by team;
-     * @throws jriot.main.JRiotException
+     * @throws JRiotException
      */
     public Map<String, List<League>> getLeaguesByTeams(List<String> teamIds) throws JRiotException {
         ApiCaller caller = new ApiCaller();
@@ -240,7 +240,7 @@ public class JRiot {
      *
      * @param teamId Id of team
      * @return Returns a List containing all leagues of a team.
-     * @throws jriot.main.JRiotException
+     * @throws JRiotException
      */
     public List<League> getLeaguesByTeam(String teamId) throws JRiotException {
         ArrayList<String> id = new ArrayList<>();
@@ -253,8 +253,8 @@ public class JRiot {
      * Get all player stats of a given summoner and a given season.
      *
      * @param summonerId Id of a summoner.
-     * @param season Specifies the season you want the stats about (currently 3
-     * or 4)
+     * @param season     Specifies the season you want the stats about (currently 3
+     *                   or 4)
      * @return PlayerStatsSummaryList that contains the stats
      * @throws JRiotException
      */
@@ -269,8 +269,8 @@ public class JRiot {
      * Get all ranked stats of a given summoner and a given season.
      *
      * @param summonerId Id of a summoner.
-     * @param season Specifies the season you want the stats about (currently 3
-     * or 4)
+     * @param season     Specifies the season you want the stats about (currently 3
+     *                   or 4)
      * @return Ranked that contains the stats.
      * @throws JRiotException
      */
@@ -491,14 +491,14 @@ public class JRiot {
             builder.append(",");
         }
         String response = caller.request(generateBaseUrl() + "/v2.3/team/" + builder.toString() + "?api_key=" + apiKey);
-        
+
         Map<String, Team> teams = gson.fromJson(response, new TypeToken<Map<String, Team>>() {
         }.getType());
         return teams;
     }
 
     private String generateBaseUrl() {
-        return  "https://" + region + ".api.pvp.net/api/lol/" + region;
+        return "https://" + region + ".api.pvp.net/api/lol/" + region;
     }
 
 }
