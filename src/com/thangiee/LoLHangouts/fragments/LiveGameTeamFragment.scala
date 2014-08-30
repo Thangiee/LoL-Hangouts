@@ -46,7 +46,8 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     playerDictionary.addStringField(R.id.tv_live_game_name, (player: LiveGamePlayerStats) ⇒ player.name)
       .conditionalTextColor((player: LiveGamePlayerStats) ⇒ teamColor == BLUE_TEAM, android.R.color.holo_blue_dark.r2Color, android.R.color.holo_purple.r2Color)
 
-    // populate other fields
+    // populate other stats fields
+    playerDictionary.addStringField(R.id.tv_live_game_elo, (player: LiveGamePlayerStats) ⇒ player.elo.toString)
     playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
     playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + "W")
     playerDictionary.addStringField(R.id.tv_live_game_rank_w_l, (player: LiveGamePlayerStats) ⇒ {
