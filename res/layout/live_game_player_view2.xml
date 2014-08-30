@@ -51,13 +51,14 @@
             android:text="S4 info"
             android:id="@+id/tv_live_game_s4_leag_info"
             android:layout_below="@+id/img_s4_badge"
-            android:layout_alignLeft="@+id/img_s4_badge"
-            android:layout_alignStart="@+id/img_s4_badge"
-            android:layout_alignRight="@+id/textView2"
-            android:layout_alignEnd="@+id/textView2"
             android:gravity="center"
             android:visibility="visible"
-            android:textSize="11sp"/>
+            android:textSize="11sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/tv_live_game_rank_w_l"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"/>
 
     <TextView
             android:layout_width="wrap_content"
