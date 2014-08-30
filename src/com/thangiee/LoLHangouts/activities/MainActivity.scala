@@ -14,6 +14,7 @@ import com.thangiee.LoLHangouts.api.LoLChat
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLWithFriendsService
+import com.thangiee.LoLHangouts.utils.CacheUtils
 import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import de.greenrobot.event.EventBus
@@ -113,6 +114,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
     EventBus.getDefault.unregister(this, classOf[FinishMainActivity])
+    CacheUtils.cleanUp()
     stopService[LoLWithFriendsService]
     appCtx.resetState()
     Future (LoLChat.disconnect())

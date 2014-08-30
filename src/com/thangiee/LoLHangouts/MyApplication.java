@@ -1,7 +1,6 @@
 package com.thangiee.LoLHangouts;
 
 import com.activeandroid.app.Application;
-import com.jriot.main.JRiot;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.thangiee.LoLHangouts.api.Region;
 import org.acra.ReportField;
@@ -33,7 +32,6 @@ public class MyApplication extends Application {
     public boolean isFriendListOpen = false;
     public boolean isChatOpen = false;
     public String activeFriendChat = "";
-    public JRiot riot = new JRiot();
 
     @Override
     public void onCreate() {
