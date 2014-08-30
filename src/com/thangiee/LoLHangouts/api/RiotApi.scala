@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.api
 import java.net.SocketTimeoutException
 import java.util
 
+import android.os.SystemClock
 import com.jriot.main.JRiotException._
 import com.jriot.main.{JRiot, JRiotException}
 import com.jriot.objects.{PlayerStatsSummary, RankedStats, League}
@@ -45,6 +46,7 @@ object RiotApi extends TLogger {
             case _ ⇒ warn(error.getMessage)
           }
         }
+        SystemClock.sleep((10 * Keys.keys.size) / 2)
       }
       throw ISE("Service is currently unavailable. Please try again later!")
     } else {  // found cache result

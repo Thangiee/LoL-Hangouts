@@ -11,7 +11,7 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
+            android:id="@+id/header_layout"
             android:weightSum="1"
             android:layout_marginTop="8dp">
 
@@ -93,6 +93,17 @@
                 android:layout_marginLeft="4dp"/>
 
     </RelativeLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/linearLayout"
+            android:layout_below="@+id/header_layout"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:background="@color/my_orange">
+    </LinearLayout>
 
     <ListView
             android:layout_width="wrap_content"

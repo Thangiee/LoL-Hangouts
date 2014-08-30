@@ -42,7 +42,7 @@ class SummonerMatchesFragment extends TFragment with ExtractorImplicits {
 
     matchDictionary.addStringField(R.id.tv_match_date, (m: Match) ⇒ m.date)
 
-    matchDictionary.addStringField(R.id.tv_match_len, (m: Match) ⇒ m.duration)
+    matchDictionary.addStringField(R.id.tv_match_len, (m: Match) ⇒ m.duration.replace("≈", ""))
 
     matchDictionary.addStringField(R.id.tv_match_perf, (m: Match) ⇒ m.avgBetterStats.performance + "%")
                    .conditionalTextColor((m: Match) ⇒ m.avgBetterStats.performance >= 0, green, red)
