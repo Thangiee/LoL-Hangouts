@@ -11,7 +11,7 @@ trait LiveGamePlayerStats extends PlayerStats {
   val series: Option[Series]
 
   lazy val elo: Int = {
-    val TierWeight = 365.0
+    val TierWeight = 350.0
     val DivisionWeight = 70.0
     var elo = 450.0
 
@@ -40,6 +40,7 @@ trait LiveGamePlayerStats extends PlayerStats {
       val w = series.get.result.foldLeft(0)((total, i) ⇒ if (i == 1) total + 1 else total)
       elo += 20.0 * (w / n)
     }
+    elo += "[0-9]+".r.findFirstIn(leaguePoints).getOrElse("0").toInt * .5
     elo.toInt
   }
 
