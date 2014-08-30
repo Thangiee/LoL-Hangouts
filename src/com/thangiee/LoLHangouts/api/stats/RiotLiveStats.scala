@@ -1,7 +1,6 @@
 package com.thangiee.LoLHangouts.api.stats
 
-import com.thangiee.LoLHangouts.MyApplication
-import com.thangiee.LoLHangouts.api.{ChampionIdMap, RiotApiCaller}
+import com.thangiee.LoLHangouts.api.{ChampionIdMap, RiotApi}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
@@ -10,14 +9,14 @@ import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
 import scalaj.http.{Http, HttpOptions}
 
-class RiotLiveStats(playerName: String, playerRegion: String, appCtx: MyApplication) extends LiveGameStats {
-  private implicit val app = appCtx
+class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameStats {
+  RiotApi.setRegion(playerRegion)
   private val (teams, selections) = fetchData()
   override val blueTeam: List[LiveGamePlayerStats] = teams._1.map(js => createPlayer(js))
   override val purpleTeam: List[LiveGamePlayerStats] = teams._2.map(js => createPlayer(js))
   override val allPlayers: List[LiveGamePlayerStats] = blueTeam ++ purpleTeam
   private val allChampSelected = selections.map(js ⇒ parseSelection(js))
-  private val allLeagues = RiotApiCaller.call(app.riot.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString)))
+  private val allLeagues = RiotApi.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString))
 
   private def fetchData(): ((List[JsValue], List[JsValue]), List[JsValue]) = {
     val url = "https://community-league-of-legends.p.mashape.com/api/v1.0/" + playerRegion + "/summoner/retrieveInProgressSpectatorGameInfo/" + playerName
@@ -33,7 +32,7 @@ class RiotLiveStats(playerName: String, playerRegion: String, appCtx: MyApplicat
             (((value \ "teamOne" \ "array").as[List[JsValue]], (value \ "teamTwo" \ "array").as[List[JsValue]]), // find the teams
               (value \ "playerChampionSelections" \ "array").as[List[JsValue]]) // find all champions selected
 
-          case None ⇒ throw new IllegalStateException("%s's game has not started.".format(playerName)) // did not find game
+          case None ⇒ throw new IllegalStateException("%s is not in a game or the game has not started.".format(playerName)) // did not find game
         }
       case Failure(e) ⇒ throw e // no response
     }
@@ -60,11 +59,8 @@ class RiotLiveStats(playerName: String, playerRegion: String, appCtx: MyApplicat
   //   INNER CLASS
   // =================
   private class Player(info: BasicInfo) extends LiveGamePlayerStats {
-    private val s4 = RiotApiCaller.call(app.riot.getRankedStats(info.summonerId, 4))  // get season4 stats
-
-    private val normal = RiotApiCaller.call(app.riot.getPlayerStatsSummaryList(info.summonerId, 4).getPlayerStatSummaries
-                          .find(p ⇒ p.getPlayerStatSummaryType.equals("Unranked")).get)   // get normal game stats
-
+    private val s4 = RiotApi.getRankedStats(info.summonerId, 4)  // get season4 stats
+    private val normal = RiotApi.getNormalStats(info.summonerId, 4)   // get normal game stats
     private lazy val league = allLeagues.get.remove(info.summonerId.toString).head  // get the league info of the current player
 
     override val id: Long = info.summonerId

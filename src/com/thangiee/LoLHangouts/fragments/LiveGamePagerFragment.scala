@@ -9,9 +9,10 @@ import android.view._
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.api.RiotApi
 import com.thangiee.LoLHangouts.api.stats.{LiveGameStats, RiotLiveStats}
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
-import de.keyboardsurfer.android.widget.crouton.{Crouton, Configuration, Style}
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,6 +41,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
   }
 
   override def onStop(): Unit = {
+    RiotApi.setRegion(appCtx.selectedRegion.toString)
     Crouton.cancelAllCroutons()
     super.onStop()
   }
@@ -64,7 +66,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
     setContentShown(false) // show loading bar
     Future {
       try {
-        liveGame = new RiotLiveStats(name, region, appCtx)
+        liveGame = new RiotLiveStats(name, region)
         runOnUiThread {
           setContentEmpty(false) // hide error msg if currently showing
           setContentShown(true) // hide loading bar
