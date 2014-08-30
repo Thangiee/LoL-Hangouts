@@ -19,7 +19,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
   private val allLeagues = RiotApi.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString))
 
   private def fetchData(): ((List[JsValue], List[JsValue]), List[JsValue]) = {
-    val url = "https://community-league-of-legends.p.mashape.com/api/v1.0/" + playerRegion + "/summoner/retrieveInProgressSpectatorGameInfo/" + playerName
+    val url = "https://community-league-of-legends.p.mashape.com/api/v1.0/" + playerRegion + "/summoner/retrieveInProgressSpectatorGameInfo/" + playerName.replace(" ", "")
 
     val request = Try(Http(url).header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
       .option(HttpOptions.connTimeout(5000))
@@ -61,7 +61,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
   private class Player(info: BasicInfo) extends LiveGamePlayerStats {
     private val s4 = RiotApi.getRankedStats(info.summonerId, 4)  // get season4 stats
     private val normal = RiotApi.getNormalStats(info.summonerId, 4)   // get normal game stats
-    private lazy val league = allLeagues.get.remove(info.summonerId.toString).head  // get the league info of the current player
+    private lazy val league = allLeagues.get.get(info.summonerId.toString).head  // get the league info of the current player
 
     override val id: Long = info.summonerId
     override val previousLeagueTier: String = ""
