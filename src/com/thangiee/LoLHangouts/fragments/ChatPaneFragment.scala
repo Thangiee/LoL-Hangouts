@@ -13,7 +13,7 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.{LoLChat, Summoner}
+import com.thangiee.LoLHangouts.api.core.{Summoner, LoLChat}
 import com.thangiee.LoLHangouts.utils.DataBaseHandler
 import com.thangiee.LoLHangouts.utils.Events.ReceivedMessage
 import de.greenrobot.event.EventBus

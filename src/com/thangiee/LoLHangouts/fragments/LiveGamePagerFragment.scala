@@ -9,8 +9,8 @@ import android.view._
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.RiotApi
 import com.thangiee.LoLHangouts.api.stats.{LiveGameStats, RiotLiveStats}
+import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 

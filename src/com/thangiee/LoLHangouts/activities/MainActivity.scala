@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.LoLChat
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLWithFriendsService

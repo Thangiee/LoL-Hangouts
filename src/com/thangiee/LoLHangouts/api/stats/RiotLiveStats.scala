@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.api.stats
 
-import com.thangiee.LoLHangouts.api.{ChampionIdMap, RiotApi}
+import com.thangiee.LoLHangouts.api.utils.{RiotApi, ChampionIdMap}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
@@ -40,9 +40,11 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
 
   private def parseSelection(json: JsValue): ChampSelection = {
     ((JsPath \ "championId").read[Int] and
-      (JsPath \ "summonerInternalName").read[String])(ChampSelection.apply _)
+      (JsPath \ "summonerInternalName").read[String] and
+      (JsPath \ "spell1Id").read[Int] and
+      (JsPath \ "spell2Id").read[Int])(ChampSelection.apply _)
       .reads(json)
-      .getOrElse(throw new IllegalArgumentException)
+      .getOrElse(throw new IllegalArgumentException("Json value does not conform to RiotLiveStats#ChampSelection"))
   }
 
   private def createPlayer(json: JsValue): Player = {
@@ -50,7 +52,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
       (JsPath \ "summonerInternalName").read[String] and
       (JsPath \ "summonerName").read[String])(BasicInfo.apply _)
       .reads(json)
-      .getOrElse(throw new IllegalArgumentException)
+      .getOrElse(throw new IllegalArgumentException("Json value does not conform to RiotLiveStats#BasicInfo"))
 
     new Player(info)
   }
@@ -100,5 +102,5 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
 
   private case class BasicInfo(summonerId: Long, summonerInternalName: String, summonerName: String)
 
-  private case class ChampSelection(championId: Int, summonerInternalName: String)
+  private case class ChampSelection(championId: Int, summonerInternalName: String, spell1Id: Int, spell2Id: Int)
 }

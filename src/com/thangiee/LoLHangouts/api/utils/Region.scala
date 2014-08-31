@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api
+package com.thangiee.LoLHangouts.api.utils
 
 import com.thangiee.LoLHangouts.R
 

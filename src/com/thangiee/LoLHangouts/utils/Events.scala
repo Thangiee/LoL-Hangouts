@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.utils
 
 import com.ruenzuo.messageslistview.models.Message
-import com.thangiee.LoLHangouts.api.Summoner
+import com.thangiee.LoLHangouts.api.core.Summoner
 
 object Events {
   case class RefreshFriendList()

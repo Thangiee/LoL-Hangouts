@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts;
 
 import com.activeandroid.app.Application;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.thangiee.LoLHangouts.api.Region;
+import com.thangiee.LoLHangouts.api.utils.Region;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;

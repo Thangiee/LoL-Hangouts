@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api
+package com.thangiee.LoLHangouts.api.utils
 
 object ChampionIdMap {
   private val map = Map(

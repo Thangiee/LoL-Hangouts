@@ -6,7 +6,7 @@ import android.view.{View, ViewGroup}
 import android.widget.TextView
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.Summoner
+import com.thangiee.LoLHangouts.api.core.Summoner
 import com.thangiee.LoLHangouts.utils.DataBaseHandler
 
 class SummonerOffCard(ctx: Context, summoner: Summoner) extends SummonerBaseCard(ctx, summoner, R.layout.summoner_off_card) {
