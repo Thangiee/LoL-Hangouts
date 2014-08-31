@@ -25,30 +25,30 @@ class FriendRosterListener extends RosterListener {
 
   override def presenceChanged(p: Presence): Unit = {
     val id = StringUtils.parseBareAddress(p.getFrom)
-    val summ = LoLChat.getFriendById(id).get
+    val friend = LoLChat.getFriendById(id).get
     val listener = LoLChat.friendListListener
 
     // notify when a friend login/logoff
     val previousType = typeSnapShot.get(id).get
-    if (previousType == Type.unavailable && summ.chatType == Type.available) listener.onFriendLogin(summ) // login
-    else if (previousType == Type.available && summ.chatType == Type.unavailable) listener.onFriendLogOff(summ) // logout
+    if (previousType == Type.unavailable && friend.chatType == Type.available) listener.onFriendLogin(friend) // login
+    else if (previousType == Type.available && friend.chatType == Type.unavailable) listener.onFriendLogOff(friend) // logout
 
     // notify when chat mod of a friend change
     val previousMode = modeSnapShot.get(id).get
-    if(previousMode != Mode.chat && summ.chatMode == Mode.chat) listener.onFriendAvailable(summ) // available (green)
-    else if (previousMode != Mode.away && summ.chatMode == Mode.away) listener.onFriendAway(summ) // away (red)
-    else if (previousMode != Mode.dnd && summ.chatMode == Mode.dnd ) listener.onFriendBusy(summ)  // busy (yellow)
+    if(previousMode != Mode.chat && friend.chatMode == Mode.chat) listener.onFriendAvailable(friend) // available (green)
+    else if (previousMode != Mode.away && friend.chatMode == Mode.away) listener.onFriendAway(friend) // away (red)
+    else if (previousMode != Mode.dnd && friend.chatMode == Mode.dnd ) listener.onFriendBusy(friend)  // busy (yellow)
 
     // notify when a friend chat status change
     val previousStatus = statusSnapShot.get(id).get
-    if(previousStatus != summ.status) listener.onFriendStatusChange(summ)
+    if(previousStatus != friend.status) listener.onFriendStatusChange(friend)
 
-    updateSnapShots(summ)
+    updateSnapShots(friend)
   }
 
-  private def updateSnapShots(summoner: Summoner) {
-    typeSnapShot.put(summoner.id, summoner.chatType)
-    modeSnapShot.put(summoner.id, summoner.chatMode)
-    statusSnapShot.put(summoner.id, summoner.status)
+  private def updateSnapShots(friend: Friend) {
+    typeSnapShot.put(friend.id, friend.chatType)
+    modeSnapShot.put(friend.id, friend.chatMode)
+    statusSnapShot.put(friend.id, friend.status)
   }
 }

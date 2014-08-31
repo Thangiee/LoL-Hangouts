@@ -9,30 +9,29 @@ import android.widget.{Button, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
-import com.thangiee.LoLHangouts.api.core.{LoLStatus, Summoner}
-import LoLStatus._
-import com.thangiee.LoLHangouts.api.core.Summoner
+import com.thangiee.LoLHangouts.api.core.Friend
+import com.thangiee.LoLHangouts.api.core.LoLStatus._
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence
 
-class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseCard(ctx, summoner, R.layout.summoner_card) {
+class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
   private var view: View = _
-  private lazy val nameTextView = view.findViewById(R.id.tv_summoner_name).asInstanceOf[TextView]
-  private lazy val statusTextView = view.findViewById(R.id.tv_summoner_status).asInstanceOf[TextView]
+  private lazy val nameTextView = view.findViewById(R.id.tv_friend_name).asInstanceOf[TextView]
+  private lazy val statusTextView = view.findViewById(R.id.tv_friend_status).asInstanceOf[TextView]
   private lazy val iconImageView = view.findViewById(R.id.img_profile_icon).asInstanceOf[ImageView]
-  private lazy val lastMsgTextView = view.findViewById(R.id.tv_summoner_last_msg).asInstanceOf[TextView]
+  private lazy val lastMsgTextView = view.findViewById(R.id.tv_friend_last_msg).asInstanceOf[TextView]
   private lazy val infoImageView = view.findViewById(R.id.img_info).asInstanceOf[ImageView]
   addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     this.view = view
-    nameTextView.setText(summoner.name)
+    nameTextView.setText(friend.name)
 
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadIconInto(ctx, summoner.name, appCtx.selectedRegion.toString, iconImageView)
+      SummonerUtils.loadIconInto(ctx, friend.name, appCtx.selectedRegion.toString, iconImageView)
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
@@ -49,17 +48,17 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
 
   private def updateLastMessage() {
     // set last message
-    val lastMsg = DataBaseHandler.getLastMessage(appCtx.currentUser, summoner.name)
+    val lastMsg = DataBaseHandler.getLastMessage(appCtx.currentUser, friend.name)
     lastMsg match {
       case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
-                        lastMsgTextView.setTextColor(ctx.getResources.getColor(if(!msg.isRead) R.color.summoner_card_last_msg_unread else  R.color.summoner_card_last_msg)) // different color for read/unread
+                        lastMsgTextView.setTextColor(ctx.getResources.getColor(if(!msg.isRead) R.color.friend_card_last_msg_unread else  R.color.friend_card_last_msg)) // different color for read/unread
       case None      => lastMsgTextView.setText("")
     }
   }
 
   private def updateStatus() {
-    summoner.chatMode match {
+    friend.chatMode match {
       case Presence.Mode.chat => changeToOnline()
       case Presence.Mode.dnd  => changeToBusy()
       case Presence.Mode.away => changeToAway()
@@ -78,10 +77,10 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
   }
 
   private def changeToBusy() {
-    val status = parse(summoner, GameStatus).getOrElse("")
+    val status = parse(friend, GameStatus).getOrElse("")
     status match {
-      case "inGame"         => val gameTime = (System.currentTimeMillis() - parse(summoner, TimeStamp).get.toLong) / 60000
-                               statusTextView.setText("In Game: " + parse(summoner, SkinName).getOrElse("???")+" (" + Math.round(gameTime)+" mins)")
+      case "inGame"         => val gameTime = (System.currentTimeMillis() - parse(friend, TimeStamp).get.toLong) / 60000
+                               statusTextView.setText("In Game: " + parse(friend, SkinName).getOrElse("???")+" (" + Math.round(gameTime)+" mins)")
       case "championSelect" => statusTextView.setText("Champion Selection")
       case "inQueue"        => statusTextView.setText("In Queue")
       case _                => statusTextView.setText(status)
@@ -94,7 +93,7 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
    *      INNER CLASS
    *  ====================
    */
-  private class SummonerCardExpand extends CardExpand(ctx, R.layout.summoner_card_expand) {
+  private class SummonerCardExpand extends CardExpand(ctx, R.layout.friend_card_expand) {
     override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
       val levelTextView = view.findViewById(R.id.tv_level).asInstanceOf[TextView]
       val statusMsgTextView = view.findViewById(R.id.tv_status_msg).asInstanceOf[TextView]
@@ -104,20 +103,20 @@ class SummonerOnCard(ctx: Context, val summoner: Summoner) extends SummonerBaseC
       val badgeImageView = view.findViewById(R.id.img_badge).asInstanceOf[ImageView]
 
       // set additional summoner infomations
-      levelTextView.setText("Level " + parse(summoner, Level).getOrElse("0"))
-      statusMsgTextView.setText(parse(summoner, StatusMsg).getOrElse("No Status Message"))
-      rankTextView.setText(parse(summoner, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(summoner, RankedLeagueDivision).getOrElse(""))
-      leagueTextView.setText(parse(summoner, RankedLeagueName).getOrElse("NO LEAGUE"))
-      winTextView.setText(parse(summoner, Wins).getOrElse("0") + " wins")
+      levelTextView.setText("Level " + parse(friend, Level).getOrElse("0"))
+      statusMsgTextView.setText(parse(friend, StatusMsg).getOrElse("No Status Message"))
+      rankTextView.setText(parse(friend, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(friend, RankedLeagueDivision).getOrElse(""))
+      leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
+      winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
       view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", summoner.name).putExtra("region-key", appCtx.selectedRegion.toString)
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", friend.name).putExtra("region-key", appCtx.selectedRegion.toString)
         )
       })
 
       // set summoner rank badge
-      parse(summoner, RankedLeagueTier).getOrElse("") match {
+      parse(friend, RankedLeagueTier).getOrElse("") match {
         case "BRONZE"       ⇒ badgeImageView.setImageResource(R.drawable.badge_bronze)
         case "SILVER"       ⇒ badgeImageView.setImageResource(R.drawable.badge_silver)
         case "GOLD"         ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)

@@ -13,7 +13,7 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.core.{Summoner, LoLChat}
+import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
 import com.thangiee.LoLHangouts.utils.DataBaseHandler
 import com.thangiee.LoLHangouts.utils.Events.ReceivedMessage
 import de.greenrobot.event.EventBus
@@ -120,7 +120,7 @@ class ChatPaneFragment extends TFragment {
   }
 
   def onEventMainThread(event: ReceivedMessage): Unit = {
-    info("[*]onEvent: received message from "+event.summoner.name)
+    info("[*]onEvent: received message from "+event.friend.name)
     messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
 
     // check sound preference before playing sound
@@ -140,9 +140,9 @@ class ChatPaneFragment extends TFragment {
 }
 
 object ChatPaneFragment {
-  def newInstance(summoner: Summoner): ChatPaneFragment = {
+  def newInstance(friend: Friend): ChatPaneFragment = {
     val bundle = new Bundle()
-    bundle.putString("name-key", summoner.name)
+    bundle.putString("name-key", friend.name)
     val frag = new ChatPaneFragment
     frag.setArguments(bundle)
     frag

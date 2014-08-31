@@ -3,15 +3,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/summoner_card">
+                android:background="@color/friend_card">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Name"
-            android:textSize="@dimen/summoner_name_txt_size"
-            android:id="@+id/tv_summoner_name"
+            android:textSize="@dimen/friend_name_txt_size"
+            android:id="@+id/tv_friend_name"
             android:textColor="@android:color/darker_gray"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -24,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/summoner_last_msg_txt_size"
+            android:textSize="@dimen/friend_last_msg_txt_size"
             android:textColor="@android:color/darker_gray"
             android:text="message"
-            android:id="@+id/tv_summoner_last_msg"
-            android:layout_below="@+id/tv_summoner_name"
-            android:layout_alignLeft="@+id/tv_summoner_name"
-            android:layout_alignStart="@+id/tv_summoner_name"
+            android:id="@+id/tv_friend_last_msg"
+            android:layout_below="@+id/tv_friend_name"
+            android:layout_alignLeft="@+id/tv_friend_name"
+            android:layout_alignStart="@+id/tv_friend_name"
             android:layout_marginBottom="4dp"
             android:singleLine="true"/>
 </RelativeLayout>

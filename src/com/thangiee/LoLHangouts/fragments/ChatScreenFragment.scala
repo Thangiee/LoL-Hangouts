@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
-import com.thangiee.LoLHangouts.utils.Events.SummonerCardClicked
+import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -48,7 +48,7 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
 
   override def onPause(): Unit = {
     super.onPause()
-    EventBus.getDefault.unregister(this, classOf[SummonerCardClicked])
+    EventBus.getDefault.unregister(this, classOf[FriendCardClicked])
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
   }
@@ -92,10 +92,10 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)  // refresh friend list
   }
 
-  def onEvent(event: SummonerCardClicked): Unit = {
-    info("[*]onEvent: "+event.summoner.name+" summoner card clicked")
-    appCtx.activeFriendChat = event.summoner.name
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.summoner)).commit()
+  def onEvent(event: FriendCardClicked): Unit = {
+    info("[*]onEvent: "+event.friend.name+" friend card clicked")
+    appCtx.activeFriendChat = event.friend.name
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.friend)).commit()
     slidingLayout.closePane()
   }
 }
