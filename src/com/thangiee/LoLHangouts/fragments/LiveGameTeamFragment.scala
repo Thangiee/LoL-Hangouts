@@ -34,7 +34,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     // load champion icon
     playerDictionary.addStaticImageField(R.id.img_live_game_champ, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
-        img.setImageDrawable(ChampIconAssetFile(p.chosenChamp).toDrawable)
+        img.setImageDrawable(ChampIconAssetFile(p.chosenChampName).toDrawable)
     })
 
     // load season 4 badge
