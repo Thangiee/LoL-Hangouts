@@ -22,7 +22,7 @@ import org.scaloid.common._
 
 import scala.util.Random
 
-class LoLWithFriendsService extends SService with TContext with MessageListener with FriendListListener with ConnectionListener with TLogger {
+class LoLHangoutsService extends SService with TContext with MessageListener with FriendListListener with ConnectionListener with TLogger {
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
