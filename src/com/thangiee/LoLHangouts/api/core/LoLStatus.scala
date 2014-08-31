@@ -22,11 +22,11 @@ object LoLStatus extends Enumeration {
   val RankedLeagueQueue = Value("rankedLeagueQueue")
   val RankedWins = Value("rankedWins")
 
-  def parse(summoner: Summoner, value: LoLStatus): Option[String] = {
-    if (!summoner.isOnline) return None
-    if (summoner.status == null) return None
+  def parse(friend: Friend, value: LoLStatus): Option[String] = {
+    if (!friend.isOnline) return None
+    if (friend.status == null) return None
     val pattern = "(?<=" + value.toString + ">).*?(?=</" + value.toString + ")"
-    val result = pattern.r.findFirstIn(summoner.status).getOrElse("").replace("&apos;", "")
+    val result = pattern.r.findFirstIn(friend.status).getOrElse("").replace("&apos;", "")
     if (!result.isEmpty) Some(result) else None
   }
 }

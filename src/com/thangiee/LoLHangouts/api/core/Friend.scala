@@ -4,7 +4,7 @@ import org.jivesoftware.smack.RosterEntry
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.Type
 
-class Summoner(entry: RosterEntry) {
+class Friend(entry: RosterEntry) {
 
   def name: String = entry.getName
 

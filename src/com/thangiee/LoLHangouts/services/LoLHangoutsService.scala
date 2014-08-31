@@ -11,9 +11,8 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
-import com.thangiee.LoLHangouts.api.core.{Summoner, FriendListListener, LoLChat}
-import com.thangiee.LoLHangouts.api.Summoner
-import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
+import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
+import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshFriendCard}
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
@@ -68,7 +67,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(new Events.RefreshSummonerCard(friend))
+    EventBus.getDefault.post(new Events.RefreshFriendCard(friend))
 
     // check notification preference
     val isNotify = defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)
@@ -86,38 +85,38 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
   //=============================================
   //    FriendListListener Implementations
   //=============================================
-  override def onFriendAvailable(summoner: Summoner): Unit = {
-    info("[*]Available: "+summoner.name)
-    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
+  override def onFriendAvailable(friend: Friend): Unit = {
+    info("[*]Available: "+friend.name)
+    EventBus.getDefault.post(new RefreshFriendCard(friend))
   }
 
-  override def onFriendLogin(summoner: Summoner): Unit = {
+  override def onFriendLogin(friend: Friend): Unit = {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
 
     if (defaultSharedPreferences.getBoolean(R.string.pref_notify_login.r2String, true)) {
       // show notification when friendList fragment is not in view or screen is not on
       if (!appCtx.isFriendListOpen || !powerManager.isScreenOn) { // check setting
-        showLogInNotification(summoner)
+        showLogInNotification(friend)
       }
     }
   }
 
-  override def onFriendBusy(summoner: Summoner): Unit = {
-    info("[*]Busy: "+summoner.name)
-    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
+  override def onFriendBusy(friend: Friend): Unit = {
+    info("[*]Busy: "+friend.name)
+    EventBus.getDefault.post(new RefreshFriendCard(friend))
   }
 
-  override def onFriendAway(summoner: Summoner): Unit = {
-    info("[*]Away: "+summoner.name)
-    EventBus.getDefault.post(new RefreshSummonerCard(summoner))
+  override def onFriendAway(friend: Friend): Unit = {
+    info("[*]Away: "+friend.name)
+    EventBus.getDefault.post(new RefreshFriendCard(friend))
   }
 
-  override def onFriendLogOff(summoner: Summoner): Unit = {
+  override def onFriendLogOff(friend: Friend): Unit = {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
   }
 
-  override def onFriendStatusChange(summoner: Summoner): Unit = {
-    info("[*]Change Status: "+summoner.name)
+  override def onFriendStatusChange(friend: Friend): Unit = {
+    info("[*]Change Status: "+friend.name)
   }
 
   //=============================================
@@ -135,7 +134,7 @@ class LoLWithFriendsService extends SService with TContext with MessageListener 
 
   //=============================================
 
-  private def showLogInNotification(friend: Summoner) {
+  private def showLogInNotification(friend: Friend) {
     val builder = new Notification.Builder(ctx)
       .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_action_user)

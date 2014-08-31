@@ -13,9 +13,9 @@
 
     <color name="scroll_bar">@color/my_orange</color>
 
-    <color name="summoner_card">@color/my_dark_blue</color>
-    <color name="summoner_card_last_msg">@android:color/darker_gray</color>
-    <color name="summoner_card_last_msg_unread">@color/white</color>
+    <color name="friend_card">@color/my_dark_blue</color>
+    <color name="friend_card_last_msg">@android:color/darker_gray</color>
+    <color name="friend_card_last_msg_unread">@color/white</color>
 
     <color name="login_screen_bg">@color/my_dark_blue</color>
 

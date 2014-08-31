@@ -2,15 +2,15 @@ package com.thangiee.LoLHangouts.api.core
 
 trait FriendListListener {
 
-  def onFriendAvailable(summoner: Summoner)
+  def onFriendAvailable(friend: Friend)
 
-  def onFriendAway(summoner: Summoner)
+  def onFriendAway(friend: Friend)
 
-  def onFriendBusy(summoner: Summoner)
+  def onFriendBusy(friend: Friend)
 
-  def onFriendLogin(summoner: Summoner)
+  def onFriendLogin(friend: Friend)
 
-  def onFriendLogOff(summoner: Summoner)
+  def onFriendLogOff(friend: Friend)
 
-  def onFriendStatusChange(summoner: Summoner)
+  def onFriendStatusChange(friend: Friend)
 }

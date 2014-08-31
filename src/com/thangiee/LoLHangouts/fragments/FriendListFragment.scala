@@ -7,8 +7,8 @@ import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, RefreshSummonerCard}
-import com.thangiee.LoLHangouts.views.{SummonerBaseCard, SummonerOffCard, SummonerOnCard}
+import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, RefreshFriendCard}
+import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class FriendListFragment extends ProgressFragment with TFragment {
-  private val cards = scala.collection.mutable.ArrayBuffer[SummonerBaseCard]()
+  private val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   private var cardArrayAdapter: CardArrayAdapter = _
 
   override def onAttach(activity: Activity): Unit = {
@@ -51,13 +51,13 @@ class FriendListFragment extends ProgressFragment with TFragment {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, classOf[RefreshFriendList], classOf[RefreshSummonerCard])
+    EventBus.getDefault.unregister(this, classOf[RefreshFriendList], classOf[RefreshFriendCard])
     super.onDestroy()
   }
 
-  def findCardByName(name: String): Option[SummonerBaseCard] = {
+  def findCardByName(name: String): Option[FriendBaseCard] = {
     for (i <- 0 until cardArrayAdapter.getCount) {
-      val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[SummonerBaseCard] // get the card view
+      val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[FriendBaseCard] // get the card view
       if (baseCard.cardName == name) return Some(baseCard)
     }
     None
@@ -72,8 +72,8 @@ class FriendListFragment extends ProgressFragment with TFragment {
       val (friendsOn, friendsOff) = (LoLChat.onlineFriends, LoLChat.offlineFriends)
       runOnUiThread {
         cards.clear()
-        cards.++=(for (f <- friendsOn) yield new SummonerOnCard(getActivity, f)) // online friends first
-        cards.++=(for (f <- friendsOff) yield new SummonerOffCard(getActivity, f))
+        cards.++=(for (f <- friendsOn) yield new FriendOnCard(getActivity, f)) // online friends first
+        cards.++=(for (f <- friendsOff) yield new FriendOffCard(getActivity, f))
       }
     }
   }
@@ -83,9 +83,9 @@ class FriendListFragment extends ProgressFragment with TFragment {
     refreshFriendList()
   }
 
-  def onEventMainThread(event: RefreshSummonerCard): Unit = {
-    info("[*]onEvent: request to refresh " + event.summoner.name + "summoner card")
-    findCardByName(event.summoner.name) match {
+  def onEventMainThread(event: RefreshFriendCard): Unit = {
+    info("[*]onEvent: request to refresh " + event.friend.name + "friend card")
+    findCardByName(event.friend.name) match {
       case Some(card) => info("[+]Found card"); card.refreshCard()
       case None => warn("[-]No card found")
     }
