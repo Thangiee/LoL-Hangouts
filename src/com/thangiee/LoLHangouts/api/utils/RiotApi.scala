@@ -48,8 +48,8 @@ object RiotApi extends TLogger {
               case ERROR_SERVICE_UNAVAILABLE    ⇒ throw ISE("Service unavailable")
             }
             case e: SocketTimeoutException ⇒ throw new SocketTimeoutException("Connection time out. Try refreshing.")
-            case e: NoSuchElementException ⇒ None
-            case _ ⇒ warn(error.getMessage)
+            case e: NoSuchElementException ⇒ return None
+            case _ ⇒ throw error
           }
         }
         SystemClock.sleep((10 * Keys.keys.size) / 2)

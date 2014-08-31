@@ -13,10 +13,10 @@ import scalaj.http.{Http, HttpOptions}
 class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameStats {
   RiotApi.setRegion(playerRegion)
   private val (teams, selections) = fetchData()
+  private val champSelectedList = selections.map(js ⇒ parseSelection(js))
   override val blueTeam: List[LiveGamePlayerStats] = teams._1.map(js => createPlayer(js))
   override val purpleTeam: List[LiveGamePlayerStats] = teams._2.map(js => createPlayer(js))
   override val allPlayers: List[LiveGamePlayerStats] = blueTeam ++ purpleTeam
-  private val champSelectedList = selections.map(js ⇒ parseSelection(js))
   private val LeagueList = RiotApi.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString))
 
   private def fetchData(): ((List[JsValue], List[JsValue]), List[JsValue]) = {
@@ -84,8 +84,10 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
     }
     override val spellOne: SummonerSpell = RiotApi.getSpellById(chosenChamp.spell1Id)
     override val spellTwo: SummonerSpell = RiotApi.getSpellById(chosenChamp.spell2Id)
+    override val chosenChampName: String = RiotApi.getChampById(chosenChamp.championId).name
+
+    // IMPORTANT: accessing the league variable needs to be define as lazy
     override lazy val leaguePoints: String = Try(league.getEntries.head.getLeaguePoints + " LP").getOrElse("0 LP")
-    override lazy val chosenChampName: String = RiotApi.getChampById(chosenChamp.championId).name
     override lazy val leagueTier: String = Try(league.getTier).getOrElse("UNRANKED")
     override lazy val leagueDivision: String = Try(league.getEntries.head.getDivision).getOrElse("")
     override lazy val series: Option[Series] = {
