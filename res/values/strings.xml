@@ -36,7 +36,7 @@
 
     <string name="back_to_exit">Click BACK again to exit</string>
 
-    <string name="ask_rate_app">Like this app? Please take a moment to rate it.</string>
+    <string name="ask_rate_app">Like this app? Please click here to go rate it.</string>
     <string name="crash_toast_text">A crash report was sent to the developer.</string>
 
     <string name="summoner_search_screen_msg">Use the search to find other summoner\'s profile.</string>
