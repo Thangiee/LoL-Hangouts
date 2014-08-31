@@ -1,14 +1,20 @@
 package com.thangiee.LoLHangouts.api.stats
 
+import com.thangiee.LoLHangouts.api.utils.RiotApi.SummonerSpell
+
 trait LiveGamePlayerStats extends PlayerStats {
 
   val id: Long
 
-  val chosenChamp: String
+  val chosenChampName: String
 
   val previousLeagueTier: String
 
   val series: Option[Series]
+  
+  val spellOne: SummonerSpell
+  
+  val spellTwo: SummonerSpell
 
   lazy val elo: Int = {
     val TierWeight = 350.0

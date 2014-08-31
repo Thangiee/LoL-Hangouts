@@ -9,9 +9,13 @@ import com.jriot.main.{JRiot, JRiotException}
 import com.jriot.objects.{League, PlayerStatsSummary, RankedStats}
 import com.thangiee.LoLHangouts.api.Keys
 import com.thangiee.LoLHangouts.utils.{CacheUtils, TLogger}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.Reads._
+import play.api.libs.json._
 
 import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
+import scalaj.http.{Http, HttpOptions}
 
 /**
  *  This Singleton handle calling the Riot API and caching the the results
@@ -44,6 +48,7 @@ object RiotApi extends TLogger {
               case ERROR_SERVICE_UNAVAILABLE    ⇒ throw ISE("Service unavailable")
             }
             case e: SocketTimeoutException ⇒ throw new SocketTimeoutException("Connection time out. Try refreshing.")
+            case e: NoSuchElementException ⇒ None
             case _ ⇒ warn(error.getMessage)
           }
         }
@@ -56,9 +61,7 @@ object RiotApi extends TLogger {
     }
   }
 
-  def setRegion(region: String): Unit = {
-    jRiot.setRegion(region.toLowerCase)
-  }
+  def setRegion(region: String) = jRiot.setRegion(region.toLowerCase)
 
   def getLeagueEntries(ids: List[String]): Option[util.Map[String, util.List[League]]] = {
     get("leagues-" + ids.mkString("-"), jRiot.getLeagueEntries(ids))
@@ -73,5 +76,43 @@ object RiotApi extends TLogger {
             .getPlayerStatSummaries.find(p ⇒ p.getPlayerStatSummaryType.equals("Unranked")).get)
   }
 
+  def getChampById(id: Int): Champion = {
+    get("champion-" + id, {
+      val json = "https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/%d?&api_key=%s".format(id, Keys.randomKey).toJson
+
+      ((JsPath \ "id").asInt and
+        (JsPath \ "key").asString and
+        (JsPath \ "name").asString and
+        (JsPath \ "title").asString
+        )(Champion.apply _).reads(json).get
+    }).getOrElse(Champion(0, "???", "???", "???"))
+  }
+
+  def getSpellById(id: Int): SummonerSpell = {
+    get("summonerSpell-" + id, {
+      val json = "https://na.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/%d?api_key=%s".format(id, Keys.randomKey).toJson
+
+      ((JsPath \ "id").asInt and
+        (JsPath \ "key").asString and
+        (JsPath \ "name").asString and
+        (JsPath \ "description").asString and
+        (JsPath \ "summonerLevel").asInt
+        )(SummonerSpell.apply _).reads(json).get
+    }).getOrElse(SummonerSpell(0, "???", "???", "???", 0))
+  }
+
   private def ISE(msg: String) = new IllegalStateException(msg)
+
+  case class Champion(id: Int, key: String, name: String, title: String)
+
+  case class SummonerSpell(id: Int, key: String, name: String, description: String, level: Int)
+
+  private implicit class ReadJsPath(jsPath: JsPath) {
+    def asInt = jsPath.read[Int]
+    def asString = jsPath.read[String]
+  }
+
+  private implicit class UrlToJson(url: String) {
+    def toJson = Json.parse(Http(url).option(HttpOptions.connTimeout(2500)).option(HttpOptions.readTimeout(2500)).asString)
+  }
 }

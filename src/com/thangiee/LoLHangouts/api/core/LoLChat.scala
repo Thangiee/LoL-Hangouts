@@ -1,6 +1,5 @@
 package com.thangiee.LoLHangouts.api.core
 
-import com.thangiee.LoLHangouts.api._
 import com.thangiee.LoLHangouts.api.utils.Region
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.Message.Type
@@ -48,15 +47,15 @@ object LoLChat {
 
   def disconnect() = { connection.disconnect(); _statusMsg = "Using LoL Hangouts App" }
 
-  def friends: List[Summoner] = for (entry <- connection.getRoster.getEntries.toList) yield new Summoner(entry)
+  def friends: List[Friend] = for (entry <- connection.getRoster.getEntries.toList) yield new Friend(entry)
 
-  def getFriendByName(name: String): Option[Summoner] = friends.find((f) => f.name == name)
+  def getFriendByName(name: String): Option[Friend] = friends.find((f) => f.name == name)
 
-  def getFriendById(id: String): Option[Summoner] = friends.find((f) => f.id == id)
+  def getFriendById(id: String): Option[Friend] = friends.find((f) => f.id == id)
 
-  def onlineFriends: List[Summoner] = friends.filter((friend) => friend.isOnline)
+  def onlineFriends: List[Friend] = friends.filter((friend) => friend.isOnline)
 
-  def offlineFriends: List[Summoner] = friends.filter((friend) => !friend.isOnline)
+  def offlineFriends: List[Friend] = friends.filter((friend) => !friend.isOnline)
 
   def isConnected: Boolean = Try(connection) match {
     case Success(c) ⇒ c.isConnected
@@ -74,7 +73,7 @@ object LoLChat {
 
   def appearAway() = { updateStatus(Presence.Type.available, Presence.Mode.away); _presenceMode = Presence.Mode.away }
 
-  def sendMessage(summoner: Summoner, msg: String): Boolean = {
+  def sendMessage(summoner: Friend, msg: String): Boolean = {
     val message = new Message(summoner.id, Type.chat)
     message.setBody(msg)
     XMPPExceptionHandler(connection.sendPacket(message))

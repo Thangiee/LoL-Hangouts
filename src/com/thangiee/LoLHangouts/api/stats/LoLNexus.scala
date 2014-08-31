@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.api.stats
 
+import com.thangiee.LoLHangouts.api.utils.RiotApi.SummonerSpell
 import org.jsoup.nodes.{Document, Element}
 
 import scala.collection.JavaConversions._
@@ -69,10 +70,12 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
     override val leagueDivision: String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").tail.head
 
-    override val chosenChamp: String = {
+    override val chosenChampName: String = {
       parse("span", html.select("td[class=champion]").first()).getOrElse("???").split(" \\(").head
     }
     override val id: Long = ???
+    override val spellOne: SummonerSpell = ???
+    override val spellTwo: SummonerSpell = ???
   }
 }
 
