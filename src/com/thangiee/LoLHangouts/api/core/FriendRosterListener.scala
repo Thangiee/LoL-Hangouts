@@ -33,7 +33,7 @@ class FriendRosterListener extends RosterListener {
     if (previousType == Type.unavailable && friend.chatType == Type.available) listener.onFriendLogin(friend) // login
     else if (previousType == Type.available && friend.chatType == Type.unavailable) listener.onFriendLogOff(friend) // logout
 
-    // notify when chat mod of a friend change
+    // notify when chat mode of a friend change
     val previousMode = modeSnapShot.get(id).get
     if(previousMode != Mode.chat && friend.chatMode == Mode.chat) listener.onFriendAvailable(friend) // available (green)
     else if (previousMode != Mode.away && friend.chatMode == Mode.away) listener.onFriendAway(friend) // away (red)
