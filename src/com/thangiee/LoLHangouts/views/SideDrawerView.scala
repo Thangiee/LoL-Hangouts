@@ -9,7 +9,7 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
-import com.thangiee.LoLHangouts.api.LoLChat
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
 import de.greenrobot.event.EventBus

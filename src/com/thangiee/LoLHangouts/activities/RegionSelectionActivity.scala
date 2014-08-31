@@ -9,6 +9,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api._
+import com.thangiee.LoLHangouts.api.utils._
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
 import org.scaloid.common.SContext
 

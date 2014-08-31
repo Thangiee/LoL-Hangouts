@@ -6,7 +6,7 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.LoLChat
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, RefreshSummonerCard}
 import com.thangiee.LoLHangouts.views.{SummonerBaseCard, SummonerOffCard, SummonerOnCard}
 import de.greenrobot.event.EventBus

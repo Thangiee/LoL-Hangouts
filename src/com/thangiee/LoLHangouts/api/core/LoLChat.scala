@@ -1,5 +1,7 @@
-package com.thangiee.LoLHangouts.api
+package com.thangiee.LoLHangouts.api.core
 
+import com.thangiee.LoLHangouts.api._
+import com.thangiee.LoLHangouts.api.utils.Region
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.Message.Type
 import org.jivesoftware.smack.packet.Presence.Mode

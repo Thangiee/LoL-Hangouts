@@ -11,7 +11,8 @@ import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
-import com.thangiee.LoLHangouts.api.{FriendListListener, LoLChat, Summoner}
+import com.thangiee.LoLHangouts.api.core.{Summoner, FriendListListener, LoLChat}
+import com.thangiee.LoLHangouts.api.Summoner
 import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshSummonerCard}
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus

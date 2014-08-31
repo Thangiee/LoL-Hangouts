@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.views
 
 import android.content.Context
 import android.view.View
-import com.thangiee.LoLHangouts.api.Summoner
+import com.thangiee.LoLHangouts.api.core.Summoner
 import com.thangiee.LoLHangouts.utils.Events
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.Card

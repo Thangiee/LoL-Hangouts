@@ -7,7 +7,8 @@ import android.widget.{CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.{RiotApi, LoLChat, Region}
+import com.thangiee.LoLHangouts.api.core.LoLChat
+import com.thangiee.LoLHangouts.api.utils.{RiotApi, Region}
 import play.api.libs.json.Json
 import org.scaloid.common._
 

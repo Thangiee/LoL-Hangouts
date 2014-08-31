@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api
+package com.thangiee.LoLHangouts.api.utils
 
 import java.net.SocketTimeoutException
 import java.util
@@ -6,11 +6,12 @@ import java.util
 import android.os.SystemClock
 import com.jriot.main.JRiotException._
 import com.jriot.main.{JRiot, JRiotException}
-import com.jriot.objects.{PlayerStatsSummary, RankedStats, League}
+import com.jriot.objects.{League, PlayerStatsSummary, RankedStats}
+import com.thangiee.LoLHangouts.api.Keys
 import com.thangiee.LoLHangouts.utils.{CacheUtils, TLogger}
 
-import scala.util.{Failure, Success, Try}
 import scala.collection.JavaConversions._
+import scala.util.{Failure, Success, Try}
 
 /**
  *  This Singleton handle calling the Riot API and caching the the results

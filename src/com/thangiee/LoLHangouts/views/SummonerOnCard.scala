@@ -9,8 +9,9 @@ import android.widget.{Button, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
-import com.thangiee.LoLHangouts.api.LoLStatus._
-import com.thangiee.LoLHangouts.api.Summoner
+import com.thangiee.LoLHangouts.api.core.{LoLStatus, Summoner}
+import LoLStatus._
+import com.thangiee.LoLHangouts.api.core.Summoner
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence

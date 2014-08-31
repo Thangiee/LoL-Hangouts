@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api
+package com.thangiee.LoLHangouts.api.core
 
 import java.util
 
