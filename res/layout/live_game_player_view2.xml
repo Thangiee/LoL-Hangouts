@@ -17,7 +17,6 @@
             android:layout_below="@+id/tv_live_game_name"
             android:layout_alignStart="@+id/textView4"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             />
 
     <TextView
@@ -194,5 +193,22 @@
             android:layout_alignRight="@+id/img_live_game_champ"
             android:layout_alignEnd="@+id/img_live_game_champ"
             />
+
+    <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:id="@+id/img_live_game_spell1"
+            android:layout_alignTop="@+id/img_live_game_champ"
+            android:layout_toRightOf="@+id/img_live_game_champ"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_load_error"/>
+
+    <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:id="@+id/img_live_game_spell2"
+            android:src="@drawable/ic_load_error"
+            android:layout_above="@+id/img_live_game_series"
+            android:layout_alignLeft="@+id/img_live_game_spell1"/>
 
 </RelativeLayout>

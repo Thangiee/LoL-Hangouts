@@ -10,7 +10,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.BLUE_TEAM
-import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
+import com.thangiee.LoLHangouts.utils.{SummonerSpellAssetFile, ChampIconAssetFile, ExtractorImplicits}
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -35,6 +35,16 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     playerDictionary.addStaticImageField(R.id.img_live_game_champ, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         img.setImageDrawable(ChampIconAssetFile(p.chosenChampName).toDrawable)
+    })
+
+    playerDictionary.addStaticImageField(R.id.img_live_game_spell1, new StaticImageLoader[LiveGamePlayerStats] {
+      override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
+        img.setImageDrawable(SummonerSpellAssetFile(p.spellOne.name).toDrawable)
+    })
+
+    playerDictionary.addStaticImageField(R.id.img_live_game_spell2, new StaticImageLoader[LiveGamePlayerStats] {
+      override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
+        img.setImageDrawable(SummonerSpellAssetFile(p.spellTwo.name).toDrawable)
     })
 
     // load season 4 badge
