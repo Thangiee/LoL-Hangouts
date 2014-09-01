@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="1.2.1" changeDate="Sep 1,2014">
+        <changelogtext>Show summoner spells in live game stats screen</changelogtext>
+        <changelogtext>Improve live game stats screen apparent</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.2.0" changeDate="Aug 30,2014">
         <changelogtext>[b][font color=red]New[/font][/b] live game stats implementation. (Should load much
             [b][i]faster[/i][/b] now!)
