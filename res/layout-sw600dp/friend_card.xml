@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:circle="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
@@ -16,7 +17,7 @@
             android:layout_toRightOf="@+id/img_profile_icon"
             android:layout_marginTop="8dp"/>
 
-    <ImageView
+    <com.makeramen.RoundedImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:id="@+id/img_profile_icon"
@@ -25,7 +26,10 @@
             android:layout_alignParentStart="true"
             android:cropToPadding="false"
             android:src="@drawable/league_icon"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            circle:corner_radius="28dip"
+            circle:border_color="@color/my_orange"
+            circle:border_width="1dp"/>
 
     <TextView
             android:layout_width="wrap_content"

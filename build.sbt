@@ -8,7 +8,7 @@ scalaVersion := "2.11.2"
 
 minSdkVersion in Android := "14"
 
-platformTarget in Android := "android-19"
+platformTarget in Android := "android-20"
 
 proguardCache in Android ++= Seq(
   ProguardCache("org.scaloid") % "org.scaloid",
@@ -53,7 +53,6 @@ libraryDependencies ++= Seq(
   //  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
   "com.android.support" % "support-v13" % "19.+",
   "com.android.support" % "support-v4" % "19.+",
-  "com.android.support" % "appcompat-v7" % "19.+",
   "com.google.code.gson" % "gson" % "2.2.4",
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.4",
