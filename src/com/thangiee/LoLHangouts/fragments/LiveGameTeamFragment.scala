@@ -10,7 +10,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.BLUE_TEAM
-import com.thangiee.LoLHangouts.utils.{SummonerSpellAssetFile, ChampIconAssetFile, ExtractorImplicits}
+import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits, SummonerSpellAssetFile}
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -58,17 +58,14 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 
     // populate other stats fields
     playerDictionary.addStringField(R.id.tv_live_game_elo, (player: LiveGamePlayerStats) ⇒ player.elo.toString)
-    playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ leagueInfo(player))
-    playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + "W")
-    playerDictionary.addStringField(R.id.tv_live_game_rank_w_l, (player: LiveGamePlayerStats) ⇒ {
-      val soloQueue = player.soloQueue
-      soloQueue.wins + "W | " + soloQueue.losses + "L"
-    })
-    playerDictionary.addStringField(R.id.tv_live_game_kda, (player: LiveGamePlayerStats) ⇒ {
-      val soloQueue = player.soloQueue
-      val games = soloQueue.gameTotal
-      "%.1f/%.1f/%.1f".format(soloQueue.kills / games, soloQueue.deaths / games, soloQueue.assists / games)
-    })
+    playerDictionary.addStringField(R.id.tv_live_game_s4_leag_info, (player: LiveGamePlayerStats) ⇒ player.leagueTier + " " + player.leagueDivision)
+    playerDictionary.addStringField(R.id.tv_live_game_s4_leag_lp, (player: LiveGamePlayerStats) ⇒ player.leaguePoints)
+    playerDictionary.addStringField(R.id.tv_live_game_normal_w, (player: LiveGamePlayerStats) ⇒ player.normal5v5.wins.toString + " W")
+    playerDictionary.addStringField(R.id.tv_live_game_rank_w, (player: LiveGamePlayerStats) ⇒ player.soloQueue.wins.toString + " W")
+    playerDictionary.addStringField(R.id.tv_live_game_rank_l, (player: LiveGamePlayerStats) ⇒ player.soloQueue.losses.toString + " L")
+    playerDictionary.addStringField(R.id.tv_live_game_rank_k, (player: LiveGamePlayerStats) ⇒ "%.1f".format(player.soloQueue.kills / player.soloQueue.gameTotal))
+    playerDictionary.addStringField(R.id.tv_live_game_rank_d, (player: LiveGamePlayerStats) ⇒ "%.1f".format(player.soloQueue.deaths / player.soloQueue.gameTotal))
+    playerDictionary.addStringField(R.id.tv_live_game_rank_a, (player: LiveGamePlayerStats) ⇒ "%.1f".format(player.soloQueue.assists / player.soloQueue.gameTotal))
 
     // setup button to view player profile
     playerDictionary.addStringField(R.id.btn_live_game_profile, (player: LiveGamePlayerStats) ⇒ "View Profile")
@@ -77,25 +74,30 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       startActivity(i)
     })
 
-    // load series img if up for promotion
-    playerDictionary.addStaticImageField(R.id.img_live_game_series, new StaticImageLoader[LiveGamePlayerStats] {
-      override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit = setSeriesImgRes(player, img)
-    })
+    // setup the series images
+    List(R.id.img_live_game_serie_1, R.id.img_live_game_serie_2, R.id.img_live_game_serie_3,
+      R.id.img_live_game_serie_4, R.id.img_live_game_serie_5).zipWithIndex.foreach { case (id, index) ⇒
+      playerDictionary.addStaticImageField(id, new StaticImageLoader[LiveGamePlayerStats] {
+        override def loadImage(player: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
+          if (player.series.isDefined) {  // has active series
+            val result = player.series.get.result
+            if (result.size == 3 && index < 3) setSeriesImgRes(img, result(index))  // 3 games series
+            else if (result.size == 5)         setSeriesImgRes(img, result(index))  // 5 games series
+          }
+          else img.setVisibility(View.INVISIBLE)  // no active series
+      })
+    }
 
     val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view2, playerDictionary)
     adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
     teamListView.setAdapter(adapter)
   }
 
-  private def leagueInfo(player: LiveGamePlayerStats): String = {
-    player.leagueTier + " " + player.leagueDivision + " (" + player.leaguePoints + ")"
-  }
-
   private def setBadgeDrawable(tier: String, img: ImageView): Unit = {
     tier.toUpperCase match {
       case "BRONZE" ⇒ img.setImageResource(R.drawable.badge_bronze)
       case "SILVER" ⇒ img.setImageResource(R.drawable.badge_silver)
-      case "GOLD"   ⇒ img.setImageResource(R.drawable.badge_gold)
+      case "GOLD" ⇒ img.setImageResource(R.drawable.badge_gold)
       case "DIAMOND" ⇒ img.setImageResource(R.drawable.badge_diamond)
       case "PLATINUM" ⇒ img.setImageResource(R.drawable.badge_platinum)
       case "CHALLENGER" ⇒ img.setImageResource(R.drawable.badge_challenger)
@@ -103,39 +105,18 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     }
   }
 
-  private def setSeriesImgRes(player: LiveGamePlayerStats, img: ImageView): Unit = {
-    player.series match { // todo: find better way to do this...
-      case Some(s) ⇒ if (s.result.size == 3) {
-        if      (s.result.equals(List(1, -1, 0))) img.setImageResource(R.drawable.series_3_wl)
-        else if (s.result.equals(List(-1, 1, 0))) img.setImageResource(R.drawable.series_3_lw)
-        else if (s.result.equals(List(1, 0, 0)))  img.setImageResource(R.drawable.series_3_w)
-        else if (s.result.equals(List(-1, 0, 0))) img.setImageResource(R.drawable.series_3_l)
-        else                                      img.setImageResource(R.drawable.series_3)
-      } else {
-        if      (s.result.equals(List(1, 1, 0, 0, 0))) img.setImageResource(R.drawable.series_5_ww)
-        else if (s.result.equals(List(-1, -1, 0, 0, 0))) img.setImageResource(R.drawable.series_5_ll)
-        else if (s.result.equals(List(1, -1, 0, 0, 0))) img.setImageResource(R.drawable.series_5_wl)
-        else if (s.result.equals(List(-1, 1, 0, 0, 0))) img.setImageResource(R.drawable.series_5_lw)
-        else if (s.result.equals(List(1, 0, 0, 0, 0))) img.setImageResource(R.drawable.series_5_w)
-        else if (s.result.equals(List(-1, 0, 0, 0, 0))) img.setImageResource(R.drawable.series_5_l)
-        else if (s.result.equals(List(1, 1, -1, 0, 0))) img.setImageResource(R.drawable.series_5_wwl)
-        else if (s.result.equals(List(-1, -1, 1, 0, 0))) img.setImageResource(R.drawable.series_5_llw)
-        else if (s.result.equals(List(1, -1, 1, 0, 0))) img.setImageResource(R.drawable.series_5_wlw)
-        else if (s.result.equals(List(-1, 1, -1, 0, 0))) img.setImageResource(R.drawable.series_5_lwl)
-        else if (s.result.equals(List(-1, 1, -1, 1, 0))) img.setImageResource(R.drawable.series_5_lwlw)
-        else if (s.result.equals(List(1, -1, 1, -1, 0))) img.setImageResource(R.drawable.series_5_wlwl)
-        else if (s.result.equals(List(1, 1, -1, -1, 0))) img.setImageResource(R.drawable.series_5_wwll)
-        else if (s.result.equals(List(-1, -1, 1, 1, 0))) img.setImageResource(R.drawable.series_5_llww)
-        else                                      img.setImageResource(R.drawable.series_5)
-      }
-      case None ⇒ img.setImageResource(android.R.color.transparent)
-    }
+  private def setSeriesImgRes(imgView: ImageView, result: Int): Unit = {
+    imgView.setVisibility(View.VISIBLE)
+    if      (result == 1)   imgView.setImageResource(R.color.light_green)  // win result
+    else if (result == -1)  imgView.setImageResource(R.color.light_red)    // lose result
+    else                    imgView.setImageResource(android.R.color.transparent) // no result yet
   }
 }
 
 object LiveGameTeamFragment {
   val BLUE_TEAM = 0
   val PURPLE_TEAM = 1
+
   def newInstance(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
     if (team == BLUE_TEAM)
       EventBus.getDefault.postSticky(new BlueTeam(players))
