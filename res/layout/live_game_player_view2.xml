@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:paddingTop="8dp"
-              android:paddingBottom="8dp"
+                xmlns:circle="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
         >
 
 
-    <ImageView
+    <com.makeramen.RoundedImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:id="@+id/img_live_game_champ"
@@ -17,6 +18,9 @@
             android:layout_below="@+id/tv_live_game_name"
             android:layout_alignStart="@+id/textView4"
             android:layout_marginTop="4dp"
+            circle:corner_radius="24dip"
+            circle:border_color="@color/my_orange"
+            circle:border_width="1dp"/>
             />
 
     <TextView
@@ -191,24 +195,29 @@
             android:layout_alignLeft="@+id/img_live_game_champ"
             android:layout_alignStart="@+id/img_live_game_champ"
             android:layout_alignRight="@+id/img_live_game_champ"
-            android:layout_alignEnd="@+id/img_live_game_champ"
-            />
+            android:layout_alignEnd="@+id/img_live_game_champ"/>
 
-    <ImageView
+    <com.makeramen.RoundedImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:id="@+id/img_live_game_spell1"
             android:layout_alignTop="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_champ"
             android:layout_marginLeft="4dp"
-            android:src="@drawable/ic_load_error"/>
+            android:src="@drawable/ic_load_error"
+            circle:corner_radius="28dip"
+            circle:border_color="@color/my_orange"
+            circle:border_width="1dp"/>
 
-    <ImageView
+    <com.makeramen.RoundedImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:id="@+id/img_live_game_spell2"
             android:src="@drawable/ic_load_error"
             android:layout_above="@+id/img_live_game_series"
-            android:layout_alignLeft="@+id/img_live_game_spell1"/>
+            android:layout_alignLeft="@+id/img_live_game_spell1"
+            circle:corner_radius="28dip"
+            circle:border_color="@color/my_orange"
+            circle:border_width="1dp"/>
 
 </RelativeLayout>
