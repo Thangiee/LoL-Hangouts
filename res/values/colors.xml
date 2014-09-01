@@ -35,4 +35,9 @@
     <color name="purple">#800080</color>
     <color name="teal">#008080</color>
     <color name="black">#000000</color>
+
+    <color name="light_green">#94CB31</color>
+    <color name="light_red">#E84C3D</color>
+    <color name="light_blue">#0097FE</color>
+    <color name="light_purple">#8C2ECC</color>
 </resources>
