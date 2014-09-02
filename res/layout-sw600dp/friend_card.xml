@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Large Text"
             android:textSize="@dimen/friend_last_msg_txt_size"
-            android:id="@+id/tv_summoner_status"
+            android:id="@+id/tv_friend_status"
             android:layout_below="@+id/tv_friend_name"
             android:layout_toRightOf="@id/img_profile_icon"
             android:layout_centerHorizontal="true"/>
