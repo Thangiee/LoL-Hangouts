@@ -20,7 +20,7 @@
     </style>
 
     <style name="MyTheme.ActionButton.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_action_overflow</item>
+        <item name="android:src">@drawable/ic_action_overflow_round</item>
     </style>
 
     <style name="MyTheme.listView" parent="android:Widget.ListView">
