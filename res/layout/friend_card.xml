@@ -5,8 +5,15 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
-                android:background="@color/friend_card"
+                android:background="@android:color/transparent"
         >
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:alpha=".9"
+            android:src="@color/my_dark_blue"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -68,4 +75,5 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="8dp"/>
+
 </RelativeLayout>

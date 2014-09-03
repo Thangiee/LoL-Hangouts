@@ -48,7 +48,7 @@ class ChatPaneFragment extends TFragment {
     setMessagesRead()
     val messageListView = find[MessagesListView](R.id.lsv_chat)
     messageListView.setAdapter(messageAdapter)
-    messageListView.setBackgroundColor(R.color.my_darker_blue.r2Color)
+    messageListView.setBackgroundColor(R.color.my_dark_blue.r2Color)
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view

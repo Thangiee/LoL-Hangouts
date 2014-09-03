@@ -3,7 +3,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/friend_card">
+        >
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:alpha=".7"
+            android:layout_alignParentStart="false"
+            android:src="@color/my_dark_blue2"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -33,4 +41,5 @@
             android:layout_alignStart="@+id/tv_friend_name"
             android:layout_marginBottom="4dp"
             android:singleLine="true"/>
+
 </RelativeLayout>
