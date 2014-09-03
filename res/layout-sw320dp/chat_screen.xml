@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
         <FrameLayout
-                android:layout_width="320dp"
+                android:layout_width="330dp"
                 android:layout_height="match_parent"
                 android:id="@+id/chat_left_pane"/>
 

@@ -4,16 +4,14 @@
               xmlns:card="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/friend_list_bg">
+              android:layout_height="match_parent">
 
     <it.gmariotti.cardslib.library.view.CardListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/friend_list_bg"
             android:id="@+id/list_summoner_card"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
-            />
+            android:background="@drawable/shadow_isles_640"/>
 
 </LinearLayout>
