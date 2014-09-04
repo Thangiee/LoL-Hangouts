@@ -70,6 +70,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
         runOnUiThread {
           setContentEmpty(false) // hide error msg if currently showing
           setContentShown(true) // hide loading bar
+          getActivity.getActionBar.setTitle(liveGame.queueType.replace("_", " "))
         }
         info("[+] Got live game successfully")
       } catch {
