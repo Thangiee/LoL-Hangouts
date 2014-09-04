@@ -75,7 +75,6 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
       case fragment: ChatPaneFragment ⇒
         fragment.setMessagesRead()
         fragment.setHasOptionsMenu(true) // change AB menu items
-        getActivity.getActionBar.setTitle(appCtx.activeFriendChat) // set AB title to name of friend in chat with
       case _ ⇒
     }
   }
@@ -96,6 +95,7 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     info("[*]onEvent: "+event.friend.name+" friend card clicked")
     appCtx.activeFriendChat = event.friend.name
     getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.friend)).commit()
+    getActivity.getActionBar.setTitle(appCtx.activeFriendChat) // set AB title to name of friend in chat with
     slidingLayout.closePane()
   }
 }

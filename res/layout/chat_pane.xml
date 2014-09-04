@@ -62,5 +62,12 @@
             android:layout_margin="4dp"
             />
 
+    <RelativeLayout
+            android:id="@+id/nifty_view"
+            android:clipChildren="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            </RelativeLayout>
 
 </RelativeLayout>

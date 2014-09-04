@@ -30,5 +30,6 @@
             android:src="@drawable/mlv__default_avatar"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            />
 </RelativeLayout>
