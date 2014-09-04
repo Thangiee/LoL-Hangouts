@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.services
 
 import java.util.Date
 
-import android.app.{PendingIntent, Notification}
+import android.app.{Notification, PendingIntent}
 import android.content.Intent
 import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
@@ -74,11 +74,14 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
     if (appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) {  // open & right -> post received msg
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
-    } else if (!appCtx.isChatOpen && appCtx.activeFriendChat == friend.name){ // close & right -> post received msg and notification
+    } else if (!appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) { // close & right -> post received msg and notification
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
       if (isNotify) showMsgNotification(m)
-    } else {                                                          // wrong friend -> post notification
+    } else if (appCtx.isChatOpen && appCtx.activeFriendChat != friend.name) {
+      EventBus.getDefault.post(new Events.ShowNiftyNotification(m))     // open & wrong
       if (isNotify) showMsgNotification(m)
+    } else {
+      if (isNotify) showMsgNotification(m)                              // close & wrong -> post notification
     }
   }
 

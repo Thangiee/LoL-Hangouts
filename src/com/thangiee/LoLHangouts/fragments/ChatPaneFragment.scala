@@ -2,20 +2,23 @@ package com.thangiee.LoLHangouts.fragments
 
 import java.util.Date
 
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
 import android.preference.PreferenceManager
 import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
+import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
+import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
-import com.thangiee.LoLHangouts.utils.DataBaseHandler
-import com.thangiee.LoLHangouts.utils.Events.ReceivedMessage
+import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
+import com.thangiee.LoLHangouts.utils.{Events, DataBaseHandler, SummonerUtils}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
@@ -55,7 +58,7 @@ class ChatPaneFragment extends TFragment {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, classOf[ReceivedMessage])
+    EventBus.getDefault.unregister(this, classOf[ReceivedMessage], classOf[ShowNiftyNotification])
     super.onDestroy()
   }
 
@@ -136,6 +139,36 @@ class ChatPaneFragment extends TFragment {
       positiveButton("Delete", {DataBaseHandler.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
       negativeButton(android.R.string.cancel.r2String)
     }.show()
+  }
+
+  def onEvent(event: ShowNiftyNotification): Unit = {
+    val cfg=new Configuration.Builder()
+      .setAnimDuration(700)
+      .setDispalyDuration(3000)
+      .setBackgroundColor("#f0022426")
+      .setTextColor("#ffbb33")
+      .setTextPadding(4)                      //dp
+      .setViewHeight(42)                      //dp
+      .setTextLines(2)                        //You had better use setViewHeight and setTextLines together
+      .setTextGravity(Gravity.CENTER_VERTICAL)
+      .build()
+
+    Future {
+      val msg = event.msg
+      val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.toString))
+        .error(R.drawable.ic_load_error).get()
+
+      runOnUiThread {
+        NiftyNotificationView.build(getActivity, msg.getOtherPerson + ": " + msg.getText, Effects.thumbSlider, R.id.nifty_view, cfg)
+          .setIcon(new BitmapDrawable(getResources, senderIcon))
+          // switch to the sender chat if notification is clicked
+          .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson) match {
+            case Some(f) ⇒ EventBus.getDefault.post(new Events.FriendCardClicked(f))
+            case None ⇒
+          })
+          .show()
+      }
+    }
   }
 }
 

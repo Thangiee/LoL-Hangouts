@@ -12,4 +12,5 @@ object Events {
   case class ClearLoginNotification()
   case class ClearDisConnectNotification()
   case class FinishMainActivity()
+  case class ShowNiftyNotification(msg: Message)
 }
