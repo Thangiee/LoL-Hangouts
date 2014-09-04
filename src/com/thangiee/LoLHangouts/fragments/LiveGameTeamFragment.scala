@@ -38,27 +38,36 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
         img.setImageDrawable(ChampIconAssetFile(p.chosenChampName).toDrawable)
     })
 
+    // load spell 1 icon
     playerDictionary.addStaticImageField(R.id.img_live_game_spell1, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         img.setImageDrawable(SummonerSpellAssetFile(p.spellOne.name).toDrawable)
     })
 
+    // load spell 2 icon
     playerDictionary.addStaticImageField(R.id.img_live_game_spell2, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         img.setImageDrawable(SummonerSpellAssetFile(p.spellTwo.name).toDrawable)
     })
 
+    // load icon to indicate player is in a pre-made team
     playerDictionary.addStaticImageField(R.id.img_live_game_pre_made, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         preMadeTeams.get(p.teamId.getOrElse(-1)) match {
           case Some(teamIndex) ⇒
-            if      (teamIndex == 0 && teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_blue)
-            else if (teamIndex == 1 && teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_dark_blue)
-            else if (teamIndex == 0 && teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_purp)
-            else if (teamIndex == 1 && teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_dark_purp)
+            if      (teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_blue)
+            else if (teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_purp)
           case None ⇒ img.setImageResource(android.R.color.transparent)
         }
     })
+
+    // show a number for the pre-made team to differentiate btw multiple pre-made teams on the same side
+    playerDictionary.addStringField(R.id.tv_live_game_pre_made_num, (player: LiveGamePlayerStats) ⇒
+      preMadeTeams.get(player.teamId.getOrElse(-1)) match {
+        case Some(teamIndex) => teamIndex + 1 + ""
+        case None => ""
+    }).conditionalTextColor((p: LiveGamePlayerStats) => teamColor == BLUE_TEAM,
+        android.R.color.holo_blue_bright.r2Color, android.R.color.holo_purple.r2Color)
 
     // load season 4 badge
     playerDictionary.addStaticImageField(R.id.img_s4_badge, new StaticImageLoader[LiveGamePlayerStats] {
