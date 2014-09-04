@@ -16,6 +16,8 @@ trait LiveGamePlayerStats extends PlayerStats {
   
   val spellTwo: SummonerSpell
 
+  val teamId: Option[Int]
+
   lazy val elo: Int = {
     val TierWeight = 350.0
     val DivisionWeight = 70.0

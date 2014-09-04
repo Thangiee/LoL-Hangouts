@@ -21,6 +21,10 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
   override val allPlayers: List[LiveGamePlayerStats] = blueTeam ++ purpleTeam
 
+  override val mapId: Int = ???
+
+  override val queueType: String = ???
+
   override protected def fetchDocument: Document = ???
 
   private class Player(html: Element) extends LiveGamePlayerStats {
@@ -76,6 +80,7 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
     override val id: Long = ???
     override val spellOne: SummonerSpell = ???
     override val spellTwo: SummonerSpell = ???
+    override val teamId: Option[Int] = ???
   }
 }
 

@@ -6,4 +6,8 @@ trait LiveGameStats {
   val blueTeam: List[LiveGamePlayerStats]
 
   val purpleTeam: List[LiveGamePlayerStats]
+
+  val queueType: String
+
+  val mapId: Int
 }
