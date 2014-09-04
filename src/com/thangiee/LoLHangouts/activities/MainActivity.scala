@@ -7,7 +7,7 @@ import android.content.{DialogInterface, Intent}
 import android.os.{Bundle, Handler, SystemClock}
 import android.view.{Menu, MenuItem, ViewGroup, Window}
 import android.widget.LinearLayout
-import com.anjlab.android.iab.v3.BillingProcessor
+import com.anjlab.android.iab.v3.{TransactionDetails, BillingProcessor}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
@@ -171,7 +171,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     bp = new BillingProcessor(ctx, key, this)
   }
 
-  override def onProductPurchased(productId: String): Unit = {
+  override def onProductPurchased(productId: String, details: TransactionDetails): Unit = {
     info("[+] Product purchased: " + productId)
     Prefs.putBoolean("is_ads_enable", false)
     R.string.ads_disabled.r2String.makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
