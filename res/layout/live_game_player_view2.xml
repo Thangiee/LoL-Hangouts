@@ -370,6 +370,14 @@
             android:layout_alignTop="@+id/tv_live_game_name"
             android:layout_toRightOf="@+id/tv_live_game_name"
             android:layout_alignBottom="@+id/tv_live_game_name"
-            />
+            android:src="@drawable/ic_action_users_light_purp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="2"
+            android:id="@+id/tv_live_game_pre_made_num"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/img_live_game_pre_made"
+            android:textColor="@android:color/holo_purple"/>
 
 </RelativeLayout>
