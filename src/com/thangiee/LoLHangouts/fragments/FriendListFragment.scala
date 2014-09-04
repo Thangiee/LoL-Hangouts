@@ -4,10 +4,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import com.devspark.progressfragment.ProgressFragment
-import com.nhaarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, RefreshFriendCard}
+import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, RefreshFriendList}
 import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
