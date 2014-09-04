@@ -65,7 +65,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     playerDictionary.addStringField(R.id.tv_live_game_pre_made_num, (player: LiveGamePlayerStats) ⇒
       preMadeTeams.get(player.teamId.getOrElse(-1)) match {
         case Some(teamIndex) => teamIndex + 1 + ""
-        case None => ""
+        case None => " "
     }).conditionalTextColor((p: LiveGamePlayerStats) => teamColor == BLUE_TEAM,
         android.R.color.holo_blue_bright.r2Color, android.R.color.holo_purple.r2Color)
 
