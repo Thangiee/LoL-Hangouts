@@ -9,7 +9,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
-import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.BLUE_TEAM
+import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
 import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits, SummonerSpellAssetFile}
 import de.greenrobot.event.EventBus
 
@@ -23,12 +23,13 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     val players = LiveGameTeamFragment.getTeam(teamColor)
+    val preMadeTeams = players.filter(p ⇒ p.teamId.isDefined).map(p ⇒ p.teamId.get).distinct.zipWithIndex.toMap
     view = inflater.inflate(R.layout.live_game_team_view, container, false)
-    setupListView(players)
+    setupListView(players, preMadeTeams)
     view
   }
 
-  private def setupListView(players: List[LiveGamePlayerStats]): Unit = {
+  private def setupListView(players: List[LiveGamePlayerStats], preMadeTeams: Map[Int, Int]): Unit = {
     val playerDictionary = new BindDictionary[LiveGamePlayerStats]()
 
     // load champion icon
@@ -45,6 +46,18 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     playerDictionary.addStaticImageField(R.id.img_live_game_spell2, new StaticImageLoader[LiveGamePlayerStats] {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         img.setImageDrawable(SummonerSpellAssetFile(p.spellTwo.name).toDrawable)
+    })
+
+    playerDictionary.addStaticImageField(R.id.img_live_game_pre_made, new StaticImageLoader[LiveGamePlayerStats] {
+      override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
+        preMadeTeams.get(p.teamId.getOrElse(-1)) match {
+          case Some(teamIndex) ⇒
+            if      (teamIndex == 0 && teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_blue)
+            else if (teamIndex == 1 && teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_dark_blue)
+            else if (teamIndex == 0 && teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_purp)
+            else if (teamIndex == 1 && teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_dark_purp)
+          case None ⇒ img.setImageResource(android.R.color.transparent)
+        }
     })
 
     // load season 4 badge

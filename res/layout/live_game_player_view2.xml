@@ -363,4 +363,13 @@
                 android:textColor="@color/light_red"/>
     </LinearLayout>
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_live_game_pre_made"
+            android:layout_alignTop="@+id/tv_live_game_name"
+            android:layout_toRightOf="@+id/tv_live_game_name"
+            android:layout_alignBottom="@+id/tv_live_game_name"
+            />
+
 </RelativeLayout>
