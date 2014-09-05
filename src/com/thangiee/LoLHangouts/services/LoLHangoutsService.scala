@@ -120,6 +120,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendStatusChange(friend: Friend): Unit = {
     info("[*]Change Status: "+friend.name)
+    EventBus.getDefault.post(new RefreshFriendCard(friend))
   }
 
   //=============================================
