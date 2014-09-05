@@ -22,11 +22,13 @@ trait TContext {
     }
   }
 
+  implicit def function2Runnable[F](f: => F) = new Runnable() { def run() { f } }
+
   implicit class Drawable2Bitmap(drawableId: Int) {
     def toBitmap: Bitmap = BitmapFactory.decodeResource(ctx.getResources, drawableId)
   }
 
-  implicit class StringTo(string: String) {
+  implicit class String2Crouton(string: String) {
     def makeCrouton(style: Style = Style.ALERT, duration: Int = Configuration.DURATION_SHORT) {
       ctx match {
         case activity: Activity ⇒ Crouton.makeText(activity, string, style)
