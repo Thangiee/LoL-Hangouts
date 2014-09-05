@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.views
 
 import android.app.{Activity, AlertDialog, Fragment}
 import android.content.{Context, DialogInterface, Intent}
-import android.view.View
+import android.view.{View, Window}
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
@@ -94,19 +94,21 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     val view = View.inflate(ctx, R.layout.change_status_msg_dialog, null)
     val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
 
-    new AlertDialog.Builder(ctx)
-    .setTitle("New Status Message")
+    val dialog = new AlertDialog.Builder(ctx)
     .setView(view)
-    .setPositiveButton("Ok", new DialogInterface.OnClickListener {
-      override def onClick(dialog: DialogInterface, which: Int): Unit = {
-        LoLChat.changeStatusMsg(input.getText.toString)
-        find[TextView](R.id.tv_status_msg).setText(input.getText)
-      }
+    .setPositiveButton("Ok", (dialog: DialogInterface) ⇒ {
+      LoLChat.changeStatusMsg(input.getText.toString)
+      find[TextView](R.id.tv_status_msg).setText(input.getText)
     })
-    .setNegativeButton("Cancel", new DialogInterface.OnClickListener {
-      override def onClick(dialog: DialogInterface, which: Int): Unit = dialog.cancel()
+    .setNegativeButton("Cancel",(dialog: DialogInterface) ⇒ dialog.dismiss())
+    .create()
+
+    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
+    dialog.show()
+    List(DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE).map(button ⇒ {
+      dialog.getButton(button).setBackgroundColor(R.color.my_tran_dark_blue2.r2Color)
+      dialog.getButton(button).setTextColor(R.color.my_orange.r2Color)
     })
-    .show()
   }
 
   private def showLogoutDialog() = {

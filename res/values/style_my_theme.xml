@@ -8,19 +8,29 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
         <item name="android:textColorSecondary">@android:color/darker_gray</item>
+        <item name="android:popupMenuStyle">@style/MyTheme.PopupMenu</item>
     </style>
 
     <style name="MyTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/ab_background</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleText</item>
+        <item name="android:subtitleTextStyle">@style/MyTheme.ActionBar.SubTitleText</item>
     </style>
 
     <style name="MyTheme.ActionBar.TitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/action_bar_text_color</item>
     </style>
 
+    <style name="MyTheme.ActionBar.SubTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="MyTheme.ActionButton.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_action_overflow_round</item>
+    </style>
+
+    <style name="MyTheme.PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/my_tran_dark_blue2</item>
     </style>
 
     <style name="MyTheme.listView" parent="android:Widget.ListView">

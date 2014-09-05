@@ -24,6 +24,15 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
   private lazy val name = getArguments.getString("name-key")
   private lazy val region = getArguments.getString("region-key")
   private var liveGame: LiveGameStats = _
+  private val mapNames = Map[Int, String](
+    1 → "Summoner's Rift",
+    2 → "Summoner's Rift",
+    3 → "The Proving Grounds",
+    4 → "Twisted Treeline",
+    8 → "The Crystal Scar",
+    10 → "Twisted Treeline",
+    12 → "Howling Abyss"
+  )
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     view = inflater.inflate(R.layout.view_pager, null)
@@ -71,6 +80,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
           setContentEmpty(false) // hide error msg if currently showing
           setContentShown(true) // hide loading bar
           getActivity.getActionBar.setTitle(liveGame.queueType.replace("_", " "))
+          getActivity.getActionBar.setSubtitle(mapNames.getOrElse(liveGame.mapId, ""))
         }
         info("[+] Got live game successfully")
       } catch {
