@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.fragments
 import android.app.Activity
 import android.os.{Bundle, Handler}
 import android.view.{LayoutInflater, View, ViewGroup}
+import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
