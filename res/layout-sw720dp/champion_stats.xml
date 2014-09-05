@@ -27,7 +27,7 @@
             android:id="@+id/tv_champ_name"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/img_champ_icon"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:singleLine="true"
             android:layout_toLeftOf="@+id/tv_champ_perf"/>
 
@@ -38,7 +38,7 @@
             android:text="perf000"
             android:id="@+id/tv_champ_perf"
             android:minWidth="55dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_alignTop="@+id/tv_champ_avg_k"
             android:layout_centerHorizontal="true"
@@ -53,7 +53,7 @@
             android:layout_alignTop="@+id/tv_champ_perf"
             android:layout_toLeftOf="@+id/tv_champ_avg_k"
             android:minWidth="40dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_alignBottom="@+id/tv_champ_perf"
@@ -68,7 +68,7 @@
             android:layout_alignTop="@+id/img_champ_icon"
             android:layout_toLeftOf="@+id/tv_champ_avg_d"
             android:minWidth="27dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="28dp"
             />
@@ -82,7 +82,7 @@
             android:layout_above="@+id/tv_champ_avg_more_k"
             android:layout_toLeftOf="@+id/tv_champ_avg_a"
             android:minWidth="27dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="28dp"
             />
@@ -96,7 +96,7 @@
             android:layout_alignTop="@+id/tv_champ_avg_d"
             android:layout_toLeftOf="@+id/tv_champ_avg_cs"
             android:minWidth="27dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="28dp"
             />
@@ -110,7 +110,7 @@
             android:layout_above="@+id/tv_champ_avg_more_a"
             android:layout_toLeftOf="@+id/tv_champ_avg_g"
             android:minWidth="27dp"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="8dp"/>
@@ -125,7 +125,7 @@
             android:layout_alignTop="@+id/tv_champ_avg_cs"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="16dp"/>
@@ -153,7 +153,7 @@
             android:layout_alignTop="@+id/tv_champ_avg_more_a"
             android:layout_alignLeft="@+id/tv_champ_avg_d"
             android:layout_alignStart="@+id/tv_champ_avg_d"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_alignRight="@+id/tv_champ_avg_d"
             android:layout_alignEnd="@+id/tv_champ_avg_d"/>
@@ -167,7 +167,7 @@
             android:layout_below="@+id/tv_champ_avg_a"
             android:layout_alignLeft="@+id/tv_champ_avg_a"
             android:layout_alignStart="@+id/tv_champ_avg_a"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_alignRight="@+id/tv_champ_avg_a"
             android:layout_alignEnd="@+id/tv_champ_avg_a"/>
@@ -183,7 +183,7 @@
             android:layout_alignStart="@+id/tv_champ_avg_cs"
             android:layout_alignRight="@+id/tv_champ_avg_cs"
             android:layout_alignEnd="@+id/tv_champ_avg_cs"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             />
 
@@ -194,7 +194,7 @@
             android:text="gold"
             android:id="@+id/tv_champ_avg_more_g"
             android:layout_alignTop="@+id/tv_champ_avg_more_cs"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_alignRight="@+id/tv_champ_avg_g"
             android:layout_alignEnd="@+id/tv_champ_avg_g"
