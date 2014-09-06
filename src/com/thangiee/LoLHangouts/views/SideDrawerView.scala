@@ -76,7 +76,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     // drawer menu item title
     menuDictionary.addStringField(R.id.tv_menu_item_name, (item: DrawerItem) ⇒ item.title)
-                  .conditionalTextColor((item: DrawerItem) ⇒ item.isSelected, R.color.my_orange.r2Color, R.color.white.r2Color)
+      .conditionalTextColor((item: DrawerItem) ⇒ item.isSelected, R.color.my_orange.r2Color, R.color.white.r2Color)
 
     // drawer menu item icon
     menuDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
@@ -95,13 +95,13 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
 
     val dialog = new AlertDialog.Builder(ctx)
-    .setView(view)
-    .setPositiveButton("Ok", (dialog: DialogInterface) ⇒ {
+      .setView(view)
+      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {
       LoLChat.changeStatusMsg(input.getText.toString)
       find[TextView](R.id.tv_status_msg).setText(input.getText)
     })
-    .setNegativeButton("Cancel",(dialog: DialogInterface) ⇒ dialog.dismiss())
-    .create()
+      .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
+      .create()
 
     dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
     dialog.show()
@@ -114,10 +114,11 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
   private def showLogoutDialog() = {
     new AlertDialogBuilder(R.string.dialog_logout_title, R.string.dialog_logout_message)
       .positiveButton(android.R.string.yes, (d: DialogInterface, i: Int) ⇒ {
-        EventBus.getDefault.post(new Events.FinishMainActivity)
-        ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))})
+      EventBus.getDefault.post(new Events.FinishMainActivity)
+      ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))
+    })
       .negativeButton(android.R.string.no, (d: DialogInterface, i: Int) ⇒ d.dismiss())
-    .show()
+      .show()
   }
 
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
@@ -128,13 +129,13 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     drawer.closeMenu()
     selectedDrawerItem.title match {
-      case "Chat"           ⇒ fragment = new ChatScreenFragment
-      case "My Profile"     ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
+      case "Chat" ⇒ fragment = new ChatScreenFragment
+      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
       case "Search Summoner" ⇒ fragment = BlankFragment.withSummonerSearch()
-      case "Live Game Stats" ⇒  fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
-      case "Settings"       ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
-      case "Remove Ads"     ⇒ mainActivity.setUpBilling(); return
-      case "Logout"         ⇒ showLogoutDialog(); return
+      case "Live Game Stats" ⇒ fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
+      case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
+      case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
+      case "Logout" ⇒ showLogoutDialog(); return
     }
 
     //update the text color of the selected menu item in the nav drawer
