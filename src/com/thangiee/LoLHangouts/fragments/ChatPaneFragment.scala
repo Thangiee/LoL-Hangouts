@@ -5,7 +5,6 @@ import java.util.Date
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
-import android.preference.PreferenceManager
 import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
@@ -18,7 +17,7 @@ import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
 import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
-import com.thangiee.LoLHangouts.utils.{Events, DataBaseHandler, SummonerUtils}
+import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, SummonerUtils}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
@@ -42,7 +41,7 @@ class ChatPaneFragment extends TFragment {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
-    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat)
+    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
     messageAdapter.setRegion(appCtx.selectedRegion.toString)
     messageAdapter.setSenderName(appCtx.currentUser)
@@ -130,9 +129,7 @@ class ChatPaneFragment extends TFragment {
     if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
   }
 
-  private def isSoundPreferenceOn: Boolean = {
-    PreferenceManager.getDefaultSharedPreferences(getActivity).getBoolean(R.string.pref_notify_sound.r2String, true)
-  }
+  private def isSoundPreferenceOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
 
   private def confirmDeleteAllMsg(): Unit = {
     new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {

@@ -15,7 +15,7 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    addPreferencesFromResource(R.xml.pref_notification)
+    addPreferencesFromResource(R.xml.pref_settings)
   }
 
   override def onResume(): Unit = {
