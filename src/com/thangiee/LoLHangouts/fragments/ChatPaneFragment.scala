@@ -9,6 +9,7 @@ import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
+import com.pixplicity.easyprefs.library.Prefs
 import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
@@ -43,7 +44,7 @@ class ChatPaneFragment extends TFragment {
 
     val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
-    messageAdapter.setRegion(appCtx.selectedRegion.id)
+    messageAdapter.setRegion(Prefs.getString("region-key", ""))
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 
