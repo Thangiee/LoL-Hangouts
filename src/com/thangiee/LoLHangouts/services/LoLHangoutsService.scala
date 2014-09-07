@@ -157,13 +157,13 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   }
 
   private def showMsgNotification(newestMsg: models.Message) {
-    val unReadMsg = DataBaseHandler.getAllUnReadMessages(appCtx.currentUser)
+    val unReadMsg = DataBaseHandler.getUnreadMessages(appCtx.currentUser, 5) // get the 5 newest unread messages
 
     val builder = new Notification.Builder(ctx)
       .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_action_dialog)
       .setContentIntent(pendingActivity[MainActivity])
-      .setContentTitle(unReadMsg.size + " New Messages")
+      .setContentTitle((if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages")
       .setContentText(newestMsg.getOtherPerson +": " + newestMsg.getText)
       .setTicker(newestMsg.getOtherPerson +": " + newestMsg.getText)
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
@@ -175,9 +175,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16
         .setSummaryText("Touch to open application")
 
-      // show at most the 5 newest unread messages
-      unReadMsg.reverse.slice(0, 5).map((msg) => inboxStyle.addLine(msg.getOtherPerson+": "+msg.getText))
-
+      unReadMsg.map((msg) => inboxStyle.addLine(msg.getOtherPerson+": "+msg.getText))
       builder.setStyle(inboxStyle)
       builder.setPriority(Notification.PRIORITY_MAX)
     }
