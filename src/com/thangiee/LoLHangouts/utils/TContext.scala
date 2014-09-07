@@ -41,11 +41,13 @@ trait TContext {
 
   implicit class Res2Pref(resId: Int) {
     private val key = ctx.getResources.getString(resId)
-    def pref2Int(default: Int): Int = PreferenceManager.getDefaultSharedPreferences(ctx).getString(key, default.toString).toInt
-    def pref2Long(default: Long): Long = PreferenceManager.getDefaultSharedPreferences(ctx).getString(key, default.toString).toLong
-    def pref2Float(default: Float): Float = PreferenceManager.getDefaultSharedPreferences(ctx).getString(key, default.toString).toFloat
-    def pref2Boolean(default: Boolean = false): Boolean = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(key, default)
-    def pref2String(default: String): String = PreferenceManager.getDefaultSharedPreferences(ctx).getString(key, default)
+    private val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
+
+    def pref2Int(default: Int): Int                     = prefs.getString(key, default.toString).toInt
+    def pref2Long(default: Long): Long                  = prefs.getString(key, default.toString).toLong
+    def pref2Float(default: Float): Float               = prefs.getString(key, default.toString).toFloat
+    def pref2Boolean(default: Boolean = false): Boolean = prefs.getBoolean(key, default)
+    def pref2String(default: String): String            = prefs.getString(key, default)
   }
 
   implicit class Asset2Drawable(assetFile: AssetFile) {

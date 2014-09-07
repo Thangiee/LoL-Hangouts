@@ -70,7 +70,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     EventBus.getDefault.post(new Events.RefreshFriendCard(friend))
 
     // check notification preference
-    val isNotify = defaultSharedPreferences.getBoolean(R.string.pref_notify_msg.r2String, true)
+    val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
 
     if (appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) {  // open & right -> post received msg
       EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
@@ -96,7 +96,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   override def onFriendLogin(friend: Friend): Unit = {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
 
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_login.r2String, true)) {
+    if (R.string.pref_notify_login.pref2Boolean(default = true)) {
       // show notification when friendList fragment is not in view or screen is not on
       if (!appCtx.isFriendListOpen || !powerManager.isScreenOn) { // check setting
         showLogInNotification(friend)
@@ -147,7 +147,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       .setContentText("Touch to open application")
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
+    if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
     val notification = builder.getNotification
@@ -168,7 +168,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       .setTicker(newestMsg.getOtherPerson +": " + newestMsg.getText)
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true)) // check setting
+    if (R.string.pref_notify_sound.pref2Boolean(default = true)) // check setting
       MediaPlayer.create(ctx, R.raw.alert_pm_receive).start()
 
     if (Build.VERSION.SDK_INT >= 16) {
@@ -181,7 +181,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     }
 
     val notification = builder.getNotification
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
+    if (R.string.pref_notify_vibrate.pref2Boolean(default = true)) // check setting
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(msgNotificationId, notification)
@@ -201,11 +201,11 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       .setContentText("Connection lost. Touch to log in again.")
       .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
       .setAutoCancel(true)
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_sound.r2String, true))
+    if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
     val notification = builder.getNotification
-    if (defaultSharedPreferences.getBoolean(R.string.pref_notify_vibrate.r2String, true)) // check setting
+    if (R.string.pref_notify_vibrate.pref2Boolean(default = true)) // check setting
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(disconnectNotificationId, notification)
