@@ -41,7 +41,7 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     appCtx.isChatOpen = !slidingLayout.isOpen
 
     if (appCtx.isChatOpen)  // if resume and the chat is open, set read for messages in that chat
-      DataBaseHandler.getUnReadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setIsRead(true).save())
+      DataBaseHandler.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setIsRead(true).save())
 
     EventBus.getDefault.postSticky(new Events.ClearChatNotification)
   }

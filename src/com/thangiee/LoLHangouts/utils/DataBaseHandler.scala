@@ -9,28 +9,70 @@ import scala.collection.JavaConversions._
 
 object DataBaseHandler {
 
+  /**
+   * get all messages with oldest date first
+   *
+   * @return
+   */
   def getAllMessages: List[Message] = new Select().from(classOf[Message]).execute[Message]().toList
 
-  def getMessages(userName:String, otherName: String): util.List[Message] = {
-    new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", userName, otherName)
-      .execute[Message]()
+  /**
+   * get N most recent unread messages between this user and the other user ordered by date (older message first)
+   *
+   * @param username    name of this user
+   * @param otherName   name of the other user
+   * @param n           max number of messages to get
+   * @return
+   */
+  def getMessages(username:String, otherName: String, n: Int = Int.MaxValue): util.List[Message] = {
+    new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", username, otherName)
+      .orderBy("date DESC").limit(n).execute[Message]().reverse
   }
 
-  def deleteMessages(userName:String, otherName: String) {
-    new Delete().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", userName, otherName).execute()
+  /**
+   * delete all messages between this user and the other user
+   *
+   * @param username    name of this user
+   * @param otherName   name of the other user 
+   */
+  def deleteMessages(username:String, otherName: String) {
+    new Delete().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", username, otherName).execute()
   }
 
-  def getLastMessage(userName:String, otherName: String): Option[Message] = {
-    val msgLog = getMessages(userName, otherName)
-    if (!msgLog.isEmpty) Some(msgLog.last) else None
+  /**
+   * get the most recent messages between this user and the other user
+   *
+   * @param username    name of this user
+   * @param otherName   name of the other user 
+   * @return
+   */
+  def getLastMessage(username:String, otherName: String): Option[Message] = {
+    val lastMsg = new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", username, otherName)
+                      .orderBy("date DESC").limit(1).executeSingle[Message]()
+    if (lastMsg != null) Some(lastMsg) else None
   }
 
-  def getAllUnReadMessages(userName:String): List[Message] = {
-    new Select().from(classOf[Message]).where("thisPerson = ? AND isRead = 0", userName).execute[Message]().toList
+  /**
+   * get N most recent unread messages sent to the recipient from anyone ordered by date (older message first)
+   *  
+   * @param recipient who the message is sent to
+   * @param n         max number of messages to get
+   * @return
+   */
+  def getUnreadMessages(recipient:String, n: Int = Int.MaxValue): List[Message] = {
+    new Select().from(classOf[Message]).where("thisPerson = ? AND isRead = 0", recipient)
+      .orderBy("date DESC").limit(n).execute[Message]().reverse.toList
   }
 
-  def getUnReadMessages(userName:String, otherName: String): util.List[Message] = {
-    new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ? AND isRead = 0", userName, otherName)
-      .execute[Message]()
+  /**
+   * get all most recent unread messages from the sender to the recipient ordered by date (older message first)
+   *
+   * @param recipient who the message is sent to
+   * @param sender    who the message is sent by
+   * @return
+   */
+  def getUnreadMessages(recipient: String, sender: String): util.List[Message] = {
+    new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ? AND isRead = 0", recipient, sender)
+      .orderBy("date DESC").execute[Message]().reverse
   }
 }
