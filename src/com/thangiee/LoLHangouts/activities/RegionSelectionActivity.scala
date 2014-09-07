@@ -8,7 +8,6 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api._
 import com.thangiee.LoLHangouts.api.utils._
 import com.thangiee.LoLHangouts.utils.ExtractorImplicits
 import org.scaloid.common.SContext
@@ -34,7 +33,7 @@ class RegionSelectionActivity extends ListActivity with SContext with TActivity 
   }
 
   override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
-    Prefs.putString("region-key", regions(position).name)
+    Prefs.putString("region-key", regions(position).id)
     startActivity[LoginActivity]
   }
 }

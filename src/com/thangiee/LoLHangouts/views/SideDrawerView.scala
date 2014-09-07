@@ -46,7 +46,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     // load account icon
     val iconImageView = find[ImageView](R.id.img_my_profile_icon)
-    SummonerUtils.loadIconInto(ctx, appCtx.currentUser, appCtx.selectedRegion.toString, iconImageView)
+    SummonerUtils.loadIconInto(ctx, appCtx.currentUser, appCtx.selectedRegion.id, iconImageView)
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
@@ -130,7 +130,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     drawer.closeMenu()
     selectedDrawerItem.title match {
       case "Chat" ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.toString)
+      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.id)
       case "Search Summoner" ⇒ fragment = BlankFragment.withSummonerSearch()
       case "Live Game Stats" ⇒ fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
       case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
