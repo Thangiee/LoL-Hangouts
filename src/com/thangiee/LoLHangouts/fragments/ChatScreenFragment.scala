@@ -8,6 +8,7 @@ import android.view._
 import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
 import de.greenrobot.event.EventBus
@@ -28,8 +29,10 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
-    getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, new FriendListFragment).commit()
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
+    if (LoLChat.isConnected) {
+      getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, new FriendListFragment).commit()
+      getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
+    }
 
     view
   }

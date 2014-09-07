@@ -50,7 +50,7 @@ class LiveGamePagerFragment extends ProgressFragment with TFragment with OnPageC
   }
 
   override def onStop(): Unit = {
-    RiotApi.setRegion(appCtx.selectedRegion.toString)
+    RiotApi.setRegion(appCtx.selectedRegion.id)
     Crouton.cancelAllCroutons()
     super.onStop()
   }

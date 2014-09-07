@@ -43,7 +43,7 @@ class LoginActivity extends TActivity with UpButton {
 
   override def onResume(): Unit = {
     super.onResume()
-    Region.getFromString(Prefs.getString("region-key", "")) match {  // check if a region was previously selected
+    Region.getFromId(Prefs.getString("region-key", "")) match {  // check if a region was previously selected
       case Some(region) ⇒
         appCtx.selectedRegion = region
         setTitle(region.name)
@@ -86,7 +86,7 @@ class LoginActivity extends TActivity with UpButton {
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         appCtx.currentUser = userEditText.getText.toString
         findInGameName()  // try to find in game name in case the login name is different than the in game name
-        RiotApi.setRegion(appCtx.selectedRegion.toString)
+        RiotApi.setRegion(appCtx.selectedRegion.id)
         SystemClock.sleep(150)
         runOnUiThread(logInButton.setProgress(100))
         startActivity[MainActivity]

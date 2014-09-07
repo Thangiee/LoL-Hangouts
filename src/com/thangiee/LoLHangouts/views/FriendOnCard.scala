@@ -31,7 +31,7 @@ class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx,
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadIconInto(ctx, friend.name, appCtx.selectedRegion.toString, iconImageView)
+      SummonerUtils.loadIconInto(ctx, friend.name, appCtx.selectedRegion.id, iconImageView)
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
@@ -111,7 +111,7 @@ class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx,
 
       view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", friend.name).putExtra("region-key", appCtx.selectedRegion.toString)
+          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", friend.name).putExtra("region-key", appCtx.selectedRegion.id)
         )
       })
 

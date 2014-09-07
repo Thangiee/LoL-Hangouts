@@ -43,7 +43,7 @@ class ChatPaneFragment extends TFragment {
 
     val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
-    messageAdapter.setRegion(appCtx.selectedRegion.toString)
+    messageAdapter.setRegion(appCtx.selectedRegion.id)
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 
@@ -152,7 +152,7 @@ class ChatPaneFragment extends TFragment {
 
     Future {
       val msg = event.msg
-      val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.toString))
+      val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id))
         .error(R.drawable.ic_load_error).get()
 
       runOnUiThread {

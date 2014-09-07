@@ -35,7 +35,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
             row.select("td[class=info]").select("div[class=date tooltip]").text(),
             row.select("td[class=info]").select("div[class=duration]").text(),
             Stats(
-              getNumber[Double](statsElements(1)).getOrElse(0),
+              getNumber[Double](statsElements(1)).getOrElse(0), // todo: sometime throw IndexOutOfBoundsException: 1
               getNumber[Double](statsElements(3)).getOrElse(0),
               getNumber[Double](statsElements(5)).getOrElse(0),
               getNumber[Int](statsElements(7)).getOrElse(0),
