@@ -10,7 +10,7 @@
         <SwitchPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_msg"
-                android:title="Notify receive MSG"/>
+                android:title="Notify receive Msg"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_sound"
@@ -26,7 +26,7 @@
                 android:defaultValue="true"
                 android:key="@string/pref_load_icon"
                 android:title="Load friend icon"
-                android:summary="Turn off to reduce memory and data usage."/>
+                android:summary="@string/pref_load_icon_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Chat">
@@ -37,5 +37,13 @@
                 android:entries="@array/history"
                 android:entryValues="@array/history"
                 android:defaultValue="3 days"/>
+
+        <EditTextPreference
+                android:title="Show max # of messages"
+                android:summary="@string/pref_max_msg_summary"
+                android:inputType="number"
+                android:defaultValue="20"
+                android:key="@string/pref_max_msg"
+                />
     </PreferenceCategory>
 </PreferenceScreen>
