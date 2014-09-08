@@ -138,7 +138,7 @@ class LoginActivity extends TActivity with UpButton {
 
     if (cacheName.isEmpty) {
       info("[-] cache name miss")
-      val request = Try(Http("https://teemojson.p.mashape.com/misc/summoner-name/" + appCtx.selectedRegion + "/" + LoLChat.summonerId().getOrElse(""))
+      val request = Try(Http("https://teemojson.p.mashape.com/misc/summoner-name/" + appCtx.selectedRegion.id + "/" + LoLChat.summonerId().getOrElse(""))
           .header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
           .option(HttpOptions.connTimeout(1500)))
 
