@@ -26,6 +26,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
+  private val runningNotificationId = Random.nextInt()
 
   override def onBind(intent: Intent): IBinder = null
 
@@ -37,6 +38,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       LoLChat.initFriendListListener(this)
       LoLChat.connection.addConnectionListener(this)
       EventBus.getDefault.registerSticky(ctx)
+      if (R.string.pref_notify_app_running.pref2Boolean(default = true)) showAppRunningNotification()
     } catch {
       case e: IllegalStateException ⇒ error("[!] " + e.getMessage); showDisconnectionNotification(); stopSelf()
     }
@@ -126,13 +128,18 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //=============================================
   //    ConnectionListener Implementations
   //=============================================
-  override def connectionClosed(): Unit = { info("[*] Connection closed.") }
+  override def connectionClosed(): Unit = { info("[*] Connection closed."); notificationManager.cancel(runningNotificationId) }
 
   override def reconnectionFailed(p1: Exception): Unit = { warn("[!] Reconnection failed") }
 
   override def reconnectionSuccessful(): Unit = { info("[*] Reconnection successful") }
 
-  override def connectionClosedOnError(p1: Exception): Unit = { warn("[!] Connection lost"); showDisconnectionNotification(); stopSelf() }
+  override def connectionClosedOnError(p1: Exception): Unit = {
+    warn("[!] Connection lost")
+    notificationManager.cancel(runningNotificationId)
+    showDisconnectionNotification()
+    stopSelf()
+  }
 
   override def reconnectingIn(sec: Int): Unit = { info("Connecting in " + sec)}
 
@@ -144,6 +151,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       .setSmallIcon(R.drawable.ic_action_user)
       .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(friend.name + " has logged in!")
+      .setTicker(friend.name + " has logged in!")
       .setContentText("Touch to open application")
       .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
       .setAutoCancel(true)
@@ -209,6 +217,18 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(disconnectNotificationId, notification)
+  }
+
+  private def showAppRunningNotification(): Unit = {
+    val builder = new Notification.Builder(ctx)
+      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
+      .setSmallIcon(R.drawable.ic_launcher)
+      .setContentIntent(pendingActivity[MainActivity])
+      .setContentTitle(appCtx.currentUser)
+      .setContentText("LoL Hangouts is running")
+      .setOngoing(true)
+
+    notificationManager.notify(runningNotificationId, builder.getNotification)
   }
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
