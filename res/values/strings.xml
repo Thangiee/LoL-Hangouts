@@ -45,6 +45,8 @@
     <string name="summoner_search_screen_msg">Use the search to find other summoner\'s profile.</string>
     <string name="live_game_screen_msg">Use the search to view players statistics in a game. (Must be in game or at loading screen)</string>
 
+    <string name="offline_mode_warning">You are in offline mode. Friend list will not update until you switch to a different mode.</string>
+    
     <string-array name="history">
         <item>1 day</item>
         <item>3 days</item>

@@ -23,6 +23,7 @@ class LoginActivity extends TActivity with UpButton {
   lazy val logInButton = find[CircularProgressButton](R.id.btn_login).onClick(login())
   lazy val saveUserCheckBox = find[CheckBox](R.id.cb_save_user)
   lazy val savePassCheckBox = find[CheckBox](R.id.cb_save_pass)
+  lazy val offlineLoginCheckBox = find[CheckBox](R.id.cb_offline_login)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -35,10 +36,12 @@ class LoginActivity extends TActivity with UpButton {
 
     saveUserCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) saveUser() else clearUser())
     savePassCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) savePass() else clearPass())
+    offlineLoginCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ offlineLogin(if (isChecked) true else false))
 
     // check the checkbox if those fields are not empty
     if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
     if (passwordEditText.length() != 0) savePassCheckBox.setChecked(true)
+    if (Prefs.getBoolean("offline-login", false)) offlineLoginCheckBox.setChecked(true)
   }
 
   override def onResume(): Unit = {
@@ -113,6 +116,8 @@ class LoginActivity extends TActivity with UpButton {
   private def savePass(): Unit = Prefs.putString("pass", passwordEditText.getText.toString)
 
   private def clearPass(): Unit = Prefs.putString("pass", "")
+
+  private def offlineLogin(boolean: Boolean): Unit = Prefs.putBoolean("offline-login", boolean)
 
   private def showChangeLog(): Unit = {
     val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)

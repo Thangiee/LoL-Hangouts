@@ -10,8 +10,10 @@ import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, RefreshFriendList}
 import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import de.greenrobot.event.EventBus
+import de.keyboardsurfer.android.widget.crouton.{Crouton, Configuration, Style}
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
+import org.jivesoftware.smack.packet.Presence
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -59,6 +61,16 @@ class FriendListFragment extends ProgressFragment with TFragment {
     }
     // automatically refresh friend list every 1 minute
     handler.postDelayed(autoRefreshTask, 60 * 1000)
+  }
+
+  override def onStart(): Unit = {
+    super.onStart()
+    // show warning when in offline mode
+    if (LoLChat.presenceType() == Presence.Type.unavailable) {
+      val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
+      Crouton.makeText(ctx.asInstanceOf[Activity], R.string.offline_mode_warning.r2String, customStyle)
+        .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build()).show()
+    }
   }
 
   override def onPause(): Unit = {

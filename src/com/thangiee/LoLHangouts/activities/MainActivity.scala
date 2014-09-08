@@ -48,7 +48,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       return
     }
 
-    LoLChat.appearOnline()
+    if (Prefs.getBoolean("offline-login", false)) LoLChat.appearOffline() else LoLChat.appearOnline()
     startService[LoLHangoutsService]
     notificationManager.cancelAll() // clear any left over notification
 
