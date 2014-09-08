@@ -9,15 +9,19 @@
 
     <!--preference keys-->
     <string name="pref_load_icon">pref_load_icon</string>
-    <string name="pref_load_icon_summary">Turn off to reduce memory and data usage.</string>
     <string name="pref_history">pref_history</string>
     <string name="pref_notify_vibrate">pref_notify_vibrate</string>
     <string name="pref_notify_sound">pref_notify_sound</string>
     <string name="pref_notify_msg">pref_notify_msg</string>
     <string name="pref_notify_login">pref_notify_login</string>
-    <string name="pref_history_summary">Auto delete message older than the specified period.</string>
     <string name="pref_max_msg">pref_max_msg</string>
+    <string name="pref_notify_app_running">pref_notify_app_running</string>
+
+    <!--preference summary-->
+    <string name="pref_load_icon_summary">Turn off to reduce memory and data usage.</string>
+    <string name="pref_history_summary">Auto delete message older than the specified period.</string>
     <string name="pref_max_msg_summary">Limit the number of messages that will load in your chat screen (default 20)</string>
+    <string name="pref_notify_app_running_summary">Show an icon when the app is running and you are connected. *Require logging in again </string>
 
     <!--error messages-->
     <string name="no_current_chat">Select a friend in your friend list to start a chat</string>
@@ -46,7 +50,7 @@
     <string name="live_game_screen_msg">Use the search to view players statistics in a game. (Must be in game or at loading screen)</string>
 
     <string name="offline_mode_warning">You are in offline mode. Friend list will not update until you switch to a different mode.</string>
-    
+
     <string-array name="history">
         <item>1 day</item>
         <item>3 days</item>

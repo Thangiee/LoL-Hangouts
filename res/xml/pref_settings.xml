@@ -19,6 +19,11 @@
                 android:defaultValue="true"
                 android:key="@string/pref_notify_vibrate"
                 android:title="Vibration"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="@string/pref_notify_app_running"
+                android:title="Notify app running"
+                android:summary="@string/pref_notify_app_running_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Friend">
