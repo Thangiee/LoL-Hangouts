@@ -15,12 +15,11 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/league_logo"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"/>
 
     <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="212dp"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
@@ -45,7 +44,7 @@
                 android:hint="@string/username_hint"
                 android:singleLine="true"
                 android:textColorHint="@color/my_dark_blue"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_alignRight="@+id/login_fields_bg"
                 android:layout_alignEnd="@+id/login_fields_bg"
                 android:layout_alignLeft="@+id/login_fields_bg"
@@ -87,7 +86,7 @@
                 android:layout_alignBottom="@+id/cb_offline_login"
                 android:layout_alignRight="@+id/et_password"
                 android:layout_alignEnd="@+id/et_password"
-                android:layout_toRightOf="@+id/cb_offline_login"/>
+                android:layout_toRightOf="@+id/cb_save_user"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
