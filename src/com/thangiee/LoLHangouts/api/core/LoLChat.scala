@@ -4,6 +4,7 @@ import com.thangiee.LoLHangouts.api.utils.Region
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.Message.Type
 import org.jivesoftware.smack.packet.Presence.Mode
+import org.jivesoftware.smack.packet.Presence.Type.{unavailable, available}
 import org.jivesoftware.smack.packet.{Message, Presence}
 
 import scala.collection.JavaConversions._
@@ -13,7 +14,8 @@ object LoLChat {
   private var _connection: Option[XMPPConnection] = None
   private var _friendListListener: Option[FriendListListener] = None
   private var _statusMsg = "Using LoL Hangouts App"
-  private var _presenceMode = Presence.Mode.away
+  private var _presenceMode = Mode.away
+  private var _presenceType = unavailable
   private var _username = ""
 
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
@@ -67,11 +69,13 @@ object LoLChat {
     case Failure(e) ⇒ false
   }
 
-  def appearOnline() = { updateStatus(Presence.Type.available); _presenceMode = Presence.Mode.available }
+  def appearOnline() = { updateStatus(available); _presenceMode = Presence.Mode.available; _presenceType = available }
 
-  def appearOffline() = updateStatus(Presence.Type.unavailable)
+  def appearOffline() = { updateStatus(unavailable); _presenceType = unavailable }
 
   def appearAway() = { updateStatus(Presence.Type.available, Presence.Mode.away); _presenceMode = Presence.Mode.away }
+
+  def presenceType() =  _presenceType
 
   def sendMessage(summoner: Friend, msg: String): Boolean = {
     val message = new Message(summoner.id, Type.chat)
@@ -81,7 +85,7 @@ object LoLChat {
 
   def statusMsg(): String = _statusMsg
 
-  def changeStatusMsg(msg: String) { _statusMsg = msg; updateStatus(Presence.Type.available, _presenceMode) }
+  def changeStatusMsg(msg: String) { _statusMsg = msg; updateStatus(available, _presenceMode) }
 
   def initChatListener(listener: MessageListener) {
     connection.getChatManager.addChatListener(new ChatManagerListener {
@@ -97,7 +101,7 @@ object LoLChat {
     connection.getRoster.addRosterListener(new FriendRosterListener)
   }
 
-  private[api] def updateStatus(`type`: Presence.Type, mode: Presence.Mode = Mode.chat) {
+  private[api] def updateStatus(`type`: Presence.Type, mode: Mode = Mode.chat) {
     val status = "<body>" +
       "<profileIcon>" + 1 + "</profileIcon>" +
       "<level>" + 30 + "</level>" +

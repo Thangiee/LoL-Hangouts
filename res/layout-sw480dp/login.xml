@@ -20,7 +20,7 @@
 
     <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="160dp"
+            android:layout_height="200dp"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
@@ -37,7 +37,8 @@
                 android:alpha=".5"
                 android:clickable="false"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="16dp"
+                />
 
         <EditText
                 android:id="@+id/et_username"
@@ -85,11 +86,9 @@
                 progress:cpb_colorIndicator="@color/blue"
                 progress:cpb_colorIndicatorBackground="@color/gray"
                 progress:cpb_colorProgress="@android:color/transparent"
+                android:layout_alignBottom="@+id/cb_offline_login"
                 android:layout_alignRight="@+id/et_password"
-                android:layout_alignEnd="@+id/et_password"
-                android:layout_below="@+id/et_password"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"/>
+                android:layout_alignEnd="@+id/et_password"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -100,7 +99,8 @@
                 android:textColor="@color/my_dark_blue"
                 android:layout_below="@+id/et_password"
                 android:layout_alignLeft="@+id/et_password"
-                android:layout_alignStart="@+id/et_password"/>
+                android:layout_alignStart="@+id/et_password"
+                android:paddingRight="16dp"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -112,6 +112,19 @@
                 android:layout_below="@+id/cb_save_user"
                 android:layout_alignLeft="@+id/cb_save_user"
                 android:layout_alignStart="@+id/cb_save_user"/>
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login as offline"
+                android:id="@+id/cb_offline_login"
+                android:layout_below="@+id/cb_save_pass"
+                android:layout_alignLeft="@+id/cb_save_pass"
+                android:layout_alignStart="@+id/cb_save_pass"
+                android:layout_alignRight="@+id/cb_save_user"
+                android:layout_alignEnd="@+id/cb_save_user"
+                android:textColor="@color/my_dark_blue"
+                android:checked="false"/>
     </RelativeLayout>
 
 </RelativeLayout>

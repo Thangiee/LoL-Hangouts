@@ -3,6 +3,8 @@
     <color name="status_available">@color/my_green</color>
     <color name="status_busy">@color/my_dark_orange</color>
     <color name="status_away">@color/light_red</color>
+    <color name="status_offline">@color/gray</color>
+    <color name="offline_warning">#70FF0000</color>
 
     <color name="slider_fade">#64013639</color>
 

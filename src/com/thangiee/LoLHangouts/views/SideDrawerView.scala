@@ -7,12 +7,14 @@ import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, PreferenceSettings}
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, ExtractorImplicits, SummonerUtils}
 import de.greenrobot.event.EventBus
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import info.hoang8f.android.segmented.SegmentedGroup
 import net.simonvt.menudrawer.MenuDrawer
 import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener
@@ -52,21 +54,34 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
     editStatusBtn.setOnClickListener((v: View) ⇒ showChangeStatusMsgDialog())
 
-    // setup the radio group and button to control online/away status
+    // setup the radio group and button to control online/away/offline status
     val seg = find[SegmentedGroup](R.id.seg_presence)
     seg.setTintColor(R.color.status_available.r2Color)
     seg.setOnCheckedChangeListener(new OnCheckedChangeListener {
       override def onCheckedChanged(group: RadioGroup, checkedId: Int): Unit = {
         val onlineBtn = find[RadioButton](R.id.btn_online)
+        val awayBtn = find[RadioButton](R.id.btn_away)
         if (onlineBtn.isChecked) {
           seg.setTintColor(R.color.status_available.r2Color)
           LoLChat.appearOnline()
-        } else {
+          Crouton.cancelAllCroutons()
+        } else if (awayBtn.isChecked){
           seg.setTintColor(R.color.status_away.r2Color)
           LoLChat.appearAway()
+          Crouton.cancelAllCroutons()
+        } else {
+          seg.setTintColor(R.color.status_offline.r2Color)
+          LoLChat.appearOffline()
+          // show warning when in offline mode
+          val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
+          Crouton.makeText(ctx.asInstanceOf[Activity], R.string.offline_mode_warning.r2String, customStyle)
+            .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build()).show()
         }
       }
     })
+
+    val offlineBtn = find[RadioButton](R.id.btn_offline)
+    if (Prefs.getBoolean("offline-login", false)) offlineBtn.setChecked(true)
 
     setupListView()
   }
