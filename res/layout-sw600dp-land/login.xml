@@ -3,55 +3,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:progress="http://schemas.android.com/apk/res-auto"
                 xmlns:makeramen="http://schemas.android.com/apk/res-auto"
-                android:background="@color/my_dark_blue"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+        >
 
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/league_logo"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_login_bg"
+            android:scaleType="centerCrop"/>
 
     <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="208dp"
-            android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="72dp"
-            android:layout_marginLeft="72dp">
+            android:layout_width="480dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout"
+            android:layout_alignParentStart="false"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp">
 
         <com.makeramen.RoundedImageView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/login_fields_bg"
                 makeramen:corner_radius="18dip"
-                android:src="@drawable/linen_white"
-                android:alpha=".5"
+                android:alpha=".7"
                 android:clickable="false"
-                android:layout_marginLeft="124dp"
-                android:layout_marginRight="124dp"/>
+                android:src="@color/my_dark_blue"
+                android:layout_alignParentStart="false"
+                android:scaleType="center"
+                android:layout_alignBottom="@+id/ancher"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"/>
 
         <EditText
                 android:id="@+id/et_username"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username_hint"
                 android:singleLine="true"
-                android:textColorHint="@color/my_dark_blue"
-                android:layout_alignRight="@+id/login_fields_bg"
-                android:layout_alignEnd="@+id/login_fields_bg"
-                android:layout_alignLeft="@+id/login_fields_bg"
-                android:layout_alignStart="@+id/login_fields_bg"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"/>
+                android:layout_below="@+id/textView"
+                android:textColor="@color/white"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="22dp"/>
 
         <EditText
                 android:id="@+id/et_password"
@@ -62,17 +61,20 @@
                 android:phoneNumber="false"
                 android:singleLine="true"
                 android:textColorLink="@color/black"
-                android:textColorHint="@color/my_dark_blue"
                 android:layout_below="@+id/et_username"
                 android:layout_alignLeft="@+id/et_username"
                 android:layout_alignStart="@+id/et_username"
                 android:layout_alignRight="@+id/et_username"
                 android:layout_alignEnd="@+id/et_username"
-                />
+                android:textColor="@color/white"
+                android:layout_alignParentStart="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="22dp"/>
 
         <com.dd.CircularProgressButton
                 android:id="@+id/btn_login"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@color/white"
@@ -86,7 +88,11 @@
                 progress:cpb_colorProgress="@android:color/transparent"
                 android:layout_alignBottom="@+id/cb_offline_login"
                 android:layout_alignRight="@+id/et_password"
-                android:layout_alignEnd="@+id/et_password"/>
+                android:layout_alignEnd="@+id/et_password"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/ancher"
+                android:layout_marginLeft="8dp"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -94,11 +100,15 @@
                 android:text="Save Username"
                 android:id="@+id/cb_save_user"
                 android:checked="false"
-                android:textColor="@color/my_dark_blue"
+                android:textColor="@color/white"
                 android:layout_below="@+id/et_password"
                 android:layout_alignLeft="@+id/et_password"
                 android:layout_alignStart="@+id/et_password"
-                android:textSize="20sp"/>
+                android:paddingRight="16dp"
+                android:layout_alignParentStart="false"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:textSize="22dp"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -106,11 +116,14 @@
                 android:text="Save password"
                 android:id="@+id/cb_save_pass"
                 android:checked="false"
-                android:textColor="@color/my_dark_blue"
-                android:textSize="20sp"
+                android:textColor="@color/white"
                 android:layout_below="@+id/cb_save_user"
                 android:layout_alignLeft="@+id/cb_save_user"
-                android:layout_alignStart="@+id/cb_save_user"/>
+                android:layout_alignStart="@+id/cb_save_user"
+                android:layout_alignParentStart="false"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:textSize="22dp"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -122,9 +135,34 @@
                 android:layout_alignStart="@+id/cb_save_pass"
                 android:layout_alignRight="@+id/cb_save_user"
                 android:layout_alignEnd="@+id/cb_save_user"
-                android:textSize="20sp"
-                android:textColor="@color/my_dark_blue"
-                android:checked="false"/>
+                android:textColor="@color/white"
+                android:checked="false"
+                android:layout_alignParentStart="false"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="68dp"
+                android:textSize="22dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="ACCOUNT LOGIN"
+                android:id="@+id/textView"
+                android:textColor="@color/light_blue"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/et_username"
+                android:layout_alignStart="@+id/et_username"
+                android:layout_marginTop="68dp"
+                android:textSize="22dp"
+                android:layout_marginBottom="16dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:id="@+id/ancher"
+                android:layout_below="@+id/cb_offline_login"
+                android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 
 </RelativeLayout>
