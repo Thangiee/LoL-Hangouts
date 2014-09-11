@@ -33,7 +33,7 @@ class SummonerProfileFragment extends TFragment {
     find[TextView](R.id.tv_profile_kda).setText(data.kda)
     find[TextView](R.id.tv_profile_lost).setText(data.lose.toString + "L")
     find[TextView](R.id.tv_profile_win).setText(data.win.toString + "W")
-    SummonerUtils.loadIconInto(getActivity, data.name, data.region, find[ImageView](R.id.img_profile_icon))
+    SummonerUtils.loadProfileIcon(data.name, data.region, find[ImageView](R.id.img_profile_icon))
 
     val rateTextView = find[TextView](R.id.tv_profile_rate)
     rateTextView.setText(new DecimalFormat("###.##").format(percent) + "%")
