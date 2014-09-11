@@ -7,10 +7,10 @@ import com.thangiee.LoLHangouts.R
 
 object SummonerUtils {
 
-  def loadIconInto(ctx: Context, name: String, region: String, imageView: ImageView, placeholder: Int = R.drawable.league_icon): Unit = {
+  def loadProfileIcon(name: String, region: String, imageView: ImageView, placeholder: Int = R.drawable.league_icon)(implicit ctx: Context): Unit = {
     Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(name, region))
       .placeholder(placeholder)
-      .error(R.drawable.ic_load_error)
+      .error(R.drawable.ic_load_unknown)
       .into(imageView)
   }
 

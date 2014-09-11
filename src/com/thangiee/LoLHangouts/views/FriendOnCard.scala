@@ -12,10 +12,11 @@ import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.core.Friend
 import com.thangiee.LoLHangouts.api.core.LoLStatus._
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
-import it.gmariotti.cardslib.library.internal.{CardExpand, ViewToClickToExpand}
+import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
+import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence
 
-class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
+class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
   private var view: View = _
   private lazy val nameTextView = view.findViewById(R.id.tv_friend_name).asInstanceOf[TextView]
   private lazy val statusTextView = view.findViewById(R.id.tv_friend_status).asInstanceOf[TextView]
@@ -31,7 +32,7 @@ class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx,
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadIconInto(ctx, friend.name, appCtx.selectedRegion.id, iconImageView)
+      SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView)
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()
@@ -125,6 +126,14 @@ class FriendOnCard(ctx: Context, val friend: Friend) extends FriendBaseCard(ctx,
         case "CHALLENGER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
         case _              ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
       }
+
+      setOnExpandAnimatorStartListener(new OnExpandAnimatorStartListener {
+        override def onExpandStart(p1: Card): Unit = {}
+      })
+
+      setOnCollapseAnimatorEndListener(new OnCollapseAnimatorEndListener {
+        override def onCollapseEnd(p1: Card): Unit = {}
+      })
     }
   }
 }
