@@ -20,6 +20,7 @@ object CacheUtils {
   }
 
   def cleanUp(): Unit = {
+    cache.invalidateAll()
     cache.cleanUp()
   }
 }
