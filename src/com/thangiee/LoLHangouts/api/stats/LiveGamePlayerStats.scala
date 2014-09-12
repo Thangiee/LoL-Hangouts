@@ -24,23 +24,24 @@ trait LiveGamePlayerStats extends PlayerStats {
     var elo = 450.0
 
     leagueTier.toUpperCase match {
-      case "BRONZE" ⇒ elo += TierWeight * 1
-      case "SILVER" ⇒ elo += TierWeight * 2
-      case "GOLD" ⇒ elo += TierWeight * 3
-      case "PLATINUM" ⇒ elo += TierWeight * 4
-      case "DIAMOND" ⇒ elo += TierWeight * 5
+      case "BRONZE"     ⇒ elo += TierWeight * 1
+      case "SILVER"     ⇒ elo += TierWeight * 2
+      case "GOLD"       ⇒ elo += TierWeight * 3
+      case "PLATINUM"   ⇒ elo += TierWeight * 4
+      case "DIAMOND"    ⇒ elo += TierWeight * 5
+      case "MASTER"     ⇒ elo += TierWeight * 6
       case "CHALLENGER" ⇒ elo += TierWeight * 6
-      case _ ⇒ elo += TierWeight * 0
+      case _            ⇒ elo += TierWeight * 0
     }
 
     if (!leagueTier.toUpperCase.equals("CHALLENGER"))
       leagueDivision.toUpperCase match {
-        case "I" ⇒ elo += DivisionWeight * 4
-        case "II" ⇒ elo += DivisionWeight * 3
-        case "III" ⇒ elo += DivisionWeight * 2
-        case "IV" ⇒ elo += DivisionWeight * 1
-        case "V" ⇒ elo += DivisionWeight * 0
-        case _ ⇒ elo += DivisionWeight * 0
+        case "I"    ⇒ elo += DivisionWeight * 4
+        case "II"   ⇒ elo += DivisionWeight * 3
+        case "III"  ⇒ elo += DivisionWeight * 2
+        case "IV"   ⇒ elo += DivisionWeight * 1
+        case "V"    ⇒ elo += DivisionWeight * 0
+        case _      ⇒ elo += DivisionWeight * 0
       }
 
     if (series.isDefined) {

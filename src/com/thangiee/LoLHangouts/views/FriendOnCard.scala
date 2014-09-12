@@ -124,6 +124,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
         case "GOLD"         ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)
         case "PLATINUM"     ⇒ badgeImageView.setImageResource(R.drawable.badge_platinum)
         case "DIAMOND"      ⇒  badgeImageView.setImageResource(R.drawable.badge_diamond)
+        case "MASTER"       ⇒ badgeImageView.setImageResource(R.drawable.badge_master)
         case "CHALLENGER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
         case _              ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
       }
