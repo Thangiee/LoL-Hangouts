@@ -52,6 +52,6 @@ trait TContext {
 
   implicit class Asset2Drawable(assetFile: AssetFile) {
     def toDrawable: Drawable = Try(Drawable.createFromStream(appCtx.getAssets.open(assetFile.path), null))
-                                .getOrElse(appCtx.getResources.getDrawable(R.drawable.ic_load_error))
+                                .getOrElse(appCtx.getResources.getDrawable(R.drawable.ic_load_unknown))
   }
 }

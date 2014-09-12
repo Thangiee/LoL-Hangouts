@@ -9,8 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
+import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -29,12 +29,20 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
+    view
+  }
+
+  override def onStart(): Unit = {
+    super.onStart()
     if (LoLChat.isConnected) {
       getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, new FriendListFragment).commit()
-      getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
+      getFragmentManager.beginTransaction().replace(R.id.chat_content_pane,
+        if (appCtx.activeFriendChat.equals(""))
+          BlankFragment.newInstance(R.string.no_current_chat)
+        else
+          ChatPaneFragment.newInstance(LoLChat.getFriendByName(appCtx.activeFriendChat).get)
+      ).commit()
     }
-
-    view
   }
 
   override def onResume(): Unit = {
@@ -51,6 +59,9 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
 
   override def onPause(): Unit = {
     super.onPause()
+    val fm = getFragmentManager
+    fm.beginTransaction().remove(fm.findFragmentById(R.id.chat_left_pane)).commit()
+    fm.beginTransaction().remove(fm.findFragmentById(R.id.chat_content_pane)).commit()
     EventBus.getDefault.unregister(this, classOf[FriendCardClicked])
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false

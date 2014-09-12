@@ -36,11 +36,11 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:cropToPadding="false"
-            android:src="@drawable/league_icon"
             android:layout_margin="8dp"
             circle:corner_radius="28dip"
             circle:border_color="@color/my_orange"
-            circle:border_width="1dp"/>
+            circle:border_width="1dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
