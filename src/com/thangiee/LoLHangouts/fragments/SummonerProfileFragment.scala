@@ -81,6 +81,16 @@ class SummonerProfileFragment extends TFragment {
       }
     }
   }
+
+  override def onStart(): Unit = {
+    super.onStart()
+    find[ImageView](R.id.img_summ_profile_bg).setImageResource(R.drawable.bg_sq_league_paper)
+  }
+
+  override def onStop(): Unit = {
+    find[ImageView](R.id.img_summ_profile_bg).setImageDrawable(null)
+    super.onStop()
+  }
 }
 
 object SummonerProfileFragment {
