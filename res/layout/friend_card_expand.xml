@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:makeramen="http://schemas.android.com/apk/res-auto"
+                xmlns:fancy="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="168dp">
@@ -11,6 +12,8 @@
             android:layout_height="match_parent"
             android:id="@+id/img_card_expand_bg"
             makeramen:corner_radius="18dip"
+            makeramen:border_color="@color/my_orange"
+            makeramen:border_width="1dp"
             android:src="@color/my_light_blue"
             android:alpha=".7"
             android:scaleType="center"/>
@@ -84,13 +87,18 @@
             android:layout_marginBottom="16dp"
             />
 
-    <Button
-            android:layout_width="56dp"
-            android:layout_height="24dp"
-            android:text="View"
+    <com.sakout.fancybuttons.FancyButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fancy:text="Profile"
+            fancy:textColor="@color/light_blue"
+            fancy:borderColor="@color/light_blue"
+            fancy:borderWidth="1dp"
+            fancy:defaultColor="@android:color/transparent"
+            fancy:focusColor="@color/light_blue"
+            fancy:radius="5dp"
             android:id="@+id/btn_view_profile"
-            android:background="@drawable/league_btn_selector"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:layout_marginLeft="23dp"
             android:layout_below="@+id/imageView"
             android:layout_alignLeft="@+id/imageView"

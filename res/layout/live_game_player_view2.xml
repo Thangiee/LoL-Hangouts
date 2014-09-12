@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:circle="http://schemas.android.com/apk/res-auto"
+                xmlns:fancy="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,16 +143,21 @@
             android:layout_alignRight="@+id/tv_live_game_s4_leag_lp"
             android:layout_alignEnd="@+id/tv_live_game_s4_leag_lp"/>
 
-    <Button
+    <com.sakout.fancybuttons.FancyButton
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:text="View Profile"
-            android:background="@drawable/league_btn_selector"
+            android:layout_height="wrap_content"
+            fancy:text="View Profile"
+            fancy:textColor="@color/light_blue"
+            fancy:borderColor="@color/light_blue"
+            fancy:borderWidth="1dp"
+            fancy:defaultColor="@android:color/transparent"
+            fancy:focusColor="@color/light_blue"
+            fancy:radius="5dp"
             android:id="@+id/btn_live_game_profile"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"/>
+            />
 
     <com.makeramen.RoundedImageView
             android:layout_width="22dp"

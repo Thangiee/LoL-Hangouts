@@ -90,7 +90,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
     playerDictionary.addStringField(R.id.tv_live_game_rank_a, (player: LiveGamePlayerStats) ⇒ "%.1f".format(player.soloQueue.assists / player.soloQueue.gameTotal))
 
     // setup button to view player profile
-    playerDictionary.addStringField(R.id.btn_live_game_profile, (player: LiveGamePlayerStats) ⇒ "View Profile")
+    playerDictionary.addBaseField(R.id.btn_live_game_profile)
       .onClick((player: LiveGamePlayerStats) ⇒ {
       val i = new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", player.name).putExtra("region-key", region)
       startActivity(i)

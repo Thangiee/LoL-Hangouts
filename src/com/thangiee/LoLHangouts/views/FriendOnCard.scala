@@ -5,8 +5,9 @@ import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
-import android.widget.{Button, ImageView, TextView}
+import android.widget.{ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
+import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.core.Friend
@@ -110,7 +111,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
-      view.findViewById(R.id.btn_view_profile).asInstanceOf[Button].setOnClickListener(new OnClickListener {
+      view.findViewById(R.id.btn_view_profile).asInstanceOf[FancyButton].setOnClickListener(new OnClickListener {
         override def onClick(v: View): Unit = ctx.startActivity(
           new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", friend.name).putExtra("region-key", appCtx.selectedRegion.id)
         )
