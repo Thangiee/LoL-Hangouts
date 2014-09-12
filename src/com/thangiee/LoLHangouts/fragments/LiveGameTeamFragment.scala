@@ -110,7 +110,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       })
     }
 
-    val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view2, playerDictionary)
+    val adapter = new FunDapter[LiveGamePlayerStats](ctx, players, R.layout.live_game_player_view, playerDictionary)
     adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
     teamListView.setAdapter(adapter)
   }

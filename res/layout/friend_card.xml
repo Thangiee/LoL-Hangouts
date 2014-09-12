@@ -40,7 +40,7 @@
             circle:corner_radius="28dip"
             circle:border_color="@color/my_orange"
             circle:border_width="1dp"
-            />
+            android:src="@drawable/ic_load_unknown"/>
 
     <TextView
             android:layout_width="wrap_content"
