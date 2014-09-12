@@ -122,6 +122,7 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
       case "GOLD" ⇒ img.setImageResource(R.drawable.badge_gold)
       case "DIAMOND" ⇒ img.setImageResource(R.drawable.badge_diamond)
       case "PLATINUM" ⇒ img.setImageResource(R.drawable.badge_platinum)
+      case "MASTER" ⇒ img.setImageResource(R.drawable.badge_master)
       case "CHALLENGER" ⇒ img.setImageResource(R.drawable.badge_challenger)
       case _ ⇒ img.setImageResource(R.drawable.badge_unranked)
     }
