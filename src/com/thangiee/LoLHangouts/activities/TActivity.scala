@@ -18,4 +18,9 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
     outState.putString("user", appCtx.currentUser)
     outState.putString("friend-chat", appCtx.activeFriendChat)
   }
+
+  override def onStop(): Unit = {
+    System.gc()
+    super.onStop()
+  }
 }

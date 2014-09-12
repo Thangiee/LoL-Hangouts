@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:card="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/summoners_rift2">
+        >
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_friend_list_bg"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            />
 
     <it.gmariotti.cardslib.library.view.CardListView
             android:layout_width="match_parent"
@@ -13,6 +22,6 @@
             android:id="@+id/list_summoner_card"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
-            android:background="@drawable/summoners_rift2"/>
+            android:background="@android:color/transparent"/>
 
-</LinearLayout>
+</RelativeLayout>

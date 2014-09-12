@@ -31,6 +31,7 @@ class ChatPaneFragment extends TFragment {
   private lazy val msgField = find[EditText](R.id.et_msg_field)
   private lazy val friendName = getArguments.getString("name-key")
   private lazy val messageAdapter = new MessageAdapter(getActivity, 0)
+  private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -42,19 +43,27 @@ class ChatPaneFragment extends TFragment {
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
-    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
-    messageAdapter.addAll(messageLog) // add all messages
     messageAdapter.setRegion(Prefs.getString("region-key", ""))
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 
     setMessagesRead()
-    val messageListView = find[MessagesListView](R.id.lsv_chat)
     messageListView.setAdapter(messageAdapter)
     messageListView.setBackgroundColor(R.color.my_dark_blue.r2Color)
-    messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
 
     view
+  }
+
+  override def onStart(): Unit = {
+    super.onStart()
+    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
+    messageAdapter.addAll(messageLog) // add all messages
+    messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
+  }
+
+  override def onStop(): Unit = {
+    messageAdapter.clear()
+    super.onStop()
   }
 
   override def onDestroy(): Unit = {
@@ -154,7 +163,7 @@ class ChatPaneFragment extends TFragment {
     Future {
       val msg = event.msg
       val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id))
-        .error(R.drawable.ic_load_error).get()
+        .error(R.drawable.ic_load_unknown).get()
 
       runOnUiThread {
         NiftyNotificationView.build(getActivity, msg.getOtherPerson + ": " + msg.getText, Effects.thumbSlider, R.id.nifty_view, cfg)

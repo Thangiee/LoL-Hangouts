@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.fragments
 import android.app.Activity
 import android.os.{Bundle, Handler}
 import android.view.{LayoutInflater, View, ViewGroup}
+import android.widget.ImageView
 import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.R
@@ -14,6 +15,7 @@ import de.keyboardsurfer.android.widget.crouton.{Crouton, Configuration, Style}
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
 import org.jivesoftware.smack.packet.Presence
+import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,6 +47,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   override def onResume(): Unit = {
     super.onResume()
+    println("ONRESUME")
     setContentView(view)
     setContentShown(false) // show loading bar
     val listView = find[CardListView](R.id.list_summoner_card)
@@ -65,6 +68,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   override def onStart(): Unit = {
     super.onStart()
+    find[ImageView](R.id.img_friend_list_bg).setImageResource(R.drawable.summoners_rift2)
     // show warning when in offline mode
     if (LoLChat.presenceType() == Presence.Type.unavailable) {
       val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
@@ -76,6 +80,11 @@ class FriendListFragment extends ProgressFragment with TFragment {
   override def onPause(): Unit = {
     handler.removeCallbacks(autoRefreshTask)
     super.onPause()
+  }
+
+  override def onStop(): Unit = {
+    find[ImageView](R.id.img_friend_list_bg).setImageDrawable(null)
+    super.onStop()
   }
 
   override def onDestroy(): Unit = {
@@ -96,13 +105,10 @@ class FriendListFragment extends ProgressFragment with TFragment {
   }
 
   private def populateFriendCardList: Future[Unit] = {
+    cards.clear()
     Future[Unit] {
-      val (friendsOn, friendsOff) = (LoLChat.onlineFriends, LoLChat.offlineFriends)
-      runOnUiThread {
-        cards.clear()
-        cards.++=(for (f <- friendsOn) yield new FriendOnCard(getActivity, f)) // online friends first
-        cards.++=(for (f <- friendsOff) yield new FriendOffCard(getActivity, f))
-      }
+      val friends = LoLChat.onlineFriends ++ LoLChat.offlineFriends
+      cards.++=(friends.map(f ⇒ if (f.isOnline) new FriendOnCard(f) else new FriendOffCard(ctx, f)))
     }
   }
 

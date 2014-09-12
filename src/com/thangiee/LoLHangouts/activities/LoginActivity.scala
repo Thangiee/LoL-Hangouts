@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.activities
 import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
 import android.view.{MenuItem, Window}
-import android.widget.{CheckBox, CompoundButton, EditText}
+import android.widget.{ImageView, CheckBox, CompoundButton, EditText}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
@@ -62,6 +62,16 @@ class LoginActivity extends TActivity with UpButton {
     }
   }
 
+  override def onStart(): Unit = {
+    super.onStart()
+    find[ImageView](R.id.img_login_bg).setImageResource(R.drawable.shadow_isles_640)
+  }
+
+  override def onStop(): Unit = {
+    find[ImageView](R.id.img_login_bg).setImageDrawable(null)
+    super.onStop()
+  }
+
   private def login() {
     if (saveUserCheckBox.isChecked) saveUser()
     if (savePassCheckBox.isChecked) savePass()
@@ -92,8 +102,8 @@ class LoginActivity extends TActivity with UpButton {
         RiotApi.setRegion(appCtx.selectedRegion.id)
         SystemClock.sleep(150)
         runOnUiThread(logInButton.setProgress(100))
-        startActivity[MainActivity]
         finish()
+        startActivity[MainActivity]
       } else {
         runOnUiThread("Invalid username/password".makeCrouton())
         runOnUiThread(logInButton.setProgress(-1))

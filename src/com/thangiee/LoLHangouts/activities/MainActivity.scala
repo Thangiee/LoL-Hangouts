@@ -75,12 +75,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       super.onActivityResult(requestCode, resultCode, data)
   }
 
-  override def onSaveInstanceState(outState: Bundle): Unit = {
-    super.onSaveInstanceState(outState)
-    val frag = getFragmentManager.findFragmentById(R.id.screen_container)
-    getFragmentManager.putFragment(outState, "contentFrag", frag)
-  }
-
   override def onCreateOptionsMenu(menu: Menu): Boolean = {
     getMenuInflater.inflate(R.menu.overflow, menu)
     super.onCreateOptionsMenu(menu)
