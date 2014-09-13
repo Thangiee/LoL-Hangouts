@@ -47,6 +47,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   override def onDestroy(): Unit = {
     notificationManager.cancel(msgNotificationId)
     notificationManager.cancel(loginNotificationId)
+    notificationManager.cancel(runningNotificationId)
     EventBus.getDefault.unregister(this, classOf[ClearChatNotification], classOf[ClearLoginNotification])
     info("[*] Service stop")
     super.onDestroy()

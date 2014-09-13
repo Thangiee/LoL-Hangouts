@@ -47,7 +47,6 @@ class FriendListFragment extends ProgressFragment with TFragment {
 
   override def onResume(): Unit = {
     super.onResume()
-    println("ONRESUME")
     setContentView(view)
     setContentShown(false) // show loading bar
     val listView = find[CardListView](R.id.list_summoner_card)

@@ -30,7 +30,7 @@ class ChatPaneFragment extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
   private lazy val msgField = find[EditText](R.id.et_msg_field)
   private lazy val friendName = getArguments.getString("name-key")
-  private lazy val messageAdapter = new MessageAdapter(getActivity, 0)
+  private lazy val messageAdapter = new MessageAdapter(ctx, 0)
   private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -61,9 +61,9 @@ class ChatPaneFragment extends TFragment {
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
   }
 
-  override def onStop(): Unit = {
+  override def onPause(): Unit = {
     messageAdapter.clear()
-    super.onStop()
+    super.onPause()
   }
 
   override def onDestroy(): Unit = {
