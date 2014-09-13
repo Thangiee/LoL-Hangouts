@@ -69,11 +69,11 @@ object LoLChat {
     case Failure(e) ⇒ false
   }
 
-  def appearOnline() = { updateStatus(available); _presenceMode = Presence.Mode.available; _presenceType = available }
+  def appearOnline() = updateStatus(available)
 
-  def appearOffline() = { updateStatus(unavailable); _presenceType = unavailable }
+  def appearOffline() = updateStatus(unavailable)
 
-  def appearAway() = { updateStatus(Presence.Type.available, Presence.Mode.away); _presenceMode = Presence.Mode.away }
+  def appearAway() = updateStatus(Presence.Type.available, Presence.Mode.away)
 
   def presenceType() =  _presenceType
 
@@ -102,6 +102,8 @@ object LoLChat {
   }
 
   private[api] def updateStatus(`type`: Presence.Type, mode: Mode = Mode.chat) {
+    _presenceType = `type`
+    _presenceMode = mode
     val status = "<body>" +
       "<profileIcon>" + 1 + "</profileIcon>" +
       "<level>" + 30 + "</level>" +
