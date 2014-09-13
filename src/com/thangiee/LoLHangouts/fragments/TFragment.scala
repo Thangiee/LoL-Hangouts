@@ -2,6 +2,7 @@ package com.thangiee.LoLHangouts.fragments
 
 import android.app.Fragment
 import android.content.Context
+import android.os.{Handler, Looper}
 import android.view.View
 import com.thangiee.LoLHangouts.utils.{TContext, TLogger}
 import de.keyboardsurfer.android.widget.crouton.Crouton
@@ -13,10 +14,21 @@ trait TFragment extends Fragment with TContext with Implicits with SystemService
 
   def find[V <: View](id: Int): V = view.findViewById(id).asInstanceOf[V]
 
-  def runOnUiThread(code: => Unit) = new {
-    getActivity.runOnUiThread(new Runnable {
-      override def run(): Unit = code
-    })
+  private lazy val uiThread = Looper.getMainLooper.getThread
+
+  private lazy val handler = new Handler(Looper.getMainLooper)
+
+  def runOnUiThread[T >: Null](f: => T): T = {
+    if (uiThread == Thread.currentThread) {
+      f
+    } else {
+      handler.post(new Runnable() {
+        def run() {
+          f
+        }
+      })
+      null
+    }
   }
 
   override def onDestroy(): Unit = {

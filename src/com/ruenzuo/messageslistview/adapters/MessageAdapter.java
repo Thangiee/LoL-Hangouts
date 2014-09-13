@@ -170,13 +170,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         viewHolder.message_date.setText(simpleDateFormat.format(message.getDate()));
         if (message.getType() == MessageType.MESSAGE_TYPE_SENT) {
 //            viewHolder.avatar.setImageDrawable(senderDrawable);
-            SummonerUtils.loadProfileIcon(senderName, region, viewHolder.avatar, R.drawable.mlv__default_avatar, getContext());
+            SummonerUtils.loadProfileIcon(senderName, region, viewHolder.avatar, 55, getContext());
             viewHolder.message_container.setBackgroundColor(senderColor);
         } else {
 //            viewHolder.avatar.setImageDrawable(recipientDrawable);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             if (prefs.getBoolean(getContext().getResources().getString(R.string.pref_load_icon), true))
-                SummonerUtils.loadProfileIcon(recipientName, region, viewHolder.avatar, R.drawable.mlv__default_avatar, getContext());
+                SummonerUtils.loadProfileIcon(recipientName, region, viewHolder.avatar, 55, getContext());
             viewHolder.message_container.setBackgroundColor(recipientColor);
         }
         return convertView;

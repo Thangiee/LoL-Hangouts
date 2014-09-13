@@ -33,7 +33,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView)
+      SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView, 55)
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
     refreshCard()

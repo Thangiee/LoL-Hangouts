@@ -48,7 +48,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     // load account icon
     val iconImageView = find[ImageView](R.id.img_my_profile_icon)
-    SummonerUtils.loadProfileIcon(appCtx.currentUser, appCtx.selectedRegion.id, iconImageView)
+    SummonerUtils.loadProfileIcon(appCtx.currentUser, appCtx.selectedRegion.id, iconImageView, 55)
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
