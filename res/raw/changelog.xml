@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="1.3.2" changeDate="Sep 13,2014">
+        <changelogtext>Add master league</changelogtext>
+        <changelogtext>Optimize in app memory usage</changelogtext>
+        <changelogtext>App also uses less memory when in background</changelogtext>
+        <changelogtext>Some minor UI changes</changelogtext>
+        <changelogtext>Bug fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.3.1" changeDate="Sep 8,2014">
         <changelogtext>Add login as offline</changelogtext>
         <changelogtext>Show icon when app is running and connected.(You can disable it in settings)</changelogtext>
