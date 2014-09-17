@@ -30,12 +30,12 @@ class FriendRosterListener extends RosterListener {
 
     // notify when a friend login/logoff
     val previousType = typeSnapShot.getOrElse(id, Type.unavailable)
-    if (previousType == Type.unavailable && friend.chatType == Type.available) { listener.onFriendLogin(friend); return }// login
-    else if (previousType == Type.available && friend.chatType == Type.unavailable) { listener.onFriendLogOff(friend); return }// logout
+    if (previousType == Type.unavailable && friend.chatType == Type.available) listener.onFriendLogin(friend) // login
+    else if (previousType == Type.available && friend.chatType == Type.unavailable) listener.onFriendLogOff(friend) // logout
 
     // notify when chat mode of a friend change
     val previousMode = modeSnapShot.getOrElse(id, Mode.away)
-    if(previousMode != Mode.chat && friend.chatMode == Mode.chat) listener.onFriendAvailable(friend) // available (green)
+    if(previousMode != Mode.chat && friend.chatMode == Mode.chat && previousType != Type.unavailable) listener.onFriendAvailable(friend) // available (green)
     else if (previousMode != Mode.away && friend.chatMode == Mode.away) listener.onFriendAway(friend) // away (red)
     else if (previousMode != Mode.dnd && friend.chatMode == Mode.dnd ) listener.onFriendBusy(friend)  // busy (yellow)
 
