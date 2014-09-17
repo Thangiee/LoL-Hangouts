@@ -15,7 +15,7 @@ import com.thangiee.LoLHangouts.api.core.LoLStatus._
 import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
-import org.jivesoftware.smack.packet.Presence
+import org.jivesoftware.smack.packet.Presence.Mode
 
 class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
   private lazy val nameTextView = find[TextView](R.id.tv_friend_name)
@@ -34,6 +34,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
       SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView, 55)
 
+    notifyButton.setVisibility(if (friend.chatMode == Mode.chat) View.INVISIBLE else View.VISIBLE)
     notifyButton.setSelected(appCtx.notifyWhenAvailableFriends.contains(friend.name))
     notifyButton.setOnClickListener((v: View) ⇒ notifyButtonOnClick())
 
@@ -72,9 +73,9 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
 
   private def updateStatus() {
     friend.chatMode match {
-      case Presence.Mode.chat => changeToOnline()
-      case Presence.Mode.dnd  => changeToBusy()
-      case Presence.Mode.away => changeToAway()
+      case Mode.chat => changeToOnline()
+      case Mode.dnd  => changeToBusy()
+      case Mode.away => changeToAway()
       case _ =>
     }
   }
