@@ -5,10 +5,9 @@ import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.Type
 
 class Friend(entry: RosterEntry) {
+  val name: String = entry.getName
 
-  def name: String = entry.getName
-
-  def id: String = entry.getUser
+  val id: String = entry.getUser
 
   def chatMode: Presence.Mode = presence.getMode
 
