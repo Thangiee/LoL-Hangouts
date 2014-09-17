@@ -27,6 +27,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
   private val runningNotificationId = Random.nextInt()
+  private val availableNotificationId = Random.nextInt()
 
   override def onBind(intent: Intent): IBinder = null
 
@@ -48,6 +49,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.cancel(msgNotificationId)
     notificationManager.cancel(loginNotificationId)
     notificationManager.cancel(runningNotificationId)
+    notificationManager.cancel(availableNotificationId)
     EventBus.getDefault.unregister(this, classOf[ClearChatNotification], classOf[ClearLoginNotification])
     info("[*] Service stop")
     super.onDestroy()
@@ -93,6 +95,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //=============================================
   override def onFriendAvailable(friend: Friend): Unit = {
     info("[*]Available: "+friend.name)
+    if (appCtx.notifyWhenAvailableFriends.remove(friend.name)) showAvailableNotification(friend)
     EventBus.getDefault.post(new RefreshFriendCard(friend))
   }
 
@@ -147,15 +150,10 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //=============================================
 
   private def showLogInNotification(friend: Friend) {
-    val builder = new Notification.Builder(ctx)
-      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
-      .setSmallIcon(R.drawable.ic_action_user)
-      .setContentIntent(pendingActivity[MainActivity])
-      .setContentTitle(friend.name + " has logged in!")
-      .setTicker(friend.name + " has logged in!")
-      .setContentText("Touch to open application")
-      .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
-      .setAutoCancel(true)
+    val title = friend.name + " has logged in!"
+    val content = "Touch to open application"
+    val builder = makeNotificationBuilder(R.drawable.ic_action_user, title, content)
+
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
@@ -165,18 +163,26 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.notify(loginNotificationId, notification)
   }
 
+  private def showAvailableNotification(friend: Friend): Unit = {
+    val title = friend.name + " is available."
+    val content = "Touch to open application"
+    val builder = makeNotificationBuilder(R.drawable.ic_action_user, title, content)
+
+    if (R.string.pref_notify_sound.pref2Boolean(default = true))
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+
+    val notification = builder.getNotification
+    notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
+
+    notificationManager.notify(availableNotificationId, notification)
+  }
+
   private def showMsgNotification(newestMsg: models.Message) {
     val unReadMsg = DataBaseHandler.getUnreadMessages(appCtx.currentUser, 5) // get the 5 newest unread messages
+    val title = (if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages"
+    val content = newestMsg.getOtherPerson +": " + newestMsg.getText
+    val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
 
-    val builder = new Notification.Builder(ctx)
-      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
-      .setSmallIcon(R.drawable.ic_action_dialog)
-      .setContentIntent(pendingActivity[MainActivity])
-      .setContentTitle((if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages")
-      .setContentText(newestMsg.getOtherPerson +": " + newestMsg.getText)
-      .setTicker(newestMsg.getOtherPerson +": " + newestMsg.getText)
-      .setLights(0xFF0000FF, 300,3000)  // blue light, 300ms on, 3s off
-      .setAutoCancel(true)
     if (R.string.pref_notify_sound.pref2Boolean(default = true)) // check setting
       MediaPlayer.create(ctx, R.raw.alert_pm_receive).start()
 
@@ -201,15 +207,10 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     val i = new Intent(ctx, classOf[LoginActivity])
     i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
     val p = PendingIntent.getActivity(ctx, 0, i, 0)
+    val contentText = "Connection lost. Touch to log in again."
+    val builder = makeNotificationBuilder(R.drawable.ic_action_warning, R.string.app_name.r2String, contentText, Color.YELLOW)
+    builder.setContentIntent(p)
 
-    val builder = new Notification.Builder(ctx)
-      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
-      .setSmallIcon(R.drawable.ic_action_warning)
-      .setContentIntent(p)
-      .setContentTitle(R.string.app_name.r2String)
-      .setContentText("Connection lost. Touch to log in again.")
-      .setLights(Color.YELLOW, 300,3000)  // yellow light, 300ms on, 3s off
-      .setAutoCancel(true)
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
 
@@ -230,6 +231,18 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       .setOngoing(true)
 
     notificationManager.notify(runningNotificationId, builder.getNotification)
+  }
+
+  private def makeNotificationBuilder(icon: Int, title: String, content: String, lightColor: Int = Color.BLUE): Notification.Builder = {
+    new Notification.Builder(ctx)
+      .setLargeIcon(R.drawable.ic_launcher.toBitmap)
+      .setSmallIcon(icon)
+      .setContentIntent(pendingActivity[MainActivity])
+      .setContentTitle(title)
+      .setTicker(title)
+      .setContentText(content)
+      .setLights(lightColor, 300,3000)  // blue light, 300ms on, 3s off
+      .setAutoCancel(true)
   }
 
   def onEvent(event: Events.ClearChatNotification): Unit = {

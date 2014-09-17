@@ -8,6 +8,9 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @ReportsCrashes(
         formUri = "https://thangiee.cloudant.com/acra-lolhangouts/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
@@ -32,6 +35,7 @@ public class MyApplication extends Application {
     public boolean isFriendListOpen = false;
     public boolean isChatOpen = false;
     public String activeFriendChat = "";
+    public Set<String> notifyWhenAvailableFriends = new HashSet<>();
 
     @Override
     public void onCreate() {
