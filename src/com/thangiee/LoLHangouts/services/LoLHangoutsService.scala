@@ -12,8 +12,8 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
-import com.thangiee.LoLHangouts.utils.Events.{ClearChatNotification, ClearLoginNotification, RefreshFriendCard}
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, TContext, TLogger}
+import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, ClearChatNotification, ClearLoginNotification, RefreshFriendCard}
+import com.thangiee.LoLHangouts.utils.{DB, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.util.StringUtils
@@ -39,9 +39,9 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
       LoLChat.initFriendListListener(this)
       LoLChat.connection.addConnectionListener(this)
       EventBus.getDefault.registerSticky(ctx)
-      if (R.string.pref_notify_app_running.pref2Boolean(default = true)) showAppRunningNotification()
+      if (R.string.pref_notify_app_running.pref2Boolean(default = true)) notifyAppRunning()
     } catch {
-      case e: IllegalStateException ⇒ error("[!] " + e.getMessage); showDisconnectionNotification(); stopSelf()
+      case e: IllegalStateException ⇒ error("[!] " + e.getMessage); notifyDisconnection(); stopSelf()
     }
   }
 
@@ -68,25 +68,25 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     // chat pane fragment is not open
     // or the current open chat is not with sender of the message
     if (!appCtx.isChatOpen || appCtx.activeFriendChat != friend.name) {
-      m.setIsRead(false) // set to false because user has not seen it
+      m.setRead(false) // set to false because user has not seen it
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(new Events.RefreshFriendCard(friend))
+    EventBus.getDefault.post(Events.RefreshFriendCard(friend))
 
     // check notification preference
     val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
 
     if (appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) {  // open & right -> post received msg
-      EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
+      EventBus.getDefault.post(Events.ReceivedMessage(friend, m))
     } else if (!appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) { // close & right -> post received msg and notification
-      EventBus.getDefault.post(new Events.ReceivedMessage(friend, m))
-      if (isNotify) showMsgNotification(m)
+      EventBus.getDefault.post(Events.ReceivedMessage(friend, m))
+      if (isNotify) notifyMessage(m)
     } else if (appCtx.isChatOpen && appCtx.activeFriendChat != friend.name) {
-      EventBus.getDefault.post(new Events.ShowNiftyNotification(m))     // open & wrong
-      if (isNotify) showMsgNotification(m)
+      EventBus.getDefault.post(Events.ShowNiftyNotification(m))     // open & wrong
+      if (isNotify) notifyMessage(m)
     } else {
-      if (isNotify) showMsgNotification(m)                              // close & wrong -> post notification
+      if (isNotify) notifyMessage(m)                              // close & wrong -> post notification
     }
   }
 
@@ -95,39 +95,39 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //=============================================
   override def onFriendAvailable(friend: Friend): Unit = {
     info("[*]Available: "+friend.name)
-    if (appCtx.notifyWhenAvailableFriends.remove(friend.name)) showAvailableNotification(friend)
-    EventBus.getDefault.post(new RefreshFriendCard(friend))
+    if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(friend)
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendLogin(friend: Friend): Unit = {
-    EventBus.getDefault.postSticky(new Events.RefreshFriendList)
+    EventBus.getDefault.postSticky(RefreshFriendList())
 
     if (R.string.pref_notify_login.pref2Boolean(default = true)) {
       // show notification when friendList fragment is not in view or screen is not on
       if (!appCtx.isFriendListOpen || !powerManager.isScreenOn) { // check setting
-        showLogInNotification(friend)
+        notifyLogin(friend)
       }
     }
   }
 
   override def onFriendBusy(friend: Friend): Unit = {
     info("[*]Busy: "+friend.name)
-    EventBus.getDefault.post(new RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendAway(friend: Friend): Unit = {
     info("[*]Away: "+friend.name)
-    EventBus.getDefault.post(new RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendLogOff(friend: Friend): Unit = {
-    EventBus.getDefault.postSticky(new Events.RefreshFriendList)
-    appCtx.notifyWhenAvailableFriends.remove(friend.name)
+    EventBus.getDefault.postSticky(RefreshFriendList())
+    appCtx.FriendsToNotifyOnAvailable.remove(friend.name)
   }
 
   override def onFriendStatusChange(friend: Friend): Unit = {
     info("[*]Change Status: "+friend.name)
-    EventBus.getDefault.post(new RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   //=============================================
@@ -142,7 +142,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   override def connectionClosedOnError(p1: Exception): Unit = {
     warn("[!] Connection lost")
     notificationManager.cancel(runningNotificationId)
-    showDisconnectionNotification()
+    notifyDisconnection()
     stopSelf()
   }
 
@@ -150,7 +150,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   //=============================================
 
-  private def showLogInNotification(friend: Friend) {
+  private def notifyLogin(friend: Friend) {
     val title = friend.name + " has logged in!"
     val content = "Touch to open application"
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_yellow, title, content)
@@ -164,7 +164,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.notify(loginNotificationId, notification)
   }
 
-  private def showAvailableNotification(friend: Friend): Unit = {
+  private def notifyAvailable(friend: Friend): Unit = {
     val title = friend.name + " is available."
     val content = "Touch to open application"
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_green, title, content)
@@ -178,11 +178,12 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.notify(availableNotificationId, notification)
   }
 
-  private def showMsgNotification(newestMsg: models.Message) {
-    val unReadMsg = DataBaseHandler.getUnreadMessages(appCtx.currentUser, 5) // get the 5 newest unread messages
+  private def notifyMessage(newestMsg: models.Message) {
+    val unReadMsg = DB.getUnreadMessages(appCtx.currentUser, 5) // get the 5 newest unread messages
     val title = (if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages"
     val content = newestMsg.getOtherPerson +": " + newestMsg.getText
     val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
+    builder.setTicker(content)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true)) // check setting
       MediaPlayer.create(ctx, R.raw.alert_pm_receive).start()
@@ -203,8 +204,8 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.notify(msgNotificationId, notification)
   }
 
-  private def showDisconnectionNotification(): Unit = {
-    EventBus.getDefault.post(new Events.FinishMainActivity) // kill the main activity
+  private def notifyDisconnection(): Unit = {
+    EventBus.getDefault.post(Events.FinishMainActivity()) // kill the main activity
     val i = new Intent(ctx, classOf[LoginActivity])
     i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
     val p = PendingIntent.getActivity(ctx, 0, i, 0)
@@ -222,7 +223,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.notify(disconnectNotificationId, notification)
   }
 
-  private def showAppRunningNotification(): Unit = {
+  private def notifyAppRunning(): Unit = {
     val builder = new Notification.Builder(ctx)
       .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_launcher)

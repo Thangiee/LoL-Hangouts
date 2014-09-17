@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.Friend
-import com.thangiee.LoLHangouts.utils.DataBaseHandler
+import com.thangiee.LoLHangouts.utils.DB
 
 class FriendOffCard(ctx: Context, friend: Friend) extends FriendBaseCard(ctx, friend, R.layout.friend_off_card) {
 
@@ -15,7 +15,7 @@ class FriendOffCard(ctx: Context, friend: Friend) extends FriendBaseCard(ctx, fr
     view.findViewById(R.id.tv_friend_name).asInstanceOf[TextView].setText(friend.name)
     val lastMsgTextView = view.findViewById(R.id.tv_friend_last_msg).asInstanceOf[TextView]
 
-    val lastMsg = DataBaseHandler.getLastMessage(appCtx.currentUser, friend.name)
+    val lastMsg = DB.getLastMessage(appCtx.currentUser, friend.name)
     lastMsg match {
       case Some(msg) => lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD else Typeface.NORMAL) // bold if msg hasn't been read

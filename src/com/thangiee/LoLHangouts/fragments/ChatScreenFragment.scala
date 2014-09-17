@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events}
+import com.thangiee.LoLHangouts.utils.{DB, Events}
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
@@ -41,9 +41,9 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     appCtx.isChatOpen = !slidingLayout.isOpen
 
     if (appCtx.isChatOpen)  // if resume and the chat is open, set read for messages in that chat
-      DataBaseHandler.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setIsRead(true).save())
+      DB.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setRead(true).save())
 
-    EventBus.getDefault.postSticky(new Events.ClearChatNotification)
+    EventBus.getDefault.postSticky(Events.ClearChatNotification())
   }
 
   override def onPause(): Unit = {
@@ -69,7 +69,7 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
-    EventBus.getDefault.postSticky(new Events.ClearChatNotification) // clear notification
+    EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
 
     getFragmentManager.findFragmentById(R.id.chat_content_pane) match {
       case fragment: ChatPaneFragment ⇒
@@ -86,9 +86,9 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     appCtx.isFriendListOpen = true
     appCtx.isChatOpen = false
-    EventBus.getDefault.postSticky(new Events.ClearChatNotification)  // clear notification
-    EventBus.getDefault.postSticky(new Events.ClearLoginNotification)  // clear notification
-    EventBus.getDefault.postSticky(new Events.RefreshFriendList)  // refresh friend list
+    EventBus.getDefault.postSticky(Events.ClearChatNotification())  // clear notification
+    EventBus.getDefault.postSticky(Events.ClearLoginNotification())  // clear notification
+    EventBus.getDefault.postSticky(Events.RefreshFriendList())  // refresh friend list
   }
 
   def onEvent(event: FriendCardClicked): Unit = {

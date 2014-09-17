@@ -38,7 +38,7 @@ public class Message extends Model {
         return date;
     }
 
-    public Message setIsRead(boolean read) {
+    public Message setRead(boolean read) {
         this.isRead = read;
         return this;
     }

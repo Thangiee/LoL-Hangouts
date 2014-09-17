@@ -7,7 +7,10 @@ import com.ruenzuo.messageslistview.models.Message
 
 import scala.collection.JavaConversions._
 
-object DataBaseHandler {
+/**
+ * SQLite Database query handler
+ */
+object DB {
 
   /**
    * get all messages with oldest date first

@@ -18,13 +18,14 @@ import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
 import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, Events, SummonerUtils}
+import com.thangiee.LoLHangouts.utils.{DB, Events, SummonerUtils}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.collection.JavaConversions._
 
 class ChatPaneFragment extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
@@ -47,7 +48,6 @@ class ChatPaneFragment extends TFragment {
     messageAdapter.setSenderName(appCtx.currentUser)
     messageAdapter.setRecipientName(friendName)
 
-    setMessagesRead()
     messageListView.setAdapter(messageAdapter)
     messageListView.setBackgroundColor(R.color.my_dark_blue.r2Color)
 
@@ -56,7 +56,8 @@ class ChatPaneFragment extends TFragment {
 
   override def onStart(): Unit = {
     super.onStart()
-    val messageLog = DataBaseHandler.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
+    setMessagesRead()
+    val messageLog = DB.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
   }
@@ -71,11 +72,8 @@ class ChatPaneFragment extends TFragment {
     super.onDestroy()
   }
 
-  def setMessagesRead() {
-    for (i <- messageAdapter.getCount-1 to 0 by -1) {
-      val msg = messageAdapter.getItem(i)
-      if (msg.isRead) return else msg.setIsRead(true).save()
-    }
+  def setMessagesRead(): Unit = {
+    DB.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setRead(true).save())
   }
 
   private def sendMessage() {
@@ -143,7 +141,7 @@ class ChatPaneFragment extends TFragment {
 
   private def confirmDeleteAllMsg(): Unit = {
     new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {
-      positiveButton("Delete", {DataBaseHandler.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
+      positiveButton("Delete", {DB.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
       negativeButton(android.R.string.cancel.r2String)
     }.show()
   }
@@ -170,7 +168,7 @@ class ChatPaneFragment extends TFragment {
           .setIcon(new BitmapDrawable(getResources, senderIcon))
           // switch to the sender chat if notification is clicked
           .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson) match {
-            case Some(f) ⇒ EventBus.getDefault.post(new Events.FriendCardClicked(f))
+            case Some(f) ⇒ EventBus.getDefault.post(Events.FriendCardClicked(f))
             case None ⇒
           })
           .show()
