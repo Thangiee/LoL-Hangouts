@@ -35,7 +35,7 @@ public class MyApplication extends Application {
     public boolean isFriendListOpen = false;
     public boolean isChatOpen = false;
     public String activeFriendChat = "";
-    public Set<String> notifyWhenAvailableFriends = new HashSet<>();
+    public Set<String> FriendsToNotifyOnAvailable = new HashSet<>();
 
     @Override
     public void onCreate() {

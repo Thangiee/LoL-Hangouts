@@ -129,7 +129,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
   private def showLogoutDialog() = {
     new AlertDialogBuilder(R.string.dialog_logout_title, R.string.dialog_logout_message)
       .positiveButton(android.R.string.yes, (d: DialogInterface, i: Int) ⇒ {
-      EventBus.getDefault.post(new Events.FinishMainActivity)
+      EventBus.getDefault.post(Events.FinishMainActivity())
       ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))
     })
       .negativeButton(android.R.string.no, (d: DialogInterface, i: Int) ⇒ d.dismiss())

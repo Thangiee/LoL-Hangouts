@@ -1,9 +1,8 @@
 package com.thangiee.LoLHangouts.views
 
-import android.content.{Context, Intent}
+import android.content.{Intent, Context}
 import android.graphics.Typeface
 import android.preference.PreferenceManager
-import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
@@ -12,7 +11,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.core.Friend
 import com.thangiee.LoLHangouts.api.core.LoLStatus._
-import com.thangiee.LoLHangouts.utils.{DataBaseHandler, SummonerUtils}
+import com.thangiee.LoLHangouts.utils.{DB, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence.Mode
@@ -35,7 +34,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView, 55)
 
     notifyButton.setVisibility(if (friend.chatMode == Mode.chat) View.INVISIBLE else View.VISIBLE)
-    notifyButton.setSelected(appCtx.notifyWhenAvailableFriends.contains(friend.name))
+    notifyButton.setSelected(appCtx.FriendsToNotifyOnAvailable.contains(friend.name))
     notifyButton.setOnClickListener((v: View) ⇒ notifyButtonOnClick())
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoButton))
@@ -45,9 +44,9 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
   private def notifyButtonOnClick(): Unit = {
     notifyButton.setSelected(!notifyButton.isSelected) // Set the button's appearance
     if (notifyButton.isSelected) {
-      appCtx.notifyWhenAvailableFriends.add(friend.name)
+      appCtx.FriendsToNotifyOnAvailable.add(friend.name)
     } else {
-      appCtx.notifyWhenAvailableFriends.remove(friend.name)
+      appCtx.FriendsToNotifyOnAvailable.remove(friend.name)
     }
   }
 
@@ -62,7 +61,7 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
 
   private def updateLastMessage() {
     // set last message
-    val lastMsg = DataBaseHandler.getLastMessage(appCtx.currentUser, friend.name)
+    val lastMsg = DB.getLastMessage(appCtx.currentUser, friend.name)
     lastMsg match {
       case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
                         lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
@@ -123,11 +122,10 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
-      view.findViewById(R.id.btn_view_profile).asInstanceOf[FancyButton].setOnClickListener(new OnClickListener {
-        override def onClick(v: View): Unit = ctx.startActivity(
-          new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", friend.name).putExtra("region-key", appCtx.selectedRegion.id)
-        )
-      })
+      find[FancyButton](R.id.btn_view_profile).setOnClickListener((v: View) ⇒
+        new Intent(ctx, classOf[ViewOtherSummonerActivity])
+          .putExtra("name-key", friend.name)
+          .putExtra("region-key", appCtx.selectedRegion.id))
 
       // set summoner rank badge
       parse(friend, RankedLeagueTier).getOrElse("") match {

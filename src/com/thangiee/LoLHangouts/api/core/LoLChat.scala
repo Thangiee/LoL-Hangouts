@@ -49,7 +49,7 @@ object LoLChat {
 
   def disconnect() = { connection.disconnect(); _statusMsg = "Using LoL Hangouts App" }
 
-  def friends: List[Friend] = for (entry <- connection.getRoster.getEntries.toList) yield new Friend(entry)
+  def friends: List[Friend] = connection.getRoster.getEntries.toList.map(entry ⇒ new Friend(entry))
 
   def getFriendByName(name: String): Option[Friend] = friends.find((f) => f.name == name)
 

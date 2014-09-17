@@ -15,7 +15,7 @@ abstract class FriendBaseCard(ctx: Context, val f: Friend, layoutId: Int) extend
   override def basis: CardView = getCardView
 
   override def onClick(p1: Card, p2: View): Unit = {
-    EventBus.getDefault.post(new Events.FriendCardClicked(f))
+    EventBus.getDefault.post(Events.FriendCardClicked(f))
   }
 
   def cardName: String = f.name
