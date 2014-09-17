@@ -26,7 +26,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with TVi
 with AdapterView.OnItemClickListener with ExtractorImplicits {
   private val drawerItems = List(
     DrawerItem("Chat", R.drawable.ic_action_dialog, isSelected = true), // default selection
-    DrawerItem("My Profile", R.drawable.ic_action_user),
+    DrawerItem("My Profile", R.drawable.ic_action_user_yellow),
     DrawerItem("Search Summoner", R.drawable.ic_action_search),
     DrawerItem("Live Game Stats", R.drawable.ic_action_monitor),
     DrawerItem("Settings", R.drawable.ic_action_settings),
