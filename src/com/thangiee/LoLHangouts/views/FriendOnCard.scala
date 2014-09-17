@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.View.OnClickListener
 import android.view.{View, ViewGroup}
-import android.widget.{ImageView, TextView}
+import android.widget.{ImageButton, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
@@ -18,16 +18,15 @@ import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToEx
 import org.jivesoftware.smack.packet.Presence
 
 class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
-  private var view: View = _
-  private lazy val nameTextView = view.findViewById(R.id.tv_friend_name).asInstanceOf[TextView]
-  private lazy val statusTextView = view.findViewById(R.id.tv_friend_status).asInstanceOf[TextView]
-  private lazy val iconImageView = view.findViewById(R.id.img_profile_icon).asInstanceOf[ImageView]
-  private lazy val lastMsgTextView = view.findViewById(R.id.tv_friend_last_msg).asInstanceOf[TextView]
-  private lazy val infoImageView = view.findViewById(R.id.img_info).asInstanceOf[ImageView]
+  private lazy val nameTextView = find[TextView](R.id.tv_friend_name)
+  private lazy val statusTextView = find[TextView](R.id.tv_friend_status)
+  private lazy val iconImageView = find[ImageView](R.id.img_profile_icon)
+  private lazy val lastMsgTextView = find[TextView](R.id.tv_friend_last_msg)
+  private lazy val infoButton = find[ImageView](R.id.img_info)
+  private lazy val notifyButton = find[ImageButton](R.id.img_bell)
   addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
-    this.view = view
     nameTextView.setText(friend.name)
 
     // load profile icon
@@ -35,14 +34,26 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
       SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView, 55)
 
-    setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoImageView))
+    notifyButton.setSelected(appCtx.notifyWhenAvailableFriends.contains(friend.name))
+    notifyButton.setOnClickListener((v: View) ⇒ notifyButtonOnClick())
+
+    setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoButton))
     refreshCard()
+  }
+
+  private def notifyButtonOnClick(): Unit = {
+    notifyButton.setSelected(!notifyButton.isSelected) // Set the button's appearance
+    if (notifyButton.isSelected) {
+      appCtx.notifyWhenAvailableFriends.add(friend.name)
+    } else {
+      appCtx.notifyWhenAvailableFriends.remove(friend.name)
+    }
   }
 
   override def getType: Int = 0
 
   override def refreshCard(): Unit = {
-    if (view != null) {
+    if (getCardView != null) {
       updateLastMessage()
       updateStatus()
     }

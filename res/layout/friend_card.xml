@@ -68,13 +68,26 @@
             android:paddingRight="8dp"/>
 
     <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:id="@+id/img_info"
             android:src="@drawable/ic_friend_info"
-            android:layout_alignTop="@+id/tv_friend_name"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"/>
+
+    <ImageButton
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:id="@+id/img_bell"
+            android:src="@drawable/ic_notify_available"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="8dp"
+            android:background="@android:color/transparent"/>
 
 </RelativeLayout>
