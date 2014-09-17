@@ -122,6 +122,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendLogOff(friend: Friend): Unit = {
     EventBus.getDefault.postSticky(new Events.RefreshFriendList)
+    appCtx.notifyWhenAvailableFriends.remove(friend.name)
   }
 
   override def onFriendStatusChange(friend: Friend): Unit = {
@@ -152,7 +153,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   private def showLogInNotification(friend: Friend) {
     val title = friend.name + " has logged in!"
     val content = "Touch to open application"
-    val builder = makeNotificationBuilder(R.drawable.ic_action_user, title, content)
+    val builder = makeNotificationBuilder(R.drawable.ic_action_user_yellow, title, content)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
@@ -166,7 +167,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   private def showAvailableNotification(friend: Friend): Unit = {
     val title = friend.name + " is available."
     val content = "Touch to open application"
-    val builder = makeNotificationBuilder(R.drawable.ic_action_user, title, content)
+    val builder = makeNotificationBuilder(R.drawable.ic_action_user_green, title, content)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
       builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
