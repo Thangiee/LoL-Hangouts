@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="1.3.3" changeDate="Sep 17,2014">
+        <changelogtext>
+            [b][font color=red]New![/font][/b] optional notification for when a friend becomes available.[br][br]
+            i.e. when a friend: [br]
+                - comes back from being away [br]
+                - finishes a game [br]
+                - exits a queue/match
+        </changelogtext>
+        <changelogtext>Bug/crash fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.3.2" changeDate="Sep 13,2014">
         <changelogtext>Add master league</changelogtext>
         <changelogtext>Optimize in app memory usage</changelogtext>
