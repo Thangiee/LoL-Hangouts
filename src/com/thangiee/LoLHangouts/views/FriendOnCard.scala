@@ -123,9 +123,9 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
       find[FancyButton](R.id.btn_view_profile).setOnClickListener((v: View) ⇒
-        new Intent(ctx, classOf[ViewOtherSummonerActivity])
+        ctx.startActivity(new Intent(ctx, classOf[ViewOtherSummonerActivity])
           .putExtra("name-key", friend.name)
-          .putExtra("region-key", appCtx.selectedRegion.id))
+          .putExtra("region-key", appCtx.selectedRegion.id)))
 
       // set summoner rank badge
       parse(friend, RankedLeagueTier).getOrElse("") match {

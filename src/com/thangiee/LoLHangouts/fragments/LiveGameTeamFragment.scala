@@ -91,10 +91,9 @@ class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
 
     // setup button to view player profile
     playerDictionary.addBaseField(R.id.btn_live_game_profile)
-      .onClick((player: LiveGamePlayerStats) ⇒ {
-      val i = new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", player.name).putExtra("region-key", region)
-      startActivity(i)
-    })
+      .onClick((player: LiveGamePlayerStats) ⇒ startActivity(
+        new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", player.name).putExtra("region-key", region))
+      )
 
     // setup the series images
     List(R.id.img_live_game_serie_1, R.id.img_live_game_serie_2, R.id.img_live_game_serie_3,
