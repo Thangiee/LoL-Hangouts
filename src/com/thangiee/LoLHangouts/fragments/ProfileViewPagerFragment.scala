@@ -13,6 +13,7 @@ import de.keyboardsurfer.android.widget.crouton.Style
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Success, Failure, Try}
 
 class ProfileViewPagerFragment extends ProgressFragment with TFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
@@ -58,18 +59,28 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
       try {
         userStats = new LoLSkill(name, region)
         runOnUiThread {
-          setContentEmpty(false) // hide error msg if currently showing
-          setContentShown(true) // hide loading bar
+          Try {
+            setContentEmpty(false) // hide error msg if currently showing
+            setContentShown(true) // hide loading bar
+          } match {
+            case Success(_) ⇒
+            case Failure(_) ⇒ userStats = null
+          }
         }
         info("[+] Got user stats successfully")
       } catch {
         case e: Exception ⇒ runOnUiThread {
           warn("[!] Failed to get user stats because: " + e.getMessage)
-          R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
-          setEmptyText(R.string.connection_error_long.r2String)
-          runOnUiThread {
-            setContentEmpty(true) // show error msg
-            setContentShown(true) // hide loading bar
+          Try {
+            R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
+            setEmptyText(R.string.connection_error_long.r2String)
+            runOnUiThread {
+              setContentEmpty(true) // show error msg
+              setContentShown(true) // hide loading bar
+            }
+          } match {
+            case Success(_) ⇒
+            case Failure(_) ⇒ userStats = null
           }
         }
       }
