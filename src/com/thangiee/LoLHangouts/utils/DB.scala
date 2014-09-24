@@ -6,6 +6,7 @@ import com.activeandroid.query.{Delete, Select}
 import com.ruenzuo.messageslistview.models.Message
 
 import scala.collection.JavaConversions._
+import scala.util.{Failure, Success, Try}
 
 /**
  * SQLite Database query handler
@@ -50,9 +51,13 @@ object DB {
    * @return
    */
   def getLastMessage(username:String, otherName: String): Option[Message] = {
-    val lastMsg = new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", username, otherName)
-                      .orderBy("date DESC").limit(1).executeSingle[Message]()
-    if (lastMsg != null) Some(lastMsg) else None
+    Try {
+      new Select().from(classOf[Message]).where("thisPerson = ? AND otherPerson = ?", username, otherName)
+        .orderBy("date DESC").limit(1).executeSingle[Message]()
+    } match {
+      case Success(msg) => if (msg != null) Some(msg) else None
+      case Failure(e)   => None
+    }
   }
 
   /**
