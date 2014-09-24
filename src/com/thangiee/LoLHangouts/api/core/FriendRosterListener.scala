@@ -6,17 +6,16 @@ import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
 import org.jivesoftware.smack.util.StringUtils
-
-import scala.collection.JavaConversions._
+import collection.JavaConversions.collectionAsScalaIterable
 
 class FriendRosterListener extends RosterListener {
-  private val typeSnapShot = scala.collection.mutable.HashMap[String, Type]()
-  private val modeSnapShot = scala.collection.mutable.HashMap[String, Mode]()
-  private val statusSnapShot = scala.collection.mutable.HashMap[String, String]()
+  private var typeSnapShot = Map[String, Type]()
+  private var modeSnapShot = Map[String, Mode]()
+  private var statusSnapShot = Map[String, String]()
   LoLChat.friends.map((f) => updateSnapShots(f))
 
   override def entriesAdded(summonerIds: util.Collection[String]): Unit = {
-    summonerIds.map((id) => updateSnapShots(LoLChat.getFriendById(id).get))
+    for (id ← summonerIds) updateSnapShots(LoLChat.getFriendById(id).get)
   }
 
   override def entriesUpdated(summonerIds: util.Collection[String]): Unit = {}
@@ -47,9 +46,9 @@ class FriendRosterListener extends RosterListener {
   }
 
   private def updateSnapShots(friend: Friend) {
-    typeSnapShot.put(friend.id, friend.chatType)
-    modeSnapShot.put(friend.id, friend.chatMode)
-    statusSnapShot.put(friend.id, friend.status)
+    typeSnapShot += friend.id → friend.chatType
+    modeSnapShot += friend.id → friend.chatMode
+    statusSnapShot += friend.id → friend.status
   }
 }
 
