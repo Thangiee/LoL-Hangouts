@@ -11,10 +11,10 @@ import com.anjlab.android.iab.v3.{TransactionDetails, BillingProcessor}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
+import com.thangiee.LoLHangouts.api.utils.MemCache
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
-import com.thangiee.LoLHangouts.utils.CacheUtils
 import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import de.greenrobot.event.EventBus
@@ -108,7 +108,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
     EventBus.getDefault.unregister(this, classOf[FinishMainActivity])
-    CacheUtils.cleanUp()
+    MemCache.cleanUp()
     stopService[LoLHangoutsService]
     appCtx.resetState()
     Future (LoLChat.disconnect())

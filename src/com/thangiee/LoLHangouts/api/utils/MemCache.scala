@@ -1,10 +1,10 @@
-package com.thangiee.LoLHangouts.utils
+package com.thangiee.LoLHangouts.api.utils
 
 import java.util.concurrent.TimeUnit
 
 import com.google.common.cache.{Cache, CacheBuilder}
 
-object CacheUtils {
+object MemCache {
   private val cache: Cache[String, Object] = CacheBuilder.newBuilder()
     .concurrencyLevel(4)
     .maximumSize(10000)
