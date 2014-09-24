@@ -148,20 +148,12 @@ class LoginActivity extends TActivity with UpButton {
 
     if (cacheName.isEmpty) {
       info("[-] cache name miss")
-      val request = Try(Http("https://teemojson.p.mashape.com/misc/summoner-name/" + appCtx.selectedRegion.id + "/" + LoLChat.summonerId().getOrElse(""))
-          .header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
-          .option(HttpOptions.connTimeout(1500)))
-
-      request match {
-        case Success(response) ⇒  // got response
-          (Json.parse(response.asString) \ "data" \ "array").asOpt[List[String]] match { // go through the json
-            case Some(names) ⇒    // found what was looking for
-              Prefs.putString("cache-" + appCtx.currentUser.toLowerCase, names.head) // cache the name for future usage
-              appCtx.currentUser = names.head
-            case None ⇒           // did not find what was looking for
-              warn("[!] Something when wrong with the response, didn't find name.")
-          }
-        case Failure(e) ⇒ error("[!] Did not get a respond!"); e.printStackTrace() // no response
+      RiotApi.getSummonerName(LoLChat.summonerId().getOrElse("0").toInt) match {
+        case Some(name) =>
+          Prefs.putString("cache-" + appCtx.currentUser.toLowerCase, name)
+          appCtx.currentUser = name
+        case None =>
+          warn("[!] Something when wrong with the response, didn't find name.")
       }
     } else {
       info("[+] cache name hit")
