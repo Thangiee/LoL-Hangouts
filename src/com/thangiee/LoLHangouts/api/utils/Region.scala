@@ -2,8 +2,7 @@ package com.thangiee.LoLHangouts.api.utils
 
 import com.thangiee.LoLHangouts.R
 
-sealed trait
-Region {
+sealed trait Region {
   val name: String
   val url: String
   val flag: Int
@@ -11,18 +10,18 @@ Region {
 }
 
 object Region {
-  def getFromId(regionId: String): Option[Region] = regionId match {
-    case BR.id ⇒ Some(BR)
-    case EUNE.id ⇒ Some(EUNE)
-    case EUW.id ⇒ Some(EUW)
-    case KR.id ⇒ Some(KR)
-    case LAN.id ⇒ Some(LAN)
-    case LAS.id ⇒ Some(LAS)
-    case NA.id ⇒ Some(NA)
-    case OCE.id ⇒ Some(OCE)
-    case RU.id ⇒ Some(RU)
-    case TR.id ⇒ Some(TR)
-    case _ ⇒ None
+  def getFromId(regionId: String): Option[Region] = regionId.toLowerCase match {
+    case BR.id    => Some(BR)
+    case EUNE.id  => Some(EUNE)
+    case EUW.id   => Some(EUW)
+    case KR.id    => Some(KR)
+    case LAN.id   => Some(LAN)
+    case LAS.id   => Some(LAS)
+    case NA.id    => Some(NA)
+    case OCE.id   => Some(OCE)
+    case RU.id    => Some(RU)
+    case TR.id    => Some(TR)
+    case _        =>  None
   }
 }
 
