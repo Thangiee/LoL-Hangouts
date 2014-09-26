@@ -9,14 +9,11 @@ import scala.util.{Failure, Success, Try}
 
 
 class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerStats with Parsing {
-  override protected val baseServerUrl: String = "http://www.lolskill.net/summoner/"
-  override val url: String = baseServerUrl + playerRegion + "/" +playerName
-
-  override val doc: Document = fetchDocument
-
-  override lazy val leagueName: String = parse("p[class=leaguename]").getOrElse("N/A")
-
-  override lazy val matchHistory: List[Match] = {
+  override protected val baseServerUrl : String         = "http://www.lolskill.net/summoner/"
+  override           val url           : String         = baseServerUrl + playerRegion + "/" + playerName
+  override           val doc           : Document       = fetchDocument
+  override lazy      val leagueName    : String         = parse("p[class=leaguename]").getOrElse("N/A")
+  override lazy      val matchHistory  : List[Match]    = {
     val matches = ListBuffer[Match]()
     try {
       val matchRows = doc.select("table[id=matchHistory]").first().select("tr[class^=match]").toList
@@ -57,16 +54,15 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
     }
     matches.toList
   }
-
-  override lazy val topChampions: List[Champion] = {
+  override lazy      val topChampions  : List[Champion] = {
     // 0  |    1   |    2     |  3    |4 |5   |  6   |7   |8     |9   |10    | 11 |12   |13    | 14
     //Rank|Champion|SkillScore|Perf.  |G |K   |      |D   |      |A   |      |CS  |     |Gold  |
     //1   |  Yasuo |  2,659   |+10.8% |14|7.9 |(+0.2)|5.6 |(-2.3)|6.6 |(-0.2)|179 |(+10)|11,944|(-137)
     try {
       val champRows = doc.select("table[id=championsTable]").first().select("tr").tail.toList
-      for (row <- champRows.map(_.text()                      // format special name that has space, period, and/or apostrophe
-        .replaceFirst("(?<=[a-zA-z])\\.? (?=[a-zA-z])", "-")  // ex. Dr. Mundo -> Dr-Mundo  and Lee Sin -> LeeSin
-        .replaceFirst("(?<=[a-zA-z])'(?=[a-zA-z])", "")      // ex. Kog'maw -> Kogmaw
+      for (row <- champRows.map(_.text() // format special name that has space, period, and/or apostrophe
+        .replaceFirst("(?<=[a-zA-z])\\.? (?=[a-zA-z])", "-") // ex. Dr. Mundo -> Dr-Mundo  and Lee Sin -> LeeSin
+        .replaceFirst("(?<=[a-zA-z])'(?=[a-zA-z])", "") // ex. Kog'maw -> Kogmaw
         .split(" ")))
       yield Champion(
         row(1), // name
@@ -92,10 +88,8 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
       case e: NullPointerException ⇒ List[Champion]() // didn't find any champion
     }
   }
-
-  override lazy val level: Int = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(1)
-
-  override lazy val soloQueue: GameModeStats = {
+  override lazy      val level         : Int            = parse("div[class=realm]").flatMap[Int](getNumber[Int]).getOrElse(1)
+  override lazy      val soloQueue     : GameModeStats  = {
     try {
       val statsTable = Try(doc.select("div[id=stats]").first().select("table[Class=skinned]").get(1).select("tr"))
       val g = getNumber[Int](statsTable.get.get(1).select("td[class=right]").first().text()).getOrElse(0) // # games
@@ -117,18 +111,12 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
         GameModeStats(0, 0, 0, 0, 0, 0)
     }
   }
-
-  override lazy val region: String = playerRegion
-
-  override lazy val leaguePoints: String = parse("p[class=leaguepoints]").getOrElse("N/A")
-
-  override lazy val name: String = playerName
-
-  override lazy val leagueTier: String = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").head)).getOrElse("N/A")
-
-  override lazy val leagueDivision: String = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").last)).getOrElse("N/A")
-
-  override lazy val normal5v5: GameModeStats = ???
+  override lazy      val region        : String         = playerRegion
+  override lazy      val leaguePoints  : String         = parse("p[class=leaguepoints]").getOrElse("N/A")
+  override lazy      val name          : String         = playerName
+  override lazy      val leagueTier    : String         = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").head)).getOrElse("N/A")
+  override lazy      val leagueDivision: String         = parse("p[class=tier]").flatMap[String](s => Try(s.split(" ").last)).getOrElse("N/A")
+  override lazy      val normal5v5     : GameModeStats  = ???
 
   override protected def fetchDocument: Document = {
     val ISE = new IllegalStateException("Service is currently unavailable. Please try again later!")
@@ -137,10 +125,12 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
     for (attempt ← 1 to 5) {
       println("[*] Attempt " + attempt + "|Connecting to: " + url)
       Try(Jsoup.connect(url).timeout(5000).get()) match {
-        case Success(respond) ⇒    // got respond from website
-          if (!respond.text().contains("currently unavailable")) {  // website respond with it been busy
+        case Success(respond) ⇒ // got respond from website
+          if (!respond.text().contains("currently unavailable")) {
+            // website respond with it been busy
             return respond
-          } else if (attempt == 5) {  // all atempts used up
+          } else if (attempt == 5) {
+            // all atempts used up
             throw ISE
           } else {
             Thread.sleep(150)

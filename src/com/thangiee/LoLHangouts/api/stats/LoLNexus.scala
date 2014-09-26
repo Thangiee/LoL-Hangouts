@@ -7,9 +7,9 @@ import scala.collection.JavaConversions._
 import scala.util.Try
 
 class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats with Parsing {
-  override protected val baseServerUrl: String = "http://www.lolnexus.com/"
-  override val url: String = baseServerUrl + playerRegion + "/search?name=" + playerName
-  override val doc: Document = fetchDocument
+  override protected val baseServerUrl: String   = "http://www.lolnexus.com/"
+  override           val url          : String   = baseServerUrl + playerRegion + "/search?name=" + playerName
+  override           val doc          : Document = fetchDocument
 
   override val blueTeam: List[LiveGamePlayerStats] = {
     for (p <- Try(doc.select("div[class=team-1]").first().select("tbody").select("tr[class]").toList).getOrElse(List())) yield new Player(p)
@@ -74,13 +74,14 @@ class LoLNexus(playerName: String, playerRegion: String) extends LiveGameStats w
 
     override val leagueDivision: String = parse("span", html.select("td[class=current-season]").first()).getOrElse("???").split(" ").tail.head
 
-    override val chosenChampName: String = {
+    override val chosenChampName: String        = {
       parse("span", html.select("td[class=champion]").first()).getOrElse("???").split(" \\(").head
     }
-    override val id: Long = ???
-    override val spellOne: SummonerSpell = ???
-    override val spellTwo: SummonerSpell = ???
-    override val teamId: Option[Int] = ???
+    override val id             : Long          = ???
+    override val spellOne       : SummonerSpell = ???
+    override val spellTwo       : SummonerSpell = ???
+    override val teamId         : Option[Int]   = ???
   }
+
 }
 

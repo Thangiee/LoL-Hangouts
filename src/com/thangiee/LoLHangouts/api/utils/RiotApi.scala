@@ -22,7 +22,7 @@ import scala.util.{Failure, Success, Try}
  * This Singleton handle calling the Riot API and caching the the results
  */
 object RiotApi extends TLogger {
-  private val gson = new Gson()
+  private val gson    = new Gson()
   private var region_ = "na"
 
   def baseUrl(): String = "https://" + region_ + ".api.pvp.net/api/lol/" + region_
@@ -30,7 +30,8 @@ object RiotApi extends TLogger {
   def get(cacheKey: String, url: String): Option[String] = {
     val cacheResult = MemCache.get[String](cacheKey)
 
-    if (cacheResult == null) {  // no result cached
+    if (cacheResult == null) {
+      // no result cached
       info("[-] cache " + cacheKey + " miss")
       val caller: ApiCaller = new ApiCaller
 
@@ -40,26 +41,26 @@ object RiotApi extends TLogger {
 
         // call the API request
         Try(caller.request(url + key)) match {
-          case Success(result) ⇒ // got response
+          case Success(result) => // got response
             MemCache.put(cacheKey, result) // cache it
             return Some(result)
 
-          case Failure(error) ⇒ error match {
+          case Failure(error) => error match {
             // no response, lets find out what why...
-            case e: JRiotException ⇒ e.getErrorCode match {
-              case ERROR_API_KEY_LIMIT ⇒ warn("[!] API key Limit: " + key.dropRight(8) + "****-****-****-************")
-              case ERROR_API_KEY_WRONG ⇒ warn("[!] API key gone bad: " + key.dropRight(8) + "****-****-****-************")
-              case ERROR_BAD_REQUEST ⇒ throw ISE("Bad Request")
-              case ERROR_INTERNAL_SERVER_ERROR ⇒ throw ISE("There is currently a problem with the server")
-              case ERROR_DATA_NOT_FOUND ⇒ return None
-              case ERROR_SERVICE_UNAVAILABLE ⇒ throw ISE("Service unavailable")
+            case e: JRiotException => e.getErrorCode match {
+              case ERROR_API_KEY_LIMIT => warn("[!] API key Limit: " + key.dropRight(8) + "****-****-****-************")
+              case ERROR_API_KEY_WRONG => warn("[!] API key gone bad: " + key.dropRight(8) + "****-****-****-************")
+              case ERROR_BAD_REQUEST => throw ISE("Bad Request")
+              case ERROR_INTERNAL_SERVER_ERROR => throw ISE("There is currently a problem with the server")
+              case ERROR_DATA_NOT_FOUND => return None
+              case ERROR_SERVICE_UNAVAILABLE => throw ISE("Service unavailable")
             }
-            case e: SocketTimeoutException ⇒ throw new SocketTimeoutException("Connection time out. Try refreshing.")
-            case e: NoSuchElementException ⇒ return None
-            case _ ⇒ throw error
+            case e: SocketTimeoutException => throw new SocketTimeoutException("Connection time out. Try refreshing.")
+            case e: NoSuchElementException => return None
+            case _ => throw error
           }
         }
-        SystemClock.sleep((10 * Keys.keys.size) / 2)  // wait a bit
+        SystemClock.sleep((10 * Keys.keys.size) / 2) // wait a bit
       }
       throw ISE("Service is currently unavailable. Please try again later!") // used up all attempts
     } else {
@@ -92,7 +93,7 @@ object RiotApi extends TLogger {
     get("normal-" + id, url) match {
       case Some(json) =>
         Some(gson.fromJson(json, classOf[PlayerStatsSummaryList]).getPlayerStatSummaries
-          .find(p ⇒ p.getPlayerStatSummaryType.equals("Unranked")).get) // find normal game stats
+          .find(p => p.getPlayerStatSummaryType.equals("Unranked")).get) // find normal game stats
       case None => None
     }
   }
@@ -142,10 +143,12 @@ object RiotApi extends TLogger {
 
   private implicit class ReadJsPath(jsPath: JsPath) {
     def asInt = jsPath.read[Int]
+
     def asString = jsPath.read[String]
   }
 
   private implicit class UrlToJson(url: String) {
     def toJson = Json.parse(url)
   }
+
 }
