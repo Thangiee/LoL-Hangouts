@@ -6,11 +6,12 @@ import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
 import org.jivesoftware.smack.util.StringUtils
-import collection.JavaConversions.collectionAsScalaIterable
+
+import scala.collection.JavaConversions.collectionAsScalaIterable
 
 class FriendRosterListener extends RosterListener {
-  private var typeSnapShot = Map[String, Type]()
-  private var modeSnapShot = Map[String, Mode]()
+  private var typeSnapShot   = Map[String, Type]()
+  private var modeSnapShot   = Map[String, Mode]()
   private var statusSnapShot = Map[String, String]()
   LoLChat.friends.map((f) => updateSnapShots(f))
 
@@ -34,13 +35,13 @@ class FriendRosterListener extends RosterListener {
 
     // notify when chat mode of a friend change
     val previousMode = modeSnapShot.getOrElse(id, Mode.away)
-    if(previousMode != Mode.chat && friend.chatMode == Mode.chat && previousType != Type.unavailable) listener.onFriendAvailable(friend) // available (green)
+    if (previousMode != Mode.chat && friend.chatMode == Mode.chat && previousType != Type.unavailable) listener.onFriendAvailable(friend) // available (green)
     else if (previousMode != Mode.away && friend.chatMode == Mode.away) listener.onFriendAway(friend) // away (red)
-    else if (previousMode != Mode.dnd && friend.chatMode == Mode.dnd ) listener.onFriendBusy(friend)  // busy (yellow)
+    else if (previousMode != Mode.dnd && friend.chatMode == Mode.dnd) listener.onFriendBusy(friend) // busy (yellow)
 
     // notify when a friend chat status change
     val previousStatus = statusSnapShot.getOrElse(id, "")
-    if(!previousStatus.equals(friend.status)) listener.onFriendStatusChange(friend)
+    if (!previousStatus.equals(friend.status)) listener.onFriendStatusChange(friend)
 
     updateSnapShots(friend)
   }

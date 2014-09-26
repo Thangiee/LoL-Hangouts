@@ -4,19 +4,19 @@ import com.thangiee.LoLHangouts.api.utils.Region
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.Message.Type
 import org.jivesoftware.smack.packet.Presence.Mode
-import org.jivesoftware.smack.packet.Presence.Type.{unavailable, available}
+import org.jivesoftware.smack.packet.Presence.Type.{available, unavailable}
 import org.jivesoftware.smack.packet.{Message, Presence}
 
 import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
 
 object LoLChat {
-  private var _connection: Option[XMPPConnection] = None
+  private var _connection        : Option[XMPPConnection]     = None
   private var _friendListListener: Option[FriendListListener] = None
-  private var _statusMsg = "Using LoL Hangouts App"
+  private var _statusMsg    = "Using LoL Hangouts App"
   private var _presenceMode = Mode.away
   private var _presenceType = unavailable
-  private var _username = ""
+  private var _username     = ""
 
   def connection: XMPPConnection = _connection.getOrElse(throw new IllegalStateException(
     "Connection is not setup! Make sure you call LoLChat.connect(...) first."))
@@ -26,7 +26,7 @@ object LoLChat {
 
   def connect(url: String): Boolean = {
     // set up configuration to connect
-    SmackConfiguration.setPacketReplyTimeout(7000)  // 7 sec timeout
+    SmackConfiguration.setPacketReplyTimeout(7000) // 7 sec timeout
     val config = new ConnectionConfiguration(url, 5223, "pvp.net")
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
@@ -75,7 +75,7 @@ object LoLChat {
 
   def appearAway() = updateStatus(Presence.Type.available, Presence.Mode.away)
 
-  def presenceType() =  _presenceType
+  def presenceType() = _presenceType
 
   def sendMessage(summoner: Friend, msg: String): Boolean = {
     val message = new Message(summoner.id, Type.chat)
