@@ -99,7 +99,6 @@ class LoginActivity extends TActivity with UpButton {
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         appCtx.currentUser = userEditText.getText.toString
         findInGameName()  // try to find in game name in case the login name is different than the in game name
-        RiotApi.setRegion(appCtx.selectedRegion.id)
         SystemClock.sleep(150)
         runOnUiThread(logInButton.setProgress(100))
         finish()
@@ -148,6 +147,7 @@ class LoginActivity extends TActivity with UpButton {
 
     if (cacheName.isEmpty) {
       info("[-] cache name miss")
+      RiotApi.setRegion(appCtx.selectedRegion.id)
       RiotApi.getSummonerName(LoLChat.summonerId().getOrElse("0").toInt) match {
         case Some(name) =>
           Prefs.putString("cache-" + appCtx.currentUser.toLowerCase, name)
