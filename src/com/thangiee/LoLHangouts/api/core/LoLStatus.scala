@@ -16,12 +16,17 @@ object LoLStatus extends Enumeration {
   val TimeStamp            = Value("timeStamp")
   val GameStatus           = Value("gameStatus")
   val RankedLeagueName     = Value("rankedLeagueName")
-  val SkinName             = Value("skinname")
-  val RankedLeagueDivision = Value("rankedLeagueDivision")
-  val RankedLeagueTier     = Value("rankedLeagueTier")
+  val SkinName             = Value("skinname")    // selected champion
+  val RankedLeagueDivision = Value("rankedLeagueDivision") // I, II, III, IV, V
+  val RankedLeagueTier     = Value("rankedLeagueTier")  // Bronze, Silver, Gold, etc...
   val RankedLeagueQueue    = Value("rankedLeagueQueue")
   val RankedWins           = Value("rankedWins")
 
+  /**
+   * Parse information from friend status.
+   * Note that some values are only available use certain circumstances.
+   * For example, SkinName is only available when the friend is in a game.
+   */
   def parse(friend: Friend, value: LoLStatus): Option[String] = {
     if (!friend.isOnline) return None
     if (friend.status == null) return None
