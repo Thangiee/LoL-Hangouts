@@ -9,7 +9,7 @@ trait ProfilePlayerStats extends PlayerStats {
   val matchHistory: List[Match]
 }
 
-sealed case class Champion(name: String, iconUrl: String = "", numOfGame: Int, avgStats: Stats, avgBetterStats: AvgBetterStats = AvgBetterStats())
+sealed case class Champion(name: String, numOfGame: Int, avgStats: Stats, avgBetterStats: AvgBetterStats = AvgBetterStats())
 
 sealed case class Match(champName: String, queueType: String, outCome: String, date: String, duration: String, avgStats: Stats, avgBetterStats: AvgBetterStats = AvgBetterStats())
 
