@@ -25,14 +25,14 @@ object RiotApi extends TLogger {
   private val gson    = new Gson()
   private var region_ = "na"
 
-  def baseUrl(): String = "https://" + region_ + ".api.pvp.net/api/lol/" + region_
+  def baseUrl(): String = s"https://$region_.api.pvp.net/api/lol/$region_"
 
   def get(cacheKey: String, url: String): Option[String] = {
     val cacheResult = MemCache.get[String](cacheKey)
 
     if (cacheResult == null) {
       // no result cached
-      info("[-] cache " + cacheKey + " miss")
+      info(s"[-] cache $cacheKey miss")
       val caller: ApiCaller = new ApiCaller
 
       for (attempt ← 0 until Keys.keys.size / 2) {
@@ -65,7 +65,7 @@ object RiotApi extends TLogger {
       throw ISE("Service is currently unavailable. Please try again later!") // used up all attempts
     } else {
       // found cache result
-      info("[+] cache " + cacheKey + " hit")
+      info(s"[+] cache $cacheKey hit")
       Some(cacheResult)
     }
   }
@@ -74,65 +74,52 @@ object RiotApi extends TLogger {
 
   def getLeagueEntries(ids: List[String]): Option[util.Map[String, util.List[League]]] = {
     val url = baseUrl() + "/v2.4/league/by-summoner/" + ids.mkString(",") + ",/entry" + "?api_key="
-    get("leagues-" + ids.mkString("-"), url) match {
-      case Some(json) => Some(gson.fromJson(json, new TypeToken[util.Map[String, util.List[League]]](){}.getType))
-      case None       => None
-    }
+    get("leagues-" + ids.mkString("-"), url).map { json =>
+      Some(gson.fromJson(json, new TypeToken[util.Map[String, util.List[League]]]() {}.getType))
+    }.getOrElse(None)
   }
 
   def getRankedStats(id: Long, season: Int): Option[RankedStats] = {
-    val url = baseUrl() + "/v1.3/stats/by-summoner/" + id + "/ranked" + "?season=SEASON" + season + "&api_key="
-    get("rank-s%d-%d".format(season, id), url) match {
-      case Some(json) => Some(gson.fromJson(json, classOf[RankedStats]))
-      case None => None
-    }
+    val url = baseUrl() + s"/v1.3/stats/by-summoner/$id/ranked?season=SEASON$season&api_key="
+    get(s"rank-s$season-$id", url).map(json => Some(gson.fromJson(json, classOf[RankedStats]))).getOrElse(None)
   }
 
   def getNormalStats(id: Long, season: Int): Option[PlayerStatsSummary] = {
-    val url = baseUrl() + "/v1.3/stats/by-summoner/" + id + "/summary" + "?season=SEASON" + season + "&api_key="
-    get("normal-" + id, url) match {
-      case Some(json) =>
-        Some(gson.fromJson(json, classOf[PlayerStatsSummaryList]).getPlayerStatSummaries
-          .find(p => p.getPlayerStatSummaryType.equals("Unranked")).get) // find normal game stats
-      case None => None
-    }
+    val url = baseUrl() + s"/v1.3/stats/by-summoner/$id/summary?season=SEASON$season&api_key="
+    get(s"normal-$id", url).map { json =>
+      Some(gson.fromJson(json, classOf[PlayerStatsSummaryList]).getPlayerStatSummaries
+        .find(p => p.getPlayerStatSummaryType.equals("Unranked")).get) // find normal game stats out of many other game types
+    }.getOrElse(None)
   }
 
   def getChampById(id: Int): Champion = {
-    val url = "https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + id + "?&api_key="
-    get("champion-" + id, url) match {
-      case Some(result) =>
-        ((JsPath \ "id").asInt and
-          (JsPath \ "key").asString and
-          (JsPath \ "name").asString and
-          (JsPath \ "title").asString
-          )(Champion.apply _).reads(result.toJson).get
-
-      case None => Champion(0, "???", "???", "???")
-    }
+    val url = s"https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/$id?&api_key="
+    get(s"champion-$id", url).map { response =>
+      ((JsPath \ "id").asInt and
+        (JsPath \ "key").asString and
+        (JsPath \ "name").asString and
+        (JsPath \ "title").asString
+        )(Champion.apply _).reads(response.toJson).get
+    }.getOrElse(Champion(0, "???", "???", "???"))
   }
 
   def getSpellById(id: Int): SummonerSpell = {
-    val url = "https://na.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/" + id + "?api_key="
-    get("summonerSpell-" + id, url) match {
-      case Some(result) =>
-        ((JsPath \ "id").asInt and
-          (JsPath \ "key").asString and
-          (JsPath \ "name").asString and
-          (JsPath \ "description").asString and
-          (JsPath \ "summonerLevel").asInt
-          )(SummonerSpell.apply _).reads(result.toJson).get
-
-      case None => SummonerSpell(0, "???", "???", "???", 0)
-    }
+    val url = s"https://na.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/$id?api_key="
+    get(s"summonerSpell-$id", url).map { response =>
+      ((JsPath \ "id").asInt and
+        (JsPath \ "key").asString and
+        (JsPath \ "name").asString and
+        (JsPath \ "description").asString and
+        (JsPath \ "summonerLevel").asInt
+        )(SummonerSpell.apply _).reads(response.toJson).get
+    }.getOrElse(SummonerSpell(0, "???", "???", "???", 0))
   }
 
   def getSummonerName(id: Int): Option[String] = {
-    val url = baseUrl() + "/v1.4/summoner/" + id + "/name?api_key="
-    get("name-" + id, url) match {
-      case Some(result) => (result.toJson \ id.toString).asOpt[String]
-      case None => None
-    }
+    val url = baseUrl() + s"/v1.4/summoner/$id/name?api_key="
+    get(s"name-$id", url).map { response =>
+      (response.toJson \ id.toString).asOpt[String]
+    }.getOrElse(None)
   }
 
   private def ISE(msg: String) = new IllegalStateException(msg)
@@ -150,5 +137,4 @@ object RiotApi extends TLogger {
   private implicit class UrlToJson(url: String) {
     def toJson = Json.parse(url)
   }
-
 }

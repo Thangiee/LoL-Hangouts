@@ -18,7 +18,7 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     val summonerName = getIntent.getStringExtra("name-key")
     val region = getIntent.getStringExtra("region-key")
 
-    val fragment = LiveGamePagerFragment.newInstance(summonerName, region)
+    val fragment = LiveGamePagerFragment(summonerName, region)
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()

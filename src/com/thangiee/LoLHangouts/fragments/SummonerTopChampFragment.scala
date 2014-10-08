@@ -11,7 +11,7 @@ import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
 
 import scala.collection.JavaConversions._
 
-class SummonerTopChampFragment extends TFragment with ExtractorImplicits {
+case class SummonerTopChampFragment() extends TFragment with ExtractorImplicits {
   private lazy val champListView = find[ListView](R.id.listView)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -69,11 +69,7 @@ class SummonerTopChampFragment extends TFragment with ExtractorImplicits {
 }
 
 object SummonerTopChampFragment {
-  def newInstance(champions: List[Champion]): SummonerTopChampFragment = {
-    val bundle = new Bundle()
-    bundle.putSerializable("champions-key", champions)
-    val frag = new SummonerTopChampFragment
-    frag.setArguments(bundle)
-    frag
+  def apply(champions: List[Champion]): SummonerTopChampFragment = {
+    SummonerTopChampFragment().args("champions-key" → champions)
   }
 }

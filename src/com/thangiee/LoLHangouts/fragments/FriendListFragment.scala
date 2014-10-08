@@ -21,7 +21,7 @@ import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FriendListFragment extends ProgressFragment with TFragment {
+case class FriendListFragment() extends ProgressFragment with TFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   private var cardArrayAdapter: CardArrayAdapter = _
   private var handler: Handler = _
@@ -87,7 +87,7 @@ class FriendListFragment extends ProgressFragment with TFragment {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, classOf[RefreshFriendList], classOf[RefreshFriendCard])
+    EventBus.getDefault.unregister(this)
     super.onDestroy()
   }
 

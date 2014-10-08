@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
 
-class BlankFragment extends TFragment {
+case class BlankFragment() extends TFragment {
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -21,18 +21,11 @@ class BlankFragment extends TFragment {
 }
 
 object BlankFragment {
-  def newInstance(messageResId: Int = 0): BlankFragment = {
-    val bundle = new Bundle()
-    bundle.putInt("msg-key", messageResId)
-    val frag = new BlankFragment
-    frag.setArguments(bundle)
-    frag
+  def apply(messageResId: Int = 0): BlankFragment = {
+    BlankFragment().args("msg-key" → messageResId)
   }
 
   def withSummonerSearch(): BlankFragment = {
-    val bundle = new Bundle()
-    bundle.putInt("msg-key", R.string.summoner_search_screen_msg)
-
     val frag = new BlankFragment with SummonerSearch {
       override val defaultSearchText: String = ""
 
@@ -41,15 +34,10 @@ object BlankFragment {
         startActivity(i)
       }
     }
-
-    frag.setArguments(bundle)
-    frag
+    frag.args("msg-key" → R.string.summoner_search_screen_msg)
   }
 
   def withLiveGameSearch(currentUser: String): BlankFragment = {
-    val bundle = new Bundle()
-    bundle.putInt("msg-key", R.string.live_game_screen_msg)
-
     val frag = new BlankFragment with SummonerSearch {
       override val defaultSearchText: String = currentUser
 
@@ -58,8 +46,6 @@ object BlankFragment {
         startActivity(i)
       }
     }
-
-    frag.setArguments(bundle)
-    frag
+    frag.args("msg-key" → R.string.live_game_screen_msg)
   }
 }

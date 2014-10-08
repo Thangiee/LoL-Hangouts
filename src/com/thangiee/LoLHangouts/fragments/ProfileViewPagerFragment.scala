@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Success, Failure, Try}
 
-class ProfileViewPagerFragment extends ProgressFragment with TFragment {
+case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
   private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
   private lazy val pager = find[ViewPager](R.id.pager)
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
@@ -94,11 +94,11 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Profile"    ⇒ SummonerProfileFragment.newInstance(userStats)
-        case "Champions"  ⇒ if (userStats.topChampions.size != 0) SummonerTopChampFragment.newInstance(userStats.topChampions)
-                            else BlankFragment.newInstance(R.string.no_champion)
-        case "History"    ⇒ if (userStats.matchHistory.size != 0) SummonerMatchesFragment.newInstance(userStats.matchHistory)
-                            else BlankFragment.newInstance(R.string.no_match_hist)
+        case "Profile"    ⇒ SummonerProfileFragment(userStats)
+        case "Champions"  ⇒ if (userStats.topChampions.size != 0) SummonerTopChampFragment(userStats.topChampions)
+                            else BlankFragment(R.string.no_champion)
+        case "History"    ⇒ if (userStats.matchHistory.size != 0) SummonerMatchesFragment(userStats.matchHistory)
+                            else BlankFragment(R.string.no_match_hist)
       }
     }
     override def getCount: Int = titles.size
@@ -106,12 +106,7 @@ class ProfileViewPagerFragment extends ProgressFragment with TFragment {
 }
 
 object ProfileViewPagerFragment {
-  def newInstance(summonerName: String, region: String): ProfileViewPagerFragment = {
-    val bundle = new Bundle()
-    bundle.putString("name-key", summonerName)
-    bundle.putString("region-key", region)
-    val frag = new ProfileViewPagerFragment
-    frag.setArguments(bundle)
-    frag
+  def apply(summonerName: String, region: String): ProfileViewPagerFragment = {
+    ProfileViewPagerFragment().args("name-key" → summonerName, "region-key" → region)
   }
 }

@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class SummonerProfileFragment extends TFragment {
+case class SummonerProfileFragment() extends TFragment {
   private lazy val pieGraph = find[PieGraph](R.id.pie_graph_win_rate)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -95,16 +95,12 @@ class SummonerProfileFragment extends TFragment {
 }
 
 object SummonerProfileFragment {
-  def newInstance(player: ProfilePlayerStats): SummonerProfileFragment = {
-    val bundle = new Bundle()
+  def apply(player: ProfilePlayerStats): SummonerProfileFragment = {
     val data = Data(
       player.name, player.region, player.kda(player.soloQueue), player.leagueDivision, player.leagueName, player.leaguePoints,
-      player.leagueTier, player.level, player.soloQueue.losses, player.soloQueue.wins
-    )
-    bundle.putSerializable("data", data)
-    val frag = new SummonerProfileFragment
-    frag.setArguments(bundle)
-    frag
+      player.leagueTier, player.level, player.soloQueue.losses, player.soloQueue.wins)
+
+    SummonerProfileFragment().args("data" → data)
   }
 
   private case class Data(name: String, region: String, kda: String, leagueDivision: String, leagueName: String, leaguePoints: String,

@@ -16,18 +16,18 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
 import com.thangiee.LoLHangouts.utils.{DB, Events, SummonerUtils}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
 
+import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.collection.JavaConversions._
 
-class ChatPaneFragment extends TFragment {
+case class ChatPaneFragment() extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
   private lazy val msgField = find[EditText](R.id.et_msg_field)
   private lazy val friendName = getArguments.getString("name-key")
@@ -68,7 +68,7 @@ class ChatPaneFragment extends TFragment {
   }
 
   override def onDestroy(): Unit = {
-    EventBus.getDefault.unregister(this, classOf[ReceivedMessage], classOf[ShowNiftyNotification])
+    EventBus.getDefault.unregister(this)
     super.onDestroy()
   }
 
@@ -178,11 +178,7 @@ class ChatPaneFragment extends TFragment {
 }
 
 object ChatPaneFragment {
-  def newInstance(friend: Friend): ChatPaneFragment = {
-    val bundle = new Bundle()
-    bundle.putString("name-key", friend.name)
-    val frag = new ChatPaneFragment
-    frag.setArguments(bundle)
-    frag
+  def apply(friendName: String): ChatPaneFragment = {
+    ChatPaneFragment().args("name-key" → friendName)
   }
 }

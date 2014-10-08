@@ -144,8 +144,8 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
     drawer.closeMenu()
     selectedDrawerItem.title match {
-      case "Chat" ⇒ fragment = new ChatScreenFragment
-      case "My Profile" ⇒ fragment = ProfileViewPagerFragment.newInstance(appCtx.currentUser, appCtx.selectedRegion.id)
+      case "Chat" ⇒ fragment = ChatScreenFragment()
+      case "My Profile" ⇒ fragment = ProfileViewPagerFragment(appCtx.currentUser, appCtx.selectedRegion.id)
       case "Search Summoner" ⇒ fragment = BlankFragment.withSummonerSearch()
       case "Live Game Stats" ⇒ fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
       case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
