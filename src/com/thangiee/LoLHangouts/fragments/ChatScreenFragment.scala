@@ -14,7 +14,7 @@ import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
 
-class ChatScreenFragment extends TFragment with PanelSlideListener {
+case class ChatScreenFragment() extends TFragment with PanelSlideListener {
   private lazy val imm = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
   lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
 
@@ -28,8 +28,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
     slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
 
-    getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, new FriendListFragment).commit()
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment.newInstance(R.string.no_current_chat)).commit()
+    getFragmentManager.beginTransaction().replace(R.id.chat_left_pane, FriendListFragment()).commit()
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, BlankFragment(R.string.no_current_chat)).commit()
 
     view
   }
@@ -48,7 +48,7 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
 
   override def onPause(): Unit = {
     super.onPause()
-    EventBus.getDefault.unregister(this, classOf[FriendCardClicked])
+    EventBus.getDefault.unregister(this)
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
   }
@@ -94,7 +94,8 @@ class ChatScreenFragment extends TFragment with PanelSlideListener {
   def onEvent(event: FriendCardClicked): Unit = {
     info("[*]onEvent: "+event.friend.name+" friend card clicked")
     appCtx.activeFriendChat = event.friend.name
-    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, ChatPaneFragment.newInstance(event.friend)).commit()
+    val fragment = ChatPaneFragment(event.friend.name)
+    getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, fragment).commit()
     getActivity.getActionBar.setTitle(appCtx.activeFriendChat) // set AB title to name of friend in chat with
     slidingLayout.closePane()
   }

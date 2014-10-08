@@ -15,7 +15,7 @@ import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._
 
-class LiveGameTeamFragment extends TFragment with ExtractorImplicits {
+case class LiveGameTeamFragment() extends TFragment with ExtractorImplicits {
   private lazy val teamListView = find[ListView](R.id.listView)
   private lazy val region = getArguments.getString("region-key")
   private lazy val teamColor = getArguments.getInt("team-key")
@@ -139,18 +139,13 @@ object LiveGameTeamFragment {
   val BLUE_TEAM = 0
   val PURPLE_TEAM = 1
 
-  def newInstance(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
+  def apply(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
     if (team == BLUE_TEAM)
       EventBus.getDefault.postSticky(new BlueTeam(players))
     else
       EventBus.getDefault.postSticky(new PurpleTeam(players))
 
-    val b = new Bundle()
-    b.putInt("team-key", team)
-    b.putString("region-key", region)
-    val frag = new LiveGameTeamFragment
-    frag.setArguments(b)
-    frag
+    LiveGameTeamFragment().args("team-key" -> team, "region-key" -> region)
   }
 
   private def getTeam(n: Int): List[LiveGamePlayerStats] = {

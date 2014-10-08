@@ -21,7 +21,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
   private  val LeagueList                            = RiotApi.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString))
 
   private def fetchData(): ((List[JsValue], List[JsValue]), List[ChampSelection], GameInfo) = {
-    val url = "https://community-league-of-legends.p.mashape.com/api/v1.0/" + playerRegion + "/summoner/retrieveInProgressSpectatorGameInfo/" + playerName.replace(" ", "")
+    val url = s"https://community-league-of-legends.p.mashape.com/api/v1.0/$playerRegion/summoner/retrieveInProgressSpectatorGameInfo/" + playerName.replace(" ", "")
 
     val request = Try(Http(url).header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
       .option(HttpOptions.connTimeout(5000))
@@ -29,13 +29,11 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
 
     request match {
       case Success(response) ⇒ // got response
-        (Json.parse(response.asString) \ "game").asOpt[JsValue] match {
-          case Some(value) ⇒ // go through the json
-            (((value \ "teamOne" \ "array").as[List[JsValue]], (value \ "teamTwo" \ "array").as[List[JsValue]]), // find the teams
-              parseSelections((value \ "playerChampionSelections" \ "array").as[List[JsValue]]), // find all champions selected
-              parseGameInfo(value))
-          case None ⇒ throw new IllegalStateException("%s is not in a game or the game has not started.".format(playerName)) // did not find game
-        }
+        (Json.parse(response.asString) \ "game").asOpt[JsValue].map { jValue =>
+          (((jValue \ "teamOne" \ "array").as[List[JsValue]], (jValue \ "teamTwo" \ "array").as[List[JsValue]]), // find the teams
+            parseSelections((jValue \ "playerChampionSelections" \ "array").as[List[JsValue]]), // find all champions selected
+            parseGameInfo(jValue))
+        }.getOrElse(throw new IllegalStateException(s"$playerName is not in a game or the game has not started.")) // did not find game
       case Failure(e) ⇒ throw e // no response
     }
   }
@@ -82,19 +80,13 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
 
     override val id                : Long          = info.summonerId
     override val previousLeagueTier: String        = ""
-    override val normal5v5         : GameModeStats = normal match {
-      case Some(stats) ⇒ GameModeStats(stats.getWins, 0, 0, 0, 0, 0)
-      case None ⇒ GameModeStats(0, 0, 0, 0, 0, 0)
-    }
+    override val normal5v5         : GameModeStats = normal.map(stats => GameModeStats(stats.getWins, 0, 0, 0, 0, 0)).getOrElse(GameModeStats(0, 0, 0, 0, 0, 0))
     override val name              : String        = info.summonerName
-    override val soloQueue         : GameModeStats = s4 match {
-      case Some(s) ⇒ val stats = s.getChampions.find(c ⇒ c.getId == 0).get.getStats
-        GameModeStats(
-          stats.getTotalSessionsWon, stats.getTotalSessionsLost,
-          stats.getTotalChampionKills, stats.getTotalDeathsPerSession,
-          stats.getTotalAssists, stats.getTotalSessionsPlayed)
-      case None ⇒ GameModeStats(0, 0, 0, 0, 0, 1)
-    }
+    override val soloQueue         : GameModeStats = s4.map(_.getChampions.find(_.getId == 0).get.getStats).map { stats =>
+      GameModeStats(
+        stats.getTotalSessionsWon, stats.getTotalSessionsLost, stats.getTotalChampionKills,
+        stats.getTotalDeathsPerSession, stats.getTotalAssists, stats.getTotalSessionsPlayed)
+    }.getOrElse(GameModeStats(0, 0, 0, 0, 0, 1))
     override val spellOne          : SummonerSpell = RiotApi.getSpellById(chosenChamp.spell1Id)
     override val spellTwo          : SummonerSpell = RiotApi.getSpellById(chosenChamp.spell2Id)
     override val chosenChampName   : String        = RiotApi.getChampById(chosenChamp.championId).name
@@ -104,17 +96,12 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
     override lazy val leaguePoints  : String         = Try(league.getEntries.head.getLeaguePoints + " LP").getOrElse("0 LP")
     override lazy val leagueTier    : String         = Try(league.getTier).getOrElse("UNRANKED")
     override lazy val leagueDivision: String         = Try(league.getEntries.head.getDivision).getOrElse("")
-    override lazy val series        : Option[Series] = {
-      val series = Try(league.getEntries.head.getMiniSeries.getProgress.map {
+    override lazy val series        : Option[Series] =
+      Try(league.getEntries.head.getMiniSeries.getProgress.map {
         case 'W' ⇒ 1
         case 'L' ⇒ -1
         case _ ⇒ 0
-      }.toList)
-
-      if (series.isSuccess)
-        Some(Series(series.get))
-      else None
-    }
+      }.toList).map(outcomes => Some(Series(outcomes))).getOrElse(None)
   }
 
   private case class GameInfo(queueType: String, mapId: Int)

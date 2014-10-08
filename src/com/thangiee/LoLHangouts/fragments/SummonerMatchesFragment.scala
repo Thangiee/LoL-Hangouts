@@ -11,7 +11,7 @@ import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
 
 import scala.collection.JavaConversions._
 
-class SummonerMatchesFragment extends TFragment with ExtractorImplicits {
+case class SummonerMatchesFragment() extends TFragment with ExtractorImplicits {
   private lazy val matchListView = find[ListView](R.id.listView)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -74,11 +74,7 @@ class SummonerMatchesFragment extends TFragment with ExtractorImplicits {
 }
 
 object SummonerMatchesFragment {
-  def newInstance(matches: List[Match]): SummonerMatchesFragment = {
-    val bundle = new Bundle()
-    bundle.putSerializable("matches-key", matches)
-    val frag = new SummonerMatchesFragment
-    frag.setArguments(bundle)
-    frag
+  def apply(matches: List[Match]): SummonerMatchesFragment = {
+    SummonerMatchesFragment().args("matches-key" → matches)
   }
 }

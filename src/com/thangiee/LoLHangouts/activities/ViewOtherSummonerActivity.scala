@@ -18,7 +18,7 @@ class ViewOtherSummonerActivity extends TActivity with UpButton with Ads {
     val summonerName = getIntent.getStringExtra("name-key")
     val region = getIntent.getStringExtra("region-key")
 
-    val fragment = ProfileViewPagerFragment.newInstance(summonerName, region)
+    val fragment = ProfileViewPagerFragment(summonerName, region)
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()

@@ -65,7 +65,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       getFragmentManager.beginTransaction().replace(R.id.screen_container, contentFrag).commit()
       appCtx.activeFriendChat = ""
     } else {
-      getFragmentManager.beginTransaction().add(R.id.screen_container, new ChatScreenFragment).commit()
+      getFragmentManager.beginTransaction().add(R.id.screen_container, ChatScreenFragment()).commit()
     }
     rateMyApp()
   }
@@ -107,7 +107,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   private def cleanUpAndDisconnect() {
     info("[*]cleaning up and disconnecting...")
-    EventBus.getDefault.unregister(this, classOf[FinishMainActivity])
+    EventBus.getDefault.unregister(this)
     MemCache.cleanUp()
     stopService[LoLHangoutsService]
     appCtx.resetState()
