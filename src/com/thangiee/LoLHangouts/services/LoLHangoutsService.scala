@@ -12,7 +12,7 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
-import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendList, ClearChatNotification, ClearLoginNotification, RefreshFriendCard}
+import com.thangiee.LoLHangouts.utils.Events.RefreshFriendList
 import com.thangiee.LoLHangouts.utils.{DB, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.jivesoftware.smack.packet.Message
@@ -50,7 +50,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     notificationManager.cancel(loginNotificationId)
     notificationManager.cancel(runningNotificationId)
     notificationManager.cancel(availableNotificationId)
-    EventBus.getDefault.unregister(this, classOf[ClearChatNotification], classOf[ClearLoginNotification])
+    EventBus.getDefault.unregister(this)
     info("[*] Service stop")
     super.onDestroy()
   }
@@ -72,7 +72,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(Events.RefreshFriendCard(friend))
+    EventBus.getDefault.post(Events.RefreshFriendList())
 
     // check notification preference
     val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
@@ -96,7 +96,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   override def onFriendAvailable(friend: Friend): Unit = {
     info("[*]Available: "+friend.name)
     if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(friend)
-    EventBus.getDefault.post(RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendList())
   }
 
   override def onFriendLogin(friend: Friend): Unit = {
@@ -112,12 +112,12 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendBusy(friend: Friend): Unit = {
     info("[*]Busy: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendList())
   }
 
   override def onFriendAway(friend: Friend): Unit = {
     info("[*]Away: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendList())
   }
 
   override def onFriendLogOff(friend: Friend): Unit = {
@@ -127,7 +127,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendStatusChange(friend: Friend): Unit = {
     info("[*]Change Status: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendCard(friend))
+    EventBus.getDefault.post(RefreshFriendList())
   }
 
   //=============================================
