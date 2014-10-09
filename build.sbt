@@ -56,7 +56,6 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.2.4",
   "com.github.amigold.fundapter2" % "library" % "1.01",
   "de.keyboardsurfer.android.widget" % "crouton" % "1.8.5",
-  "de.greenrobot" % "eventbus" % "2.2.1",
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
   "org.jsoup" % "jsoup" % "1.7.3",
   "ch.acra" % "acra" % "4.5.0",
