@@ -9,7 +9,6 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_alignParentEnd="true"
             android:id="@+id/header"
             android:background="@drawable/summoner_header"
             android:layout_margin="8dp">
@@ -81,7 +80,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/img_summ_profile_bg"
-                    android:layout_alignParentStart="true"
                     android:scaleType="fitXY"/>
 
             <com.echo.holographlibrary.PieGraph
@@ -176,7 +174,8 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:gravity="right"
-                        android:paddingRight="2dp"/>
+                        android:paddingRight="2dp"
+                        android:paddingLeft="2dp"/>
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -197,7 +196,8 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:gravity="left"
-                        android:paddingLeft="2dp"/>
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"/>
             </LinearLayout>
 
             <LinearLayout
