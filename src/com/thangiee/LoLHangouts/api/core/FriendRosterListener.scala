@@ -15,13 +15,19 @@ class FriendRosterListener extends RosterListener {
   private var statusSnapShot = Map[String, String]()
   LoLChat.friends.map((f) => updateSnapShots(f))
 
-  override def entriesAdded(summonerIds: util.Collection[String]): Unit = {
-    for (id ← summonerIds) updateSnapShots(LoLChat.getFriendById(id).get)
+  override def entriesAdded(addresses: util.Collection[String]): Unit = {
+    addresses.map(parseId).map{ id =>
+      LoLChat.friendListListener.onFriendAdded(LoLChat.getFriendById(id).get)
+    }
   }
 
-  override def entriesUpdated(summonerIds: util.Collection[String]): Unit = {}
+  override def entriesUpdated(addresses: util.Collection[String]): Unit = { }
 
-  override def entriesDeleted(summonerIds: util.Collection[String]): Unit = {}
+  override def entriesDeleted(addresses: util.Collection[String]): Unit = {
+    addresses.map(parseId).map{ id =>
+      LoLChat.friendListListener.onFriendRemove(LoLChat.getFriendById(id).get)
+    }
+  }
 
   override def presenceChanged(p: Presence): Unit = {
     val id = StringUtils.parseBareAddress(p.getFrom)
@@ -51,5 +57,7 @@ class FriendRosterListener extends RosterListener {
     modeSnapShot += friend.id → friend.chatMode
     statusSnapShot += friend.id → friend.status
   }
+
+  private def parseId(address: String): String = "[0-9]+".r.findFirstIn(address).getOrElse("0")
 }
 

@@ -115,10 +115,10 @@ object RiotApi extends TLogger {
     }.getOrElse(SummonerSpell(0, "???", "???", "???", 0))
   }
 
-  def getSummonerName(id: Int): Option[String] = {
+  def getSummonerName(id: String): Option[String] = {
     val url = baseUrl() + s"/v1.4/summoner/$id/name?api_key="
     get(s"name-$id", url).map { response =>
-      (response.toJson \ id.toString).asOpt[String]
+      (response.toJson \ id).asOpt[String]
     }.getOrElse(None)
   }
 
