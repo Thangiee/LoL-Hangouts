@@ -10,6 +10,7 @@ import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
 
 object LoLChat {
+  Roster.setDefaultSubscriptionMode(Roster.SubscriptionMode.manual)
   private var _connection        : Option[XMPPConnection]     = None
   private var _friendListListener: Option[FriendListListener] = None
   private var _statusMsg    = "Using LoL Hangouts App"
@@ -43,6 +44,7 @@ object LoLChat {
     val config = new ConnectionConfiguration(url, 5223, "pvp.net")
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
+    connection.addPacketListener(FriendRequest.Listener(), FriendRequest.Filter())
     XMPPExceptionHandler(connection.connect())
   }
 

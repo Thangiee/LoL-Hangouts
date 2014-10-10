@@ -148,7 +148,7 @@ class LoginActivity extends TActivity with UpButton {
     if (cacheName.isEmpty) {
       info("[-] cache name miss")
       RiotApi.setRegion(appCtx.selectedRegion.id)
-      RiotApi.getSummonerName(LoLChat.summonerId().getOrElse("0").toInt) match {
+      RiotApi.getSummonerName(LoLChat.summonerId().getOrElse("0")) match {
         case Some(name) =>
           Prefs.putString("cache-" + appCtx.currentUser.toLowerCase, name)
           appCtx.currentUser = name

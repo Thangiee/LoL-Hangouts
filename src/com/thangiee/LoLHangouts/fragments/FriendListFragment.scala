@@ -111,10 +111,7 @@ case class FriendListFragment() extends ProgressFragment with TFragment {
     }
   }
 
-  def onEvent(event: RefreshFriendList): Unit = {
-    info("[*]onEvent: request to refresh friend list")
-    refreshFriendList()
-  }
+  def onEvent(event: RefreshFriendList): Unit = { refreshFriendList() }
 
   def onEventMainThread(event: RefreshFriendCard): Unit = {
     info("[*]onEvent: request to refresh " + event.friend.name + "friend card")
