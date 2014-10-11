@@ -88,24 +88,24 @@
             />
 
     <com.sakout.fancybuttons.FancyButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fancy:text="Profile"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             fancy:textColor="@color/light_blue"
             fancy:borderColor="@color/light_blue"
             fancy:borderWidth="1dp"
             fancy:defaultColor="@android:color/transparent"
             fancy:focusColor="@color/light_blue"
-            fancy:radius="5dp"
+            fancy:radius="19dp"
+            fancy:iconResource="@drawable/ic_action_user_yellow"
             android:id="@+id/btn_view_profile"
             android:textSize="14sp"
-            android:layout_marginLeft="23dp"
+            android:layout_marginLeft="32dp"
             android:layout_below="@+id/imageView"
             android:layout_alignLeft="@+id/imageView"
             android:layout_alignStart="@+id/imageView"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:padding="8dp"/>
+            android:padding="4dp"/>
 
     <ImageView
             android:layout_width="match_parent"
