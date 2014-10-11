@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.activities
 
+import android.content.{Intent, Context}
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -22,5 +23,11 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+  }
+}
+
+object ViewLiveGameStatsActivity extends TIntent {
+  def apply(name: String, region: String)(implicit ctx: Context): Intent = {
+    new Intent(ctx, classOf[ViewLiveGameStatsActivity]).args("name-key" → name, "region-key" → region)
   }
 }
