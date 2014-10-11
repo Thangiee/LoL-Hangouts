@@ -6,7 +6,7 @@ import org.jivesoftware.smack.packet.Presence.Type
 
 class Friend(entry: RosterEntry) {
   val name: String = entry.getName
-  val id  : String = entry.getUser
+  val addr  : String = entry.getUser
 
   /**
    *  chat -> green circle
@@ -32,5 +32,5 @@ class Friend(entry: RosterEntry) {
    */
   def status: String = if (isOnline) presence.getStatus else ""
 
-  private def presence: Presence = LoLChat.connection.getRoster.getPresence(id)
+  private def presence: Presence = LoLChat.connection.getRoster.getPresence(addr)
 }

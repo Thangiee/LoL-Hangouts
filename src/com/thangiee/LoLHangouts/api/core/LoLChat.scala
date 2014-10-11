@@ -94,7 +94,7 @@ object LoLChat {
    * @param id the id to search for
    * @return the friend if found
    */
-  def getFriendById(id: String): Option[Friend] = friends.find((f) => f.id == id)
+  def getFriendById(id: String): Option[Friend] = friends.find((f) => f.addr == id)
 
   /**
    * @return all online friends in the user's friend list
@@ -154,7 +154,7 @@ object LoLChat {
    * @return true if the message was delivered to the friend
    */
   def sendMessage(friend: Friend, msg: String): Boolean = {
-    val message = new Message(friend.id, Type.chat)
+    val message = new Message(friend.addr, Type.chat)
     message.setBody(msg)
     XMPPExceptionHandler(connection.sendPacket(message))
   }
