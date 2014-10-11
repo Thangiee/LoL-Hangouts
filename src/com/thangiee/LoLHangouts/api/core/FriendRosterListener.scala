@@ -53,9 +53,9 @@ class FriendRosterListener extends RosterListener {
   }
 
   private def updateSnapShots(friend: Friend) {
-    typeSnapShot += friend.id → friend.chatType
-    modeSnapShot += friend.id → friend.chatMode
-    statusSnapShot += friend.id → friend.status
+    typeSnapShot += friend.addr → friend.chatType
+    modeSnapShot += friend.addr → friend.chatMode
+    statusSnapShot += friend.addr → friend.status
   }
 
   private def parseId(address: String): String = "[0-9]+".r.findFirstIn(address).getOrElse("0")
