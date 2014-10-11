@@ -1,6 +1,5 @@
 package com.thangiee.LoLHangouts.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.TextView
@@ -30,8 +29,7 @@ object BlankFragment {
       override val defaultSearchText: String = ""
 
       override def onSearchCompleted(searchedQuery: String, region: String): Unit = {
-        val i = new Intent(ctx, classOf[ViewOtherSummonerActivity]).putExtra("name-key", searchedQuery).putExtra("region-key", region)
-        startActivity(i)
+        startActivity(ViewOtherSummonerActivity(searchedQuery, region))
       }
     }
     frag.args("msg-key" → R.string.summoner_search_screen_msg)
@@ -42,8 +40,7 @@ object BlankFragment {
       override val defaultSearchText: String = currentUser
 
       override def onSearchCompleted(searchedQuery: String, region: String): Unit = {
-        val i = new Intent(ctx, classOf[ViewLiveGameStatsActivity]).putExtra("name-key", searchedQuery).putExtra("region-key", region)
-        startActivity(i)
+        startActivity(ViewLiveGameStatsActivity(searchedQuery, region))
       }
     }
     frag.args("msg-key" → R.string.live_game_screen_msg)
