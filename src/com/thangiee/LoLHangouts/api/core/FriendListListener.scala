@@ -4,9 +4,9 @@ trait FriendListListener {
 
   def onFriendRequest(address: String, summonerId: String)
 
-  def onFriendAdded(friend: Friend)
+  def onFriendAdded(id: String, name: String)
 
-  def onFriendRemove(friend: Friend)
+  def onFriendRemove(id: String, name: String)
 
   def onFriendAvailable(friend: Friend)
 
