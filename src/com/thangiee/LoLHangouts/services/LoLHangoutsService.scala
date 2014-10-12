@@ -13,10 +13,9 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
-import com.thangiee.LoLHangouts.utils.Events.RefreshFriendList
+import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils.{DB, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.Style
 import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.util.StringUtils
 import org.jivesoftware.smack.{Chat, ConnectionListener, MessageListener}
@@ -98,17 +97,18 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendRequest(address: String, summonerId: String): Unit = {
     RiotApi.getSummonerName(summonerId) match {
-      case Some(name) => LoLChat.connection.getRoster.createEntry(address, name, null)
+      case Some(name) => LoLChat.connection.getRoster.createEntry(address, name, null) // auto accept request
       case None => error("[!] Unable to find summoner name")
     }
   }
 
-  override def onFriendAdded(friend: Friend): Unit = {
-    friend.name + " has been added to your friend list".makeCrouton(Style.CONFIRM)
+  override def onFriendAdded(id: String, name: String): Unit = {
+    croutonEventBus.post(CroutonMsg(s"$name has been added to your friend list"))
   }
 
-  override def onFriendRemove(friend: Friend): Unit = {
-    friend.name + " has been removed from your friend list".makeCrouton(Style.CONFIRM)
+  override def onFriendRemove(id: String, name: String): Unit = {
+    EventBus.getDefault.post(RefreshFriendList())
+    croutonEventBus.post(CroutonMsg(s"$name has been removed from your friend list"))
   }
 
   override def onFriendAvailable(friend: Friend): Unit = {

@@ -8,7 +8,9 @@ import android.view._
 import com.astuetz.PagerSlidingTabStrip
 import com.devspark.progressfragment.ProgressFragment
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.stats.{LoLSkill, ProfilePlayerStats}
+import com.thangiee.LoLHangouts.api.utils.RiotApi
 import de.keyboardsurfer.android.widget.crouton.Style
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -41,16 +43,31 @@ case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
     menu.clear()
     inflater.inflate(R.menu.overflow, menu)
     inflater.inflate(R.menu.refresh, menu)
+    LoLChat.getFriendByName(name) match {
+      case Some(f) => // already friend, don't inflate the add friend menu icon
+      case None    =>
+        // also don't inflate if viewing your own profile or a profile from a different region
+        if (name != appCtx.currentUser && region.toLowerCase == appCtx.selectedRegion.id)
+          inflater.inflate(R.menu.add_friend, menu)
+    }
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    if (item.getItemId == R.id.menu_refresh) {
-      loadData()
-      return true
+    item.getItemId match {
+      case R.id.menu_refresh => loadData(); true
+      case R.id.menu_add_friend => addFriend(); true
+      case _ => super.onOptionsItemSelected(item)
     }
-    super.onOptionsItemSelected(item)
+  }
+
+  private def addFriend(): Unit = {
+    Future {
+      RiotApi.getSummonerId(name) match {
+        case Some(id) => LoLChat.connection.getRoster.createEntry(s"sum$id@pvp.net", name, null)
+        case None => "Failed to add friend".makeCrouton()
+      }
+    }
   }
 
   private def loadData(): Unit = {
