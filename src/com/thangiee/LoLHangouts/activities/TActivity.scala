@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.os.Bundle
+import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils.{TContext, TLogger}
 
 trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger {
@@ -19,8 +20,22 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
     outState.putString("friend-chat", appCtx.activeFriendChat)
   }
 
+  override def onResume(): Unit = {
+    croutonEventBus.registerSticky(this)
+    super.onResume()
+  }
+
+  override def onPause(): Unit = {
+    croutonEventBus.unregister(this)
+    super.onPause()
+  }
+
   override def onStop(): Unit = {
     System.gc()
     super.onStop()
+  }
+
+  def onEvent(event: CroutonMsg): Unit = {
+    event.msg.makeCrouton(event.style, event.duration)
   }
 }

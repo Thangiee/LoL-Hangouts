@@ -122,6 +122,13 @@ object RiotApi extends TLogger {
     }.getOrElse(None)
   }
 
+  def getSummonerId(name: String): Option[String] = {
+    val url = baseUrl() + s"/v1.4/summoner/by-name/$name?api_key="
+    get(s"id-$name", url).map { response =>
+      Some((response.toJson \ name.toLowerCase \ "id").toString())
+    }.getOrElse(None)
+  }
+
   private def ISE(msg: String) = new IllegalStateException(msg)
 
   case class Champion(id: Int, key: String, name: String, title: String)
