@@ -25,6 +25,7 @@ case class FriendListFragment() extends ProgressFragment with TFragment {
   private val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   private var cardArrayAdapter: CardArrayAdapter = _
   private var handler: Handler = _
+  private var lock = false
   private lazy val autoRefreshTask = new Runnable {
     override def run(): Unit = {
       info("[*] Auto refresh friend list")
@@ -100,14 +101,20 @@ case class FriendListFragment() extends ProgressFragment with TFragment {
   }
 
   private def refreshFriendList(): Unit = {
-    populateFriendCardList.onComplete(_ ⇒ runOnUiThread(cardArrayAdapter.notifyDataSetChanged()))
+    // lock use to prevent multiple calls to refresh friend list while it is already refreshing
+    if (!lock)
+      populateFriendCardList.onComplete(_ ⇒ runOnUiThread(cardArrayAdapter.notifyDataSetChanged()))
+    else
+      info("[-] Refresh friend list blocked")
   }
 
   private def populateFriendCardList: Future[Unit] = {
+    lock = true
     cards.clear()
     Future[Unit] {
       val friends = LoLChat.onlineFriends ++ LoLChat.offlineFriends
       cards.++=(friends.map(f ⇒ if (f.isOnline) new FriendOnCard(f) else new FriendOffCard(ctx, f)))
+      lock = false
     }
   }
 
