@@ -16,7 +16,8 @@ import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils.{DB, Events, TContext, TLogger}
 import de.greenrobot.event.EventBus
-import org.jivesoftware.smack.packet.Message
+import de.keyboardsurfer.android.widget.crouton.Style
+import org.jivesoftware.smack.packet.{Packet, Presence, Message}
 import org.jivesoftware.smack.util.StringUtils
 import org.jivesoftware.smack.{Chat, ConnectionListener, MessageListener}
 import org.scaloid.common._
@@ -95,20 +96,26 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //    FriendListListener Implementations
   //=============================================
 
-  override def onFriendRequest(address: String, summonerId: String): Unit = {
+  override def onFriendRequest(address: String, summonerId: String, request: Packet): Unit = {
     RiotApi.getSummonerName(summonerId) match {
-      case Some(name) => LoLChat.connection.getRoster.createEntry(address, name, null) // auto accept request
+      case Some(name) =>
+        LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend
+        // notify sender of approved friend request
+        val subscribed = new Presence(Presence.Type.subscribed)
+        subscribed.setTo(request.getFrom)
+        LoLChat.connection.sendPacket(subscribed)
       case None => error("[!] Unable to find summoner name")
     }
   }
 
   override def onFriendAdded(id: String, name: String): Unit = {
+    EventBus.getDefault.post(RefreshFriendList())
     croutonEventBus.post(CroutonMsg(s"$name has been added to your friend list"))
   }
 
   override def onFriendRemove(id: String, name: String): Unit = {
     EventBus.getDefault.post(RefreshFriendList())
-    croutonEventBus.post(CroutonMsg(s"$name has been removed from your friend list"))
+    croutonEventBus.post(CroutonMsg(s"$name has been removed from your friend list", Style.ALERT))
   }
 
   override def onFriendAvailable(friend: Friend): Unit = {
