@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.views
 
-import android.content.{Intent, Context}
+import android.content.Context
 import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.{View, ViewGroup}
@@ -8,8 +8,8 @@ import android.widget.{ImageButton, ImageView, TextView}
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
-import com.thangiee.LoLHangouts.api.core.Friend
+import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
+import com.thangiee.LoLHangouts.api.core.{LoLChat, Friend}
 import com.thangiee.LoLHangouts.api.core.LoLStatus._
 import com.thangiee.LoLHangouts.utils.{DB, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
@@ -121,10 +121,14 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
-      find[FancyButton](R.id.btn_view_profile).setOnClickListener((v: View) ⇒
-        ctx.startActivity(new Intent(ctx, classOf[ViewOtherSummonerActivity])
-          .putExtra("name-key", friend.name)
-          .putExtra("region-key", appCtx.selectedRegion.id)))
+      find[FancyButton](R.id.btn_view_profile).setOnClickListener((v: View) =>
+        ctx.startActivity(ViewOtherSummonerActivity(friend.name, appCtx.selectedRegion.id)))
+
+      find[FancyButton](R.id.btn_live_game).setOnClickListener((v: View) =>
+        ctx.startActivity(ViewLiveGameStatsActivity(friend.name, appCtx.selectedRegion.id)))
+
+      find[FancyButton](R.id.btn_remove_friends).setOnClickListener((v: View) =>
+        LoLChat.connection.getRoster.removeEntry(friend.entry))
 
       // set summoner rank badge
       parse(friend, RankedLeagueTier).getOrElse("") match {

@@ -5,7 +5,7 @@
                 xmlns:fancy="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="168dp">
+                android:layout_height="176dp">
 
     <com.makeramen.RoundedImageView
             android:layout_width="match_parent"
@@ -99,13 +99,46 @@
             fancy:iconResource="@drawable/ic_action_user_yellow"
             android:id="@+id/btn_view_profile"
             android:textSize="14sp"
-            android:layout_marginLeft="32dp"
             android:layout_below="@+id/imageView"
             android:layout_alignLeft="@+id/imageView"
             android:layout_alignStart="@+id/imageView"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:padding="4dp"/>
+
+    <com.sakout.fancybuttons.FancyButton
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            fancy:textColor="@color/light_blue"
+            fancy:borderColor="@color/light_blue"
+            fancy:borderWidth="1dp"
+            fancy:defaultColor="@android:color/transparent"
+            fancy:focusColor="@color/light_blue"
+            fancy:radius="19dp"
+            fancy:iconResource="@drawable/ic_action_monitor"
+            android:id="@+id/btn_live_game"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:layout_alignTop="@+id/btn_view_profile" android:layout_toRightOf="@+id/btn_view_profile"
+            android:layout_toEndOf="@+id/btn_view_profile" android:layout_marginLeft="16dp"/>
+
+    <com.sakout.fancybuttons.FancyButton
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            fancy:textColor="@color/light_red"
+            fancy:borderColor="@color/light_red"
+            fancy:borderWidth="1dp"
+            fancy:defaultColor="@android:color/transparent"
+            fancy:focusColor="@color/light_red"
+            fancy:radius="19dp"
+            fancy:iconResource="@drawable/ic_action_trash_red"
+            android:id="@+id/btn_remove_friends"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:layout_alignTop="@+id/btn_live_game" android:layout_alignRight="@+id/imageView"
+            android:layout_alignEnd="@+id/imageView"/>
 
     <ImageView
             android:layout_width="match_parent"
