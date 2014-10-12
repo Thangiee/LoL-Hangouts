@@ -2,6 +2,7 @@ package com.thangiee.LoLHangouts.api.core
 
 import java.util
 
+import com.thangiee.LoLHangouts.api.utils.RiotApi
 import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
@@ -17,7 +18,7 @@ class FriendRosterListener extends RosterListener {
 
   override def entriesAdded(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      LoLChat.friendListListener.onFriendAdded(LoLChat.getFriendById(id).get)
+      RiotApi.getSummonerName(id).map(name => LoLChat.friendListListener.onFriendAdded(id, name))
     }
   }
 
@@ -25,7 +26,7 @@ class FriendRosterListener extends RosterListener {
 
   override def entriesDeleted(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      LoLChat.friendListListener.onFriendRemove(LoLChat.getFriendById(id).get)
+      RiotApi.getSummonerName(id).map(name => LoLChat.friendListListener.onFriendRemove(id, name))
     }
   }
 

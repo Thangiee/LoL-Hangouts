@@ -4,7 +4,7 @@ import org.jivesoftware.smack.RosterEntry
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.Type
 
-class Friend(entry: RosterEntry) {
+class Friend(val entry: RosterEntry) {
   val name: String = entry.getName
   val addr  : String = entry.getUser
 
