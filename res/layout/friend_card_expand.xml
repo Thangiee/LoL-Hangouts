@@ -104,7 +104,7 @@
             android:layout_alignStart="@+id/imageView"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:padding="4dp"/>
+            android:padding="8dp"/>
 
     <com.sakout.fancybuttons.FancyButton
             android:layout_width="38dp"
@@ -117,11 +117,13 @@
             fancy:radius="19dp"
             fancy:iconResource="@drawable/ic_action_monitor"
             android:id="@+id/btn_live_game"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="4dp"
-            android:layout_alignTop="@+id/btn_view_profile" android:layout_toRightOf="@+id/btn_view_profile"
-            android:layout_toEndOf="@+id/btn_view_profile" android:layout_marginLeft="16dp"/>
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:layout_alignTop="@+id/btn_view_profile"
+            android:layout_toRightOf="@+id/btn_view_profile"
+            android:layout_toEndOf="@+id/btn_view_profile"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
 
     <com.sakout.fancybuttons.FancyButton
             android:layout_width="38dp"
@@ -136,7 +138,7 @@
             android:id="@+id/btn_remove_friends"
             android:textSize="14sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:layout_alignTop="@+id/btn_live_game" android:layout_alignRight="@+id/imageView"
             android:layout_alignEnd="@+id/imageView"/>
 
