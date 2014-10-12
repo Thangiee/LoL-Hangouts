@@ -11,7 +11,7 @@ object FriendRequest {
    */
   case class Listener() extends PacketListener {
     override def processPacket(p: Packet): Unit = {
-      LoLChat.friendListListener.onFriendRequest(p.getFrom, "[0-9]+".r.findFirstIn(p.getFrom).getOrElse("0"))
+      LoLChat.friendListListener.onFriendRequest(p.getFrom, "[0-9]+".r.findFirstIn(p.getFrom).getOrElse("0"), p)
     }
   }
 

@@ -1,8 +1,10 @@
 package com.thangiee.LoLHangouts.api.core
 
+import org.jivesoftware.smack.packet.Packet
+
 trait FriendListListener {
 
-  def onFriendRequest(address: String, summonerId: String)
+  def onFriendRequest(address: String, summonerId: String, request: Packet)
 
   def onFriendAdded(id: String, name: String)
 
