@@ -32,8 +32,8 @@ trait TContext {
   implicit class String2Crouton(string: String) {
     def makeCrouton(style: Style = Style.ALERT, duration: Int = Configuration.DURATION_SHORT) {
       ctx match {
-        case activity: Activity ⇒ Crouton.makeText(activity, string, style)
-                                    .setConfiguration(new Configuration.Builder().setDuration(duration).build()).show()
+        case activity: Activity ⇒ activity.runOnUiThread(Crouton.makeText(activity, string, style)
+                                    .setConfiguration(new Configuration.Builder().setDuration(duration).build()).show())
         case _ ⇒  println("[!] Cant make Crouton. Context is not instance of Activity.")
       }
     }
