@@ -105,37 +105,6 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
     listView.setOnItemClickListener(this)
   }
 
-  private def showChangeStatusMsgDialog(): Unit = {
-    val view = View.inflate(ctx, R.layout.change_status_msg_dialog, null)
-    val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
-
-    val dialog = new AlertDialog.Builder(ctx)
-      .setView(view)
-      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {
-      LoLChat.changeStatusMsg(input.getText.toString)
-      find[TextView](R.id.tv_status_msg).setText(input.getText)
-    })
-      .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
-      .create()
-
-    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
-    dialog.show()
-    List(DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE).map(button ⇒ {
-      dialog.getButton(button).setBackgroundColor(R.color.my_tran_dark_blue2.r2Color)
-      dialog.getButton(button).setTextColor(R.color.my_orange.r2Color)
-    })
-  }
-
-  private def showLogoutDialog() = {
-    new AlertDialogBuilder(R.string.dialog_logout_title, R.string.dialog_logout_message)
-      .positiveButton(android.R.string.yes, (d: DialogInterface, i: Int) ⇒ {
-      EventBus.getDefault.post(Events.FinishMainActivity())
-      ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))
-    })
-      .negativeButton(android.R.string.no, (d: DialogInterface, i: Int) ⇒ d.dismiss())
-      .show()
-  }
-
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
     val mainActivity = ctx.asInstanceOf[MainActivity]
     val drawer = mainActivity.sideDrawer
@@ -150,7 +119,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
       case "Live Game Stats" ⇒ fragment = BlankFragment.withLiveGameSearch(appCtx.currentUser)
       case "Settings" ⇒ ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings])); return
       case "Remove Ads" ⇒ mainActivity.setUpBilling(); return
-      case "Logout" ⇒ showLogoutDialog(); return
+      case "Logout" ⇒ ConfirmDialog(R.string.dialog_logout_message.r2String, logout(), "Logout").show(); return
     }
 
     //update the text color of the selected menu item in the nav drawer
@@ -172,6 +141,32 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
 
       override def onDrawerSlide(p1: Float, p2: Int): Unit = {}
     })
+  }
+
+  private def showChangeStatusMsgDialog(): Unit = {
+    val view = View.inflate(ctx, R.layout.change_status_msg_dialog, null)
+    val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
+
+    val dialog = new AlertDialog.Builder(ctx)
+      .setView(view)
+      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {
+      LoLChat.changeStatusMsg(input.getText.toString)
+      find[TextView](R.id.tv_status_msg).setText(input.getText)
+    })
+      .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
+      .create()
+
+    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
+    dialog.show()
+    List(DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE).map(button ⇒ {
+      dialog.getButton(button).setBackgroundColor(R.color.my_tran_dark_blue2.r2Color)
+      dialog.getButton(button).setTextColor(R.color.my_orange.r2Color)
+    })
+  }
+
+  private def logout() = {
+    EventBus.getDefault.post(Events.FinishMainActivity())
+    ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))
   }
 
   case class DrawerItem(title: String, icon: Int, var isSelected: Boolean = false)

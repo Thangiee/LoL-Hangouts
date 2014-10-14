@@ -127,8 +127,11 @@ class FriendOnCard(val friend: Friend)(implicit ctx: Context) extends FriendBase
       find[FancyButton](R.id.btn_live_game).setOnClickListener((v: View) =>
         ctx.startActivity(ViewLiveGameStatsActivity(friend.name, appCtx.selectedRegion.id)))
 
-      find[FancyButton](R.id.btn_remove_friends).setOnClickListener((v: View) =>
-        LoLChat.connection.getRoster.removeEntry(friend.entry))
+      find[FancyButton](R.id.btn_remove_friends).setOnClickListener((v: View) => ConfirmDialog(
+        msg = s"You are about to REMOVE\n ${friend.name}",
+        code2run = LoLChat.connection.getRoster.removeEntry(friend.entry),
+        btnTitle = "Remove"
+      ).show())
 
       // set summoner rank badge
       parse(friend, RankedLeagueTier).getOrElse("") match {
