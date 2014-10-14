@@ -11,9 +11,4 @@
             android:title="About"
             android:orderInCategory="199"
             android:showAsAction="collapseActionView"/>
-    <item
-            android:id="@+id/menu_exit"
-            android:title="exit"
-            android:orderInCategory="200"
-            android:showAsAction="collapseActionView"/>
 </menu>

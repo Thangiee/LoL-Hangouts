@@ -3,15 +3,14 @@ package com.thangiee.LoLHangouts.activities
 import java.util.concurrent.TimeUnit
 
 import android.app.{AlarmManager, PendingIntent}
-import android.content.{DialogInterface, Intent}
-import android.os.{Bundle, Handler, SystemClock}
-import android.view.{Menu, MenuItem, ViewGroup, Window}
+import android.content.Intent
+import android.os.{Bundle, SystemClock}
+import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
-import com.anjlab.android.iab.v3.{TransactionDetails, BillingProcessor}
+import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.api.utils.MemCache
 import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
@@ -24,11 +23,7 @@ import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
 import org.scaloid.common._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
-  private var doubleBackToExitPressedOnce = false
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
   var bp: BillingProcessor = _
   val SKU_REMOVE_ADS = "lolhangouts.remove.ads"
@@ -82,36 +77,9 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_exit     ⇒ cleanUpAndDisconnect(); finish()
-      case android.R.id.home  ⇒ if (!appCtx.isChatOpen) sideDrawer.toggleMenu()
-      case R.id.menu_about    ⇒ startActivity[AboutActivity]
-      case R.id.menu_changelog ⇒ showChangeLog()
-      case _ => return false
+      case android.R.id.home => if (!appCtx.isChatOpen) sideDrawer.toggleMenu(); true
+      case _ => super.onOptionsItemSelected(item)
     }
-    super.onOptionsItemSelected(item)
-  }
-
-  private def showChangeLog(): Unit = {
-    val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
-
-    val dialog = new AlertDialogBuilder()
-      .setView(changeList)
-      .setPositiveButton(android.R.string.ok, (dialog: DialogInterface) ⇒ dialog.dismiss())
-      .create()
-
-    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
-    dialog.show()
-    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.my_dark_blue.r2Color)
-    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.my_orange.r2Color)
-  }
-
-  private def cleanUpAndDisconnect() {
-    info("[*]cleaning up and disconnecting...")
-    EventBus.getDefault.unregister(this)
-    MemCache.cleanUp()
-    stopService[LoLHangoutsService]
-    appCtx.resetState()
-    Future (LoLChat.disconnect())
   }
 
   override def onBackPressed(): Unit = {
@@ -122,18 +90,11 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       return
     }
 
-    // exit the app after quickly double clicking the back button
-    if (doubleBackToExitPressedOnce) {
-      cleanUpAndDisconnect()
-      super.onBackPressed()
-      return
-    }
-
-    doubleBackToExitPressedOnce = true
-    toast(R.string.back_to_exit.r2String)
-    new Handler().postDelayed(new Runnable {
-      override def run(): Unit = doubleBackToExitPressedOnce = false
-    }, 2000)
+    // go back to home screen
+    val homeScreen = new Intent(Intent.ACTION_MAIN)
+    homeScreen.addCategory(Intent.CATEGORY_HOME)
+    homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(homeScreen)
   }
 
   private def setUpFirstTimeLaunch() {
