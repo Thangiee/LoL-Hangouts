@@ -43,12 +43,10 @@ case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
     menu.clear()
     inflater.inflate(R.menu.overflow, menu)
     inflater.inflate(R.menu.refresh, menu)
-    LoLChat.getFriendByName(name) match {
-      case Some(f) => // already friend, don't inflate the add friend menu icon
-      case None    =>
-        // also don't inflate if viewing your own profile or a profile from a different region
-        if (name != appCtx.currentUser && region.toLowerCase == appCtx.selectedRegion.id)
-          inflater.inflate(R.menu.add_friend, menu)
+    if (LoLChat.getFriendByName(name).isEmpty) {  // not in friend list
+      // don't inflate if viewing your own profile or a profile from a different region
+      if (name.toLowerCase != appCtx.currentUser.toLowerCase && region.toLowerCase == appCtx.selectedRegion.id)
+        inflater.inflate(R.menu.add_friend, menu)
     }
     super.onCreateOptionsMenu(menu, inflater)
   }
