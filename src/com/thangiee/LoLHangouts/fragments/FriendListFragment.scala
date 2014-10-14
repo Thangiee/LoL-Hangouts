@@ -110,11 +110,14 @@ case class FriendListFragment() extends ProgressFragment with TFragment {
 
   private def populateFriendCardList: Future[Unit] = {
     lock = true
-    cards.clear()
     Future[Unit] {
-      val friends = LoLChat.onlineFriends ++ LoLChat.offlineFriends
-      cards.++=(friends.map(f ⇒ if (f.isOnline) new FriendOnCard(f) else new FriendOffCard(ctx, f)))
-      lock = false
+      val (onFriends, offFriends) = (LoLChat.onlineFriends, LoLChat.offlineFriends)
+      runOnUiThread {
+        cards.clear()
+        cards.++=(onFriends.map(f => FriendOnCard(f)))
+        cards.++=(offFriends.map(f => FriendOffCard(f)))
+        lock = false
+      }
     }
   }
 
