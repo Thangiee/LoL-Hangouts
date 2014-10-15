@@ -93,10 +93,8 @@ case class ChatScreenFragment() extends TFragment with PanelSlideListener {
 
   def onEvent(event: FriendCardClicked): Unit = {
     info("[*]onEvent: "+event.friend.name+" friend card clicked")
-    appCtx.activeFriendChat = event.friend.name
     val fragment = ChatPaneFragment(event.friend.name)
     getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, fragment).commit()
-    getActivity.getActionBar.setTitle(appCtx.activeFriendChat) // set AB title to name of friend in chat with
     slidingLayout.closePane()
   }
 }

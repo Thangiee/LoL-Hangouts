@@ -61,34 +61,30 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   //    MessageListener Implementation
   //=============================================
   override def processMessage(chat: Chat, msg: Message): Unit = {
-    val friend = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
+    val from = LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get
 
     // create Message object with the received chat message
     val m = new models.Message.MessageBuilder(MESSAGE_TYPE_RECEIVED).text(msg.getBody).date(new Date())
-      .otherPerson(friend.name).thisPerson(appCtx.currentUser).isRead(true).build()
+      .otherPerson(from.name).thisPerson(appCtx.currentUser).isRead(true).build()
 
     // chat pane fragment is not open
     // or the current open chat is not with sender of the message
-    if (!appCtx.isChatOpen || appCtx.activeFriendChat != friend.name) {
+    if (!appCtx.isChatOpen || appCtx.activeFriendChat != from.name) {
       m.setRead(false) // set to false because user has not seen it
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(Events.RefreshFriendCard(friend))
+    EventBus.getDefault.post(Events.RefreshFriendCard(from))
+
+    EventBus.getDefault.post(Events.IncomingMessage(from, m))
 
     // check notification preference
     val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
 
-    if (appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) {  // open & right -> post received msg
-      EventBus.getDefault.post(Events.ReceivedMessage(friend, m))
-    } else if (!appCtx.isChatOpen && appCtx.activeFriendChat == friend.name) { // close & right -> post received msg and notification
-      EventBus.getDefault.post(Events.ReceivedMessage(friend, m))
+    // show notifications
+    if (!appCtx.isChatOpen || appCtx.activeFriendChat != from.name) {
       if (isNotify) notifyMessage(m)
-    } else if (appCtx.isChatOpen && appCtx.activeFriendChat != friend.name) {
-      EventBus.getDefault.post(Events.ShowNiftyNotification(m))     // open & wrong
-      if (isNotify) notifyMessage(m)
-    } else {
-      if (isNotify) notifyMessage(m)                              // close & wrong -> post notification
+      EventBus.getDefault.post(Events.ShowNiftyNotification(m))
     }
   }
 
