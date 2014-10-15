@@ -48,8 +48,8 @@ object RiotApi extends TLogger {
           case Failure(error) => error match {
             // no response, lets find out what why...
             case e: JRiotException => e.getErrorCode match {
-              case ERROR_API_KEY_LIMIT => warn("[!] API key Limit: " + key.dropRight(8) + "****-****-****-************")
-              case ERROR_API_KEY_WRONG => warn("[!] API key gone bad: " + key.dropRight(8) + "****-****-****-************")
+              case ERROR_API_KEY_LIMIT => warn(s"[!] API key Limit: ${key.dropRight(8)}****-****-****-************")
+              case ERROR_API_KEY_WRONG => warn(s"[!] API key gone bad: ${key.dropRight(8)}****-****-****-************")
               case ERROR_BAD_REQUEST => throw ISE("Bad Request")
               case ERROR_INTERNAL_SERVER_ERROR => throw ISE("There is currently a problem with the server")
               case ERROR_DATA_NOT_FOUND => return None
@@ -73,19 +73,19 @@ object RiotApi extends TLogger {
   def setRegion(region: String) = region_ = region.toLowerCase
 
   def getLeagueEntries(ids: List[String]): Option[util.Map[String, util.List[League]]] = {
-    val url = baseUrl() + "/v2.4/league/by-summoner/" + ids.mkString(",") + ",/entry" + "?api_key="
-    get("leagues-" + ids.mkString("-"), url).map { json =>
+    val url = s"${baseUrl()}/v2.4/league/by-summoner/${ids.mkString(",")},/entry?api_key="
+    get(s"leagues-${ids.mkString("-")}", url).map { json =>
       Some(gson.fromJson(json, new TypeToken[util.Map[String, util.List[League]]]() {}.getType))
     }.getOrElse(None)
   }
 
   def getRankedStats(id: Long, season: Int): Option[RankedStats] = {
-    val url = baseUrl() + s"/v1.3/stats/by-summoner/$id/ranked?season=SEASON$season&api_key="
+    val url = s"${baseUrl()}/v1.3/stats/by-summoner/$id/ranked?season=SEASON$season&api_key="
     get(s"rank-s$season-$id", url).map(json => Some(gson.fromJson(json, classOf[RankedStats]))).getOrElse(None)
   }
 
   def getNormalStats(id: Long, season: Int): Option[PlayerStatsSummary] = {
-    val url = baseUrl() + s"/v1.3/stats/by-summoner/$id/summary?season=SEASON$season&api_key="
+    val url = s"${baseUrl()}/v1.3/stats/by-summoner/$id/summary?season=SEASON$season&api_key="
     get(s"normal-$id", url).map { json =>
       Some(gson.fromJson(json, classOf[PlayerStatsSummaryList]).getPlayerStatSummaries
         .find(p => p.getPlayerStatSummaryType.equals("Unranked")).get) // find normal game stats out of many other game types
@@ -116,14 +116,14 @@ object RiotApi extends TLogger {
   }
 
   def getSummonerName(id: String): Option[String] = {
-    val url = baseUrl() + s"/v1.4/summoner/$id/name?api_key="
+    val url = s"${baseUrl()}/v1.4/summoner/$id/name?api_key="
     get(s"name-$id", url).map { response =>
       (response.toJson \ id).asOpt[String]
     }.getOrElse(None)
   }
 
   def getSummonerId(name: String): Option[String] = {
-    val url = baseUrl() + s"/v1.4/summoner/by-name/$name?api_key="
+    val url = s"${baseUrl()}/v1.4/summoner/by-name/$name?api_key="
     get(s"id-$name", url).map { response =>
       Some((response.toJson \ name.toLowerCase \ "id").toString())
     }.getOrElse(None)

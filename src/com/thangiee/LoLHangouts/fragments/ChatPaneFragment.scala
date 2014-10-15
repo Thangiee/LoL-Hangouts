@@ -162,7 +162,7 @@ case class ChatPaneFragment() extends TFragment {
         .error(R.drawable.ic_load_unknown).get()
 
       runOnUiThread {
-        NiftyNotificationView.build(getActivity, msg.getOtherPerson + ": " + msg.getText, Effects.thumbSlider, R.id.nifty_view, cfg)
+        NiftyNotificationView.build(getActivity, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
           .setIcon(new BitmapDrawable(getResources, senderIcon))
           // switch to the sender chat if notification is clicked
           .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson) match {
