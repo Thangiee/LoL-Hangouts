@@ -74,7 +74,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     }
 
     m.save() // save to DB
-    EventBus.getDefault.post(Events.RefreshFriendList())
+    EventBus.getDefault.post(Events.RefreshFriendCard(friend))
 
     // check notification preference
     val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
@@ -121,7 +121,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   override def onFriendAvailable(friend: Friend): Unit = {
     info("[*]Available: "+friend.name)
     if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(friend)
-    EventBus.getDefault.post(RefreshFriendList())
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendLogin(friend: Friend): Unit = {
@@ -137,12 +137,12 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendBusy(friend: Friend): Unit = {
     info("[*]Busy: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendList())
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendAway(friend: Friend): Unit = {
     info("[*]Away: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendList())
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendLogOff(friend: Friend): Unit = {
@@ -152,7 +152,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
 
   override def onFriendStatusChange(friend: Friend): Unit = {
     info("[*]Change Status: "+friend.name)
-    EventBus.getDefault.post(RefreshFriendList())
+    EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   //=============================================
