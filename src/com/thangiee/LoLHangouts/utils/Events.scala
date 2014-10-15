@@ -9,7 +9,7 @@ object Events {
   val croutonEventBus = new EventBus()
   case class CroutonMsg(msg: String, style: Style = Style.CONFIRM, duration: Int = Configuration.DURATION_LONG)
   case class RefreshFriendList()
-  case class ReceivedMessage(friend: Friend, msg: Message)
+  case class IncomingMessage(from: Friend, msg: Message)
   case class FriendCardClicked(friend: Friend)
   case class RefreshFriendCard(friend: Friend)
   case class ClearChatNotification()

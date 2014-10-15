@@ -17,7 +17,7 @@ import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
+import com.thangiee.LoLHangouts.utils.Events.{IncomingMessage, ShowNiftyNotification}
 import com.thangiee.LoLHangouts.utils.{DB, Events, SummonerUtils}
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import de.greenrobot.event.EventBus
@@ -57,13 +57,16 @@ case class ChatPaneFragment() extends TFragment {
 
   override def onStart(): Unit = {
     super.onStart()
+    appCtx.activeFriendChat = friendName
+    getActivity.getActionBar.setTitle(friendName) // set AB title to name of friend in chat with
     setMessagesRead()
-    val messageLog = DB.getMessages(appCtx.currentUser, appCtx.activeFriendChat, R.string.pref_max_msg.pref2Int(20))
+    val messageLog = DB.getMessages(appCtx.currentUser, friendName, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
   }
 
   override def onPause(): Unit = {
+    appCtx.activeFriendChat = ""
     messageAdapter.clear()
     super.onPause()
   }
@@ -74,7 +77,7 @@ case class ChatPaneFragment() extends TFragment {
   }
 
   def setMessagesRead(): Unit = {
-    DB.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setRead(true).save())
+    DB.getUnreadMessages(appCtx.currentUser, friendName).map(m ⇒ m.setRead(true).save())
   }
 
   private def sendMessage() {
@@ -127,19 +130,19 @@ case class ChatPaneFragment() extends TFragment {
       case R.id.menu_delete => ConfirmDialog(
         msg = R.string.dialog_delete_message.r2String,
         btnTitle = "Delete",
-        code2run = { DB.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear() }
+        code2run = { DB.deleteMessages(appCtx.currentUser, friendName); messageAdapter.clear() }
       ).show()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
   }
 
-  def onEventMainThread(event: ReceivedMessage): Unit = {
-    info("[*]onEvent: received message from "+event.friend.name)
-    messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
-
-    // check sound preference before playing sound
-    if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
+  def onEventMainThread(event: IncomingMessage): Unit = {
+    if (friendName == event.from.name) {  // is the incoming message for the current chat?
+      messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
+      // check sound preference before playing sound
+      if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
+    }
   }
 
   private def isSoundPreferenceOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
@@ -165,10 +168,7 @@ case class ChatPaneFragment() extends TFragment {
         NiftyNotificationView.build(getActivity, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
           .setIcon(new BitmapDrawable(getResources, senderIcon))
           // switch to the sender chat if notification is clicked
-          .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson) match {
-            case Some(f) ⇒ EventBus.getDefault.post(Events.FriendCardClicked(f))
-            case None ⇒
-          })
+          .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => EventBus.getDefault.post(Events.FriendCardClicked(f))))
           .show()
       }
     }
