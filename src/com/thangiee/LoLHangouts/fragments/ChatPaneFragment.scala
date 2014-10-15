@@ -19,6 +19,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.Events.{ReceivedMessage, ShowNiftyNotification}
 import com.thangiee.LoLHangouts.utils.{DB, Events, SummonerUtils}
+import com.thangiee.LoLHangouts.views.ConfirmDialog
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.scaloid.common.AlertDialogBuilder
@@ -123,7 +124,11 @@ case class ChatPaneFragment() extends TFragment {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_delete => confirmDeleteAllMsg()
+      case R.id.menu_delete => ConfirmDialog(
+        msg = R.string.dialog_delete_message.r2String,
+        btnTitle = "Delete",
+        code2run = { DB.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear() }
+      ).show()
       case _ => return false
     }
     super.onOptionsItemSelected(item)
@@ -138,13 +143,6 @@ case class ChatPaneFragment() extends TFragment {
   }
 
   private def isSoundPreferenceOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
-
-  private def confirmDeleteAllMsg(): Unit = {
-    new AlertDialogBuilder(R.string.dialog_delete_title.r2String, R.string.dialog_delete_message.r2String) {
-      positiveButton("Delete", {DB.deleteMessages(appCtx.currentUser, appCtx.activeFriendChat); messageAdapter.clear()})
-      negativeButton(android.R.string.cancel.r2String)
-    }.show()
-  }
 
   def onEvent(event: ShowNiftyNotification): Unit = {
     val cfg=new Configuration.Builder()
