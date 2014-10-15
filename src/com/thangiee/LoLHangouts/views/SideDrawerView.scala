@@ -133,7 +133,7 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
         // is not the same as the current one before changing fragment.
         if (newState == MenuDrawer.STATE_CLOSED && selectedDrawerItem != currentDrawerItem) {
           val transaction = ctx.asInstanceOf[Activity].getFragmentManager.beginTransaction()
-          transaction.replace(R.id.screen_container, fragment).commit()
+          transaction.replace(R.id.container, fragment).commit()
 
           currentDrawerItem = selectedDrawerItem // update current with the selected
         }

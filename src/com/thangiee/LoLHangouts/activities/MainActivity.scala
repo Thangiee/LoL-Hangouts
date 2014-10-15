@@ -33,7 +33,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   protected override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.main_screen)
+    setContentView(R.layout.layout_with_container)
     EventBus.getDefault.register(this)
 
     // make sure is connected or else go back to login screen
@@ -47,7 +47,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     startService[LoLHangoutsService]
     notificationManager.cancelAll() // clear any left over notification
 
-    sideDrawer.setContentView(R.layout.main_screen)
+    sideDrawer.setContentView(R.layout.layout_with_container)
     sideDrawer.setMenuView(new SideDrawerView())
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
     sideDrawer.setDrawerIndicatorEnabled(true)
@@ -57,10 +57,10 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
     if (savedInstanceState != null){
       val contentFrag = getFragmentManager.getFragment(savedInstanceState, "contentFrag")
-      getFragmentManager.beginTransaction().replace(R.id.screen_container, contentFrag).commit()
+      getFragmentManager.beginTransaction().replace(R.id.container, contentFrag).commit()
       appCtx.activeFriendChat = ""
     } else {
-      getFragmentManager.beginTransaction().add(R.id.screen_container, ChatScreenFragment()).commit()
+      getFragmentManager.beginTransaction().add(R.id.container, ChatScreenFragment()).commit()
     }
     rateMyApp()
   }
@@ -85,7 +85,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onBackPressed(): Unit = {
     // if in chat panel slide back to the friend list panel
     if (appCtx.isChatOpen) {
-      val chatScreenFragment = getFragmentManager.findFragmentById(R.id.screen_container).asInstanceOf[ChatScreenFragment]
+      val chatScreenFragment = getFragmentManager.findFragmentById(R.id.container).asInstanceOf[ChatScreenFragment]
       chatScreenFragment.slidingLayout.openPane()
       return
     }
