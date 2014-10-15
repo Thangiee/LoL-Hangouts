@@ -273,12 +273,10 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
   }
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
-    info("[*]onEvent: clear chat notification")
     notificationManager.cancel(msgNotificationId)  // clear notification
   }
 
   def onEvent(event: Events.ClearLoginNotification): Unit = {
-    info("[*]onEvent: clear login notification")
     notificationManager.cancel(loginNotificationId)  // clear notification
   }
 }
