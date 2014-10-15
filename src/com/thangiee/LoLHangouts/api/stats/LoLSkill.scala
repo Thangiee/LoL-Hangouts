@@ -73,7 +73,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
         Champion(
           row.td("left").a().head.text(), // champion name
           getNumber[Int](row.td().get(6).text().split(" / ").last).getOrElse(0), // # of games
-          Stats(
+          Stats(  // parsing an HTML table to get stats information
             getNumber[Double](row.td().get(7).text()).getOrElse(0), // kills
             getNumber[Double](row.td().get(8).text()).getOrElse(0), // deaths
             getNumber[Double](row.td().get(9).text()).getOrElse(0), // assists
@@ -89,7 +89,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
         )
       ).toList
     } catch {
-      case e: UnsupportedOperationException => List[Champion]() // found none
+      case e: UnsupportedOperationException => List[Champion]() // did not find any champion
     }
   }
 
@@ -98,7 +98,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
 
     // do multiple attempts to get the document(aka html stuff)
     for (attempt ← 1 to 5) {
-      println("[*] Attempt " + attempt + "|Connecting to: " + url)
+      println(s"[*] Attempt $attempt |Connecting to: $url")
       Try(Jsoup.connect(url).timeout(5000).get()) match {
         case Success(respond) ⇒ // got respond from website
           if (!respond.text().contains("currently unavailable")) {

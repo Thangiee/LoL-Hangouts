@@ -21,7 +21,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
   private  val LeagueList                            = RiotApi.getLeagueEntries(allPlayers.map(p ⇒ p.id.toString))
 
   private def fetchData(): ((List[JsValue], List[JsValue]), List[ChampSelection], GameInfo) = {
-    val url = s"https://community-league-of-legends.p.mashape.com/api/v1.0/$playerRegion/summoner/retrieveInProgressSpectatorGameInfo/" + playerName.replace(" ", "")
+    val url = s"https://community-league-of-legends.p.mashape.com/api/v1.0/$playerRegion/summoner/retrieveInProgressSpectatorGameInfo/${playerName.replace(" ", "")}"
 
     val request = Try(Http(url).header("X-Mashape-Key", "9E70HAYuX3mshyv33NLXXPGN8RoOp1xCewYjsng28cwtKwt3LX")
       .option(HttpOptions.connTimeout(5000))
