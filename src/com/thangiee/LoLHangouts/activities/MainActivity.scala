@@ -77,7 +77,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case android.R.id.home => if (!appCtx.isChatOpen) sideDrawer.toggleMenu(); true
+      case android.R.id.home => if (!appCtx.isChatOpen) { sideDrawer.toggleMenu(); true } else false
       case _ => super.onOptionsItemSelected(item)
     }
   }
