@@ -1,13 +1,16 @@
 package com.thangiee.LoLHangouts.fragments
 
-import android.app.Activity
-import android.os.{Bundle, Handler}
+import android.app.{Notification, Activity}
+import android.media.MediaPlayer
+import android.os.{Build, Bundle, Handler}
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.ImageView
 import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
+import com.ruenzuo.messageslistview.models
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
+import com.thangiee.LoLHangouts.utils.DB
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, RefreshFriendList}
 import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import de.greenrobot.event.EventBus
@@ -125,10 +128,15 @@ case class FriendListFragment() extends ProgressFragment with TFragment {
 
   def onEventMainThread(event: RefreshFriendCard): Unit = {
     info("[*]onEvent: request to refresh " + event.friend.name + "friend card")
-    findCardByName(event.friend.name) match {
-      case Some(card) => info("[+]Found card"); card.refreshCard()
-      case None => warn("[-]No card found")
+    // also block RefreshFriendCard event when friend list is currently refreshing
+    if (!lock) {
+      findCardByName(event.friend.name) match {
+        case Some(card) => info("[+]Found card"); card.refreshCard()
+        case None => warn("[-]No card found")
+      }
+      cardArrayAdapter.notifyDataSetChanged()
+    } else {
+      info("[-] Refresh friend's card blocked")
     }
-    cardArrayAdapter.notifyDataSetChanged()
   }
 }
