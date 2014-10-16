@@ -3,16 +3,16 @@ package com.thangiee.LoLHangouts.activities
 import android.content.DialogInterface
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.{View, Gravity, MenuItem, Window}
+import android.view.{Gravity, MenuItem, View, Window}
 import android.widget.RelativeLayout
-import com.gitonway.lee.niftynotification.lib.{Effects, NiftyNotificationView, Configuration}
+import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.utils.MemCache
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
-import com.thangiee.LoLHangouts.utils.{Events, SummonerUtils, TContext, TLogger}
+import com.thangiee.LoLHangouts.utils.{SummonerUtils, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.scaloid.common._
 
@@ -110,7 +110,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
           NiftyNotificationView.build(this, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
             .setIcon(new BitmapDrawable(getResources, senderIcon))
             // switch to the sender chat if notification is clicked
-            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => EventBus.getDefault.post(Events.FriendCardClicked(f))))
+            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => ctx.startActivity(QuickChatActivity(f.name))))
             .show()
         }
       }

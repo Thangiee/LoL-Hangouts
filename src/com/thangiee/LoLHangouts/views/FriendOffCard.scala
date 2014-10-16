@@ -9,7 +9,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.Friend
 import com.thangiee.LoLHangouts.utils.DB
 
-case class FriendOffCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(ctx, friend, R.layout.friend_off_card) {
+case class FriendOffCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_off_card) {
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     view.findViewById(R.id.tv_friend_name).asInstanceOf[TextView].setText(friend.name)

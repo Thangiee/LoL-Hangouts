@@ -16,7 +16,7 @@ import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListene
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence.Mode
 
-case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(ctx, friend, R.layout.friend_card) {
+case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
   private lazy val nameTextView = find[TextView](R.id.tv_friend_name)
   private lazy val statusTextView = find[TextView](R.id.tv_friend_status)
   private lazy val iconImageView = find[ImageView](R.id.img_profile_icon)

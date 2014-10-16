@@ -22,6 +22,7 @@ import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class ChatPaneFragment() extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
@@ -33,7 +34,6 @@ case class ChatPaneFragment() extends TFragment {
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     setHasOptionsMenu(true)
-    EventBus.getDefault.register(this)
     view = inflater.inflate(R.layout.chat_pane, container, false)
 
     sendButton.setOnClickListener((v: View) ⇒ sendMessage())
@@ -54,7 +54,10 @@ case class ChatPaneFragment() extends TFragment {
     super.onStart()
     appCtx.activeFriendChat = friendName
     getActivity.getActionBar.setTitle(friendName) // set AB title to name of friend in chat with
+
+    EventBus.getDefault.register(this)
     setMessagesRead()
+
     val messageLog = DB.getMessages(appCtx.currentUser, friendName, R.string.pref_max_msg.pref2Int(20))
     messageAdapter.addAll(messageLog) // add all messages
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
@@ -63,12 +66,8 @@ case class ChatPaneFragment() extends TFragment {
   override def onPause(): Unit = {
     appCtx.activeFriendChat = ""
     messageAdapter.clear()
-    super.onPause()
-  }
-
-  override def onDestroy(): Unit = {
     EventBus.getDefault.unregister(this)
-    super.onDestroy()
+    super.onPause()
   }
 
   def setMessagesRead(): Unit = {
