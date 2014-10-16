@@ -2,30 +2,25 @@ package com.thangiee.LoLHangouts.fragments
 
 import java.util.Date
 
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.{Bundle, SystemClock}
 import android.view._
 import android.widget.EditText
 import com.dd.CircularProgressButton
-import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.pixplicity.easyprefs.library.Prefs
 import com.ruenzuo.messageslistview.adapters.MessageAdapter
 import com.ruenzuo.messageslistview.models
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
-import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.Events.{IncomingMessage, ShowNiftyNotification}
-import com.thangiee.LoLHangouts.utils.{DB, Events, SummonerUtils}
+import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
+import com.thangiee.LoLHangouts.utils.DB
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
-import org.scaloid.common.AlertDialogBuilder
 
 import scala.collection.JavaConversions._
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 case class ChatPaneFragment() extends TFragment {
@@ -146,33 +141,6 @@ case class ChatPaneFragment() extends TFragment {
   }
 
   private def isSoundPreferenceOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
-
-  def onEvent(event: ShowNiftyNotification): Unit = {
-    val cfg=new Configuration.Builder()
-      .setAnimDuration(700)
-      .setDispalyDuration(3000)
-      .setBackgroundColor("#f0022426")
-      .setTextColor("#ffbb33")
-      .setTextPadding(4)                      //dp
-      .setViewHeight(42)                      //dp
-      .setTextLines(2)                        //You had better use setViewHeight and setTextLines together
-      .setTextGravity(Gravity.CENTER_VERTICAL)
-      .build()
-
-    Future {
-      val msg = event.msg
-      val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id))
-        .error(R.drawable.ic_load_unknown).get()
-
-      runOnUiThread {
-        NiftyNotificationView.build(getActivity, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
-          .setIcon(new BitmapDrawable(getResources, senderIcon))
-          // switch to the sender chat if notification is clicked
-          .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => EventBus.getDefault.post(Events.FriendCardClicked(f))))
-          .show()
-      }
-    }
-  }
 }
 
 object ChatPaneFragment {

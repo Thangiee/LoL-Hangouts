@@ -84,7 +84,7 @@ class LoLHangoutsService extends SService with TContext with MessageListener wit
     // show notifications
     if (!appCtx.isChatOpen || appCtx.activeFriendChat != from.name) {
       if (isNotify) notifyMessage(m)
-      EventBus.getDefault.post(Events.ShowNiftyNotification(m))
+      niftyNotificationEventBus.post(Events.ShowNiftyNotification(m))
     }
   }
 
