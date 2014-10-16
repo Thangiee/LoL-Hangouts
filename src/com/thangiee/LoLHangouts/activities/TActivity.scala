@@ -1,14 +1,18 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.{MenuItem, Window}
+import android.view.{View, Gravity, MenuItem, Window}
+import android.widget.RelativeLayout
+import com.gitonway.lee.niftynotification.lib.{Effects, NiftyNotificationView, Configuration}
+import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.utils.MemCache
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
-import com.thangiee.LoLHangouts.utils.{TContext, TLogger}
+import com.thangiee.LoLHangouts.utils.{Events, SummonerUtils, TContext, TLogger}
 import de.greenrobot.event.EventBus
 import org.scaloid.common._
 
@@ -33,11 +37,13 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
 
   override def onResume(): Unit = {
     croutonEventBus.registerSticky(this)
+    niftyNotificationEventBus.register(this)
     super.onResume()
   }
 
   override def onPause(): Unit = {
     croutonEventBus.unregister(this)
+    niftyNotificationEventBus.unregister(this)
     super.onPause()
   }
 
@@ -48,7 +54,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_about    ⇒ startActivity[AboutActivity]
+      case R.id.menu_about ⇒ startActivity[AboutActivity]
       case R.id.menu_changelog ⇒ showChangeLog()
       case _ => return false
     }
@@ -61,7 +67,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
     MemCache.cleanUp()
     stopService[LoLHangoutsService]
     appCtx.resetState()
-    Future (LoLChat.disconnect())
+    Future(LoLChat.disconnect())
   }
 
   private def showChangeLog(): Unit = {
@@ -80,5 +86,34 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
 
   def onEvent(event: CroutonMsg): Unit = {
     event.msg.makeCrouton(event.style, event.duration)
+  }
+
+  def onEvent(event: ShowNiftyNotification): Unit = {
+    if (find[RelativeLayout](R.id.nifty_view) != null) {
+      val cfg = new Configuration.Builder()
+        .setAnimDuration(700)
+        .setDispalyDuration(3000)
+        .setBackgroundColor("#f0022426")
+        .setTextColor("#ffbb33")
+        .setTextPadding(4) //dp
+        .setViewHeight(42) //dp
+        .setTextLines(2) //You had better use setViewHeight and setTextLines together
+        .setTextGravity(Gravity.CENTER_VERTICAL)
+        .build()
+
+      Future {
+        val msg = event.msg
+        val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id))
+          .error(R.drawable.ic_load_unknown).get()
+
+        runOnUiThread {
+          NiftyNotificationView.build(this, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
+            .setIcon(new BitmapDrawable(getResources, senderIcon))
+            // switch to the sender chat if notification is clicked
+            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => EventBus.getDefault.post(Events.FriendCardClicked(f))))
+            .show()
+        }
+      }
+    }
   }
 }
