@@ -9,7 +9,7 @@ import it.gmariotti.cardslib.library.internal.Card
 import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener
 import it.gmariotti.cardslib.library.view.CardView
 
-abstract class FriendBaseCard(ctx: Context, val f: Friend, layoutId: Int) extends Card(ctx, layoutId) with TView[CardView] with OnCardClickListener {
+abstract class FriendBaseCard(val f: Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId) with TView[CardView] with OnCardClickListener {
   setOnClickListener(this)
 
   override def basis: CardView = getCardView
