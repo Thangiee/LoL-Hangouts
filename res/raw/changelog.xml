@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="1.4.1" changeDate="Oct 16,2014">
+        <changelogtext>
+            [b][font color=red]New![/font][/b] Clicking on the message notification that
+            pops up in app (not the notification bar) will take you to the chat with that friend.
+        </changelogtext>
+        <changelogtext>fix a bug that caused frequent random crashes</changelogtext>
+        <changelogtext>Many other small improvements</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.4.0" changeDate="Oct 12,2014">
         <changelogtext>
             [b][font color=red]New![/font][/b] You can now add and remove friends
