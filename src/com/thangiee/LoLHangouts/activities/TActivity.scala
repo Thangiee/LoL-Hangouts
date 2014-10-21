@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
+import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.{Gravity, MenuItem, View, Window}
@@ -12,14 +13,15 @@ import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.utils.MemCache
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
-import com.thangiee.LoLHangouts.utils.{SummonerUtils, TContext, TLogger}
+import com.thangiee.LoLHangouts.utils.{Logger, SummonerUtils}
+import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
-import org.scaloid.common._
+import org.scaloid.common.AlertDialogBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger {
+trait TActivity extends org.scaloid.common.SActivity with Logger {
 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -85,7 +87,7 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
   }
 
   def onEvent(event: CroutonMsg): Unit = {
-    event.msg.makeCrouton(event.style, event.duration)
+    event.msg.makeCrouton(event.style, event.duration).show()
   }
 
   def onEvent(event: ShowNiftyNotification): Unit = {
@@ -115,5 +117,19 @@ trait TActivity extends org.scaloid.common.SActivity with TContext with TLogger 
         }
       }
     }
+  }
+
+  def getScreenWidth: Int = {
+    val display = getWindowManager.getDefaultDisplay
+    val size = new Point()
+    display.getSize(size)
+    size.x
+  }
+
+  def getScreenHeight: Int = {
+    val display = getWindowManager.getDefaultDisplay
+    val size = new Point()
+    display.getSize(size)
+    size.y
   }
 }

@@ -10,7 +10,7 @@ import com.jriot.main.JRiotException._
 import com.jriot.main.{ApiCaller, JRiotException}
 import com.jriot.objects._
 import com.thangiee.LoLHangouts.api.Keys
-import com.thangiee.LoLHangouts.utils.TLogger
+import com.thangiee.LoLHangouts.utils.Logger
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
@@ -21,7 +21,7 @@ import scala.util.{Failure, Success, Try}
 /**
  * This Singleton handle calling the Riot API and caching the the results
  */
-object RiotApi extends TLogger {
+object RiotApi extends AnyRef with Logger {
   private val gson    = new Gson()
   private var region_ = "na"
 

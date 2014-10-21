@@ -8,8 +8,9 @@ import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.Card
 import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener
 import it.gmariotti.cardslib.library.view.CardView
+import org.scaloid.common.TraitView
 
-abstract class FriendBaseCard(val f: Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId) with TView[CardView] with OnCardClickListener {
+abstract class FriendBaseCard(val f: Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId) with TraitView[CardView] with OnCardClickListener {
   setOnClickListener(this)
 
   override def basis: CardView = getCardView

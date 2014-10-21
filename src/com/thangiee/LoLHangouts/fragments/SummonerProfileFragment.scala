@@ -11,6 +11,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.ProfilePlayerStats
 import com.thangiee.LoLHangouts.fragments.SummonerProfileFragment.Data
 import com.thangiee.LoLHangouts.utils.SummonerUtils
+import com.thangiee.common._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -3,19 +3,17 @@ package com.thangiee.LoLHangouts.activities
 import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
 import android.view.{MenuItem, Window}
-import android.widget.{ImageView, CheckBox, CompoundButton, EditText}
+import android.widget.{CheckBox, CompoundButton, EditText, ImageView}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.api.utils.{RiotApi, Region}
-import play.api.libs.json.Json
-import org.scaloid.common._
+import com.thangiee.LoLHangouts.api.utils.{Region, RiotApi}
+import com.thangiee.common._
+import org.scaloid.common.AlertDialogBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Try, Failure, Success}
-import scalaj.http.{HttpOptions, Http}
 
 class LoginActivity extends TActivity with UpButton {
   lazy val userEditText = find[EditText](R.id.et_username)
@@ -87,7 +85,7 @@ class LoginActivity extends TActivity with UpButton {
 
       // try to connect to server and warn the user if fail to connect
       if (!LoLChat.connect(appCtx.selectedRegion.url)) {
-        runOnUiThread("Fail to connect to server".makeCrouton())
+        "Fail to connect to server".croutonWarn()
         runOnUiThread(logInButton.setProgress(-1))
         //        logInButton.enable
         return
@@ -104,7 +102,7 @@ class LoginActivity extends TActivity with UpButton {
         finish()
         startActivity[MainActivity]
       } else {
-        runOnUiThread("Invalid username/password".makeCrouton())
+        "Invalid username/password".croutonWarn()
         runOnUiThread(logInButton.setProgress(-1))
       }
       //      logInButton.enable

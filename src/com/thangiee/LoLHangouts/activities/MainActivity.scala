@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
 import android.os.{Bundle, SystemClock}
+import android.util.TypedValue
 import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
@@ -17,14 +18,14 @@ import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
 import com.thangiee.LoLHangouts.views.SideDrawerView
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.{Configuration, Style}
+import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
 import net.simonvt.menudrawer.MenuDrawer.Type
 import net.simonvt.menudrawer.{MenuDrawer, Position}
-import org.scaloid.common._
+import com.thangiee.common._
 
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
-  lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT)
+  lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW)
   var bp: BillingProcessor = _
   val SKU_REMOVE_ADS = "lolhangouts.remove.ads"
 
@@ -50,7 +51,14 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     sideDrawer.setContentView(R.layout.layout_with_container)
     sideDrawer.setMenuView(new SideDrawerView())
     sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
+    sideDrawer.setupUpIndicator(this)
     sideDrawer.setDrawerIndicatorEnabled(true)
+
+    val tv = new TypedValue()
+    if (getTheme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+      val actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources.getDisplayMetrics)
+      sideDrawer.setMenuSize(getScreenWidth - actionBarHeight.toInt)
+    }
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
@@ -129,14 +137,14 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onProductPurchased(productId: String, details: TransactionDetails): Unit = {
     info("[+] Product purchased: " + productId)
     Prefs.putBoolean("is_ads_enable", false)
-    R.string.ads_disabled.r2String.makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+    R.string.ads_disabled.r2String.croutonConfirm(Configuration.DURATION_LONG)
     bp.release()
   }
 
   override def onBillingInitialized(): Unit = {
     info("[*] Billing Initialized")
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
-      R.string.ads_already_disabled.r2String.makeCrouton(Style.INFO)
+      R.string.ads_already_disabled.r2String.croutonInfo()
       bp.release()
     } else {
       Prefs.putBoolean("is_ads_enable", true)
@@ -148,7 +156,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     info("[+] Purchase history restored: " + bp.listOwnedProducts())
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
       Prefs.putBoolean("is_ads_enable", false)
-      R.string.ads_disabled.r2String.makeCrouton(Style.CONFIRM, Configuration.DURATION_LONG)
+      R.string.ads_disabled.r2String.croutonConfirm(Configuration.DURATION_LONG)
       bp.release()
     }
   }

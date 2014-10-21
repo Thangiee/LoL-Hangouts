@@ -14,17 +14,18 @@ import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity}
 import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.utils.Events._
-import com.thangiee.LoLHangouts.utils.{DB, Events, TContext, TLogger}
+import com.thangiee.LoLHangouts.utils.{Logger, DB, Events}
+import com.thangiee.common.{_}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Style
-import org.jivesoftware.smack.packet.{Packet, Presence, Message}
+import org.jivesoftware.smack.packet.{Message, Packet, Presence}
 import org.jivesoftware.smack.util.StringUtils
 import org.jivesoftware.smack.{Chat, ConnectionListener, MessageListener}
-import org.scaloid.common._
+import org.scaloid.common.SService
 
 import scala.util.Random
 
-class LoLHangoutsService extends SService with TContext with MessageListener with FriendListListener with ConnectionListener with TLogger {
+class LoLHangoutsService extends SService with MessageListener with FriendListListener with ConnectionListener with Logger {
   private val msgNotificationId = Random.nextInt()
   private val loginNotificationId = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()

@@ -5,7 +5,7 @@ import android.content.{Context, DialogInterface}
 import android.view.{View, Window}
 import android.widget.TextView
 import com.thangiee.LoLHangouts.R
-import org.scaloid.common._
+import com.thangiee.common._
 
 case class ConfirmDialog(implicit ctx: Context) extends AlertDialog(ctx) {
   override def show(): Unit = {

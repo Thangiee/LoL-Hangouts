@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:circle="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.makeramen.RoundedImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:id="@+id/img_my_profile_icon"
+            android:src="@drawable/league_icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"
+            circle:corner_radius="32dip"
+            circle:border_color="@color/my_orange"
+            circle:border_width="1dp"/>
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+            android:id="@+id/seg_presence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/divider"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:gravity="center_vertical" android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp">
+
+        <RadioButton
+                android:id="@+id/btn_online"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online"
+                style="@style/RadioButton"
+                android:checked="true"
+                android:paddingTop="8dp" android:paddingBottom="8dp" android:paddingRight="24dp"
+                android:paddingLeft="24dp"/>
+
+        <RadioButton
+                android:id="@+id/btn_away"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Away"
+                style="@style/RadioButton"
+                android:paddingTop="8dp" android:paddingBottom="8dp" android:paddingRight="24dp"
+                android:paddingLeft="24dp"/>
+
+        <RadioButton
+                android:id="@+id/btn_offline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Offline"
+                style="@style/RadioButton"
+                android:checked="false"
+                android:paddingTop="8dp" android:paddingBottom="8dp" android:paddingRight="24dp"
+                android:paddingLeft="24dp"/>
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Status:"
+            android:id="@+id/tv_status_msg"
+            android:textColor="@color/light_blue"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/divider"
+            android:layout_alignLeft="@+id/img_my_profile_icon"
+            android:layout_alignStart="@+id/img_my_profile_icon"/>
+
+    <View
+            android:id="@+id/divider"
+            android:background="@color/my_orange"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:clickable="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="175.5dp"/>
+
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/img_edit_status"
+            android:src="@drawable/ic_action_edit"
+            android:scaleType="fitCenter"
+            android:padding="16dp"
+            android:layout_alignTop="@+id/tv_status_msg" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+    <View
+            android:id="@+id/divider2"
+            android:background="@color/my_orange"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:clickable="false"
+            android:layout_below="@+id/seg_presence" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
+</RelativeLayout>

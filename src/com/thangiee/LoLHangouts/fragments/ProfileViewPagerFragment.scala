@@ -11,7 +11,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.stats.{LoLSkill, ProfilePlayerStats}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
-import de.keyboardsurfer.android.widget.crouton.Style
+import com.thangiee.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -63,7 +63,7 @@ case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
     Future {
       RiotApi.getSummonerId(name) match {
         case Some(id) => LoLChat.connection.getRoster.createEntry(s"sum$id@pvp.net", name, null)
-        case None => "Failed to add friend".makeCrouton()
+        case None => "Failed to add friend".croutonWarn()
       }
     }
   }
@@ -87,7 +87,7 @@ case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
         case e: Exception ⇒ runOnUiThread {
           warn("[!] Failed to get user stats because: " + e.getMessage)
           Try {
-            R.string.connection_error_short.r2String.makeCrouton(Style.ALERT)
+            R.string.connection_error_short.r2String.croutonWarn()
             setEmptyText(R.string.connection_error_long.r2String)
             runOnUiThread {
               setContentEmpty(true) // show error msg

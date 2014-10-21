@@ -1,20 +1,17 @@
 package com.thangiee.LoLHangouts.fragments
 
-import android.app.{Notification, Activity}
-import android.media.MediaPlayer
-import android.os.{Build, Bundle, Handler}
+import android.app.Activity
+import android.os.{Bundle, Handler}
 import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.ImageView
 import com.devspark.progressfragment.ProgressFragment
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
-import com.ruenzuo.messageslistview.models
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.DB
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, RefreshFriendList}
 import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.{Crouton, Configuration, Style}
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
 import org.jivesoftware.smack.packet.Presence

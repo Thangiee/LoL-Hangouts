@@ -15,6 +15,7 @@ import com.thangiee.LoLHangouts.utils.{DB, SummonerUtils}
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence.Mode
+import com.thangiee.common._
 
 case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
   private lazy val nameTextView = find[TextView](R.id.tv_friend_name)
