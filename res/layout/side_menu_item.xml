@@ -4,15 +4,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/bg_side_menu_item"
+            android:layout_centerVertical="true"/>
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:text="Large Text"
             android:textSize="16sp"
             android:id="@+id/tv_menu_item_name"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/img_drawer_item" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"/>
 
     <ImageView
             android:layout_width="wrap_content"
@@ -22,6 +31,5 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            android:layout_marginLeft="16dp"/>
 </RelativeLayout>

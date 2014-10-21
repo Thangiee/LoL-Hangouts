@@ -28,6 +28,7 @@
     <color name="my_light_blue">#007160</color>
     <color name="my_dark_blue">#013639</color>
     <color name="my_dark_blue2">#022426</color>
+    <color name="my_tran_light_blue">#a0007160</color>
     <color name="my_tran_dark_blue2">#f0022426</color>
 
     <!--default colors-->
