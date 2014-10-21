@@ -23,3 +23,5 @@ trait ExtractorImplicits {
     }
   }
 }
+
+object ExtractorImplicits extends ExtractorImplicits

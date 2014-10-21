@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.utils
 
 import org.scaloid.common.TagUtil
 
-trait TLogger extends TagUtil {
+trait Logger extends TagUtil {
   val LOGLEVEL = 0
   val DEBUG = LOGLEVEL == 0
 
@@ -16,3 +16,5 @@ trait TLogger extends TagUtil {
 
   def wtf(s: String) = org.scaloid.common.wtf(s)
 }
+
+object Logger extends Logger

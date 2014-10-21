@@ -9,9 +9,10 @@ import android.os.{SystemClock, Bundle}
 import android.preference.{PreferenceActivity, PreferenceManager}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
-import org.scaloid.common._
+import com.thangiee.LoLHangouts.utils._
+import org.scaloid.common.SContext
 
-class PreferenceSettings extends PreferenceActivity with SContext with UpButton with OnSharedPreferenceChangeListener {
+class PreferenceSettings extends PreferenceActivity with SContext with UpButton with Logger with OnSharedPreferenceChangeListener {
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

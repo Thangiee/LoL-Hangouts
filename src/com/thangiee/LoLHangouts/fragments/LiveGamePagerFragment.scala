@@ -12,7 +12,10 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.{LiveGameStats, RiotLiveStats}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
-import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
+import com.thangiee.LoLHangouts.utils.Implicits
+import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton}
+import com.thangiee.common.{runOnUiThread, appCtx}
+import Implicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -86,7 +89,7 @@ case class LiveGamePagerFragment() extends ProgressFragment with TFragment with 
       } catch {
         case e: Exception ⇒ runOnUiThread {
           warn("[!] Failed to get user stats because: " + e.getMessage)
-          e.getMessage.makeCrouton(Style.ALERT, Configuration.DURATION_INFINITE)
+          e.getMessage.croutonWarn(Configuration.DURATION_INFINITE)
           setEmptyText("")
           runOnUiThread {
             setContentEmpty(true) // show error msg

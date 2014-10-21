@@ -7,11 +7,12 @@ import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.Match
-import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits}
+import com.thangiee.LoLHangouts.utils.ChampIconAssetFile
+import com.thangiee.common._
 
 import scala.collection.JavaConversions._
 
-case class SummonerMatchesFragment() extends TFragment with ExtractorImplicits {
+case class SummonerMatchesFragment() extends TFragment {
   private lazy val matchListView = find[ListView](R.id.listView)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {

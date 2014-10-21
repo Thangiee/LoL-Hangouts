@@ -14,15 +14,15 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.ruenzuo.messageslistview.widget.MessagesListView
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
 import com.thangiee.LoLHangouts.utils.DB
+import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
 import com.thangiee.LoLHangouts.views.ConfirmDialog
+import com.thangiee.common._
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 
 import scala.collection.JavaConversions._
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 case class ChatPaneFragment() extends TFragment {
   private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
@@ -77,7 +77,7 @@ case class ChatPaneFragment() extends TFragment {
   private def sendMessage() {
     // don't send if blank
     if (msgField.getText.length() == 0) {
-      Crouton.makeText(getActivity, "Can't send empty message", Style.INFO).show()
+      "Can't send empty message".croutonInfo()
       return
     }
 
@@ -105,10 +105,8 @@ case class ChatPaneFragment() extends TFragment {
       } else {  // message failed to send
         runOnUiThread(sendButton.setProgress(-1)) // error state
         SystemClock.sleep(150)
-        runOnUiThread {
-          Crouton.makeText(getActivity, "Fail to send message", Style.ALERT).show() // alert the user
-          sendButton.setProgress(0) // normal state
-        }
+        "Fail to send message".croutonWarn()
+        runOnUiThread(sendButton.setProgress(0)) // normal state
 //        runOnUiThread(sendButton.setEnabled(true))
       }
     }

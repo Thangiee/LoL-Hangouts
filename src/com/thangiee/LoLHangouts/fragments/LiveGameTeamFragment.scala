@@ -10,12 +10,13 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.ViewOtherSummonerActivity
 import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
-import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, ExtractorImplicits, SummonerSpellAssetFile}
+import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, SummonerSpellAssetFile}
 import de.greenrobot.event.EventBus
+import com.thangiee.common._
 
 import scala.collection.JavaConversions._
 
-case class LiveGameTeamFragment() extends TFragment with ExtractorImplicits {
+case class LiveGameTeamFragment() extends TFragment {
   private lazy val teamListView = find[ListView](R.id.listView)
   private lazy val region = getArguments.getString("region-key")
   private lazy val teamColor = getArguments.getInt("team-key")

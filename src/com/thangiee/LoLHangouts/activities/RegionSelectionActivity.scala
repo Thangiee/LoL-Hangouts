@@ -9,12 +9,12 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.utils._
-import com.thangiee.LoLHangouts.utils.ExtractorImplicits
-import org.scaloid.common.SContext
+import com.thangiee.LoLHangouts.utils.InterfaceImplicits
+import InterfaceImplicits._
 
 import scala.collection.JavaConverters._
 
-class RegionSelectionActivity extends ListActivity with SContext with TActivity with ExtractorImplicits {
+class RegionSelectionActivity extends ListActivity with TActivity {
   val regions = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {

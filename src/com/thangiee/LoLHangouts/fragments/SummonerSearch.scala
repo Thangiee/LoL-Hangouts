@@ -6,6 +6,7 @@ import android.view._
 import android.widget._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
+import com.thangiee.common._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -54,7 +55,7 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with 
 
     respond onComplete {
       case Success(s) ⇒ onSearchCompleted(query, region)
-      case Failure(e) ⇒ ("Could not find " + query + " in " + region).makeCrouton()
+      case Failure(e) ⇒ ("Could not find " + query + " in " + region).croutonWarn()
     }
     false
   }

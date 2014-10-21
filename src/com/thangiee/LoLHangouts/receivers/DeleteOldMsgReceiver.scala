@@ -1,11 +1,10 @@
 package com.thangiee.LoLHangouts.receivers
 
 import android.content.{BroadcastReceiver, Context, Intent}
-import com.thangiee.LoLHangouts.utils.DB
-import org.scaloid.common._
+import com.thangiee.LoLHangouts.utils.{Logger, DB}
 import com.github.nscala_time.time.Imports._
 
-class DeleteOldMsgReceiver extends BroadcastReceiver with TagUtil {
+class DeleteOldMsgReceiver extends BroadcastReceiver with Logger {
   override def onReceive(context: Context, intent: Intent): Unit = {
     val millis = intent.getLongExtra(DeleteOldMsgReceiver.TIME_KEY, 0)
     val then = DateTime.now - millis

@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.api.stats
 
+import com.thangiee.LoLHangouts.utils.Logger
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -7,7 +8,7 @@ import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
 
 
-class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerStats with Parsing {
+class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerStats with Parsing with Logger {
   val baseServerUrl: String = "http://www.lolskill.net/summoner/"
   val url          : String = baseServerUrl + playerRegion + "/" + playerName
   val summaryPage  : Document = fetchDocument(url + "/summary")
@@ -98,7 +99,7 @@ class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerSt
 
     // do multiple attempts to get the document(aka html stuff)
     for (attempt ← 1 to 5) {
-      println(s"[*] Attempt $attempt |Connecting to: $url")
+      info(s"[*] Attempt $attempt |Connecting to: $url")
       Try(Jsoup.connect(url).timeout(5000).get()) match {
         case Success(respond) ⇒ // got respond from website
           if (!respond.text().contains("currently unavailable")) {

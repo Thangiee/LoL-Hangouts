@@ -11,6 +11,7 @@ import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
 import com.thangiee.LoLHangouts.utils.{DB, Events}
 import de.greenrobot.event.EventBus
+import com.thangiee.common._
 
 import scala.collection.JavaConversions._
 
