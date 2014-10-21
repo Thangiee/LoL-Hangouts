@@ -89,13 +89,19 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
   private def setupListView() {
     val menuDictionary = new BindDictionary[DrawerItem]()
 
-    // drawer menu item title
+    // drawer menu item title and color
     menuDictionary.addStringField(R.id.tv_menu_item_name, (item: DrawerItem) ⇒ item.title)
       .conditionalTextColor((item: DrawerItem) ⇒ item.isSelected, R.color.my_orange.r2Color, R.color.white.r2Color)
 
     // drawer menu item icon
     menuDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
       override def loadImage(item: DrawerItem, imageView: ImageView, position: Int): Unit = imageView.setImageResource(item.icon)
+    })
+
+    // drawer menu item background color
+    menuDictionary.addStaticImageField(R.id.bg_side_menu_item, new StaticImageLoader[DrawerItem] {
+      override def loadImage(item: DrawerItem, imageView: ImageView, i: Int): Unit =
+        imageView.setBackgroundColor(if (item.isSelected) R.color.my_tran_light_blue.r2Color else android.R.color.transparent.r2Color)
     })
 
     adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, menuDictionary)
@@ -122,7 +128,8 @@ with AdapterView.OnItemClickListener with ExtractorImplicits {
       case "Logout" ⇒ ConfirmDialog(R.string.dialog_logout_message.r2String, logout(), "Logout").show(); return
     }
 
-    //update the text color of the selected menu item in the nav drawer
+    // update selected drawer item by setting isSelected to true
+    // which in setupListView() will use to set the appropriate colors
     currentDrawerItem.isSelected = false
     selectedDrawerItem.isSelected = true
     adapter.updateData(drawerItems)
