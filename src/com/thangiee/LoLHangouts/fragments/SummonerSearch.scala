@@ -6,7 +6,7 @@ import android.view._
 import android.widget._
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -9,9 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
-import com.thangiee.LoLHangouts.utils.{DB, Events}
+import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
-import com.thangiee.common._
 
 import scala.collection.JavaConversions._
 

@@ -12,10 +12,8 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.{LiveGameStats, RiotLiveStats}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
-import com.thangiee.LoLHangouts.utils.Implicits
+import com.thangiee.LoLHangouts.utils._
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton}
-import com.thangiee.common.{runOnUiThread, appCtx}
-import Implicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

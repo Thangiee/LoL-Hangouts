@@ -5,6 +5,7 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.TextView
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
+import com.thangiee.LoLHangouts.utils._
 
 case class BlankFragment() extends TFragment {
 

@@ -11,7 +11,7 @@ import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.stats.{LoLSkill, ProfilePlayerStats}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

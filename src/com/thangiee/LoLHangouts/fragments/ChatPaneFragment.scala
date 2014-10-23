@@ -17,7 +17,7 @@ import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.utils.DB
 import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
 import com.thangiee.LoLHangouts.views.ConfirmDialog
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 
 import scala.collection.JavaConversions._

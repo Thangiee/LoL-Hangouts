@@ -8,7 +8,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.stats.Champion
 import com.thangiee.LoLHangouts.utils.ChampIconAssetFile
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 
 import scala.collection.JavaConversions._
 

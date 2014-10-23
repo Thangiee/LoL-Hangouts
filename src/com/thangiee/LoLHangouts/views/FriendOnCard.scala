@@ -9,21 +9,20 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
-import com.thangiee.LoLHangouts.api.core.{LoLChat, Friend}
 import com.thangiee.LoLHangouts.api.core.LoLStatus._
-import com.thangiee.LoLHangouts.utils.{DB, SummonerUtils}
+import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
+import com.thangiee.LoLHangouts.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 import org.jivesoftware.smack.packet.Presence.Mode
-import com.thangiee.common._
 
 case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
-  private lazy val nameTextView = find[TextView](R.id.tv_friend_name)
-  private lazy val statusTextView = find[TextView](R.id.tv_friend_status)
-  private lazy val iconImageView = find[ImageView](R.id.img_profile_icon)
+  private lazy val nameTextView    = find[TextView](R.id.tv_friend_name)
+  private lazy val statusTextView  = find[TextView](R.id.tv_friend_status)
+  private lazy val iconImageView   = find[ImageView](R.id.img_profile_icon)
   private lazy val lastMsgTextView = find[TextView](R.id.tv_friend_last_msg)
-  private lazy val infoButton = find[ImageView](R.id.img_info)
-  private lazy val notifyButton = find[ImageButton](R.id.img_bell)
+  private lazy val infoButton      = find[ImageView](R.id.img_info)
+  private lazy val notifyButton    = find[ImageButton](R.id.img_bell)
   addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
@@ -63,10 +62,10 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
   private def updateLastMessage() {
     // set last message
     DB.getLastMessage(appCtx.currentUser, friend.name) match {
-      case Some(msg) => lastMsgTextView.setText((if(msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
-                        lastMsgTextView.setTypeface(null, if(!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
-                        lastMsgTextView.setTextColor(ctx.getResources.getColor(if(!msg.isRead) R.color.friend_card_last_msg_unread else  R.color.friend_card_last_msg)) // different color for read/unread
-      case None      => lastMsgTextView.setText("")
+      case Some(msg) => lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+        lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
+        lastMsgTextView.setTextColor(ctx.getResources.getColor(if (!msg.isRead) R.color.friend_card_last_msg_unread else R.color.friend_card_last_msg)) // different color for read/unread
+      case None => lastMsgTextView.setText("")
     }
   }
 
@@ -136,14 +135,14 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
 
       // set summoner rank badge
       parse(friend, RankedLeagueTier).getOrElse("") match {
-        case "BRONZE"       ⇒ badgeImageView.setImageResource(R.drawable.badge_bronze)
-        case "SILVER"       ⇒ badgeImageView.setImageResource(R.drawable.badge_silver)
-        case "GOLD"         ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)
-        case "PLATINUM"     ⇒ badgeImageView.setImageResource(R.drawable.badge_platinum)
-        case "DIAMOND"      ⇒  badgeImageView.setImageResource(R.drawable.badge_diamond)
-        case "MASTER"       ⇒ badgeImageView.setImageResource(R.drawable.badge_master)
-        case "CHALLENGER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
-        case _              ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
+        case "BRONZE"     => badgeImageView.setImageResource(R.drawable.badge_bronze)
+        case "SILVER"     => badgeImageView.setImageResource(R.drawable.badge_silver)
+        case "GOLD"       => badgeImageView.setImageResource(R.drawable.badge_gold)
+        case "PLATINUM"   => badgeImageView.setImageResource(R.drawable.badge_platinum)
+        case "DIAMOND"    => badgeImageView.setImageResource(R.drawable.badge_diamond)
+        case "MASTER"     => badgeImageView.setImageResource(R.drawable.badge_master)
+        case "CHALLENGER" => badgeImageView.setImageResource(R.drawable.badge_challenger)
+        case _            => badgeImageView.setImageResource(R.drawable.badge_unranked)
       }
 
       setOnExpandAnimatorStartListener(new OnExpandAnimatorStartListener {
@@ -155,4 +154,5 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
       })
     }
   }
+
 }

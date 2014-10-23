@@ -12,7 +12,7 @@ import com.thangiee.LoLHangouts.api.stats.LiveGamePlayerStats
 import com.thangiee.LoLHangouts.fragments.LiveGameTeamFragment.{BLUE_TEAM, PURPLE_TEAM}
 import com.thangiee.LoLHangouts.utils.{ChampIconAssetFile, SummonerSpellAssetFile}
 import de.greenrobot.event.EventBus
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 
 import scala.collection.JavaConversions._
 
