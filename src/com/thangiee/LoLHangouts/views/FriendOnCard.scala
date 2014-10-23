@@ -35,7 +35,7 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
 
     notifyButton.setVisibility(if (friend.chatMode == Mode.chat) View.INVISIBLE else View.VISIBLE)
     notifyButton.setSelected(appCtx.FriendsToNotifyOnAvailable.contains(friend.name))
-    notifyButton.setOnClickListener((v: View) ⇒ notifyButtonOnClick())
+    notifyButton.onClick(notifyButtonOnClick())
 
     setViewToClickToExpand(ViewToClickToExpand.builder().highlightView(true).setupView(infoButton))
     refreshCard()
@@ -62,10 +62,12 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
   private def updateLastMessage() {
     // set last message
     DB.getLastMessage(appCtx.currentUser, friend.name) match {
-      case Some(msg) => lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+      case Some(msg) =>
+        lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
         lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
         lastMsgTextView.setTextColor(ctx.getResources.getColor(if (!msg.isRead) R.color.friend_card_last_msg_unread else R.color.friend_card_last_msg)) // different color for read/unread
-      case None => lastMsgTextView.setText("")
+      case None =>
+        lastMsgTextView.setText("")
     }
   }
 
@@ -121,13 +123,13 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
       leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
       winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
 
-      find[FancyButton](R.id.btn_view_profile).setOnClickListener((v: View) =>
-        ctx.startActivity(ViewOtherSummonerActivity(friend.name, appCtx.selectedRegion.id)))
+      find[FancyButton](R.id.btn_view_profile)
+        .onClick(ctx.startActivity(ViewOtherSummonerActivity(friend.name, appCtx.selectedRegion.id)))
 
-      find[FancyButton](R.id.btn_live_game).setOnClickListener((v: View) =>
-        ctx.startActivity(ViewLiveGameStatsActivity(friend.name, appCtx.selectedRegion.id)))
+      find[FancyButton](R.id.btn_live_game)
+        .onClick(ctx.startActivity(ViewLiveGameStatsActivity(friend.name, appCtx.selectedRegion.id)))
 
-      find[FancyButton](R.id.btn_remove_friends).setOnClickListener((v: View) => ConfirmDialog(
+      find[FancyButton](R.id.btn_remove_friends).onClick(ConfirmDialog(
         msg = s"You are about to REMOVE\n ${friend.name}",
         code2run = LoLChat.connection.getRoster.removeEntry(friend.entry),
         btnTitle = "Remove"

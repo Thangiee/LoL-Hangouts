@@ -27,7 +27,7 @@ import net.simonvt.menudrawer.{MenuDrawer, Position}
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
   lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW)
   var bp: BillingProcessor = _
-  val SKU_REMOVE_ADS = "lolhangouts.remove.ads"
+  val SKU_REMOVE_ADS       = "lolhangouts.remove.ads"
 
   override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
   override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/3100022376"
@@ -63,7 +63,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
 
-    if (savedInstanceState != null){
+    if (savedInstanceState != null) {
       val contentFrag = getFragmentManager.getFragment(savedInstanceState, "contentFrag")
       getFragmentManager.beginTransaction().replace(R.id.container, contentFrag).commit()
       appCtx.activeFriendChat = ""
@@ -86,7 +86,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case android.R.id.home => if (!appCtx.isChatOpen) { sideDrawer.toggleMenu(); true } else false
-      case _ => super.onOptionsItemSelected(item)
+      case _                 => super.onOptionsItemSelected(item)
     }
   }
 

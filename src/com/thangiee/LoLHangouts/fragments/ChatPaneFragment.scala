@@ -25,10 +25,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 case class ChatPaneFragment() extends TFragment {
-  private lazy val sendButton = find[CircularProgressButton](R.id.btn_send_msg)
-  private lazy val msgField = find[EditText](R.id.et_msg_field)
-  private lazy val friendName = getArguments.getString("name-key")
-  private lazy val messageAdapter = new MessageAdapter(ctx, 0)
+  private lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
+  private lazy val msgField        = find[EditText](R.id.et_msg_field)
+  private lazy val friendName      = getArguments.getString("name-key")
+  private lazy val messageAdapter  = new MessageAdapter(ctx, 0)
   private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -36,7 +36,7 @@ case class ChatPaneFragment() extends TFragment {
     setHasOptionsMenu(true)
     view = inflater.inflate(R.layout.chat_pane, container, false)
 
-    sendButton.setOnClickListener((v: View) ⇒ sendMessage())
+    sendButton.onClick(sendMessage())
     sendButton.setIndeterminateProgressMode(true)
     msgField.setHint("send to " + friendName)
 
@@ -130,8 +130,10 @@ case class ChatPaneFragment() extends TFragment {
   }
 
   def onEventMainThread(event: IncomingMessage): Unit = {
-    if (friendName == event.from.name) {  // is the incoming message for the current chat?
-      messageAdapter.add(event.msg) // add received message to adapter to show the message on the chat
+    // is the incoming message for the current chat?
+    if (friendName == event.from.name) {
+      // add received message to adapter to show the message on the chat
+      messageAdapter.add(event.msg)
       // check sound preference before playing sound
       if (isSoundPreferenceOn) MediaPlayer.create(getActivity, R.raw.alert_pm_receive).start()
     }

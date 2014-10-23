@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.activities
 import android.content.DialogInterface
 import android.os.{Bundle, SystemClock}
 import android.view.{MenuItem, Window}
-import android.widget.{CheckBox, CompoundButton, EditText, ImageView}
+import android.widget.{CompoundButton, CheckBox, EditText, ImageView}
 import com.dd.CircularProgressButton
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
@@ -16,11 +16,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class LoginActivity extends TActivity with UpButton {
-  lazy val userEditText = find[EditText](R.id.et_username)
-  lazy val passwordEditText = find[EditText](R.id.et_password)
-  lazy val logInButton = find[CircularProgressButton](R.id.btn_login).onClick(login())
-  lazy val saveUserCheckBox = find[CheckBox](R.id.cb_save_user)
-  lazy val savePassCheckBox = find[CheckBox](R.id.cb_save_pass)
+  lazy val userEditText         = find[EditText](R.id.et_username)
+  lazy val passwordEditText     = find[EditText](R.id.et_password)
+  lazy val logInButton          = find[CircularProgressButton](R.id.btn_login).onClick(login())
+  lazy val saveUserCheckBox     = find[CheckBox](R.id.cb_save_user)
+  lazy val savePassCheckBox     = find[CheckBox](R.id.cb_save_pass)
   lazy val offlineLoginCheckBox = find[CheckBox](R.id.cb_offline_login)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -32,9 +32,9 @@ class LoginActivity extends TActivity with UpButton {
     userEditText.setText(Prefs.getString("user", ""))
     passwordEditText.setText(Prefs.getString("pass", ""))
 
-    saveUserCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) saveUser() else clearUser())
-    savePassCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) savePass() else clearPass())
-    offlineLoginCheckBox.setOnCheckedChangeListener((cb: CompoundButton, isChecked: Boolean) ⇒ offlineLogin(if (isChecked) true else false))
+    saveUserCheckBox.onCheckedChanged((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) saveUser() else clearUser())
+    savePassCheckBox.onCheckedChanged((cb: CompoundButton, isChecked: Boolean) ⇒ if (isChecked) savePass() else clearPass())
+    offlineLoginCheckBox.onCheckedChanged((cb: CompoundButton, isChecked: Boolean) ⇒ offlineLogin(if (isChecked) true else false))
 
     // check the checkbox if those fields are not empty
     if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
@@ -45,7 +45,7 @@ class LoginActivity extends TActivity with UpButton {
   override def onResume(): Unit = {
     super.onResume()
     Region.getFromId(Prefs.getString("region-key", "")) match {  // check if a region was previously selected
-      case Some(region) ⇒
+      case Some(region) =>
         appCtx.selectedRegion = region
         setTitle(region.name)
         getActionBar.setIcon(region.flag)
@@ -56,7 +56,7 @@ class LoginActivity extends TActivity with UpButton {
           showChangeLog() // show change log if updated
           Prefs.putString("app_version", version) // update the stored app version value
         }
-      case None ⇒ startActivity[RegionSelectionActivity]; finish()  // otherwise, go to the region selection screen
+      case None => startActivity[RegionSelectionActivity]; finish()  // otherwise, go to the region selection screen
     }
   }
 
@@ -81,7 +81,7 @@ class LoginActivity extends TActivity with UpButton {
     //    logInButton.disable // disable to prevent multiple login attempt
     Future {
       runOnUiThread(logInButton.setProgress(50))
-      SystemClock.sleep(500)  // give time to animation to animate
+      SystemClock.sleep(500) // give time to animation to animate
 
       // try to connect to server and warn the user if fail to connect
       if (!LoLChat.connect(appCtx.selectedRegion.url)) {
@@ -96,7 +96,7 @@ class LoginActivity extends TActivity with UpButton {
       // after successfully connecting to server, try to login
       if (LoLChat.login(userEditText.getText.toString, passwordEditText.getText.toString)) {
         appCtx.currentUser = userEditText.getText.toString
-        findInGameName()  // try to find in game name in case the login name is different than the in game name
+        findInGameName() // try to find in game name in case the login name is different than the in game name
         SystemClock.sleep(150)
         runOnUiThread(logInButton.setProgress(100))
         finish()

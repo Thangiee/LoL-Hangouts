@@ -26,11 +26,11 @@ import org.scaloid.common.SService
 import scala.util.Random
 
 class LoLHangoutsService extends SService with MessageListener with FriendListListener with ConnectionListener with Logger {
-  private val msgNotificationId = Random.nextInt()
-  private val loginNotificationId = Random.nextInt()
+  private val msgNotificationId        = Random.nextInt()
+  private val loginNotificationId      = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
-  private val runningNotificationId = Random.nextInt()
-  private val availableNotificationId = Random.nextInt()
+  private val runningNotificationId    = Random.nextInt()
+  private val availableNotificationId  = Random.nextInt()
 
   override def onBind(intent: Intent): IBinder = null
 
@@ -119,7 +119,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   override def onFriendAvailable(friend: Friend): Unit = {
-    info("[*]Available: "+friend.name)
+    info("[*]Available: " + friend.name)
     if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(friend)
     EventBus.getDefault.post(RefreshFriendCard(friend))
   }
@@ -136,12 +136,12 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   override def onFriendBusy(friend: Friend): Unit = {
-    info("[*]Busy: "+friend.name)
+    info("[*]Busy: " + friend.name)
     EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   override def onFriendAway(friend: Friend): Unit = {
-    info("[*]Away: "+friend.name)
+    info("[*]Away: " + friend.name)
     EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
@@ -151,18 +151,24 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   override def onFriendStatusChange(friend: Friend): Unit = {
-    info("[*]Change Status: "+friend.name)
+    info("[*]Change Status: " + friend.name)
     EventBus.getDefault.post(RefreshFriendCard(friend))
   }
 
   //=============================================
   //    ConnectionListener Implementations
   //=============================================
-  override def connectionClosed(): Unit = { info("[*] Connection closed."); notificationManager.cancel(runningNotificationId) }
+  override def connectionClosed(): Unit = {
+    info("[*] Connection closed."); notificationManager.cancel(runningNotificationId)
+  }
 
-  override def reconnectionFailed(p1: Exception): Unit = { warn("[!] Reconnection failed") }
+  override def reconnectionFailed(p1: Exception): Unit = {
+    warn("[!] Reconnection failed")
+  }
 
-  override def reconnectionSuccessful(): Unit = { info("[*] Reconnection successful") }
+  override def reconnectionSuccessful(): Unit = {
+    info("[*] Reconnection successful")
+  }
 
   override def connectionClosedOnError(p1: Exception): Unit = {
     warn("[!] Connection lost")
@@ -171,7 +177,9 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     stopSelf()
   }
 
-  override def reconnectingIn(sec: Int): Unit = { info("Connecting in " + sec)}
+  override def reconnectingIn(sec: Int): Unit = {
+    info("Connecting in " + sec)
+  }
 
   //=============================================
 
@@ -181,7 +189,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_yellow, title, content)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
 
     val notification = builder.getNotification
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
@@ -195,7 +203,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_green, title, content)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
 
     val notification = builder.getNotification
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
@@ -206,7 +214,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   private def notifyMessage(newestMsg: models.Message) {
     val unReadMsg = DB.getUnreadMessages(appCtx.currentUser, 5) // get the 5 newest unread messages
     val title = (if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages"
-    val content = newestMsg.getOtherPerson +": " + newestMsg.getText
+    val content = newestMsg.getOtherPerson + ": " + newestMsg.getText
     val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
     builder.setTicker(content)
 
@@ -217,7 +225,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       val inboxStyle = new Notification.InboxStyle() // InboxStyle on available SDK greater than 16
         .setSummaryText("Touch to open application")
 
-      unReadMsg.map((msg) => inboxStyle.addLine(msg.getOtherPerson+": "+msg.getText))
+      unReadMsg.map((msg) => inboxStyle.addLine(msg.getOtherPerson + ": " + msg.getText))
       builder.setStyle(inboxStyle)
       builder.setPriority(Notification.PRIORITY_MAX)
     }
@@ -239,7 +247,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     builder.setContentIntent(p)
 
     if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  // set sound
+      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
 
     val notification = builder.getNotification
     if (R.string.pref_notify_vibrate.pref2Boolean(default = true)) // check setting
@@ -268,15 +276,15 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       .setContentTitle(title)
       .setTicker(title)
       .setContentText(content)
-      .setLights(lightColor, 300,3000)  // blue light, 300ms on, 3s off
+      .setLights(lightColor, 300, 3000) // blue light, 300ms on, 3s off
       .setAutoCancel(true)
   }
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
-    notificationManager.cancel(msgNotificationId)  // clear notification
+    notificationManager.cancel(msgNotificationId) // clear notification
   }
 
   def onEvent(event: Events.ClearLoginNotification): Unit = {
-    notificationManager.cancel(loginNotificationId)  // clear notification
+    notificationManager.cancel(loginNotificationId) // clear notification
   }
 }

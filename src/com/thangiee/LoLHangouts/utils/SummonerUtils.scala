@@ -13,7 +13,7 @@ object SummonerUtils {
       .into(imageView)
   }
 
-  def loadProfileIcon(name: String, region: String, imageView: ImageView, sideDip:Int)(implicit ctx: Context): Unit = {
+  def loadProfileIcon(name: String, region: String, imageView: ImageView, sideDip: Int)(implicit ctx: Context): Unit = {
     val m = ctx.getResources.getDisplayMetrics
     val s = (sideDip * m.density).toInt
     Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(name, region))

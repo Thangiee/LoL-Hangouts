@@ -22,4 +22,4 @@ abstract class FriendBaseCard(val f: Friend, layoutId: Int)(implicit ctx: Contex
   def cardName: String = f.name
 
   def refreshCard()
- }
+}

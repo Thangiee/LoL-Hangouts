@@ -18,13 +18,14 @@ import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class LiveGamePagerFragment() extends ProgressFragment with TFragment with OnPageChangeListener{
-  private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
-  private lazy val pager = find[ViewPager](R.id.pager)
-  private lazy val adapter = new MyPagerAdapter(getFragmentManager)
-  private lazy val name = getArguments.getString("name-key")
-  private lazy val region = getArguments.getString("region-key")
-  private var liveGame: LiveGameStats = _
+case class LiveGamePagerFragment() extends ProgressFragment with TFragment with OnPageChangeListener {
+  private lazy val tabs                    = find[PagerSlidingTabStrip](R.id.tabs)
+  private lazy val pager                   = find[ViewPager](R.id.pager)
+  private lazy val adapter                 = new MyPagerAdapter(getFragmentManager)
+  private lazy val name                    = getArguments.getString("name-key")
+  private lazy val region                  = getArguments.getString("region-key")
+  private      var liveGame: LiveGameStats = _
+
   private val mapNames = Map[Int, String](
     1 → "Summoner's Rift",
     2 → "Summoner's Rift",
@@ -115,13 +116,14 @@ case class LiveGamePagerFragment() extends ProgressFragment with TFragment with 
 
     override def getItem(position: Int): Fragment = {
       position match {
-        case BLUE_TEAM    ⇒ LiveGameTeamFragment(liveGame.blueTeam, BLUE_TEAM, region)
-        case PURPLE_TEAM  ⇒ LiveGameTeamFragment(liveGame.purpleTeam, PURPLE_TEAM, region)
+        case BLUE_TEAM    => LiveGameTeamFragment(liveGame.blueTeam, BLUE_TEAM, region)
+        case PURPLE_TEAM  => LiveGameTeamFragment(liveGame.purpleTeam, PURPLE_TEAM, region)
       }
     }
 
     override def getCount: Int = titles.size
   }
+
 }
 
 object LiveGamePagerFragment {

@@ -13,8 +13,8 @@ trait UpButton extends Activity {
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case android.R.id.home ⇒ this.finish(); true
-      case _                 ⇒ super.onOptionsItemSelected(item)
+      case android.R.id.home => this.finish(); true
+      case _                 => super.onOptionsItemSelected(item)
     }
   }
 }

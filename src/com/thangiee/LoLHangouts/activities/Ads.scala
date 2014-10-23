@@ -8,13 +8,13 @@ import org.scaloid.common.SActivity
 trait Ads extends SActivity {
   private lazy val adView = new AdView(ctx)
   val AD_UNIT_ID: String
-  val layout: ViewGroup
+  val layout    : ViewGroup
 
- def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = {
+  def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = {
     adView.setAdSize(AdSize.BANNER)
     adView.setAdUnitId(AD_UNIT_ID)
 
-   layout.addView(adView, params)
+    layout.addView(adView, params)
 
     val adRequest = new AdRequest.Builder()
       .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)

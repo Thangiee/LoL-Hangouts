@@ -8,12 +8,12 @@ trait TIntent {
     def args(arguments: (String, Any)*): Intent = {
       for ((k, v) ← arguments) {
         v match {
-          case v: String => i.putExtra(k, v)
-          case v: Int => i.putExtra(k, v)
-          case v: Double => i.putExtra(k, v)
-          case v: Float => i.putExtra(k, v)
-          case v: Boolean => i.putExtra(k, v)
-          case v: Serializable => i.putExtra(k, v)
+          case v: String        => i.putExtra(k, v)
+          case v: Int           => i.putExtra(k, v)
+          case v: Double        => i.putExtra(k, v)
+          case v: Float         => i.putExtra(k, v)
+          case v: Boolean       => i.putExtra(k, v)
+          case v: Serializable  => i.putExtra(k, v)
         }
       }
 
