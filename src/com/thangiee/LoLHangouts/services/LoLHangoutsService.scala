@@ -15,7 +15,7 @@ import com.thangiee.LoLHangouts.api.core.{Friend, FriendListListener, LoLChat}
 import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils.{Logger, DB, Events}
-import com.thangiee.common.{_}
+import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Style
 import org.jivesoftware.smack.packet.{Message, Packet, Presence}

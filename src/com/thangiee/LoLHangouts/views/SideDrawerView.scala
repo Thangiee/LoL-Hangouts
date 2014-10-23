@@ -13,7 +13,7 @@ import com.thangiee.LoLHangouts.activities.{LoginActivity, MainActivity, Prefere
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.fragments.{BlankFragment, ChatScreenFragment, ProfileViewPagerFragment}
 import com.thangiee.LoLHangouts.utils.{Events, SummonerUtils}
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import info.hoang8f.android.segmented.SegmentedGroup

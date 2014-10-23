@@ -9,8 +9,7 @@ import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.utils._
-import com.thangiee.LoLHangouts.utils.InterfaceImplicits
-import InterfaceImplicits._
+import com.thangiee.LoLHangouts.utils.InterfaceImplicits._
 
 import scala.collection.JavaConverters._
 

@@ -9,7 +9,7 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.api.core.LoLChat
 import com.thangiee.LoLHangouts.api.utils.{Region, RiotApi}
-import com.thangiee.common._
+import com.thangiee.LoLHangouts.utils._
 import org.scaloid.common.AlertDialogBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
