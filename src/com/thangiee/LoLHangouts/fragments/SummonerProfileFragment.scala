@@ -42,14 +42,14 @@ case class SummonerProfileFragment() extends TFragment {
 
     val badgeImageView = find[ImageView](R.id.img_profile_badge)
     data.leagueTier.toUpperCase match {
-      case "BRONZE"   ⇒ badgeImageView.setImageResource(R.drawable.badge_bronze)
-      case "SILVER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_silver)
-      case "GOLD"     ⇒ badgeImageView.setImageResource(R.drawable.badge_gold)
-      case "DIAMOND"  ⇒ badgeImageView.setImageResource(R.drawable.badge_diamond)
-      case "PLATINUM" ⇒ badgeImageView.setImageResource(R.drawable.badge_platinum)
-      case "MASTER"   ⇒ badgeImageView.setImageResource(R.drawable.badge_master)
-      case "CHALLENGER" ⇒ badgeImageView.setImageResource(R.drawable.badge_challenger)
-      case _          ⇒ badgeImageView.setImageResource(R.drawable.badge_unranked)
+      case "BRONZE"     => badgeImageView.setImageResource(R.drawable.badge_bronze)
+      case "SILVER"     => badgeImageView.setImageResource(R.drawable.badge_silver)
+      case "GOLD"       => badgeImageView.setImageResource(R.drawable.badge_gold)
+      case "DIAMOND"    => badgeImageView.setImageResource(R.drawable.badge_diamond)
+      case "PLATINUM"   => badgeImageView.setImageResource(R.drawable.badge_platinum)
+      case "MASTER"     => badgeImageView.setImageResource(R.drawable.badge_master)
+      case "CHALLENGER" => badgeImageView.setImageResource(R.drawable.badge_challenger)
+      case _            => badgeImageView.setImageResource(R.drawable.badge_unranked)
     }
 
     // setup the pie graph

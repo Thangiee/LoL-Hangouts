@@ -15,15 +15,15 @@ import de.greenrobot.event.EventBus
 import scala.collection.JavaConversions._
 
 case class ChatScreenFragment() extends TFragment with PanelSlideListener {
-  private lazy val imm = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
-  lazy val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
+  private lazy val imm           = getActivity.getSystemService(Context.INPUT_METHOD_SERVICE).asInstanceOf[InputMethodManager]
+  lazy         val slidingLayout = find[SlidingPaneLayout](R.id.chat_sliding_pane)
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
     setRetainInstance(true)
     view = inflater.inflate(R.layout.chat_screen, container, false)
 
-    slidingLayout.openPane()    // show the friend list fragment
+    slidingLayout.openPane() // show the friend list fragment
     slidingLayout.setPanelSlideListener(this)
     slidingLayout.setSliderFadeColor(R.color.slider_fade.r2Color)
     slidingLayout.setShadowResource(R.drawable.sliding_pane_shadow)
@@ -40,7 +40,7 @@ case class ChatScreenFragment() extends TFragment with PanelSlideListener {
     appCtx.isFriendListOpen = slidingLayout.isOpen
     appCtx.isChatOpen = !slidingLayout.isOpen
 
-    if (appCtx.isChatOpen)  // if resume and the chat is open, set read for messages in that chat
+    if (appCtx.isChatOpen) // if resume and the chat is open, set read for messages in that chat
       DB.getUnreadMessages(appCtx.currentUser, appCtx.activeFriendChat).map(m ⇒ m.setRead(true).save())
 
     EventBus.getDefault.postSticky(Events.ClearChatNotification())
@@ -81,18 +81,18 @@ case class ChatScreenFragment() extends TFragment with PanelSlideListener {
 
   override def onPanelOpened(panel: View): Unit = { // friend list pane open
     getActivity.asInstanceOf[MainActivity].sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer) // change AB home icon
-    getActivity.getActionBar.setTitle(R.string.app_name)  // change AB title to app name
-    getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false)  // change AB menu items
+    getActivity.getActionBar.setTitle(R.string.app_name) // change AB title to app name
+    getFragmentManager.findFragmentById(R.id.chat_content_pane).setHasOptionsMenu(false) // change AB menu items
     imm.hideSoftInputFromWindow(panel.getWindowToken, 0) // hide keyboard
     appCtx.isFriendListOpen = true
     appCtx.isChatOpen = false
-    EventBus.getDefault.postSticky(Events.ClearChatNotification())  // clear notification
-    EventBus.getDefault.postSticky(Events.ClearLoginNotification())  // clear notification
-    EventBus.getDefault.postSticky(Events.RefreshFriendList())  // refresh friend list
+    EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
+    EventBus.getDefault.postSticky(Events.ClearLoginNotification()) // clear notification
+    EventBus.getDefault.postSticky(Events.RefreshFriendList()) // refresh friend list
   }
 
   def onEvent(event: FriendCardClicked): Unit = {
-    info("[*]onEvent: "+event.friend.name+" friend card clicked")
+    info(s"[*]onEvent: ${event.friend.name} friend card clicked")
     val fragment = ChatPaneFragment(event.friend.name)
     getFragmentManager.beginTransaction().replace(R.id.chat_content_pane, fragment).commit()
     slidingLayout.closePane()

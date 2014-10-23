@@ -13,8 +13,8 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with OnActionExpandListener {
-  private var searchView: SearchView = _
-  private var regionSpinner: Spinner = _
+  private var searchView   : SearchView = _
+  private var regionSpinner: Spinner    = _
   val defaultSearchText: String
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -38,7 +38,7 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with 
     // setup search menu item
     val menuItems = menu.findItem(R.id.menu_search)
     menuItems.setOnActionExpandListener(this)
-    menuItems.expandActionView()  // show the search field rather than the icon
+    menuItems.expandActionView() // show the search field rather than the icon
   }
 
   def onSearchCompleted(searchedQuery: String, region: String)
@@ -55,7 +55,7 @@ trait SummonerSearch extends TFragment with SearchView.OnQueryTextListener with 
 
     respond onComplete {
       case Success(s) ⇒ onSearchCompleted(query, region)
-      case Failure(e) ⇒ ("Could not find " + query + " in " + region).croutonWarn()
+      case Failure(e) ⇒ s"Could not find $query in $region".croutonWarn()
     }
     false
   }

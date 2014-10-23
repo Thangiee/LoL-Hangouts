@@ -26,7 +26,7 @@ class RegionSelectionActivity extends ListActivity with TActivity {
     serverDictionary.addStaticImageField(R.id.im_flag, new StaticImageLoader[Region] {
       override def loadImage(item: Region, imageView: ImageView, position: Int) = imageView.setImageResource(item.flag)
     })
-    
+
     val adapter = new FunDapter[Region](this, regions.asJava, R.layout.region_item, serverDictionary)
     setListAdapter(adapter)
   }

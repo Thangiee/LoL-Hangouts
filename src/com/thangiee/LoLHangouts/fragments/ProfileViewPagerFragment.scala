@@ -18,11 +18,12 @@ import scala.concurrent.Future
 import scala.util.{Success, Failure, Try}
 
 case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
-  private lazy val tabs = find[PagerSlidingTabStrip](R.id.tabs)
-  private lazy val pager = find[ViewPager](R.id.pager)
+  private lazy val tabs    = find[PagerSlidingTabStrip](R.id.tabs)
+  private lazy val pager   = find[ViewPager](R.id.pager)
   private lazy val adapter = new MyPagerAdapter(getFragmentManager)
-  private lazy val name = getArguments.getString("name-key")
-  private lazy val region = getArguments.getString("region-key")
+  private lazy val name    = getArguments.getString("name-key")
+  private lazy val region  = getArguments.getString("region-key")
+
   private var userStats: ProfilePlayerStats = _
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
@@ -109,15 +110,17 @@ case class ProfileViewPagerFragment() extends ProgressFragment with TFragment {
 
     override def getItem(position: Int): Fragment = {
       titles(position) match {
-        case "Profile"    ⇒ SummonerProfileFragment(userStats)
-        case "Champions"  ⇒ if (userStats.topChampions.size != 0) SummonerTopChampFragment(userStats.topChampions)
-                            else BlankFragment(R.string.no_champion)
-        case "History"    ⇒ if (userStats.matchHistory.size != 0) SummonerMatchesFragment(userStats.matchHistory)
-                            else BlankFragment(R.string.no_match_hist)
+        case "Profile"    => SummonerProfileFragment(userStats)
+        case "Champions"  => if (userStats.topChampions.size != 0) SummonerTopChampFragment(userStats.topChampions)
+                             else BlankFragment(R.string.no_champion)
+        case "History"    => if (userStats.matchHistory.size != 0) SummonerMatchesFragment(userStats.matchHistory)
+                             else BlankFragment(R.string.no_match_hist)
       }
     }
+
     override def getCount: Int = titles.size
   }
+
 }
 
 object ProfileViewPagerFragment {

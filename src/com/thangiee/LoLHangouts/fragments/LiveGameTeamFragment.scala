@@ -18,8 +18,8 @@ import scala.collection.JavaConversions._
 
 case class LiveGameTeamFragment() extends TFragment {
   private lazy val teamListView = find[ListView](R.id.listView)
-  private lazy val region = getArguments.getString("region-key")
-  private lazy val teamColor = getArguments.getInt("team-key")
+  private lazy val region       = getArguments.getString("region-key")
+  private lazy val teamColor    = getArguments.getInt("team-key")
 
   override def onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View = {
     super.onCreateView(inflater, container, savedInstanceState)
@@ -56,7 +56,7 @@ case class LiveGameTeamFragment() extends TFragment {
       override def loadImage(p: LiveGamePlayerStats, img: ImageView, p3: Int): Unit =
         preMadeTeams.get(p.teamId.getOrElse(-1)) match {
           case Some(teamIndex) ⇒
-            if      (teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_blue)
+            if (teamColor == BLUE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_blue)
             else if (teamColor == PURPLE_TEAM) img.setImageResource(R.drawable.ic_action_users_light_purp)
           case None ⇒ img.setImageResource(android.R.color.transparent)
         }
@@ -67,7 +67,7 @@ case class LiveGameTeamFragment() extends TFragment {
       preMadeTeams.get(player.teamId.getOrElse(-1)) match {
         case Some(teamIndex) => teamIndex + 1 + ""
         case None => " "
-    }).conditionalTextColor((p: LiveGamePlayerStats) => teamColor == BLUE_TEAM,
+      }).conditionalTextColor((p: LiveGamePlayerStats) => teamColor == BLUE_TEAM,
         android.R.color.holo_blue_bright.r2Color, android.R.color.holo_purple.r2Color)
 
     // load season 4 badge
@@ -104,7 +104,7 @@ case class LiveGameTeamFragment() extends TFragment {
             if (result.size == 3 && index < 3) setSeriesImgRes(img, result(index))  // 3 games series
             else if (result.size == 5)         setSeriesImgRes(img, result(index))  // 5 games series
           }
-          else img.setVisibility(View.INVISIBLE)  // no active series
+          else img.setVisibility(View.INVISIBLE) // no active series
       })
     }
 
@@ -135,7 +135,7 @@ case class LiveGameTeamFragment() extends TFragment {
 }
 
 object LiveGameTeamFragment {
-  val BLUE_TEAM = 0
+  val BLUE_TEAM   = 0
   val PURPLE_TEAM = 1
 
   def apply(players: List[LiveGamePlayerStats], team: Int, region: String): LiveGameTeamFragment = {
@@ -157,4 +157,5 @@ object LiveGameTeamFragment {
   private case class BlueTeam(team: List[LiveGamePlayerStats])
 
   private case class PurpleTeam(team: List[LiveGamePlayerStats])
+
 }

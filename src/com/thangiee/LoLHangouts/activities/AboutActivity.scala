@@ -43,14 +43,14 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case android.R.id.home ⇒ finish(); true // return to the activity that created this one
-      case _ ⇒ super.onOptionsItemSelected(item)
+      case _ => super.onOptionsItemSelected(item)
     }
   }
 
   override def onItemClick(parent: AdapterView[_], view: View, position: Int, id: Long): Unit = {
     aboutItems(position).title match {
-      case "License" ⇒ showLicence()
-      case _ ⇒ // do nothing
+      case "License" => showLicence()
+      case _         => // do nothing
     }
   }
 
@@ -64,4 +64,5 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
   }
 
   private case class About(title: String, subTitle: String)
+
 }

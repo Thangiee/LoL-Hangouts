@@ -80,7 +80,7 @@ class SideDrawerView(implicit ctx: Context) extends RelativeLayout(ctx) with Tra
 
     // setup button to edit status message
     val editStatusBtn = find[ImageView](R.id.img_edit_status)
-    editStatusBtn.setOnClickListener((v: View) ⇒ showChangeStatusMsgDialog())
+    editStatusBtn.onClick(showChangeStatusMsgDialog())
 
     // setup the radio group and button to control online/away/offline status
     val seg = find[SegmentedGroup](R.id.seg_presence)

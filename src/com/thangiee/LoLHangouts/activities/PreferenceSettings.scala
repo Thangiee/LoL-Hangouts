@@ -34,8 +34,8 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
     val HistoryKey = R.string.pref_history.r2String
 
     key match {
-      case HistoryKey ⇒ onHistoryChanged(sharedPreferences.getString(key, "3 days"))
-      case _          ⇒ // do nothing
+      case HistoryKey => onHistoryChanged(sharedPreferences.getString(key, "3 days"))
+      case _          => // do nothing
     }
   }
 
@@ -46,11 +46,11 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
     // get the milliseconds to be used to calculate which message to delete
     value match {
-      case "1 day"  ⇒ millis = TimeUnit.DAYS.toMillis(1)
-      case "3 days" ⇒ millis = TimeUnit.DAYS.toMillis(3)
-      case "7 days" ⇒ millis = TimeUnit.DAYS.toMillis(7)
-      case "never"  ⇒ alarmManager.cancel(p); info("[*] Preference-History changed to: never"); return
-      case _        ⇒ warn("[!] No match for Preference-History. Setting value to 3 days.")
+      case "1 day"  => millis = TimeUnit.DAYS.toMillis(1)
+      case "3 days" => millis = TimeUnit.DAYS.toMillis(3)
+      case "7 days" => millis = TimeUnit.DAYS.toMillis(7)
+      case "never"  => alarmManager.cancel(p); info("[*] Preference-History changed to: never"); return
+      case _        => warn("[!] No match for Preference-History. Setting value to 3 days.")
     }
 
     i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)

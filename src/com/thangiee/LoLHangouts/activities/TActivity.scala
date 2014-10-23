@@ -105,8 +105,8 @@ trait TActivity extends org.scaloid.common.SActivity with Logger {
 
       Future {
         val msg = event.msg
-        val senderIcon = Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id))
-          .error(R.drawable.ic_load_unknown).get()
+        val url = SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id)
+        val senderIcon = Picasso.`with`(ctx).load(url).error(R.drawable.ic_load_unknown).get()
 
         runOnUiThread {
           NiftyNotificationView.build(this, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
