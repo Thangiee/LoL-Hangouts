@@ -68,7 +68,7 @@ object LAS extends Region {
 }
 
 object NA extends Region {
-  override val url : String = "chat.na1.lol.riotgames.com"
+  override val url : String = "chat.na2.lol.riotgames.com"
   override val name: String = "North America"
   override val flag: Int    = R.drawable.ic_na
   override val id  : String = "na"
