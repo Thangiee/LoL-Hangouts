@@ -4,11 +4,11 @@ android.Plugin.androidBuild
 
 name := "LoL Hangouts"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.4"
 
 minSdkVersion in Android := "14"
 
-platformTarget in Android := "android-20"
+platformTarget in Android := "android-21"
 
 proguardCache in Android ++= Seq(
   ProguardCache("org.scaloid") % "org.scaloid",

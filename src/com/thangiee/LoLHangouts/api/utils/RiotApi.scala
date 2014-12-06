@@ -37,8 +37,8 @@ object RiotApi extends TLogger {
 
       for (attempt ← 0 until Keys.keys.size / 2) {
         // do it the hard way then
-        val key = if (attempt == 5) Keys.masterKey else Keys.randomKey
-
+//        val key = if (attempt == 5) Keys.masterKey else Keys.randomKey
+        val key = Keys.masterKey
         // call the API request
         Try(caller.request(url + key)) match {
           case Success(result) => // got response
@@ -73,7 +73,7 @@ object RiotApi extends TLogger {
   def setRegion(region: String) = region_ = region.toLowerCase
 
   def getLeagueEntries(ids: List[String]): Option[util.Map[String, util.List[League]]] = {
-    val url = s"${baseUrl()}/v2.4/league/by-summoner/${ids.mkString(",")},/entry?api_key="
+    val url = s"${baseUrl()}/v2.5/league/by-summoner/${ids.mkString(",")},/entry?api_key="
     get(s"leagues-${ids.mkString("-")}", url).map { json =>
       Some(gson.fromJson(json, new TypeToken[util.Map[String, util.List[League]]]() {}.getType))
     }.getOrElse(None)
