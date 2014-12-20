@@ -26,7 +26,12 @@ apkbuildExcludes in Android ++= Seq(
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
-proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn scala.collection.mutable.**",
+proguardOptions in Android ++= Seq(
+  "-dontobfuscate",
+  "-dontoptimize",
+  "-keepattributes Signature",
+  "-dontwarn scala.collection.**",
+  "-dontwarn scala.collection.mutable.**",
   "-dontwarn scala.**",
   "-dontwarn com.squareup.okhttp.**",
   "-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry",
@@ -49,8 +54,7 @@ proguardOptions in Android ++= Seq("-dontobfuscate", "-dontoptimize", "-dontwarn
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.3.3",
   "org.scalaj" %% "scalaj-http" % "0.3.16",
-  "org.scaloid" %% "scaloid" % "3.5-10",
-  //  "org.scala-lang" % "scala-xml" % "2.11.0-M4",
+  "org.scaloid" %% "scaloid" % "3.6.1-10",
   "com.android.support" % "support-v13" % "19.+",
   "com.android.support" % "support-v4" % "19.+",
   "com.google.code.gson" % "gson" % "2.2.4",

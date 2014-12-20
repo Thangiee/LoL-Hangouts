@@ -3,11 +3,11 @@ package com.thangiee.LoLHangouts
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.{Looper, Handler}
-import org.scaloid.common.SystemService
+import org.scaloid.common.SystemServices
 
 import scala.util.Try
 
-package object utils extends SystemService with Helpers with Implicits {
+package object utils extends SystemServices with Helpers with Implicits {
   lazy val handler = new Handler(Looper.getMainLooper)
   lazy val uiThread = Looper.getMainLooper.getThread
 

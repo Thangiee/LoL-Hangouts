@@ -148,7 +148,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       bp.release()
     } else {
       Prefs.putBoolean("is_ads_enable", true)
-      bp.purchase(SKU_REMOVE_ADS)
+      bp.purchase(this, SKU_REMOVE_ADS)
     }
   }
 
