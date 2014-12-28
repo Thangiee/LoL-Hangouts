@@ -35,10 +35,10 @@ object RiotApi extends AnyRef with Logger {
       info(s"[-] cache $cacheKey miss")
       val caller: ApiCaller = new ApiCaller
 
-      for (attempt ← 0 until Keys.keys.size / 2) {
+      for (attempt ← 0 until Keys.testKeys.size / 2) {
         // do it the hard way then
 //        val key = if (attempt == 5) Keys.masterKey else Keys.randomKey
-        val key = Keys.masterKey
+        val key = Keys.productionKey
         // call the API request
         Try(caller.request(url + key)) match {
           case Success(result) => // got response
@@ -60,7 +60,7 @@ object RiotApi extends AnyRef with Logger {
             case _ => throw error
           }
         }
-        SystemClock.sleep((10 * Keys.keys.size) / 2) // wait a bit
+        SystemClock.sleep((10 * Keys.testKeys.size) / 2) // wait a bit
       }
       throw ISE("Service is currently unavailable. Please try again later!") // used up all attempts
     } else {

@@ -185,6 +185,8 @@ object LoLChat {
     })
   }
 
+  def userName(): String = _username
+
   /**
    * Setup the listener that notify when a friend status change i.e. login, logout, enter queue, etc...
    *

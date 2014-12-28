@@ -29,7 +29,7 @@ class RiotLiveStats(playerName: String, playerRegion: String) extends LiveGameSt
 
     request match {
       case Success(response) ⇒ // got response
-        (Json.parse(response.asString) \ "game").asOpt[JsValue].map { jValue =>
+        (Json.parse(response.asString.body) \ "game").asOpt[JsValue].map { jValue =>
           (((jValue \ "teamOne" \ "array").as[List[JsValue]], (jValue \ "teamTwo" \ "array").as[List[JsValue]]), // find the teams
             parseSelections((jValue \ "playerChampionSelections" \ "array").as[List[JsValue]]), // find all champions selected
             parseGameInfo(jValue))
