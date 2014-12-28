@@ -52,8 +52,8 @@ proguardOptions in Android ++= Seq(
   "-keepclassmembers class ** {public void onEvent*(**);}")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.3.3",
-  "org.scalaj" %% "scalaj-http" % "0.3.16",
+  "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
+  "org.scalaj" %% "scalaj-http" % "1.1.0",
   "org.scaloid" %% "scaloid" % "3.6.1-10",
   "com.android.support" % "support-v13" % "19.+",
   "com.android.support" % "support-v4" % "19.+",
