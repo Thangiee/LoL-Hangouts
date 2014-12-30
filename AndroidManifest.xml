@@ -30,7 +30,7 @@
         <service android:name="com.thangiee.LoLHangouts.services.LoLHangoutsService"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.LoginActivity"
+                android:name="com.thangiee.LoLHangouts.login.LoginActivity"
                 android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
