@@ -21,10 +21,10 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
     loginUseCase.login(username, password)
   }
 
-  loginUseCase.onLogin(_ => runOnUiThread {
-    view.showLoginSuccess()
-    view.hideProgress()
-//    view.navigateToHome()
+  loginUseCase.onLogin(_ => {
+    runOnUiThread(view.showLoginSuccess())
+    Thread.sleep(700) // wait a bit for login success animation
+    view.navigateToHome()
   })
 
   loginUseCase.onLoadLoginInfo((username, password, selectedRegion, isLoginOffline) => runOnUiThread {
