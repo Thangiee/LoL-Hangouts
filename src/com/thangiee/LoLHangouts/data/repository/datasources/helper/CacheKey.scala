@@ -6,4 +6,7 @@ object CacheKey {
   val AppVersion = "app-version"
   val LoginOffline = "login-offline"
   val LoginRegionId = "login-region-id"
+
+  val IsFirstLaunch = "first_launch"
+  val IsAdsEnable = "is_ads_enable"
 }
