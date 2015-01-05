@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.domain.interactor
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
   override def loadFriendList(): Unit = Future {

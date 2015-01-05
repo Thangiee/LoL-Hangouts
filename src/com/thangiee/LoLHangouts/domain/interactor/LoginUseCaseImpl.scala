@@ -17,7 +17,7 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
       userRepo.loginUser(user, pass).map {
         case e: AuthorizationException => authorizationErrorListener.notify(e.getMessage)
         case e: ConnectionException    => connectionErrorListener.notify(e.getMessage)
-        case e: _                      => throw e
+        case e: Exception              => throw e
       }.getOrElse(loginListener.notify(Unit))
     }
   }
