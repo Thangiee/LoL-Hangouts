@@ -5,6 +5,7 @@ object Value {
     type Version = String
     type Username = String
     type Password = String
+    type ErrorMsg = String
   }
 
   object Boolean {
