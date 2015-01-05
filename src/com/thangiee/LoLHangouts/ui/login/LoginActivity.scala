@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.login
+package com.thangiee.LoLHangouts.ui.login
 
 import android.content.DialogInterface
 import android.os.Bundle
