@@ -7,12 +7,10 @@ import com.thangiee.LoLHangouts.domain.utils.Listener
 
 
 trait CheckNewVerUseCase extends Interactor {
-  protected val completeListener = Listener[(IsNewVersion, Version)]()
+  protected val checkForNewVersionListener = Listener[(IsNewVersion, Version)]()
   protected val errorListener = Listener[ErrorBundle]()
 
-  def onComplete(listener: (IsNewVersion, Version) => Unit) = completeListener.addListener(listener.tupled)
-
-  def onError(listener: ErrorBundle => Unit) = errorListener.addListener(listener)
+  def onCheckForNewVersion(listener: (IsNewVersion, Version) => Unit) = checkForNewVersionListener.addListener(listener.tupled)
 
   def checkForNewVersion(): Unit
 }

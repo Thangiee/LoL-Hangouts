@@ -9,10 +9,9 @@ case class CheckNewVerUseCaseImpl(implicit appDataRepo: AppDataRepo) extends Che
 
   override def checkForNewVersion(): Unit = Future {
     appDataRepo.getAppData.fold(
-      error =>
-        errorListener.notify(error),
+      error => throw error,
       data  => {
-        completeListener.notify((data.isNewVersion, data.version))
+        checkForNewVersionListener.notify((data.isNewVersion, data.version))
         if (data.isNewVersion) appDataRepo.updateAppVersion()
       }
     )

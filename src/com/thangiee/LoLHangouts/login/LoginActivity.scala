@@ -27,7 +27,6 @@ class LoginActivity extends TActivity with LoginView {
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
     setContentView(R.layout.login)
-    getActionBar.setDisplayHomeAsUpEnabled(true)
 
     logInButton.setIndeterminateProgressMode(true)
     logInButton.onClick { v: View =>
