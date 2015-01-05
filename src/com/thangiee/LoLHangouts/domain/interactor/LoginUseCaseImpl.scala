@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
-import com.thangiee.LoLHangouts.domain.exception.ErrorBundle
+import com.thangiee.LoLHangouts.domain.exception.{ConnectionException, AuthorizationException}
 import com.thangiee.LoLHangouts.domain.repository.{AppDataRepo, UserRepo}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -10,20 +10,22 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
 
   override def login(user: String, pass: String): Unit = Future {
     // validate inputs
-    if (user.isEmpty) errorListener.notify(ErrorBundle("username can't be empty"))
-    if (pass.isEmpty) errorListener.notify(ErrorBundle("password can't be empty"))
+    if (user.isEmpty) blankUsernameErrorListener.notify("username can't be empty")
+    if (pass.isEmpty) blankPasswordErrorListener.notify("password can't be empty")
 
     if (!user.isEmpty && !pass.isEmpty) {
-      userRepo.loginUser(user, pass)
-        .map(e => errorListener.notify(e))
-        .getOrElse(loginListener.notify(Unit))
+      userRepo.loginUser(user, pass).map {
+        case e: AuthorizationException => authorizationErrorListener.notify(e.getMessage)
+        case e: ConnectionException    => connectionErrorListener.notify(e.getMessage)
+        case e: _                      => throw e
+      }.getOrElse(loginListener.notify(Unit))
     }
   }
 
   override def loadLoginInfo(): Unit = Future {
     appDataRepo.getAppData.fold(
-      error => errorListener.notify(error),
-      data  => loadLoginInfoListener.notify((data.saveUsername, data.savePassword, data.selectedRegion, data.isLoginOffline))
+      error => throw error,
+      data => loadLoginInfoListener.notify((data.saveUsername, data.savePassword, data.selectedRegion, data.isLoginOffline))
     )
   }
 

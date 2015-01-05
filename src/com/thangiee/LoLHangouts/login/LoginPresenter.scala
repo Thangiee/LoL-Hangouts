@@ -42,11 +42,12 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
     }
   })
 
-  loginUseCase.onError(error =>
-    runOnUiThread(view.showErrorMsg(error.message))
-  )
-
-  checkVerUseCase.onComplete((isNewVer, _) => runOnUiThread {
+  checkVerUseCase.onCheckForNewVersion((isNewVer, _) => runOnUiThread {
     if (isNewVer) view.showChangeLog()
   })
+
+  loginUseCase.onBlankUsernameError(runOnUiThread(view.showErrorMsg _))
+  loginUseCase.onBlankPasswordError(runOnUiThread(view.showErrorMsg _))
+  loginUseCase.onAuthorizationError(runOnUiThread(view.showErrorMsg _))
+  loginUseCase.onConnectionError(runOnUiThread(view.showErrorMsg _))
 }
