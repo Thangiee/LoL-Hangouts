@@ -5,18 +5,27 @@ import com.thangiee.LoLHangouts.data.entities.UserEntity
 import com.thangiee.LoLHangouts.data.repository.datasources.api.CachingApiCaller
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
-import com.thangiee.LoLHangouts.domain.entities.NA
 import thangiee.riotapi.core.RiotApi
 
 case class UserFactory() {
 
-  def createUserEntity(): UserEntity = {
-    UserEntity(
-      LoLChat.loginName(),
-      inGameName,
-      if (LoLChat.isConnected) LoLChat.region().id else PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(NA.id),
-      PrefsCache.getString(s"friendChat-${LoLChat.loginName()}")
-    )
+  def createUserEntity(): Either[Exception, UserEntity] = {
+    val regionId = if (LoLChat.isConnected) {
+      LoLChat.region().id
+    } else {
+      PrefsCache.getString(CacheKey.LoginRegionId)
+        .getOrElse(return Left(new IllegalStateException("Cant find region id")))
+    }
+
+    Right {
+      UserEntity(
+        LoLChat.loginName(),
+        inGameName,
+        regionId,
+        LoLChat.statusMsg(),
+        PrefsCache.getString(s"friendChat-${LoLChat.loginName()}")
+      )
+    }
   }
 
   private def inGameName: String = {

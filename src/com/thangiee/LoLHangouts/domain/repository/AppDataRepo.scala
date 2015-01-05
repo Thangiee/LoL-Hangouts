@@ -1,18 +1,17 @@
 package com.thangiee.LoLHangouts.domain.repository
 
-import com.thangiee.LoLHangouts.domain.entities.{Region, AppData}
-import com.thangiee.LoLHangouts.domain.exception.ErrorBundle
+import com.thangiee.LoLHangouts.domain.entities.{AppData, Region}
 
 trait AppDataRepo {
-  def getAppData: Either[ErrorBundle, AppData]
+  def getAppData: Either[Exception, AppData]
 
-  def updateAppVersion(): Unit
+  def updateAppVersion(): Option[Exception]
 
-  def saveUsername(username: String)
+  def saveUsername(username: String): Option[Exception]
 
-  def savePassword(password: String)
+  def savePassword(password: String): Option[Exception]
 
-  def saveRegion(region: Region)
+  def saveRegion(region: Region): Option[Exception]
   
-  def setLoginOffline(isEnable: Boolean)
+  def setLoginOffline(isEnable: Boolean): Option[Exception]
 }

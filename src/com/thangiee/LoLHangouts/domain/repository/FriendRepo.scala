@@ -3,15 +3,15 @@ package com.thangiee.LoLHangouts.domain.repository
 import com.thangiee.LoLHangouts.domain.entities.Friend
 
 trait FriendRepo {
-  def getFriendList: List[Friend]
+  def getFriendList: Either[Exception, List[Friend]]
 
-  def getFriendById(id: String): Friend
+  def getFriendById(id: String): Either[Exception, Friend]
 
-  def getFriendByName(name: String): Friend
+  def getFriendByName(name: String): Either[Exception, Friend]
 
-  def setFriendListListener(): Unit
+  def setFriendListListener(): Option[Exception]
 
-  def addFriend(id: String): Unit
+  def addFriend(id: String): Option[Exception]
 
-  def removeFriend(id: String): Unit
+  def removeFriend(id: String): Option[Exception]
 }

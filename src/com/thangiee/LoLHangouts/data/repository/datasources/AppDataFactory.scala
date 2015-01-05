@@ -8,7 +8,7 @@ import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 
 case class AppDataFactory(ctx: Context) {
 
-  def createAppDataEntity(): AppDataEntity = {
+  def createAppDataEntity(): Either[Exception, AppDataEntity] = Right {
     AppDataEntity(
       if (LoLChat.isLogin) LoLChat.loginName() else PrefsCache.getString(CacheKey.LoginName).getOrElse(""),
       PrefsCache.getString(CacheKey.LoginPass).getOrElse(""),
