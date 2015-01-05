@@ -10,6 +10,7 @@ case class UserMapper() {
       userEntity.loginName,
       userEntity.inGameName,
       Region.getFromId(userEntity.regionId),
+      userEntity.statusMsg,
       userEntity.currentFriendNameChat
     )
   }
