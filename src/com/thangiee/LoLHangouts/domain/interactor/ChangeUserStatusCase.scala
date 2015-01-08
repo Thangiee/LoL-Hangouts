@@ -1,12 +1,14 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
+import scala.concurrent.Future
+
 trait ChangeUserStatusCase extends Interactor {
 
-  def appearOnline(): Unit
+  def appearOnline(): Future[Unit]
 
-  def appearAway(): Unit
+  def appearAway(): Future[Unit]
 
-  def appearOffline(): Unit
+  def appearOffline(): Future[Unit]
 
-  def setStatusMsg(msg: String): Unit
+  def setStatusMsg(msg: String): Future[Unit]
 }

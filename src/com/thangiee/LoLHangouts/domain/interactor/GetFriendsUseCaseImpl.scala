@@ -1,15 +1,22 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
+import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
-
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import com.thangiee.LoLHangouts.domain.utils.Logger._
 
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
-  override def loadFriendList(): Unit = Future {
+
+  override def loadFriendList(): List[Friend] = {
     friendRepo.getFriendList.fold(
-      error => throw error,
-      friends => loadFriendListListener.notify(friends)
+      e => { error(s"[!] ${e.getMessage}", e.getCause); Nil },
+      fl => fl
+    )
+  }
+
+  override def loadOnlineFriends(): Unit = {
+    friendRepo.getOnlineFriend.fold(
+      e => { error(s"[!] ${e.getMessage}", e.getCause); Nil },
+      fl => fl
     )
   }
 }
