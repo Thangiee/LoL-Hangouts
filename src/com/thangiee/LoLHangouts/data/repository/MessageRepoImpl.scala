@@ -16,7 +16,7 @@ case class MessageRepoImpl() extends MessageRepo {
     Try {
       DB.getAllMessages
     } match {
-      case Success(m) => Right(m.map(MessageMapper().transform))
+      case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
     }
   }
@@ -43,7 +43,7 @@ case class MessageRepoImpl() extends MessageRepo {
     Try {
       DB.getMessages(LoLChat.loginName(), friendName, n)
     } match {
-      case Success(m) => Right(m.map(MessageMapper().transform))
+      case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
     }
   }
@@ -52,7 +52,7 @@ case class MessageRepoImpl() extends MessageRepo {
     Try {
       DB.getUnreadMessages(LoLChat.loginName(), n)
     } match {
-      case Success(m) => Right(m.map(MessageMapper().transform))
+      case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
     }
   }
@@ -61,7 +61,7 @@ case class MessageRepoImpl() extends MessageRepo {
     Try {
       DB.getUnreadMessages(LoLChat.loginName(), friendName)
     } match {
-      case Success(m) => Right(m.map(MessageMapper().transform))
+      case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
     }
   }
@@ -70,7 +70,7 @@ case class MessageRepoImpl() extends MessageRepo {
     Try {
       DB.getLastMessage(LoLChat.loginName(), friendName)
     } match {
-      case Success(m) => Right(m.map(MessageMapper().transform))
+      case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
     }
   }

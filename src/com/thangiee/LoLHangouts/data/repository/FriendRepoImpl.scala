@@ -10,7 +10,7 @@ case class FriendRepoImpl(implicit ctx: Context) extends FriendRepo {
 
   override def getFriendList: Either[Exception, List[Friend]] = {
     if (LoLChat.isLogin) {
-      Right(LoLChat.friends.map(FriendMapper().transform))
+      Right(LoLChat.friends.map(FriendMapper.transform))
     }
     else
       Left(new IllegalStateException("LoLChat is not login"))
@@ -32,7 +32,7 @@ case class FriendRepoImpl(implicit ctx: Context) extends FriendRepo {
 
   override def getFriendById(id: String): Either[Exception, Friend] = {
     if (LoLChat.isLogin)
-      Right(FriendMapper().transform(LoLChat.getFriendById(id).get))
+      Right(FriendMapper.transform(LoLChat.getFriendById(id).get))
     else
       Left(new IllegalStateException("LoLChat is not login"))
   }
@@ -44,7 +44,7 @@ case class FriendRepoImpl(implicit ctx: Context) extends FriendRepo {
 
   override def getFriendByName(name: String): Either[Exception, Friend] = {
     if (LoLChat.isLogin)
-      Right(FriendMapper().transform(LoLChat.getFriendByName(name).get))
+      Right(FriendMapper.transform(LoLChat.getFriendByName(name).get))
     else
       Left(new IllegalStateException("LoLChat is not login"))
   }

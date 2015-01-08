@@ -12,7 +12,7 @@ import thangiee.riotapi.core.RiotApi
 case class AppDataRepoImpl(implicit ctx: Context) extends AppDataRepo {
 
   override def getAppData: Either[Exception, AppData] = {
-    AppDataFactory(ctx).createAppDataEntity().right.map(AppDataMapper().transform)
+    AppDataFactory(ctx).createAppDataEntity().right.map(AppDataMapper.transform)
   }
 
   override def updateAppVersion(): Option[Exception] = {

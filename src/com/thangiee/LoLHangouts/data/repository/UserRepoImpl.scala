@@ -39,7 +39,7 @@ case class UserRepoImpl(implicit ctx: Context) extends UserRepo {
    * @return the user that is currently login or the user that is most recently saved
    */
   override def getActiveUser: Either[Exception, User] = {
-    UserFactory().createUserEntity().right.map(UserMapper().transform)
+    UserFactory().createUserEntity().right.map(UserMapper.transform)
   }
 
   override def setAppearanceOnline(): Option[Exception] = {
