@@ -7,16 +7,29 @@ import com.thangiee.LoLHangouts.domain.utils.Logger._
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
 
   override def loadFriendList(): List[Friend] = {
+    info("[*] loading all friends")
     friendRepo.getFriendList.fold(
-      e => { error(s"[!] ${e.getMessage}", e.getCause); Nil },
-      fl => fl
+      e => {
+        error(s"[!] ${e.getMessage}", e.getCause)
+        Nil
+      },
+      fl => {
+        info("[+] friends loaded")
+        fl
+      }
     )
   }
 
-  override def loadOnlineFriends(): Unit = {
+  override def loadOnlineFriends(): List[Friend] = {
+    info("[*] loading online friends")
     friendRepo.getOnlineFriend.fold(
-      e => { error(s"[!] ${e.getMessage}", e.getCause); Nil },
-      fl => fl
+      e => {
+        error(s"[!] ${e.getMessage}", e.getCause); Nil
+      },
+      fl => {
+        info("[+] online friends loaded")
+        fl
+      }
     )
   }
 }
