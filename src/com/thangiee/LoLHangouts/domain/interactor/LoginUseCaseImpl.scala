@@ -13,6 +13,7 @@ import scala.concurrent.Future
 case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRepo) extends LoginUseCase {
 
   override def login(user: String, pass: String): Future[Unit] = Future {
+    info("[*] attempting to login")
     // validate inputs
     if (user.isEmpty) throw UserInputException("username can't be empty")
     if (pass.isEmpty) throw UserInputException("password can't be empty")
@@ -27,6 +28,7 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
   }
 
   override def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)] = Future {
+    info("[*] loading login info")
     appDataRepo.getAppData.fold(
       e    => { error(s"[!] ${e.getMessage}", e.getCause); throw e },
       data => (data.saveUsername, data.savePassword, data.selectedRegion, data.isLoginOffline)
@@ -34,6 +36,7 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
   }
 
   override def saveLoginInfo(username: String, password: String, isLoginOffline: Boolean): Future[Unit] = Future {
+    info("[*] saving login info")
     appDataRepo.saveUsername(username)
     appDataRepo.savePassword(password)
     appDataRepo.setLoginOffline(isLoginOffline)

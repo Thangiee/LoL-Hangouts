@@ -11,12 +11,14 @@ import scala.concurrent.Future
 case class CheckNewVerUseCaseImpl(implicit appDataRepo: AppDataRepo) extends CheckNewVerUseCase {
 
   override def checkForNewVersion(): Future[(IsNewVersion, Version)] = Future {
+    info("[*] checking for new app version")
     appDataRepo.getAppData.fold(
       e    => {
         error(s"[!] ${e.getMessage}", e.getCause)
         throw e
       },
       data => {
+        info("[+] finish check for new version")
         if (data.isNewVersion) appDataRepo.updateAppVersion()
         (data.isNewVersion, data.version)
       }
