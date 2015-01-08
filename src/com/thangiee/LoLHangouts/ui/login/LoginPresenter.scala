@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.ui.login
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.exception.{AuthorizationException, ConnectionException, UserInputException}
 import com.thangiee.LoLHangouts.domain.interactor._
+import com.thangiee.LoLHangouts.domain.utils.Logger._
 import com.thangiee.LoLHangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -24,6 +25,7 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
             if (!username.isEmpty) view.showSaveUsername(isEnable = true)
             if (!password.isEmpty) view.showSavePassword(isEnable = true)
 
+            info("[*] checking for new app version")
             checkVerUseCase.checkForNewVersion().onSuccess {
               case (isNewVersion, _) => if (isNewVersion) runOnUiThread(view.showChangeLog())
             }
@@ -40,6 +42,7 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
   }
 
   def handleLogin(username: String, password: String): Unit = {
+    info("[*] attempting to login")
     view.showProgress()
     loginUseCase.login(username, password) onComplete {
       case Success(_) => onLoginSuccess()

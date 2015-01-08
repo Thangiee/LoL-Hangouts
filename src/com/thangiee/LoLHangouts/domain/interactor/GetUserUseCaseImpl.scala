@@ -11,8 +11,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 case class GetUserUseCaseImpl(implicit userRepo: UserRepo) extends GetUserUseCase {
 
   override def loadUser(): Future[User] = Future {
-    info("[*] loading user")
-
     userRepo.getActiveUser.fold(
       e => {
         error(s"[!] ${e.getMessage}", e.getCause)

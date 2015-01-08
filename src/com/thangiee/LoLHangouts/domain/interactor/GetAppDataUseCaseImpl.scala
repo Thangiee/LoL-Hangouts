@@ -10,7 +10,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 case class GetAppDataUseCaseImpl(implicit appDataRepo: AppDataRepo) extends GetAppDataUseCase {
 
   override def loadAppData(): Future[AppData] = Future {
-    info("[*] loading app data")
     appDataRepo.getAppData.fold(e => {
       error(s"[!] ${e.getMessage}", e.getCause)
       throw e
