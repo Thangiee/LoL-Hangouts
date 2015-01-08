@@ -6,7 +6,7 @@ import android.view.{View, ViewGroup}
 import android.widget.TextView
 import com.ruenzuo.messageslistview.models.MessageType._
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.core.Friend
+import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.utils._
 
 case class FriendOffCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_off_card) {
