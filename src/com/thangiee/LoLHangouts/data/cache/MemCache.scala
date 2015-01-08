@@ -17,10 +17,10 @@ object MemCache extends AnyRef with TagUtil {
     val result = cache.getIfPresent(key)
 
     if (result != null) {
-      info(s"[+] mem cache hit: [$key, $result]")
+      debug(s"[+] mem cache hit: [$key, $result]")
       Some(result.asInstanceOf[T])
     } else {
-      info(s"[-] mem cache miss: $key")
+      debug(s"[-] mem cache miss: $key")
       None
     }
   }

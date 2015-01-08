@@ -19,32 +19,32 @@ object PrefsCache extends AnyRef with TagUtil {
 
   def getString(key: String): Option[String] = {
     Prefs.getString(key, null) match {
-      case v: String => info(s"[+] Prefs cache hit: [$key, $v]"); Some(v)
-      case _         => info(s"[-] Prefs cache miss: $key"); None
+      case v: String => debug(s"[+] Prefs cache hit: [$key, $v]"); Some(v)
+      case _         => debug(s"[-] Prefs cache miss: $key"); None
     }
   }
 
   def getInt(key: String, defValue: Int): Int = {
     val result = Prefs.getInt(key, defValue)
-    if (result != defValue) info(s"[+] Prefs cache hit: [$key, $result]") else info(s"[-] Prefs cache miss: $key")
+    if (result != defValue) debug(s"[+] Prefs cache hit: [$key, $result]") else debug(s"[-] Prefs cache miss: $key")
     result
   }
 
   def getLong(key: String, defValue: Long): Long = {
     val result = Prefs.getLong(key, defValue)
-    if (result != defValue) info(s"[+] Prefs cache hit: [$key, $result]") else info(s"[-] Prefs cache miss: $key")
+    if (result != defValue) debug(s"[+] Prefs cache hit: [$key, $result]") else debug(s"[-] Prefs cache miss: $key")
     result
   } 
 
   def getFloat(key: String, defValue: Float): Float = {
     val result = Prefs.getFloat(key, defValue)
-    if (result != defValue) info(s"[+] Prefs cache hit: [$key, $result]") else info(s"[-] Prefs cache miss: $key")
+    if (result != defValue) debug(s"[+] Prefs cache hit: [$key, $result]") else debug(s"[-] Prefs cache miss: $key")
     result
   }
 
   def getBoolean(key: String, defValue: Boolean): Boolean = {
     val result = Prefs.getBoolean(key, defValue)
-    if (result != defValue) info(s"[+] Prefs cache hit: [$key, $result]") else info(s"[-] Prefs cache miss: $key")
+    if (result != defValue) debug(s"[+] Prefs cache hit: [$key, $result]") else debug(s"[-] Prefs cache miss: $key")
     result
   } 
 
