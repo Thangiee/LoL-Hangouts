@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
-import java.util.concurrent.Future
+import scala.concurrent.Future
+
 
 trait LogoutUseCase extends Interactor {
 
