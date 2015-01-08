@@ -9,12 +9,14 @@ import com.ruenzuo.messageslistview.models.MessageType._
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
-import com.thangiee.LoLHangouts.api.core.LoLStatus._
-import com.thangiee.LoLHangouts.api.core.{Friend, LoLChat}
+import com.thangiee.LoLHangouts.data.cache.PrefsCache
+import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
+import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
+import com.thangiee.LoLHangouts.domain.entities.{ChatMode, Friend}
 import com.thangiee.LoLHangouts.utils._
+import com.thangiee.LoLHangouts.utils.Logger._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
-import org.jivesoftware.smack.packet.Presence.Mode
 
 case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
   private lazy val nameTextView    = find[TextView](R.id.tv_friend_name)
@@ -31,9 +33,9 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
     // load profile icon
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
     if (prefs.getBoolean(ctx.getResources.getString(R.string.pref_load_icon), true))
-      SummonerUtils.loadProfileIcon(friend.name, appCtx.selectedRegion.id, iconImageView, 55)
+      SummonerUtils.loadProfileIcon(friend.name, PrefsCache.getString(CacheKey.LoginRegionId).get, iconImageView, 55)
 
-    notifyButton.setVisibility(if (friend.chatMode == Mode.chat) View.INVISIBLE else View.VISIBLE)
+    notifyButton.setVisibility(if (friend.chatMode == ChatMode.Chat) View.INVISIBLE else View.VISIBLE)
     notifyButton.setSelected(appCtx.FriendsToNotifyOnAvailable.contains(friend.name))
     notifyButton.onClick(notifyButtonOnClick())
 
@@ -73,10 +75,10 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
 
   private def updateStatus() {
     friend.chatMode match {
-      case Mode.chat => changeToOnline()
-      case Mode.dnd  => changeToBusy()
-      case Mode.away => changeToAway()
-      case _ =>
+      case ChatMode.Chat => changeToOnline()
+      case ChatMode.Dnd  => changeToBusy()
+      case ChatMode.Away => changeToAway()
+      case _ => warn("[!] No chat mode match")
     }
   }
 
@@ -91,13 +93,12 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
   }
 
   private def changeToBusy() {
-    val status = parse(friend, GameStatus).getOrElse("")
-    status match {
-      case "inGame"         => val gameTime = (System.currentTimeMillis() - parse(friend, TimeStamp).get.toLong) / 60000
-                               statusTextView.setText("In Game: " + parse(friend, SkinName).getOrElse("???")+" (" + Math.round(gameTime)+" mins)")
+    friend.gameStatus match {
+      case "inGame"         => val gameTime = friend.timeInGame / 60000
+                               statusTextView.setText(s"In Game: ${friend.championSelect.getOrElse("???")} (${Math.round(gameTime)} mins)")
       case "championSelect" => statusTextView.setText("Champion Selection")
       case "inQueue"        => statusTextView.setText("In Queue")
-      case _                => statusTextView.setText(status)
+      case other: String    => statusTextView.setText(other)
     }
     statusTextView.setTextColor(ctx.getResources.getColor(R.color.status_busy))
   }
@@ -117,11 +118,11 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
       val badgeImageView = view.findViewById(R.id.img_badge).asInstanceOf[ImageView]
 
       // set additional summoner infomations
-      levelTextView.setText("Level " + parse(friend, Level).getOrElse("0"))
-      statusMsgTextView.setText(parse(friend, StatusMsg).getOrElse("No Status Message"))
-      rankTextView.setText(parse(friend, RankedLeagueTier).getOrElse("UNRANKED") + " " + parse(friend, RankedLeagueDivision).getOrElse(""))
-      leagueTextView.setText(parse(friend, RankedLeagueName).getOrElse("NO LEAGUE"))
-      winTextView.setText(parse(friend, Wins).getOrElse("0") + " wins")
+      levelTextView.setText("Level " + friend.level)
+      statusMsgTextView.setText(friend.statusMsg)
+      rankTextView.setText(s"${friend.rankedLeagueTier} ${friend.rankedLeagueDivision}")
+      leagueTextView.setText(friend.rankedLeagueName)
+      winTextView.setText(friend.wins + " wins")
 
       find[FancyButton](R.id.btn_view_profile)
         .onClick(ctx.startActivity(ViewOtherSummonerActivity(friend.name, appCtx.selectedRegion.id)))
@@ -131,12 +132,12 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
 
       find[FancyButton](R.id.btn_remove_friends).onClick(ConfirmDialog(
         msg = s"You are about to REMOVE\n ${friend.name}",
-        code2run = LoLChat.connection.getRoster.removeEntry(friend.entry),
+        code2run = LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry), // todo: temporary
         btnTitle = "Remove"
       ).show())
 
       // set summoner rank badge
-      parse(friend, RankedLeagueTier).getOrElse("") match {
+      friend.rankedLeagueTier match {
         case "BRONZE"     => badgeImageView.setImageResource(R.drawable.badge_bronze)
         case "SILVER"     => badgeImageView.setImageResource(R.drawable.badge_silver)
         case "GOLD"       => badgeImageView.setImageResource(R.drawable.badge_gold)
