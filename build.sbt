@@ -33,6 +33,7 @@ proguardOptions in Android ++= Seq(
   "-dontwarn scala.collection.**",
   "-dontwarn scala.collection.mutable.**",
   "-dontwarn scala.**",
+  "-dontwarn org.slf4j.**",
   "-dontwarn com.squareup.okhttp.**",
   "-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry",
   "-dontwarn javax.xml.bind.DatatypeConverter",
