@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.net.core
 
+import com.thangiee.LoLHangouts.data.entities.FriendEntity
 import org.jivesoftware.smack.packet.Packet
 
 trait FriendListListener {
@@ -10,15 +11,15 @@ trait FriendListListener {
 
   def onFriendRemove(id: String, name: String)
 
-  def onFriendAvailable(friend: Friend)
+  def onFriendAvailable(friend: FriendEntity)
 
-  def onFriendAway(friend: Friend)
+  def onFriendAway(friend: FriendEntity)
 
-  def onFriendBusy(friend: Friend)
+  def onFriendBusy(friend: FriendEntity)
 
-  def onFriendLogin(friend: Friend)
+  def onFriendLogin(friend: FriendEntity)
 
-  def onFriendLogOff(friend: Friend)
+  def onFriendLogOff(friend: FriendEntity)
 
-  def onFriendStatusChange(friend: Friend)
+  def onFriendStatusChange(friend: FriendEntity)
 }

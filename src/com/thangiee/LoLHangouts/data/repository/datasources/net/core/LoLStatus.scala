@@ -1,5 +1,7 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.net.core
 
+import com.thangiee.LoLHangouts.data.entities.FriendEntity
+
 object LoLStatus extends Enumeration {
   type LoLStatus = Value
   val ProfileIcon          = Value("profileIcon")
@@ -27,7 +29,7 @@ object LoLStatus extends Enumeration {
    * Note that some values are only available use certain circumstances.
    * For example, SkinName is only available when the friend is in a game.
    */
-  def parse(friend: Friend, value: LoLStatus): Option[String] = {
+  def parse(friend: FriendEntity, value: LoLStatus): Option[String] = {
     if (!friend.isOnline) return None
     if (friend.status == null) return None
     val pattern = "(?<=" + value.toString + ">).*?(?=</" + value.toString + ")"
