@@ -7,7 +7,7 @@ import com.thangiee.LoLHangouts.domain.entities.ChatType.ChatType
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, ChatType, Friend}
 import org.jivesoftware.smack.packet.Presence
 
-case class FriendMapper() {
+object FriendMapper {
 
   def transform(friendEntity: FriendEntity): Friend = {
     Friend(

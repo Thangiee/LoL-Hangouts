@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.data.entities.mappers
 import com.thangiee.LoLHangouts.data.entities.AppDataEntity
 import com.thangiee.LoLHangouts.domain.entities.{Region, AppData}
 
-case class AppDataMapper() {
+object AppDataMapper {
 
   def transform(appDataEntity: AppDataEntity): AppData = {
     AppData(
