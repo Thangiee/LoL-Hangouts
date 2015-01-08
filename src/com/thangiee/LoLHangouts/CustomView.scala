@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts
 import android.view.{View, ViewGroup}
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
 import org.scaloid.common.TraitViewGroup
+import com.thangiee.LoLHangouts.domain.utils.Logger._
 
 trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {
   self: ViewGroup =>
@@ -12,15 +13,16 @@ trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {
 
   override def onAttachedToWindow(): Unit = {
     self.onAttachedToWindow()
+    verbose("[*] onAttached")
     presenter.initialize()
   }
 
   override def onWindowVisibilityChanged(visibility: Int): Unit = {
     self.onWindowVisibilityChanged(visibility)
     visibility match {
-      case View.VISIBLE   => onVisible(); presenter.resume()
+      case View.VISIBLE   => verbose("[*] onVisible"); onVisible(); presenter.resume()
       case View.INVISIBLE =>
-      case View.GONE      => onInvisible(); presenter.pause()
+      case View.GONE      => verbose("[*] onInvisible"); onInvisible(); presenter.pause()
     }
   }
 
@@ -29,6 +31,7 @@ trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {
   def onInvisible(): Unit = {}
 
   override def onDetachedFromWindow(): Unit = {
+    verbose("[*] onDetached")
     presenter.shutdown()
     self.onDetachedFromWindow()
   }
