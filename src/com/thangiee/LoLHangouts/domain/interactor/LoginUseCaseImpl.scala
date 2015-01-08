@@ -27,7 +27,6 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
   }
 
   override def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)] = Future {
-    info("[*] loading login info")
     appDataRepo.getAppData.fold(
       e    => { error(s"[!] ${e.getMessage}", e.getCause); throw e },
       data => (data.saveUsername, data.savePassword, data.selectedRegion, data.isLoginOffline)
@@ -35,7 +34,6 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
   }
 
   override def saveLoginInfo(username: String, password: String, isLoginOffline: Boolean): Future[Unit] = Future {
-    info("[*] saving login info")
     appDataRepo.saveUsername(username)
     appDataRepo.savePassword(password)
     appDataRepo.setLoginOffline(isLoginOffline)
