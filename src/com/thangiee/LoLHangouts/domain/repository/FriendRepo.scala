@@ -5,6 +5,8 @@ import com.thangiee.LoLHangouts.domain.entities.Friend
 trait FriendRepo {
   def getFriendList: Either[Exception, List[Friend]]
 
+  def getOnlineFriend: Either[Exception, List[Friend]]
+
   def getFriendById(id: String): Either[Exception, Friend]
 
   def getFriendByName(name: String): Either[Exception, Friend]
