@@ -13,6 +13,7 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
 
   override def resume(): Unit = {
     super.resume()
+    info("[*] loading login info")
     loginUseCase.loadLoginInfo().onSuccess {
       case (username, password, selectedRegion, isLoginOffline) => runOnUiThread {
         selectedRegion match {
@@ -37,6 +38,7 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
   }
 
   override def pause(): Unit = {
+    info("[*] saving login info")
     loginUseCase.saveLoginInfo(view.getUsername, view.getPassword, view.isLoginOffline)
     super.pause()
   }
