@@ -1,9 +1,10 @@
 package com.thangiee.LoLHangouts.data.cache
 
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.LoLHangouts.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils.TagUtil
 
-object PrefsCache {
+object PrefsCache extends AnyRef with TagUtil {
 
   def put[T](keyVal: (String, T)): Unit = {
     keyVal match {
