@@ -1,6 +1,8 @@
 package com.thangiee.LoLHangouts
 
-trait Presenter {
+import com.thangiee.LoLHangouts.domain.utils.TagUtil
+
+trait Presenter extends AnyRef with TagUtil {
 
   def initialize(): Unit = {
 
