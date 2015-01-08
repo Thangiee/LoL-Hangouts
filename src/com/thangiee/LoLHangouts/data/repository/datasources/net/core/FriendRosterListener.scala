@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.data.repository.datasources.net.core
 import java.util
 
 import com.thangiee.LoLHangouts.api.utils.RiotApi
+import com.thangiee.LoLHangouts.data.entities.FriendEntity
 import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
@@ -53,7 +54,7 @@ class FriendRosterListener extends RosterListener {
     updateSnapShots(friend)
   }
 
-  private def updateSnapShots(friend: Friend) {
+  private def updateSnapShots(friend: FriendEntity) {
     typeSnapShot += friend.addr → friend.chatType
     modeSnapShot += friend.addr → friend.chatMode
     statusSnapShot += friend.addr → friend.status

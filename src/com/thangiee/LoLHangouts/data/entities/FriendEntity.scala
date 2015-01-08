@@ -1,11 +1,16 @@
-package com.thangiee.LoLHangouts.data.repository.datasources.net.core
+package com.thangiee.LoLHangouts.data.entities
 
+import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import org.jivesoftware.smack.RosterEntry
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.Type
 
-class Friend(val entry: RosterEntry) {
+class FriendEntity(val entry: RosterEntry) {
   val name: String = entry.getName
+
+  /**
+   * ex sum123456@pvp.net
+   */
   val addr  : String = entry.getUser
 
   /**

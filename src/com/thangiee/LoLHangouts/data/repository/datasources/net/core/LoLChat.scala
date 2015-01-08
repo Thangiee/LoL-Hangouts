@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.net.core
 
+import com.thangiee.LoLHangouts.data.entities.FriendEntity
 import com.thangiee.LoLHangouts.domain.entities.{NA, Region}
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.Message.Type
@@ -37,13 +38,13 @@ object LoLChat {
   /**
    * Connect to Riot PVP chat server
    *
-   * @param url the region url (ex. chat.na1.lol.riotgames.com)
+   * @param region the region to connect
    * @return true if connected to server, otherwise false
    */
   def connect(region: Region): Boolean = {
     // set up configuration to connect
     SmackConfiguration.setPacketReplyTimeout(7000) // 7 sec timeout
-    val config = new ConnectionConfiguration(region.url, 5223, "pvp.net")
+    val config = new ConnectionConfiguration(region.url, 5223, "pvp.net") // url ex. chat.na1.lol.riotgames.com
     config.setSocketFactory(new DummySSLSocketFactory())
     _connection = Some(new XMPPConnection(config))
     connection.addPacketListener(FriendRequest.Listener(), FriendRequest.Filter())
@@ -81,7 +82,7 @@ object LoLChat {
   /**
    * @return list of friends from the user's friend List
    */
-  def friends: List[Friend] = connection.getRoster.getEntries.toList.map(entry ⇒ new Friend(entry))
+  def friends: List[FriendEntity] = connection.getRoster.getEntries.toList.map(entry ⇒ new FriendEntity(entry))
 
   /**
    * Search the friend list by name
@@ -89,7 +90,7 @@ object LoLChat {
    * @param name the name to search for
    * @return the friend if found
    */
-  def getFriendByName(name: String): Option[Friend] = friends.find((f) => f.name == name)
+  def getFriendByName(name: String): Option[FriendEntity] = friends.find((f) => f.name == name)
 
   /**
    * Search the friend list by id 
@@ -97,17 +98,17 @@ object LoLChat {
    * @param id the id to search for
    * @return the friend if found
    */
-  def getFriendById(id: String): Option[Friend] = friends.find((f) => f.addr == id)
+  def getFriendById(id: String): Option[FriendEntity] = friends.find((f) => f.addr.contains(id))
 
   /**
    * @return all online friends in the user's friend list
    */
-  def onlineFriends: List[Friend] = friends.filter((friend) => friend.isOnline)
+  def onlineFriends: List[FriendEntity] = friends.filter((friend) => friend.isOnline)
 
   /**
    * @return all offline friends in the user's friend list
    */
-  def offlineFriends: List[Friend] = friends.filter((friend) => !friend.isOnline)
+  def offlineFriends: List[FriendEntity] = friends.filter((friend) => !friend.isOnline)
 
   /**
    * @return true if the connection is connected 
@@ -156,7 +157,7 @@ object LoLChat {
    * @param msg a text message
    * @return true if the message was delivered to the friend
    */
-  def sendMessage(friend: Friend, msg: String): Boolean = {
+  def sendMessage(friend: FriendEntity, msg: String): Boolean = {
     val message = new Message(friend.addr, Type.chat)
     message.setBody(msg)
     XMPPExceptionHandler(connection.sendPacket(message))
