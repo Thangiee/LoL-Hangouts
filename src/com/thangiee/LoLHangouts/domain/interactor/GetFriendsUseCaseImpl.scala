@@ -7,7 +7,6 @@ import com.thangiee.LoLHangouts.domain.utils.Logger._
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
 
   override def loadFriendList(): List[Friend] = {
-    info("[*] loading all friends")
     friendRepo.getFriendList.fold(
       e => {
         error(s"[!] ${e.getMessage}", e.getCause)

@@ -13,7 +13,6 @@ import scala.concurrent.Future
 case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRepo) extends LoginUseCase {
 
   override def login(user: String, pass: String): Future[Unit] = Future {
-    info("[*] attempting to login")
     // validate inputs
     if (user.isEmpty) throw UserInputException("username can't be empty")
     if (pass.isEmpty) throw UserInputException("password can't be empty")
