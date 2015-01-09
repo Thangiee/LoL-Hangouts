@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.data.repository.datasources.api
 import com.thangiee.LoLHangouts.data.cache.MemCache
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
 import thangiee.riotapi.core.RiotException._
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 import thangiee.riotapi.core.{RiotApi, ApiCaller, ApiKey, RiotException}
 
 import scala.util.{Failure, Success, Try}

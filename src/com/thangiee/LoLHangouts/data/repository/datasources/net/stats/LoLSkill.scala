@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.net.stats
 
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 

@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.domain.interactor
 
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
 

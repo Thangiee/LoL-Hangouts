@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import com.google.common.cache.{Cache, CacheBuilder}
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 
 object MemCache extends AnyRef with TagUtil {
   private val cache: Cache[String, Object] = CacheBuilder.newBuilder()

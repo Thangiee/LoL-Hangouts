@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
 import com.thangiee.LoLHangouts.domain.repository.UserRepo
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
