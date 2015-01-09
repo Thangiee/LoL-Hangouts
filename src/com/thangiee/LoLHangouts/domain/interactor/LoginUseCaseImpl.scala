@@ -5,7 +5,7 @@ import com.thangiee.LoLHangouts.domain.entities.Value.Boolean._
 import com.thangiee.LoLHangouts.domain.entities.Value.String._
 import com.thangiee.LoLHangouts.domain.exception.{UserInputException, AuthorizationException, ConnectionException}
 import com.thangiee.LoLHangouts.domain.repository.{AppDataRepo, UserRepo}
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

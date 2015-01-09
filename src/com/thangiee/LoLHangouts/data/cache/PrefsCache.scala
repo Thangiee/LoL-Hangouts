@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.data.cache
 
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
 
 object PrefsCache extends AnyRef with TagUtil {

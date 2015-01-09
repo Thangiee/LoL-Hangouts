@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.domain.interactor
 import com.thangiee.LoLHangouts.domain.entities.Value.Boolean._
 import com.thangiee.LoLHangouts.domain.entities.Value.String._
 import com.thangiee.LoLHangouts.domain.repository.AppDataRepo
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.domain.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
