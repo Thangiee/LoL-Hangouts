@@ -1,20 +1,17 @@
 package com.thangiee.LoLHangouts.utils
 
-import org.scaloid.common.TagUtil
+import com.typesafe.scalalogging.{Logger => Log}
+import org.scaloid.common.LoggerTag
+import org.slf4j.LoggerFactory
 
-trait Logger extends TagUtil {
-  val LOGLEVEL = 0
-  val DEBUG = LOGLEVEL == 0
+trait Logger {
+  private def logger(implicit loggerTag: LoggerTag) = Log.apply(LoggerFactory.getLogger(loggerTag.tag))
+  private def out(s: String)(implicit loggerTag: LoggerTag) = "[%-15s] %s".format(loggerTag.tag.takeRight(15), s)
 
-  def verbose(s: String) = if (DEBUG) org.scaloid.common.verbose(s)
-
-  def debug(s: String) = if (DEBUG) org.scaloid.common.debug(s)
-
-  def info(s: String) = if (DEBUG) org.scaloid.common.info(s)
-
-  def warn(s: String) = org.scaloid.common.warn(s)
-
-  def wtf(s: String) = org.scaloid.common.wtf(s)
+  def verbose(s: => String, t: Throwable = null)(implicit loggerTag: LoggerTag) = logger.trace(out(s), if (t == null) "" else t)
+  def debug(s: => String, t: Throwable = null)(implicit loggerTag: LoggerTag) = logger.debug(out(s), if (t == null) "" else t)
+  def info(s: => String, t: Throwable = null)(implicit loggerTag: LoggerTag) = logger.info(out(s), if (t == null) "" else t)
+  def warn(s: => String, t: Throwable = null)(implicit loggerTag: LoggerTag) = logger.warn(out(s), if (t == null) "" else t)
+  def error(s: => String, t: Throwable = null)(implicit loggerTag: LoggerTag) = logger.error(out(s), if (t == null) "" else t)
 }
-
 object Logger extends Logger

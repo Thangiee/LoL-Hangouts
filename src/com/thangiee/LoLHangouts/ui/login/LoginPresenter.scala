@@ -3,7 +3,6 @@ package com.thangiee.LoLHangouts.ui.login
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.exception.{AuthorizationException, ConnectionException, UserInputException}
 import com.thangiee.LoLHangouts.domain.interactor._
-import com.thangiee.LoLHangouts.domain.utils.Logger._
 import com.thangiee.LoLHangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global

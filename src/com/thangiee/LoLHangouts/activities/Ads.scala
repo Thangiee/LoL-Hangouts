@@ -3,9 +3,8 @@ package com.thangiee.LoLHangouts.activities
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams._
 import com.google.android.gms.ads.{AdRequest, AdSize, AdView}
-import org.scaloid.common.SActivity
 
-trait Ads extends SActivity {
+trait Ads extends TActivity {
   private lazy val adView = new AdView(ctx)
   val AD_UNIT_ID: String
   val layout    : ViewGroup

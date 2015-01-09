@@ -13,7 +13,6 @@ import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, Friend}
-import com.thangiee.LoLHangouts.utils.Logger._
 import com.thangiee.LoLHangouts.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}

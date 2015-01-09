@@ -7,7 +7,6 @@ import android.view.View
 import com.thangiee.LoLHangouts.Container
 import com.thangiee.LoLHangouts.data.repository.UserRepoImpl
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
-import com.thangiee.LoLHangouts.domain.utils.Logger._
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus

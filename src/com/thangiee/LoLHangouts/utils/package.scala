@@ -7,7 +7,7 @@ import org.scaloid.common.SystemServices
 
 import scala.util.Try
 
-package object utils extends SystemServices with Helpers with Implicits {
+package object utils extends SystemServices with Helpers with Implicits with Logger {
   lazy val handler = new Handler(Looper.getMainLooper)
   lazy val uiThread = Looper.getMainLooper.getThread
 

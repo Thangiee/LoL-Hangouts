@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.net.stats
 
-import com.thangiee.LoLHangouts.utils.Logger
+import com.thangiee.LoLHangouts.domain.utils.TagUtil
+import com.thangiee.LoLHangouts.domain.utils.Logger._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -8,7 +9,7 @@ import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
 
 
-class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerStats with Parsing with Logger {
+class LoLSkill(playerName: String, playerRegion: String) extends ProfilePlayerStats with Parsing with TagUtil {
   val baseServerUrl: String = "http://www.lolskill.net/summoner/"
   val url          : String = baseServerUrl + playerRegion + "/" + playerName
   val summaryPage  : Document = fetchDocument(url + "/summary")
