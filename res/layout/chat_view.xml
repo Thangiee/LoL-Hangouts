@@ -7,12 +7,14 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
-    <com.ruenzuo.messageslistview.widget.MessagesListView
+    <com.thangiee.LoLHangouts.ui.friendchat.MessagesListView
             android:id="@+id/lsv_chat"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:scrollbars="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:fadeScrollbars="false"
             android:cacheColorHint="#00000000"
             android:divider="#00000000"
@@ -34,17 +36,19 @@
             android:layout_height="wrap_content"
             android:inputType="textCapSentences|textMultiLine"
             android:background="@android:color/white"
-            android:hint="Write here"
             android:layout_gravity="center_vertical"
             android:textCursorDrawable="@null"
             android:paddingLeft="8dp"
+            android:textColorHint="@color/gray"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/btn_send_msg"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:hint="hint"
+            />
 
     <com.dd.CircularProgressButton
             android:id="@+id/btn_send_msg"
