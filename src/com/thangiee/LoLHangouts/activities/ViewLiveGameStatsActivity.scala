@@ -8,7 +8,7 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 
 class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
-  override lazy val layout    : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override lazy val adsLayout    : ViewGroup = find[LinearLayout](R.id.linear_layout)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/7264366775"
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
