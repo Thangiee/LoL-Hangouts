@@ -26,6 +26,7 @@ object MemCache extends AnyRef with TagUtil {
   }
 
   def put(key: String, value: Object): Unit = {
+    debug(s"[*] saving to mem cache [$key, $value]")
     cache.put(key, value)
   }
 
