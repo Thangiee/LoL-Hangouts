@@ -2,12 +2,13 @@ package com.thangiee.LoLHangouts.data.repository.datasources.net.core
 
 import java.util
 
-import com.thangiee.LoLHangouts.api.utils.RiotApi
 import com.thangiee.LoLHangouts.data.entities.FriendEntity
+import com.thangiee.LoLHangouts.data.repository.datasources.api.CachingApiCaller
 import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
 import org.jivesoftware.smack.util.StringUtils
+import thangiee.riotapi.core.RiotApi
 
 import scala.collection.JavaConversions.collectionAsScalaIterable
 
@@ -15,11 +16,12 @@ class FriendRosterListener extends RosterListener {
   private var typeSnapShot   = Map[String, Type]()
   private var modeSnapShot   = Map[String, Mode]()
   private var statusSnapShot = Map[String, String]()
+  implicit val apiCaller = new CachingApiCaller()
   LoLChat.friends.map((f) => updateSnapShots(f))
 
   override def entriesAdded(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      RiotApi.getSummonerName(id).map(name => LoLChat.friendListListener.onFriendAdded(id, name))
+      RiotApi.summonerNameById(id.toLong).right.map(name => LoLChat.friendListListener.onFriendAdded(id, name))
     }
   }
 
@@ -27,7 +29,7 @@ class FriendRosterListener extends RosterListener {
 
   override def entriesDeleted(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      RiotApi.getSummonerName(id).map(name => LoLChat.friendListListener.onFriendRemove(id, name))
+      RiotApi.summonerNameById(id.toLong).right.map(name => LoLChat.friendListListener.onFriendRemove(id, name))
     }
   }
 

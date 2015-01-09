@@ -1,6 +1,6 @@
-package com.thangiee.LoLHangouts.api.stats
+package com.thangiee.LoLHangouts.data.repository.datasources.net.stats
 
-import com.thangiee.LoLHangouts.api.utils.RiotApi.SummonerSpell
+import thangiee.riotapi.static_data.SummonerSpell
 
 trait LiveGamePlayerStats extends PlayerStats {
 
