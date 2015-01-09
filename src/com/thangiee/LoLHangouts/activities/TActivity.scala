@@ -1,12 +1,15 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
-import android.graphics.Point
+import android.graphics.{Color, Point}
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
+import android.support.v7.widget.Toolbar
 import android.view.{Gravity, MenuItem, View, Window}
 import android.widget.RelativeLayout
+import com.balysv.materialmenu.MaterialMenuDrawable
+import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
@@ -26,18 +29,22 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   override def basis = this
   override implicit val ctx = this
 
-  protected override def onCreate(b: Bundle): Unit = {
-    super.onCreate(b)
-    if (b != null) {
-      appCtx.currentUser = b.getString("user")
-      appCtx.activeFriendChat = b.getString("friend-chat")
-    }
-  }
+  def layoutId(): Int
 
-  override def onSaveInstanceState(outState: Bundle): Unit = {
-    super.onSaveInstanceState(outState)
-    outState.putString("user", appCtx.currentUser)
-    outState.putString("friend-chat", appCtx.activeFriendChat)
+  // any class that extends TActivity needs to include a toolbar in its layout
+  lazy val toolbar = find[Toolbar](R.id.toolbar)
+  lazy val materialMenu = new MaterialMenuDrawable(this, Color.YELLOW, Stroke.THIN)
+
+  override def onCreate(savedInstanceState: Bundle): Unit = {
+    super.onCreate(savedInstanceState)
+    setContentView(layoutId())
+
+    if (toolbar != null) {
+      setSupportActionBar(toolbar)
+      toolbar.setNavigationIcon(materialMenu)
+    } else {
+      error("[!] Can't find toolbar. Make sure to add a toolbar to your layout!")
+    }
   }
 
   override def onResume(): Unit = {
@@ -59,9 +66,9 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
-      case R.id.menu_about ⇒ startActivity[AboutActivity]
-      case R.id.menu_changelog ⇒ showChangeLog()
-      case _ => return false
+      case R.id.menu_about     => startActivity[AboutActivity]; return true
+      case R.id.menu_changelog => showChangeLog(); return true
+      case _                   => return false
     }
     super.onOptionsItemSelected(item)
   }
@@ -75,7 +82,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
     Future(LoLChat.disconnect())
   }
 
-  private def showChangeLog(): Unit = {
+  protected def showChangeLog(): Unit = {
     val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
 
     val dialog = new AlertDialogBuilder()

@@ -19,9 +19,10 @@ import scala.collection.JavaConverters._
 class RegionSelectionActivity extends ActionBarActivity with TActivity with AdapterView.OnItemClickListener {
   val regions = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
 
+  override val layoutId = R.layout.region_selection_screen
+
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.region_selection_screen)
 
     val serverDictionary = new BindDictionary[Region]()
     serverDictionary.addStringField(R.id.tv_region_name, (item: Region) ⇒ item.name)
