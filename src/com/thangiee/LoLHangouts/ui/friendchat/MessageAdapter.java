@@ -59,13 +59,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Bitmap bitmap;
         Canvas canvas;
         if (drawable == null) {
+            return;
+        } else {
             Drawable defaultDrawable = getContext().getResources().getDrawable(R.drawable.mlv__default_avatar);
             bitmap = Bitmap.createBitmap(defaultDrawable.getIntrinsicWidth(), defaultDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(bitmap);
-            defaultDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            defaultDrawable.draw(canvas);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
@@ -90,13 +87,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Bitmap bitmap;
         Canvas canvas;
         if (drawable == null) {
+            return;
+        } else {
             Drawable defaultDrawable = getContext().getResources().getDrawable(R.drawable.mlv__default_avatar);
             bitmap = Bitmap.createBitmap(defaultDrawable.getIntrinsicWidth(), defaultDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(bitmap);
-            defaultDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            defaultDrawable.draw(canvas);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);

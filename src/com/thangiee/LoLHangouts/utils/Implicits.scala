@@ -2,6 +2,7 @@ package com.thangiee.LoLHangouts.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.{BitmapDrawable, Drawable}
 import android.graphics.{Bitmap, BitmapFactory}
 import android.preference.PreferenceManager
 import android.view.View
@@ -46,6 +47,10 @@ trait ConversionImplicits {
 
   implicit class DrawableConversion(drawableId: Int)(implicit ctx: Context) {
     def toBitmap: Bitmap = BitmapFactory.decodeResource(ctx.getResources, drawableId)
+  }
+
+  implicit class BitMapConversion(bitmap: Bitmap)(implicit ctx: Context) {
+    def toDrawable: Drawable = new BitmapDrawable(ctx.getResources, bitmap)
   }
 
 }

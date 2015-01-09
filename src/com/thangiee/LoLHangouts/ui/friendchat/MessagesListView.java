@@ -64,8 +64,6 @@ public class MessagesListView extends ListView {
         MessageAdapter listAdapter = (MessageAdapter) adapter;
         listAdapter.setRecipientColor(recipientColor);
         listAdapter.setSenderColor(senderColor);
-        listAdapter.setRecipientDrawable(recipientDrawable);
-        listAdapter.setSenderDrawable(senderDrawable);
         listAdapter.setMessageTextColor(messageTextColor);
         listAdapter.setDateTextColor(dateTextColor);
     }
