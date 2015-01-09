@@ -5,16 +5,16 @@ import android.graphics.Typeface
 import android.preference.PreferenceManager
 import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
-import com.ruenzuo.messageslistview.models.MessageType._
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
+import com.thangiee.LoLHangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, Friend}
-import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.utils.Logger._
+import com.thangiee.LoLHangouts.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 
@@ -65,7 +65,7 @@ case class FriendOnCard(friend: Friend)(implicit ctx: Context) extends FriendBas
     // set last message
     DB.getLastMessage(appCtx.currentUser, friend.name) match {
       case Some(msg) =>
-        lastMsgTextView.setText((if (msg.getType.equals(MESSAGE_TYPE_SENT)) "You: " else "") + msg.getText) // add "You:" if user sent the last msg
+        lastMsgTextView.setText((if (msg.isSentByUser) "You: " else "") + msg.text) // add "You:" if user sent the last msg
         lastMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL) // bold if msg hasn't been read
         lastMsgTextView.setTextColor(ctx.getResources.getColor(if (!msg.isRead) R.color.friend_card_last_msg_unread else R.color.friend_card_last_msg)) // different color for read/unread
       case None =>
