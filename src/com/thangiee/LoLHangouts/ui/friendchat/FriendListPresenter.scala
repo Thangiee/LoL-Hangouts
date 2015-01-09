@@ -71,12 +71,12 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
   }
 
   def onEvent(event: ReloadFriendCardList): Unit = runOnUiThread{
-    info("[*]onEvent: request to reload friend list")
+    info("[*] onEvent: request to reload friend list")
     loadCardList()
   }
 
   def onEvent(event: RefreshFriendCard): Unit = runOnUiThread {
-    info("[*]onEvent: request to refresh " + event.friend.name + "friend card")
+    info("[*] onEvent: request to refresh " + event.friend.name + "friend card")
 
     // block RefreshFriendCard event when friend list is currently loading 
     if (!lock)
