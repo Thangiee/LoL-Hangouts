@@ -63,6 +63,7 @@ libraryDependencies ++= Seq(
   "org.jsoup" % "jsoup" % "1.7.3",
   "ch.acra" % "acra" % "4.5.0",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
+  "com.google.code.findbugs" % "jsr305" % "3.0.0", // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
   aar("com.android.support" % "appcompat-v7" % "21.0.+"),
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.9.0"),
