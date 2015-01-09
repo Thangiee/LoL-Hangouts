@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api.stats
+package com.thangiee.LoLHangouts.data.repository.datasources.net.stats
 
 trait LiveGameStats {
   val allPlayers: List[LiveGamePlayerStats]

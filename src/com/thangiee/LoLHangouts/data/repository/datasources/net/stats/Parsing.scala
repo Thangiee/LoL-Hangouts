@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.api.stats
+package com.thangiee.LoLHangouts.data.repository.datasources.net.stats
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
