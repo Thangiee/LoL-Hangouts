@@ -1,12 +1,11 @@
 package com.thangiee.LoLHangouts.activities
 
-import android.content.{Intent, Context}
+import android.content.{Context, Intent}
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.fragments.LiveGamePagerFragment
 
 class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
   override lazy val layout    : ViewGroup = find[LinearLayout](R.id.linear_layout)
@@ -19,7 +18,7 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     val summonerName = getIntent.getStringExtra("name-key")
     val region = getIntent.getStringExtra("region-key")
 
-    val fragment = LiveGamePagerFragment(summonerName, region)
+    val fragment = null
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
