@@ -19,11 +19,11 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
     About("App version", R.string.app_version.r2String)
   )
 
+  override val layoutId     = R.layout.about_screen
   private lazy val listView = find[ListView](android.R.id.list)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.about_screen)
 
     val aboutDictionary = new BindDictionary[About]()
 

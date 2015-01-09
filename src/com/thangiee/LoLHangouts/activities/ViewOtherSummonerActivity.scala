@@ -8,12 +8,12 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 
 case class ViewOtherSummonerActivity() extends TActivity with UpButton with Ads {
-  override lazy val adsLayout    : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.linear_layout)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/4576755572"
+  override      val layoutId              = R.layout.layout_with_container
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.layout_with_container)
 
     val summonerName = getIntent.getStringExtra("name-key")
     val region = getIntent.getStringExtra("region-key")
