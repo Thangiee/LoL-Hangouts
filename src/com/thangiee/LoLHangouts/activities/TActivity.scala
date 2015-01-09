@@ -4,24 +4,27 @@ import android.content.DialogInterface
 import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.support.v7.app.ActionBarActivity
 import android.view.{Gravity, MenuItem, View, Window}
 import android.widget.RelativeLayout
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.api.utils.MemCache
+import com.thangiee.LoLHangouts.data.cache.MemCache
+import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
-import com.thangiee.LoLHangouts.utils.{Logger, SummonerUtils}
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
-import org.scaloid.common.AlertDialogBuilder
+import org.scaloid.common.{AlertDialogBuilder, SContext, TraitActivity}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-trait TActivity extends org.scaloid.common.SActivity with Logger {
+trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActivity] {
+
+  override def basis = this
+  override implicit val ctx = this
 
   protected override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -64,9 +67,9 @@ trait TActivity extends org.scaloid.common.SActivity with Logger {
   }
 
   protected def cleanUpAndDisconnect() {
-    info("[*]cleaning up and disconnecting...")
+    info("[*] cleaning up and disconnecting...")
     EventBus.getDefault.unregister(this)
-    MemCache.cleanUp()
+    MemCache.removeAll()
     stopService[LoLHangoutsService]
     appCtx.resetState()
     Future(LoLChat.disconnect())
@@ -105,14 +108,14 @@ trait TActivity extends org.scaloid.common.SActivity with Logger {
 
       Future {
         val msg = event.msg
-        val url = SummonerUtils.profileIconUrl(msg.getOtherPerson, appCtx.selectedRegion.id)
+        val url = SummonerUtils.profileIconUrl(msg.friendName, appCtx.selectedRegion.id)
         val senderIcon = Picasso.`with`(ctx).load(url).error(R.drawable.ic_load_unknown).get()
 
         runOnUiThread {
-          NiftyNotificationView.build(this, s"${msg.getOtherPerson}: ${msg.getText}", Effects.thumbSlider, R.id.nifty_view, cfg)
+          NiftyNotificationView.build(this, s"${msg.friendName}: ${msg.text}", Effects.thumbSlider, R.id.nifty_view, cfg)
             .setIcon(new BitmapDrawable(getResources, senderIcon))
             // switch to the sender chat if notification is clicked
-            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.getOtherPerson).map(f => ctx.startActivity(QuickChatActivity(f.name))))
+            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.friendName).map(f => ctx.startActivity(QuickChatActivity(f.name))))
             .show()
         }
       }

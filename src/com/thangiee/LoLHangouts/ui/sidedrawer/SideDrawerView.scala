@@ -1,5 +1,6 @@
 package com.thangiee.LoLHangouts.ui.sidedrawer
 
+import info.hoang8f.android.segmented.{SegmentedGroup => SegGroup}
 import android.app.{Activity, AlertDialog}
 import android.content.{Context, DialogInterface, Intent}
 import android.support.v4.widget.DrawerLayout
@@ -19,7 +20,6 @@ import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
-import info.hoang8f.android.segmented.SegmentedGroup
 
 import scala.collection.JavaConversions._
 
@@ -33,7 +33,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     DrawerItem(RemoveAds, R.drawable.ic_action_like),
     DrawerItem(Logout, R.drawable.ic_action_exit))
 
-  lazy    val presenceBtn                    = find[SegmentedGroup](R.id.seg_presence)
+  lazy    val presenceBtn                    = find[SegGroup](R.id.seg_presence)
   private var adapter: FunDapter[DrawerItem] = _
   private var currentDrawerItem              = drawerItems(0)
 

@@ -3,7 +3,6 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCase
 import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, ReloadFriendCardList}
-import com.thangiee.LoLHangouts.domain.utils.Logger._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 

@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts
 
-import com.thangiee.LoLHangouts.domain.utils.Logger._
-import com.thangiee.LoLHangouts.domain.utils.TagUtil
+import com.thangiee.LoLHangouts.utils.Logger._
+import org.scaloid.common.TagUtil
 
 trait Presenter extends AnyRef with TagUtil {
 

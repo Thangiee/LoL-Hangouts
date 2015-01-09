@@ -6,7 +6,6 @@ import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.exception.{SendMessageException, UserInputException}
 import com.thangiee.LoLHangouts.domain.interactor.{GetMsgUseCase, MarkMsgReadUseCase, SendMsgUseCase}
-import com.thangiee.LoLHangouts.domain.utils.Logger._
 import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus

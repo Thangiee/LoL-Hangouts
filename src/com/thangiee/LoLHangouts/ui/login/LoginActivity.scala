@@ -104,7 +104,7 @@ class LoginActivity extends TActivity with LoginView {
     startActivity[RegionSelectionActivity]
   }
 
-  override def setTitle(title: String): Unit = ctx.setTitle(title)
+  override def setTitle(title: String): Unit = {}
 
   override def setPassword(password: String): Unit = passwordEditText.setText(password)
 

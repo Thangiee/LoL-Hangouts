@@ -6,7 +6,7 @@ import com.thangiee.LoLHangouts.CustomView
 import com.thangiee.LoLHangouts.data.repository.FriendRepoImpl
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
-import com.thangiee.LoLHangouts.domain.utils.Logger._
+import com.thangiee.LoLHangouts.utils.Logger._
 import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView

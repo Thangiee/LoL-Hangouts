@@ -1,10 +1,9 @@
 package com.thangiee.LoLHangouts.activities
 
-import android.app.ListActivity
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
 import android.view.View
-import android.widget.{ImageView, ListView}
+import android.widget.{AdapterView, ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
@@ -17,7 +16,7 @@ import thangiee.riotapi.core.RiotApi
 
 import scala.collection.JavaConverters._
 
-class RegionSelectionActivity extends ActionBarActivity with TActivity {
+class RegionSelectionActivity extends ActionBarActivity with TActivity with AdapterView.OnItemClickListener {
   val regions = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -32,10 +31,13 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity {
     })
 
     val adapter = new FunDapter[Region](this, regions.asJava, R.layout.region_item, serverDictionary)
-    find[ListView](android.R.id.list).setAdapter(adapter)
+
+    val listView = find[ListView](android.R.id.list)
+    listView.setAdapter(adapter)
+    listView.setOnItemClickListener(this)
   }
 
-  override def onListItemClick(l: ListView, v: View, position: Int, id: Long): Unit = {
+  override def onItemClick(adapterView: AdapterView[_], view: View, position: Int, id: Long): Unit = {
     val regionId = regions(position).id
 
     // set the default region and key for the riot api caller
@@ -61,5 +63,6 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity {
       case TR   => R.drawable.ic_tr
     }
   }
+
 }
 
