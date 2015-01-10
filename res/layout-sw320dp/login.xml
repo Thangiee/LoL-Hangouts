@@ -6,18 +6,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
         >
+     <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
 
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/img_login_bg"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/toolbar"/>
 
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/relativeLayout"
             android:layout_alignParentStart="false"
+            android:layout_alignParentLeft="false"
             android:layout_centerInParent="true"
             android:paddingRight="16dp"
             android:paddingLeft="16dp">
@@ -31,6 +34,7 @@
                 android:clickable="false"
                 android:src="@color/my_dark_blue"
                 android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
                 android:scaleType="center"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -66,6 +70,7 @@
                 android:layout_alignEnd="@+id/et_username"
                 android:textColor="@color/white"
                 android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"/>
 
@@ -103,6 +108,7 @@
                 android:layout_alignStart="@+id/et_password"
                 android:paddingRight="16dp"
                 android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"/>
 
@@ -117,6 +123,7 @@
                 android:layout_alignLeft="@+id/cb_save_user"
                 android:layout_alignStart="@+id/cb_save_user"
                 android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"/>
 
@@ -133,6 +140,7 @@
                 android:textColor="@color/white"
                 android:checked="false"
                 android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"/>
 

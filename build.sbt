@@ -47,6 +47,7 @@ proguardOptions in Android ++= Seq(
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
   "-keepclassmembers class com.thangiee.LoLHangouts.data.repository.datasources.net.stats {*;}",
+  "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
   "-keepclassmembers class ** {public void processHTML(**);}",
   "-keepclassmembers class ** {public static Document parse(**);}",
   "-keepclassmembers class ** {public void onEvent*(**);}")
@@ -76,6 +77,7 @@ libraryDependencies ++= Seq(
   aar("com.pixplicity.easyprefs" % "library" % "1.3"),
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
+  aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0"),
   aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1"))
 
 run <<= run in Android

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.{AdapterView, ImageView, ListView}
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.balysv.materialmenu.MaterialMenuDrawable
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.repository.datasources.api.Keys
@@ -23,6 +24,9 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with Adap
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
+
+    materialMenu.setIconState(MaterialMenuDrawable.IconState.ARROW)
+    toolbar.setNavigationOnClickListener(finish())
 
     val serverDictionary = new BindDictionary[Region]()
     serverDictionary.addStringField(R.id.tv_region_name, (item: Region) ⇒ item.name)
