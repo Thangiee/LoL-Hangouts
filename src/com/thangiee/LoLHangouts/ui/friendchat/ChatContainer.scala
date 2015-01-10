@@ -4,7 +4,8 @@ import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view.View
-import com.thangiee.LoLHangouts.Container
+import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
+import com.thangiee.LoLHangouts.{R, Container}
 import com.thangiee.LoLHangouts.data.repository.UserRepoImpl
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
@@ -43,9 +44,18 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
 
   override def onDetachedFromWindow(): Unit = {
     super.onDetachedFromWindow()
+    removeAllViews()
     EventBus.getDefault.unregister(this)
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
+  }
+
+  override def onNavIconClick(): Boolean = {
+    if (appCtx.isChatOpen) {
+      openPane()
+      return true
+    }
+    false
   }
 
   override def onBackPressed(): Boolean = {
@@ -53,16 +63,18 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
       openPane() // close the chat and open the friend list
       return true
     }
-
     false
   }
 
   override def getView: View = this
 
-  override def onPanelSlide(view: View, v: Float): Unit = {}
+  override def onPanelSlide(view: View, v: Float): Unit = {
+    materialMenu.setTransformationOffset(AnimationState.BURGER_ARROW, 1 - v)
+  }
 
   override def onPanelClosed(view: View): Unit = {
     inputMethodManager.hideSoftInputFromWindow(getWindowToken, 0) // hide keyboard
+    toolbar.setTitle(chatView.getFriend.map(_.name).getOrElse("NOBODY"))
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
@@ -70,6 +82,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
 
   override def onPanelOpened(view: View): Unit = {
     inputMethodManager.hideSoftInputFromWindow(getWindowToken, 0) // hide keyboard
+    toolbar.setTitle(R.string.app_name)
     appCtx.isFriendListOpen = true
     appCtx.isChatOpen = false
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification

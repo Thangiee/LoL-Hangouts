@@ -25,7 +25,7 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with Adap
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
 
-    materialMenu.setIconState(MaterialMenuDrawable.IconState.ARROW)
+    navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(finish())
 
     val serverDictionary = new BindDictionary[Region]()

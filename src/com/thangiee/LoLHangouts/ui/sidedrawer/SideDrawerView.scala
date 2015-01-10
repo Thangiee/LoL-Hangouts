@@ -33,6 +33,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     DrawerItem(RemoveAds, R.drawable.ic_action_like),
     DrawerItem(Logout, R.drawable.ic_action_exit))
 
+  lazy    val drawer                         = new ListView(ctx)
   lazy    val presenceBtn                    = find[SegGroup](R.id.seg_presence)
   private var adapter: FunDapter[DrawerItem] = _
   private var currentDrawerItem              = drawerItems(0)
@@ -63,7 +64,6 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
     adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, drawerDictionary)
 
-    val drawer = new ListView(ctx)
     addView(drawer)
     drawer.setLayoutParams(new LayoutParams(240.dip, MATCH_PARENT, Gravity.START))
     drawer.addHeaderView(View.inflate(ctx, R.layout.side_menu_header, null))
@@ -82,9 +82,9 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
       override def onCheckedChanged(group: RadioGroup, checkedId: Int): Unit = {
         val onlineBtn = find[RadioButton](R.id.btn_online)
         val awayBtn = find[RadioButton](R.id.btn_away)
-        if (onlineBtn.isChecked)    presenter.handleChangePresence(Online)
+        if (onlineBtn.isChecked) presenter.handleChangePresence(Online)
         else if (awayBtn.isChecked) presenter.handleChangePresence(Away)
-        else                        presenter.handleChangePresence(Offline)
+        else presenter.handleChangePresence(Offline)
       }
     })
   }
@@ -156,11 +156,15 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     adapter.updateData(drawerItems)
   }
 
+  def isOpen: Boolean = isDrawerOpen(drawer)
+
+  def openDrawer(): Unit = openDrawer(drawer)
+
   def closeDrawer(): Unit = closeDrawers()
 }
 
 object SideDrawerView {
-  val Online = 1
+  val Online  = 1
   val Offline = 2
-  val Away = 3
+  val Away    = 3
 }
