@@ -39,7 +39,6 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     case Offline =>
       changeStatusUseCase.appearOffline()
       view.switchToOffline()
-      view.showIsOfflineMsg()
     case Away    =>
       changeStatusUseCase.appearAway()
       view.switchToAway()
