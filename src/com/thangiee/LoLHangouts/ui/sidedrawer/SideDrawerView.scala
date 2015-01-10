@@ -1,9 +1,10 @@
 package com.thangiee.LoLHangouts.ui.sidedrawer
 
-import android.app.{Activity, AlertDialog}
+import android.app.AlertDialog
 import android.content.{Context, DialogInterface, Intent}
 import android.support.v4.widget.DrawerLayout
 import android.support.v4.widget.DrawerLayout.LayoutParams
+import android.support.v7.app.ActionBarActivity
 import android.util.AttributeSet
 import android.view._
 import android.widget._
@@ -13,10 +14,10 @@ import com.thangiee.LoLHangouts.activities.PreferenceSettings
 import com.thangiee.LoLHangouts.data.repository.{AppDataRepoImpl, UserRepoImpl}
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
+import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
-import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}
@@ -133,9 +134,8 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   def switchToOffline(): Unit = presenceBtn.setImageDrawable(R.drawable.circle_offline)
 
   def showIsOfflineMsg(): Unit = {
-    // todo: fix, not showing
     val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
-    Crouton.makeText(ctx.asInstanceOf[Activity], R.string.offline_mode_warning.r2String, customStyle)
+    Crouton.makeText(ctx.asInstanceOf[ActionBarActivity], R.string.offline_mode_warning.r2String, customStyle)
       .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build())
       .show()
   }
