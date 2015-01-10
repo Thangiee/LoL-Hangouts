@@ -6,7 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
 import android.support.v7.widget.Toolbar
-import android.view.{Gravity, MenuItem, View, Window}
+import android.view._
 import android.widget.RelativeLayout
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
@@ -62,6 +62,11 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   override def onStop(): Unit = {
     System.gc()
     super.onStop()
+  }
+
+  override def onCreateOptionsMenu(menu: Menu): Boolean = {
+    getMenuInflater.inflate(R.menu.overflow, menu)
+    true
   }
 
   override def onOptionsItemSelected(item: MenuItem): Boolean = {

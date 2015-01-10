@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.ui.login
 
 import android.os.Bundle
-import android.view.{MenuItem, View}
+import android.view.View
 import android.widget.{CheckBox, EditText, ImageView}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
@@ -34,7 +34,7 @@ class LoginActivity extends TActivity with LoginView {
     }
 
     materialMenu.setIconState(MaterialMenuDrawable.IconState.ARROW)
-    toolbar.setNavigationOnClickListener((v: View) => navigateBack())
+    toolbar.setNavigationOnClickListener(navigateBack())
   }
 
   override def onStart(): Unit = {
@@ -63,15 +63,6 @@ class LoginActivity extends TActivity with LoginView {
     super.onStop()
   }
 
-  override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    item.getItemId match {
-      case android.R.id.home =>
-        startActivity[RegionSelectionActivity]
-        this.finish(); true
-      case _ => super.onOptionsItemSelected(item)
-    }
-  }
-
   override def showProgress(): Unit = logInButton.setProgress(50)
 
   override def hideProgress(): Unit = logInButton.setProgress(0)
@@ -95,7 +86,7 @@ class LoginActivity extends TActivity with LoginView {
     startActivity[RegionSelectionActivity]
   }
 
-  override def setTitle(title: String): Unit = {}
+  override def setTitle(title: String): Unit = toolbar.setTitle(title)
 
   override def setPassword(password: String): Unit = passwordEditText.setText(password)
 
