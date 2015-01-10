@@ -1,13 +1,11 @@
 package com.thangiee.LoLHangouts.ui.sidedrawer
 
-import info.hoang8f.android.segmented.{SegmentedGroup => SegGroup}
 import android.app.{Activity, AlertDialog}
 import android.content.{Context, DialogInterface, Intent}
 import android.support.v4.widget.DrawerLayout
 import android.support.v4.widget.DrawerLayout.LayoutParams
 import android.util.AttributeSet
 import android.view._
-import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
@@ -15,11 +13,14 @@ import com.thangiee.LoLHangouts.activities.PreferenceSettings
 import com.thangiee.LoLHangouts.data.repository.{AppDataRepoImpl, UserRepoImpl}
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
-import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
+import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
+import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}
+import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
 
 import scala.collection.JavaConversions._
 
@@ -34,7 +35,8 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     DrawerItem(Logout, R.drawable.ic_action_exit))
 
   lazy    val drawer                         = new ListView(ctx)
-  lazy    val presenceBtn                    = find[SegGroup](R.id.seg_presence)
+  lazy    val presenceBtn = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
+  lazy    val statusMsgTextView = find[TextView](R.id.tv_status_msg)
   private var adapter: FunDapter[DrawerItem] = _
   private var currentDrawerItem              = drawerItems(0)
 
@@ -42,9 +44,8 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   implicit val userRepoImpl = UserRepoImpl()
   override val presenter    = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
 
-  override def onAttachedToWindow(): Unit = {
-    super.onAttachedToWindow()
-
+  override def onAttached(): Unit = {
+    super.onAttached()
     val drawerDictionary = new BindDictionary[DrawerItem]()
 
     // drawer drawer item title and color
@@ -67,6 +68,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     addView(drawer)
     val width = screenAbsWidth - toolbarHeight
     drawer.setLayoutParams(new LayoutParams(width, MATCH_PARENT, Gravity.START)) // set drawer width
+    drawer.setBackgroundColor(R.color.my_tran_dark_blue2.r2Color)
     drawer.setAdapter(adapter)
     drawer.onItemClick((_: AdapterView[_], _: View, position: Int, id: Long) => {
       val selectedDrawerItem = drawerItems(position - 1) // minus 1 to compensate for adding a header
@@ -75,24 +77,26 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
     // 16:9 ratio - drawer width to header height
     val height = (9.0 / 16.0) * width
-    val header = View.inflate(ctx, R.layout.side_menu_header, null)
+    val header = layoutInflater.inflate(R.layout.side_menu_header, null)
     header.setLayoutParams(new AbsListView.LayoutParams(MATCH_PARENT, height.toInt)) // set header height
     drawer.addHeaderView(header)
 
-    // setup button to edit status message
-    find[ImageView](R.id.img_edit_status).onClick(showChangeStatusMsgDialog())
-
-    // setup the radio group and button to control online/away/offline status
-    presenceBtn.setTintColor(R.color.status_available.r2Color)
-    presenceBtn.setOnCheckedChangeListener(new OnCheckedChangeListener {
-      override def onCheckedChanged(group: RadioGroup, checkedId: Int): Unit = {
-        val onlineBtn = find[RadioButton](R.id.btn_online)
-        val awayBtn = find[RadioButton](R.id.btn_away)
-        if (onlineBtn.isChecked) presenter.handleChangePresence(Online)
-        else if (awayBtn.isChecked) presenter.handleChangePresence(Away)
-        else presenter.handleChangePresence(Offline)
+    // setup button to control setting online/away/offline status
+    presenceBtn.setOnMenuButtonClickListener(new OnMenuButtonClick {
+      override def onClick(menuButton: MenuButton): Unit = {
+        menuButton match {
+          case LEFT  => presenter.handleChangePresence(Online)
+          case MID   => presenter.handleChangePresence(Away)
+          case RIGHT => presenter.handleChangePresence(Offline)
+        }
+        presenceBtn.getButtonMenu.toggle()
+        Crouton.cancelAllCroutons()
       }
     })
+
+    // setup button to edit status message
+    find[ImageView](R.id.img_edit_status).onClick(showChangeStatusMsgDialog())
+    statusMsgTextView.onClick(showChangeStatusMsgDialog())
   }
 
   def showChangeStatusMsgDialog(): Unit = {
@@ -101,9 +105,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
     val dialog = new AlertDialog.Builder(ctx)
       .setView(view)
-      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {
-      presenter.handleChangeStatusMsg(input.getText.toString)
-    })
+      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {presenter.handleChangeStatusMsg(input.getText.toString)})
       .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
       .create()
 
@@ -115,30 +117,23 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     })
   }
 
-  def setStatusMsg(msg: String): Unit = find[TextView](R.id.tv_status_msg).setText(msg)
+  def setStatusMsg(msg: String): Unit = statusMsgTextView.setText(msg)
+
+  def setName(name: String): Unit = find[TextView](R.id.tv_name).setText(name)
 
   def setUserProfileIcon(username: String, regionId: String): Unit = {
     val profileIconImageView = find[ImageView](R.id.img_my_profile_icon)
     SummonerUtils.loadProfileIcon(username, regionId, profileIconImageView, 55)
   }
 
-  def switchToOnline(): Unit = {
-    presenceBtn.setTintColor(R.color.status_available.r2Color)
-    Crouton.cancelAllCroutons()
-  }
+  def switchToOnline(): Unit = presenceBtn.setImageDrawable(R.drawable.circle_online)
 
-  def switchToAway(): Unit = {
-    presenceBtn.setTintColor(R.color.status_away.r2Color)
-    Crouton.cancelAllCroutons()
-  }
+  def switchToAway(): Unit = presenceBtn.setImageDrawable(R.drawable.circle_away)
 
-  def switchToOffline(): Unit = {
-    presenceBtn.setTintColor(R.color.status_offline.r2Color)
-    find[RadioButton](R.id.btn_offline).setChecked(true)
-    Crouton.cancelAllCroutons()
-  }
+  def switchToOffline(): Unit = presenceBtn.setImageDrawable(R.drawable.circle_offline)
 
   def showIsOfflineMsg(): Unit = {
+    // todo: fix, not showing
     val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
     Crouton.makeText(ctx.asInstanceOf[Activity], R.string.offline_mode_warning.r2String, customStyle)
       .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build())
