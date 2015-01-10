@@ -21,8 +21,8 @@ class FriendListView(implicit ctx: Context) extends CardListView(ctx) with Custo
   val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   val cardArrayAdapter = new CardArrayAdapter(ctx, cards)
 
-  override def onAttachedToWindow(): Unit = {
-    super.onAttachedToWindow()
+  override def onAttached(): Unit = {
+    super.onAttached()
     cardArrayAdapter.setNotifyOnChange(false)
     cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
 

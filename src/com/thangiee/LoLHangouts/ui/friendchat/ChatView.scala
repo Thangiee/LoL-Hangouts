@@ -23,8 +23,8 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   implicit val messageRepo = MessageRepoImpl()
   override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), MarkMsgReadUseCaseImp(), SendMsgUseCaseImpl())
 
-  override def onAttachedToWindow(): Unit = {
-    super.onAttachedToWindow()
+  override def onAttached(): Unit = {
+    super.onAttached()
     addView(layoutInflater.inflate(R.layout.chat_view, null))
 
     sendButton.onClick(presenter.handleMessageSend(msgField.getText.toString))
