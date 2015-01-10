@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts
 
-import android.view.{View, ViewGroup}
+import android.support.v7.app.ActionBarActivity
+import android.view.{MenuInflater, Menu, View, ViewGroup}
 import com.thangiee.LoLHangouts.activities.TActivity
 import org.scaloid.common.TagUtil
 
@@ -12,6 +13,10 @@ trait Container extends AnyRef with TagUtil {
   val materialMenu = getContext.asInstanceOf[TActivity].navIcon
 
   def getView: View
+
+  def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean
+
+  def invalidateOptionsMenu(): Unit = getContext.asInstanceOf[ActionBarActivity].invalidateOptionsMenu()
 
   def onBackPressed(): Boolean
 

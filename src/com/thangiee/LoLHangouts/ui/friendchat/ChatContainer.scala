@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
-import android.view.View
+import android.view.{MenuInflater, Menu, View}
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.{R, Container}
 import com.thangiee.LoLHangouts.data.repository.UserRepoImpl
@@ -50,6 +50,13 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isFriendListOpen = false
   }
 
+  override def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = {
+    menu.clear()
+    if (appCtx.isChatOpen) menuInflater.inflate(R.menu.delete, menu)
+    menuInflater.inflate(R.menu.overflow, menu)
+    true
+  }
+
   override def onNavIconClick(): Boolean = {
     if (appCtx.isChatOpen) {
       openPane()
@@ -73,6 +80,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   }
 
   override def onPanelClosed(view: View): Unit = {
+    invalidateOptionsMenu()
     inputMethodManager.hideSoftInputFromWindow(getWindowToken, 0) // hide keyboard
     toolbar.setTitle(chatView.getFriend.map(_.name).getOrElse("NOBODY"))
     appCtx.isFriendListOpen = false
@@ -81,6 +89,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   }
 
   override def onPanelOpened(view: View): Unit = {
+    invalidateOptionsMenu()
     inputMethodManager.hideSoftInputFromWindow(getWindowToken, 0) // hide keyboard
     toolbar.setTitle(R.string.app_name)
     appCtx.isFriendListOpen = true
