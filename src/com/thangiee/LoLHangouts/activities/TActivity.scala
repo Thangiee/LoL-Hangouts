@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
-import android.graphics.{Color, Point}
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
@@ -132,19 +132,5 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
         }
       }
     }
-  }
-
-  def getScreenWidth: Int = {
-    val display = getWindowManager.getDefaultDisplay
-    val size = new Point()
-    display.getSize(size)
-    size.x
-  }
-
-  def getScreenHeight: Int = {
-    val display = getWindowManager.getDefaultDisplay
-    val size = new Point()
-    display.getSize(size)
-    size.y
   }
 }

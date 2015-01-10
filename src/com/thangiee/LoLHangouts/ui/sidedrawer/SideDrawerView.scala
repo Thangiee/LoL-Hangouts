@@ -6,7 +6,7 @@ import android.content.{Context, DialogInterface, Intent}
 import android.support.v4.widget.DrawerLayout
 import android.support.v4.widget.DrawerLayout.LayoutParams
 import android.util.AttributeSet
-import android.view.{Gravity, View, Window}
+import android.view._
 import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
@@ -65,13 +65,19 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, drawerDictionary)
 
     addView(drawer)
-    drawer.setLayoutParams(new LayoutParams(240.dip, MATCH_PARENT, Gravity.START))
-    drawer.addHeaderView(View.inflate(ctx, R.layout.side_menu_header, null))
+    val width = screenAbsWidth - toolbarHeight
+    drawer.setLayoutParams(new LayoutParams(width, MATCH_PARENT, Gravity.START)) // set drawer width
     drawer.setAdapter(adapter)
     drawer.onItemClick((_: AdapterView[_], _: View, position: Int, id: Long) => {
       val selectedDrawerItem = drawerItems(position - 1) // minus 1 to compensate for adding a header
       presenter.handleDrawerItemClicked(selectedDrawerItem, currentDrawerItem == selectedDrawerItem)
     })
+
+    // 16:9 ratio - drawer width to header height
+    val height = (9.0 / 16.0) * width
+    val header = View.inflate(ctx, R.layout.side_menu_header, null)
+    header.setLayoutParams(new AbsListView.LayoutParams(MATCH_PARENT, height.toInt)) // set header height
+    drawer.addHeaderView(header)
 
     // setup button to edit status message
     find[ImageView](R.id.img_edit_status).onClick(showChangeStatusMsgDialog())
