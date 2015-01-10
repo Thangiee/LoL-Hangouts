@@ -72,7 +72,7 @@ libraryDependencies ++= Seq(
   aar("com.google.android.gms" % "play-services" % "6.1.+"),
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+"),
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.2"),
-  aar("info.hoang8f" % "android-segmented" % "1.0.2"),
+  aar("info.hoang8f" % "android-segmented" % "1.0.4"),
   aar("com.makeramen" % "roundedimageview" % "1.3.0"),
   aar("com.pixplicity.easyprefs" % "library" % "1.3"),
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
