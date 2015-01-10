@@ -17,12 +17,18 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     super.initialize()
 
     info("[*] loading app data")
-    getAppDataUseCase.loadAppData().map(data => if (data.isLoginOffline) runOnUiThread(view.switchToOffline()))
+    getAppDataUseCase.loadAppData().map { data =>
+      if (data.isLoginOffline) runOnUiThread {
+        view.switchToOffline()
+        view.showIsOfflineMsg()
+      }
+    }
 
     info("[*] loading user")
-    getUserUseCase.loadUser().map(user => runOnUiThread{
+    getUserUseCase.loadUser().map(user => runOnUiThread {
       view.setUserProfileIcon(user.loginName, user.region.id)
       view.setStatusMsg(user.statusMsg)
+      view.setName(user.inGameName)
     })
   }
 

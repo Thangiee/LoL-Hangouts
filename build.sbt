@@ -66,6 +66,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.google.code.findbugs" % "jsr305" % "3.0.0", // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
   aar("com.android.support" % "appcompat-v7" % "21.0.+"),
+  aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0"),
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
   aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.9.0"),
   aar("de.psdev.licensesdialog" % "licensesdialog" % "1.5.0"),
