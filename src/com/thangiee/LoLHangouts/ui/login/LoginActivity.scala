@@ -33,7 +33,7 @@ class LoginActivity extends TActivity with LoginView {
       else presenter.handleLogin(userEditText.getText.toString, passwordEditText.getText.toString)
     }
 
-    materialMenu.setIconState(MaterialMenuDrawable.IconState.ARROW)
+    navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(navigateBack())
   }
 

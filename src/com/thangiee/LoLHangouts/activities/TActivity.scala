@@ -33,7 +33,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
   // any class that extends TActivity needs to include a toolbar in its layout
   lazy val toolbar = find[Toolbar](R.id.toolbar)
-  lazy val materialMenu = new MaterialMenuDrawable(this, Color.YELLOW, Stroke.THIN)
+  lazy val navIcon = new MaterialMenuDrawable(this, Color.YELLOW, Stroke.THIN)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
     if (toolbar != null) {
       setSupportActionBar(toolbar)
-      toolbar.setNavigationIcon(materialMenu)
+      toolbar.setNavigationIcon(navIcon)
     } else {
       error("[!] Can't find toolbar. Make sure to add a toolbar to your layout!")
     }

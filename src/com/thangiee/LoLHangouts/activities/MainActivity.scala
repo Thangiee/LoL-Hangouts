@@ -5,72 +5,62 @@ import java.util.concurrent.TimeUnit
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
 import android.os.{Bundle, SystemClock}
-import android.util.TypedValue
-import android.view.{Menu, MenuItem, ViewGroup}
+import android.support.v4.widget.DrawerLayout.SimpleDrawerListener
+import android.view.View.OnClickListener
+import android.view.{View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.api.core.LoLChat
-import com.thangiee.LoLHangouts.fragments.ChatScreenFragment
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
-import com.thangiee.LoLHangouts.services.LoLHangoutsService
-import com.thangiee.LoLHangouts.utils.Events.FinishMainActivity
+import com.thangiee.LoLHangouts.ui.friendchat.ChatContainer
+import com.thangiee.LoLHangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
+import com.thangiee.LoLHangouts.utils.Events.{FinishMainActivity, SwitchScreen}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.views.SideDrawerView
+import com.thangiee.LoLHangouts.{Container, R, SimpleContainer}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
-import net.simonvt.menudrawer.MenuDrawer.Type
-import net.simonvt.menudrawer.{MenuDrawer, Position}
 
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
-  lazy val sideDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW)
-  var bp: BillingProcessor = _
-  val SKU_REMOVE_ADS       = "lolhangouts.remove.ads"
+  lazy val contentContainer = find[LinearLayout](R.id.content_container)
+  lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
 
-  override lazy val layout: ViewGroup = find[LinearLayout](R.id.linear_layout)
-  override val AD_UNIT_ID: String = "ca-app-pub-4297755621988601/3100022376"
+  var bp       : BillingProcessor = _
+  val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
+  var container: Container        = _
 
-  protected override def onCreate(savedInstanceState: Bundle): Unit = {
+  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3100022376"
+  override      val layoutId              = R.layout.act_main_screen
+
+  override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.layout_with_container)
     EventBus.getDefault.register(this)
 
-    // make sure is connected or else go back to login screen
-    if (!LoLChat.isConnected) {
-      startActivity[LoginActivity]
-      finish()
-      return
-    }
+    container = new ChatContainer()
+    contentContainer.addView(container.getView, 1)
 
-    if (Prefs.getBoolean("offline-login", false)) LoLChat.appearOffline() else LoLChat.appearOnline()
-    startService[LoLHangoutsService]
-    notificationManager.cancelAll() // clear any left over notification
+    // if the container did not handle the nav icon click event then open the drawer
+    toolbar.setNavigationOnClickListener(new OnClickListener {
+      def onClick(view: View): Unit = if (!container.onNavIconClick()) sideDrawerView.openDrawer()
+    })
 
-    sideDrawer.setContentView(R.layout.layout_with_container)
-    sideDrawer.setMenuView(new SideDrawerView())
-    sideDrawer.setSlideDrawable(R.drawable.ic_navigation_drawer)
-    sideDrawer.setupUpIndicator(this)
-    sideDrawer.setDrawerIndicatorEnabled(true)
+    //    if (Prefs.getBoolean("offline-login", false)) LoLChat.appearOffline() else LoLChat.appearOnline()
+    //    startService[LoLHangoutsService]
+    //    notificationManager.cancelAll() // clear any left over notification
+    //
+    //
+    //    val tv = new TypedValue()
+    //    if (getTheme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+    //      val actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources.getDisplayMetrics)
+    //      sideDrawer.setMenuSize(getScreenWidth - actionBarHeight.toInt)
+    //    }
+    //
+    //    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    //    setUpFirstTimeLaunch()
+    //
 
-    val tv = new TypedValue()
-    if (getTheme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-      val actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources.getDisplayMetrics)
-      sideDrawer.setMenuSize(getScreenWidth - actionBarHeight.toInt)
-    }
-
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
-    setUpFirstTimeLaunch()
-
-    if (savedInstanceState != null) {
-      val contentFrag = getFragmentManager.getFragment(savedInstanceState, "contentFrag")
-      getFragmentManager.beginTransaction().replace(R.id.container, contentFrag).commit()
-      appCtx.activeFriendChat = ""
-    } else {
-      getFragmentManager.beginTransaction().add(R.id.container, ChatScreenFragment()).commit()
-    }
-    rateMyApp()
+    //    rateMyApp()
   }
 
   override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
@@ -78,27 +68,11 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       super.onActivityResult(requestCode, resultCode, data)
   }
 
-  override def onCreateOptionsMenu(menu: Menu): Boolean = {
-    getMenuInflater.inflate(R.menu.overflow, menu)
-    super.onCreateOptionsMenu(menu)
-  }
-
-  override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    item.getItemId match {
-      case android.R.id.home => if (!appCtx.isChatOpen) { sideDrawer.toggleMenu(); true } else false
-      case _                 => super.onOptionsItemSelected(item)
-    }
-  }
-
   override def onBackPressed(): Unit = {
-    // if in chat panel slide back to the friend list panel
-    if (appCtx.isChatOpen) {
-      val chatScreenFragment = getFragmentManager.findFragmentById(R.id.container).asInstanceOf[ChatScreenFragment]
-      chatScreenFragment.slidingLayout.openPane()
-      return
-    }
+    // check if container handled back press event
+    if (container.onBackPressed()) return
 
-    // go back to home screen
+    // if not, go back to home screen
     val homeScreen = new Intent(Intent.ACTION_MAIN)
     homeScreen.addCategory(Intent.CATEGORY_HOME)
     homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -107,9 +81,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   private def setUpFirstTimeLaunch() {
     if (Prefs.getBoolean("first_launch", true)) {
-      // This will animate the drawer open and closed until the user manually drags it
-      sideDrawer.peekDrawer()
-
       // setup alarm to delete msg older than a time period
       val millis = TimeUnit.DAYS.toMillis(3)
       val i = new Intent(ctx, classOf[DeleteOldMsgReceiver])
@@ -164,6 +135,26 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onBillingError(errorCode: Int, error: Throwable): Unit = {
     warn("[!] Billing Error: " + errorCode)
     bp.release()
+  }
+
+  def onEventMainThread(event: SwitchScreen): Unit = {
+    if (event.drawerTitle == DrawerItem.RemoveAds) {
+      setUpBilling(); return
+    }
+
+    container = event.drawerTitle match {
+      case DrawerItem.Chat     => new ChatContainer()
+      case DrawerItem.LiveGame => new SimpleContainer() { override def layoutId: Int = R.layout.test }
+    }
+
+    //todo: functional
+    find[SideDrawerView](R.id.drawer_layout).setDrawerListener(new SimpleDrawerListener {
+      override def onDrawerClosed(drawerView: View): Unit = {
+        // wait til drawer close animation complete before changing view to avoid UI lag
+        contentContainer.removeViewAt(1)
+        contentContainer.addView(container.getView, 1)
+      }
+    })
   }
 
   def onEvent(event: FinishMainActivity): Unit = {
