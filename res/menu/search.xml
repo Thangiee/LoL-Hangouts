@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/menu_search"
             android:title="Search"
             android:icon="@drawable/ic_action_search"
-            android:showAsAction="collapseActionView|ifRoom"
+            app:showAsAction="collapseActionView|ifRoom"
             android:orderInCategory="100"
             android:actionViewClass="android.widget.SearchView"/>
     <item
             android:id="@+id/menu_spinner_regions"
             android:title="regions"
-            android:showAsAction="always"
+            app:showAsAction="always"
             android:orderInCategory="101"
             android:actionViewClass="android.widget.Spinner"/>
 </menu>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
             android:id="@+id/menu_add_friend"
             android:title="add friend"
             android:icon="@drawable/ic_social_add_person"
             android:orderInCategory="120"
-            android:showAsAction="always"/>
+            app:showAsAction="always"/>
 </menu>
