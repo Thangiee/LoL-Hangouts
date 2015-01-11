@@ -6,9 +6,6 @@ import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, ReloadFriendCar
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   var lock        = false
   var autoRefresh = true
@@ -17,15 +14,15 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     super.initialize()
     EventBus.getDefault.register(this)
 
-    Future {
-      while (true) {
-        Thread.sleep(60 * 1000)
-        if (autoRefresh) {
-          info("[*] Auto refresh friend list")
-          refreshCardList()
-        }
-      }
-    }
+//    Future {
+//      while (true) {
+//        Thread.sleep(60 * 1000)
+//        if (autoRefresh) {
+//          info("[*] Auto refresh friend list")
+//          refreshCardList()
+//        }
+//      }
+//    }
   }
 
   override def resume(): Unit = {
