@@ -30,10 +30,14 @@ trait FriendRepoImpl extends FriendRepo {
   }
 
   override def getFriendById(id: String): Either[Exception, Friend] = {
-    if (LoLChat.isLogin)
-      Right(FriendMapper.transform(LoLChat.getFriendById(id).get))
-    else
+    if (LoLChat.isLogin) {
+      LoLChat.getFriendById(id) match {
+        case Some(friend) => Right(FriendMapper.transform(friend))
+        case None         => Left(new IllegalArgumentException(s"Can't find anyone in the friend list with id: $id"))
+      }
+    } else {
       Left(new IllegalStateException("LoLChat is not login"))
+    }
   }
 
   override def setFriendListListener(): Option[Exception] = {
@@ -42,10 +46,14 @@ trait FriendRepoImpl extends FriendRepo {
   }
 
   override def getFriendByName(name: String): Either[Exception, Friend] = {
-    if (LoLChat.isLogin)
-      Right(FriendMapper.transform(LoLChat.getFriendByName(name).get))
-    else
+    if (LoLChat.isLogin) {
+      LoLChat.getFriendByName(name) match {
+        case Some(friend) => Right(FriendMapper.transform(friend))
+        case None         => Left(new IllegalArgumentException(s"Can't find $name in the friend list"))
+      }
+    } else {
       Left(new IllegalStateException("LoLChat is not login"))
+    }
   }
 }
 

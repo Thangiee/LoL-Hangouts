@@ -23,7 +23,7 @@ case class UserFactory() {
         inGameName,
         regionId,
         LoLChat.statusMsg(),
-        PrefsCache.getString(s"friendChat-${LoLChat.loginName()}")
+        PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName()))
       )
     }
   }

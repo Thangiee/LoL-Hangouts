@@ -76,6 +76,15 @@ trait UserRepoImpl extends UserRepo {
       None
     }
   }
+
+  override def setFriendChat(friendName: String): Option[Exception] = {
+    if (!LoLChat.isLogin) {
+      Some(new IllegalStateException("LoLChat is not login"))
+    } else {
+      PrefsCache.put[String](CacheKey.friendChat(LoLChat.loginName()) → friendName)
+      None
+    }
+  }
 }
 
 object UserRepoImpl extends UserRepoImpl
