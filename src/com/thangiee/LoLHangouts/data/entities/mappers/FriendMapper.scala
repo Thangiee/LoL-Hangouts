@@ -1,7 +1,10 @@
 package com.thangiee.LoLHangouts.data.entities.mappers
 
+import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.entities.FriendEntity
-import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLStatus
+import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
+import com.thangiee.LoLHangouts.data.repository.datasources.net.core.{LoLChat, LoLStatus}
+import com.thangiee.LoLHangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.LoLHangouts.domain.entities.ChatMode.ChatMode
 import com.thangiee.LoLHangouts.domain.entities.ChatType.ChatType
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, ChatType, Friend}
@@ -13,6 +16,8 @@ object FriendMapper {
     Friend(
       friendEntity.name,
       "[0-9]+".r.findFirstIn(friendEntity.addr).getOrElse("0"),
+      PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""),
+      DB.getLastMessage(LoLChat.loginName(), friendEntity.name).map(m => Some(MessageMapper.transform(m))).getOrElse(None),
       transformChatMode(friendEntity.chatMode),
       transformChatType(friendEntity.chatType),
       friendEntity.isOnline,
