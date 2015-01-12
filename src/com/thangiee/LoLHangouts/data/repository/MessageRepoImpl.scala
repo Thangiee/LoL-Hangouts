@@ -10,7 +10,7 @@ import com.thangiee.LoLHangouts.domain.repository.MessageRepo
 
 import scala.util.{Failure, Success, Try}
 
-case class MessageRepoImpl() extends MessageRepo {
+trait MessageRepoImpl extends MessageRepo {
 
   override def getAllMessages: Either[Exception, List[Message]] = {
     Try {
@@ -90,3 +90,5 @@ case class MessageRepoImpl() extends MessageRepo {
     None
   }
 }
+
+object MessageRepoImpl extends MessageRepoImpl

@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.widget.{EditText, FrameLayout}
 import com.dd.CircularProgressButton
-import com.thangiee.LoLHangouts.data.repository.MessageRepoImpl
+import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.interactor.{GetMsgUseCaseImpl, MarkMsgReadUseCaseImp, SendMsgUseCaseImpl}
 import com.thangiee.LoLHangouts.utils._
@@ -20,7 +20,6 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
   private var friend: Option[Friend] = None
 
-  implicit val messageRepo = MessageRepoImpl()
   override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), MarkMsgReadUseCaseImp(), SendMsgUseCaseImpl())
 
   override def onAttached(): Unit = {

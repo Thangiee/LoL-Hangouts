@@ -5,7 +5,7 @@ import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
 
-case class FriendRepoImpl() extends FriendRepo {
+trait FriendRepoImpl extends FriendRepo {
 
   override def getFriendList: Either[Exception, List[Friend]] = {
     if (LoLChat.isLogin) {
@@ -48,3 +48,5 @@ case class FriendRepoImpl() extends FriendRepo {
       Left(new IllegalStateException("LoLChat is not login"))
   }
 }
+
+object FriendRepoImpl extends FriendRepoImpl
