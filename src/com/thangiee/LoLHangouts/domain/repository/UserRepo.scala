@@ -30,4 +30,6 @@ trait UserRepo {
   def setAppearanceOffline(): Option[Exception]
 
   def setStatusMsg(msg: String): Option[Exception]
+
+  def setFriendChat(friendName: String): Option[Exception]
 }

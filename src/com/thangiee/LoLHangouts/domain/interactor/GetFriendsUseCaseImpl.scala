@@ -1,6 +1,7 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
 import com.thangiee.LoLHangouts.domain.entities.Friend
+import com.thangiee.LoLHangouts.domain.exception.UserInputException
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
 import com.thangiee.LoLHangouts.domain.utils._
 
@@ -16,7 +17,7 @@ case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFri
         Nil
       },
       fl => {
-        info("[+] friends loaded")
+        info("[+] friend list loaded")
         fl
       }
     )
@@ -36,9 +37,11 @@ case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFri
   }
 
   override def loadFriendByName(name: String): Future[Friend] = Future {
+    if (name.isEmpty) throw UserInputException("friend name can not be empty")
+
     friendRepo.getFriendByName(name).fold(
       e => { error(s"[!] ${e.getMessage}", e.getCause); throw e },
-      f => { info(s"[+] friend loaded: $f"); f}
+      f => { info(s"[+] friend loaded by name: $name"); f}
     )
   }
 }
