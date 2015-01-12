@@ -7,6 +7,8 @@ case class Friend
 (
   name: String,
   id: String,
+  regionId: String,
+  latestMsg: Option[Message],
   chatMode: ChatMode,
   chatType: ChatType,
   isOnline: Boolean,
