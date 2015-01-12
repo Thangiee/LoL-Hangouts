@@ -48,7 +48,7 @@ object DB {
    * @param friendName  name of the other user
    * @return
    */
-  def getLastMessage(username:String, friendName: String): Option[MessageEntity] = {
+  def getLatestMessage(username:String, friendName: String): Option[MessageEntity] = {
     Try {
       new Select().from(classOf[MessageEntity]).where("username = ? AND friendName = ?", username, friendName)
         .orderBy("date DESC").limit(1).executeSingle[MessageEntity]()
