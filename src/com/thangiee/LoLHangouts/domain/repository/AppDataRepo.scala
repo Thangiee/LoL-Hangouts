@@ -5,7 +5,7 @@ import com.thangiee.LoLHangouts.domain.entities.{AppData, Region}
 trait AppDataRepo {
   def getAppData: Either[Exception, AppData]
 
-  def updateAppVersion(): Option[Exception]
+  def updateAppVersion(version: String): Option[Exception]
 
   def saveUsername(username: String): Option[Exception]
 

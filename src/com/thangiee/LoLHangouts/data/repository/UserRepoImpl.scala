@@ -1,6 +1,5 @@
 package com.thangiee.LoLHangouts.data.repository
 
-import android.content.Context
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.entities.mappers.UserMapper
 import com.thangiee.LoLHangouts.data.repository.datasources.UserFactory
@@ -10,7 +9,7 @@ import com.thangiee.LoLHangouts.domain.entities.{Region, User}
 import com.thangiee.LoLHangouts.domain.exception.{AuthorizationException, ConnectionException}
 import com.thangiee.LoLHangouts.domain.repository.UserRepo
 
-case class UserRepoImpl(implicit ctx: Context) extends UserRepo {
+case class UserRepoImpl() extends UserRepo {
   /**
    * try to login a user and set it as the active user
    */

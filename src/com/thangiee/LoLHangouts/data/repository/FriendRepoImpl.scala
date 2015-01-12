@@ -1,12 +1,11 @@
 package com.thangiee.LoLHangouts.data.repository
 
-import android.content.Context
 import com.thangiee.LoLHangouts.data.entities.mappers.FriendMapper
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
 
-case class FriendRepoImpl(implicit ctx: Context) extends FriendRepo {
+case class FriendRepoImpl() extends FriendRepo {
 
   override def getFriendList: Either[Exception, List[Friend]] = {
     if (LoLChat.isLogin) {

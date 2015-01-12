@@ -9,8 +9,7 @@ object AppDataMapper {
     AppData(
       appDataEntity.saveUsername,
       appDataEntity.savePassword,
-      appDataEntity.currentVersion,
-      appDataEntity.saveVersion != appDataEntity.currentVersion,
+      appDataEntity.version,
       appDataEntity.isLoginOffline,
       appDataEntity.selectedRegionId.map(id => Region.getFromId(id))
     )
