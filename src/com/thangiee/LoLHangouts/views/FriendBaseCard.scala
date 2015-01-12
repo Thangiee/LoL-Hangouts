@@ -6,8 +6,7 @@ import android.view.{ViewGroup, View}
 import android.widget.TextView
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.domain.entities.Friend
-import com.thangiee.LoLHangouts.utils.Events
-import com.thangiee.LoLHangouts.utils._
+import com.thangiee.LoLHangouts.utils.{Events, _}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.Card
 import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener
@@ -18,8 +17,6 @@ abstract class FriendBaseCard(private var friend : Friend, layoutId: Int)(implic
   with TraitView[CardView] with OnCardClickListener with TagUtil {
 
   setOnClickListener(this)
-  def nameTextView: TextView
-  def latestMsgTextView: TextView
 
   override def basis: CardView = getCardView
 
@@ -29,7 +26,7 @@ abstract class FriendBaseCard(private var friend : Friend, layoutId: Int)(implic
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
     super.setupInnerViewElements(parent, view)
-    nameTextView.setText(friend.name)
+    view.find[TextView](R.id.tv_friend_name).setText(friend.name)
   }
 
   def cardName: String = friend.name
@@ -39,6 +36,7 @@ abstract class FriendBaseCard(private var friend : Friend, layoutId: Int)(implic
   protected def friend_(friend: Friend): Unit = this.friend = friend
 
   protected def fetchLatestMessage(): Unit = {
+    val latestMsgTextView = find[TextView](R.id.tv_friend_last_msg)
     friend.latestMsg match {
       case Some(msg) =>
         // add "You:" if user sent the last msg
