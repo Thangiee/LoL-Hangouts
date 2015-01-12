@@ -2,9 +2,11 @@ package com.thangiee.LoLHangouts.ui.friendchat
 
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCase
-import com.thangiee.LoLHangouts.utils.Events.{RefreshFriendCard, ReloadFriendCardList}
+import com.thangiee.LoLHangouts.utils.Events.{UpdateOnlineFriendsCard, UpdateFriendCard, ReloadFriendCardList}
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   var lock        = false
@@ -56,28 +58,29 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     else info("[-] repopulate friend card list blocked")
   }
 
-  private def refreshCardList(): Unit = {
-    // lock use to prevent multiple calls to load list while it is already loading
-    if (!lock) {
-      lock = true
-      getFriendsUseCase.loadOnlineFriends().map(f => runOnUiThread(view.refreshCardContent(f.name)))
-      lock = false
-    }
-    else info("[-] Refresh friend cards list blocked")
-  }
-
-  def onEvent(event: ReloadFriendCardList): Unit = runOnUiThread{
+  def onEvent(event: ReloadFriendCardList): Unit = {
     info("[*] onEvent: request to reload friend list")
     loadCardList()
   }
 
-  def onEvent(event: RefreshFriendCard): Unit = runOnUiThread {
-    info("[*] onEvent: request to refresh " + event.friend.name + "friend card")
+  def onEvent(event: UpdateFriendCard): Unit = {
+    info("[*] onEvent: request to update " + event.friend.name + "friend card")
 
     // block RefreshFriendCard event when friend list is currently loading 
     if (!lock)
-      view.refreshCardContent(event.friend.name)
+      getFriendsUseCase.loadFriendByName(event.friend.name).map(f => runOnUiThread(view.updateCardContent(f)))
     else
       info("[-] Refresh friend card blocked")
+  }
+  
+  def onEvent(events: UpdateOnlineFriendsCard): Unit = {
+    info("[*] onEvent: request to update online friend cards")
+    // lock use to prevent multiple calls to load list while it is already loading
+    if (!lock) {
+      lock = true
+      getFriendsUseCase.loadOnlineFriends().map(f => runOnUiThread(view.updateCardContent(f)))
+      lock = false
+    }
+    else info("[-] update online friends card blocked")
   }
 }

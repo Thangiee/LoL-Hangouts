@@ -7,7 +7,7 @@ import android.view.{Menu, MenuInflater, View}
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
-import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
+import com.thangiee.LoLHangouts.utils.Events.{UpdateFriendCard, FriendCardClicked}
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.{Container, R}
 import de.greenrobot.event.EventBus
@@ -96,7 +96,6 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isChatOpen = false
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
     EventBus.getDefault.postSticky(Events.ClearLoginNotification()) // clear notification
-    EventBus.getDefault.postSticky(Events.ReloadFriendCardList()) // refresh friend list
   }
 
   def onEvent(event: FriendCardClicked): Unit = {
@@ -109,6 +108,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     }
 
     chatView.setFriend(event.friend)
+    EventBus.getDefault.post(UpdateFriendCard(event.friend))
     closePane()
   }
 }
