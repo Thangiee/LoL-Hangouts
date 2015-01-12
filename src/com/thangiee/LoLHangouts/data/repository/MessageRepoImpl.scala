@@ -68,7 +68,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def getLastMessage(friendName: String): Either[Exception, Option[Message]] = {
     Try {
-      DB.getLastMessage(LoLChat.loginName(), friendName)
+      DB.getLatestMessage(LoLChat.loginName(), friendName)
     } match {
       case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
