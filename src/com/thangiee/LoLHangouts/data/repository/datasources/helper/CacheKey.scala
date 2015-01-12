@@ -9,4 +9,6 @@ object CacheKey {
 
   val IsFirstLaunch = "first_launch"
   val IsAdsEnable = "is_ads_enable"
+
+  def friendChat(username: String) = "friendChat-" + username
 }
