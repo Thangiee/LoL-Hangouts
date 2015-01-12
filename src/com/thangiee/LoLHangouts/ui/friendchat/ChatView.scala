@@ -7,7 +7,7 @@ import android.widget.{EditText, FrameLayout}
 import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
-import com.thangiee.LoLHangouts.domain.interactor.{GetMsgUseCaseImpl, MarkMsgReadUseCaseImp, SendMsgUseCaseImpl}
+import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.{CustomView, R}
 
@@ -20,7 +20,8 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
   private var friend: Option[Friend] = None
 
-  override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), MarkMsgReadUseCaseImp(), SendMsgUseCaseImpl())
+  override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), MarkMsgReadUseCaseImp(), SendMsgUseCaseImpl(),
+                                             GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
@@ -53,8 +54,6 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   def showSendFail(): Unit = sendButton.setProgress(-1)
 
   def showErrorMsg(msg: String): Unit = msg.croutonWarn()
-
-  def setTitle(title: String): Unit = {} // todo: implement
 
   def clearMessageInput(): Unit = msgField.setText("")
 

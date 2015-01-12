@@ -5,7 +5,7 @@ import java.util.Date
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.exception.{SendMessageException, UserInputException}
-import com.thangiee.LoLHangouts.domain.interactor.{GetMsgUseCase, MarkMsgReadUseCase, SendMsgUseCase}
+import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.utils.Events.IncomingMessage
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
@@ -16,15 +16,28 @@ import scala.util.{Failure, Success}
 
 class ChatPresenter(view: ChatView,
                     getMessageUseCase: GetMsgUseCase, markMsgReadUseCase: MarkMsgReadUseCase,
-                    sendMsgUseCase: SendMsgUseCase) extends Presenter {
+                    sendMsgUseCase: SendMsgUseCase, getUserUseCase: GetUserUseCase,
+                    getFriendsUseCase: GetFriendsUseCase) extends Presenter {
+
+
+  override def initialize(): Unit = {
+    super.initialize()
+    // set the friend that the user last chatted with
+    for {
+      user   ← getUserUseCase.loadUser()
+      friend ← getFriendsUseCase.loadFriendByName(user.currentFriendChat.getOrElse(""))
+    } yield runOnUiThread {
+      view.setFriend(friend)
+    }
+  }
 
   override def resume(): Unit = {
     super.resume()
     EventBus.getDefault.register(this)
 
     view.getFriend match {
-      case Some(f) => view.setHint(s"Send to ${f.name}"); view.setTitle(f.name)
-      case None    => view.setHint("Send to NOBODY"); view.setTitle("NOBODY")
+      case Some(f) => view.setHint(s"Send to ${f.name}")
+      case None    => view.setHint("Send to NOBODY")
     }
 
     view.getFriend.map(f => {
@@ -61,7 +74,6 @@ class ChatPresenter(view: ChatView,
   def handleFriendChange(friend: Friend): Unit = {
     view.clearMessages()
     view.setHint(s"Send to ${friend.name}")
-    view.setTitle(friend.name)
     loadAndShowMessages()
   }
 
