@@ -18,7 +18,7 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
     if (pass.isEmpty) throw UserInputException("password can't be empty")
 
     if (!user.isEmpty && !pass.isEmpty) {
-      userRepo.loginUser(user, pass).map {
+      userRepo.loginUser(user.replace(" ", ""), pass).map {
         case e: AuthorizationException => info(s"[-] ${e.getMessage}"); throw e
         case e: ConnectionException    => info(s"[-] ${e.getMessage}"); throw e
         case e: Exception              => error(s"[!] ${e.getMessage}", e.getCause); throw e
