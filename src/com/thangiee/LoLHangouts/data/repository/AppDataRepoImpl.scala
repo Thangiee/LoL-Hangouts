@@ -1,6 +1,5 @@
 package com.thangiee.LoLHangouts.data.repository
 
-import android.content.Context
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.entities.mappers.AppDataMapper
 import com.thangiee.LoLHangouts.data.repository.datasources.AppDataFactory
@@ -9,15 +8,14 @@ import com.thangiee.LoLHangouts.domain.entities.{AppData, Region}
 import com.thangiee.LoLHangouts.domain.repository.AppDataRepo
 import thangiee.riotapi.core.RiotApi
 
-case class AppDataRepoImpl(implicit ctx: Context) extends AppDataRepo {
+case class AppDataRepoImpl() extends AppDataRepo {
 
   override def getAppData: Either[Exception, AppData] = {
-    AppDataFactory(ctx).createAppDataEntity().right.map(AppDataMapper.transform)
+    AppDataFactory().createAppDataEntity().right.map(AppDataMapper.transform)
   }
 
-  override def updateAppVersion(): Option[Exception] = {
-    val currentVersion = ctx.getPackageManager.getPackageInfo(ctx.getPackageName, 0).versionName
-    PrefsCache.put[String](CacheKey.AppVersion → currentVersion)
+  override def updateAppVersion(version: String): Option[Exception] = {
+    PrefsCache.put[String](CacheKey.AppVersion → version)
     None
   }
 

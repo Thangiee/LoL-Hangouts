@@ -30,6 +30,8 @@ trait LoginView {
 
   def getUsername: String
 
+  def getCurrentAppVersion: String
+
   def showLoginOffline(isEnable: Boolean): Unit
   
   def showSaveUsername(isEnable: Boolean): Unit

@@ -8,7 +8,7 @@ import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{MainActivity, RegionSelectionActivity, TActivity}
 import com.thangiee.LoLHangouts.data.repository.{AppDataRepoImpl, UserRepoImpl}
-import com.thangiee.LoLHangouts.domain.interactor.{CheckNewVerUseCaseImpl, LoginUseCaseImpl}
+import com.thangiee.LoLHangouts.domain.interactor.LoginUseCaseImpl
 import com.thangiee.LoLHangouts.utils._
 
 class LoginActivity extends TActivity with LoginView {
@@ -21,7 +21,7 @@ class LoginActivity extends TActivity with LoginView {
 
   implicit val appDataRepo  = AppDataRepoImpl()
   implicit val userRepoImpl = UserRepoImpl()
-  override val presenter    = new LoginPresenter(this, CheckNewVerUseCaseImpl(), LoginUseCaseImpl())
+  override val presenter    = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId     = R.layout.login
 
   override def onCreate(b: Bundle): Unit = {
@@ -103,4 +103,6 @@ class LoginActivity extends TActivity with LoginView {
   override def showSaveUsername(isEnable: Boolean): Unit = saveUserCheckBox.setChecked(isEnable)
 
   override def showSavePassword(isEnable: Boolean): Unit = savePassCheckBox.setChecked(isEnable)
+
+  override def getCurrentAppVersion: String = getPackageManager.getPackageInfo(ctx.getPackageName, 0).versionName
 }

@@ -8,7 +8,7 @@ import com.thangiee.LoLHangouts.utils._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, loginUseCase: LoginUseCase) extends Presenter {
+class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presenter {
 
   override def resume(): Unit = {
     super.resume()
@@ -25,10 +25,7 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
             if (!username.isEmpty) view.showSaveUsername(isEnable = true)
             if (!password.isEmpty) view.showSavePassword(isEnable = true)
 
-            info("[*] checking for new app version")
-            checkVerUseCase.checkForNewVersion().onSuccess {
-              case (isNewVersion, _) => if (isNewVersion) runOnUiThread(view.showChangeLog())
-            }
+            checkAndUpdateAppVersion()
           case None         =>
             view.navigateBack()
         }
@@ -60,5 +57,16 @@ class LoginPresenter(view: LoginView, checkVerUseCase: CheckNewVerUseCase, login
   def showFailure(e: Throwable): Unit = e match {
     case e@(_: UserInputException | _: AuthorizationException | _: ConnectionException) =>
       runOnUiThread(view.showErrorMsg(e.getMessage))
+  }
+
+  private def checkAndUpdateAppVersion(): Unit = {
+    info("[*] checking for new app version")
+    loginUseCase.loadAppVersion().map { oldVer =>
+      val currentVersion = view.getCurrentAppVersion
+      if (oldVer != currentVersion) {
+        loginUseCase.updateAppVersion(currentVersion)
+        runOnUiThread(view.showChangeLog())
+      }
+    }
   }
 }

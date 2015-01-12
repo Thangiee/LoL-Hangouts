@@ -38,5 +38,18 @@ case class LoginUseCaseImpl(implicit userRepo: UserRepo, appDataRepo: AppDataRep
     appDataRepo.savePassword(password)
     appDataRepo.setLoginOffline(isLoginOffline)
   }
+
+  override def updateAppVersion(version: String): Future[Unit] = Future {
+    appDataRepo.updateAppVersion(version)
+      .map(e => { error(s"[!] ${e.getMessage}", e.getCause); throw e })
+      .getOrElse(info(s"[+] updated app version to $version"))
+  }
+
+  override def loadAppVersion(): Future[Version] = Future {
+    appDataRepo.getAppData.fold(
+      e    => { error(s"[!] ${e.getMessage}", e.getCause); throw e },
+      data => data.version
+    )
+  }
 }
 
