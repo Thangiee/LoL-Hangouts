@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 import com.thangiee.LoLHangouts.CustomView
-import com.thangiee.LoLHangouts.data.repository.FriendRepoImpl
+import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
 import com.thangiee.LoLHangouts.utils.Logger._
@@ -15,7 +15,6 @@ import scala.collection.JavaConversions._
 
 class FriendListView(implicit ctx: Context) extends CardListView(ctx) with CustomView {
 
-  implicit val friendRepo = new FriendRepoImpl()
   override val presenter = new FriendListPresenter(this, GetFriendsUseCaseImpl())
 
   val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()

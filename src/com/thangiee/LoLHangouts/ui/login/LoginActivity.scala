@@ -7,7 +7,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{MainActivity, RegionSelectionActivity, TActivity}
-import com.thangiee.LoLHangouts.data.repository.{AppDataRepoImpl, UserRepoImpl}
+import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.LoginUseCaseImpl
 import com.thangiee.LoLHangouts.utils._
 
@@ -19,8 +19,6 @@ class LoginActivity extends TActivity with LoginView {
   lazy val savePassCheckBox     = find[CheckBox](R.id.cb_save_pass)
   lazy val offlineLoginCheckBox = find[CheckBox](R.id.cb_offline_login)
 
-  implicit val appDataRepo  = AppDataRepoImpl()
-  implicit val userRepoImpl = UserRepoImpl()
   override val presenter    = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId     = R.layout.login
 

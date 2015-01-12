@@ -8,7 +8,7 @@ import com.thangiee.LoLHangouts.domain.entities.{AppData, Region}
 import com.thangiee.LoLHangouts.domain.repository.AppDataRepo
 import thangiee.riotapi.core.RiotApi
 
-case class AppDataRepoImpl() extends AppDataRepo {
+trait AppDataRepoImpl extends AppDataRepo {
 
   override def getAppData: Either[Exception, AppData] = {
     AppDataFactory().createAppDataEntity().right.map(AppDataMapper.transform)
@@ -40,3 +40,5 @@ case class AppDataRepoImpl() extends AppDataRepo {
     None
   }
 }
+
+object AppDataRepoImpl extends AppDataRepoImpl

@@ -3,13 +3,13 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
-import android.view.{MenuInflater, Menu, View}
+import android.view.{Menu, MenuInflater, View}
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
-import com.thangiee.LoLHangouts.{R, Container}
-import com.thangiee.LoLHangouts.data.repository.UserRepoImpl
+import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.utils.Events.FriendCardClicked
 import com.thangiee.LoLHangouts.utils._
+import com.thangiee.LoLHangouts.{Container, R}
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,7 +18,6 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   lazy val friendListView = new FriendListView()
   lazy val chatView       = new ChatView()
 
-  implicit val userRepo = new UserRepoImpl()
   val getUserUseCase = new GetUserUseCaseImpl()
 
   override def onAttachedToWindow(): Unit = {

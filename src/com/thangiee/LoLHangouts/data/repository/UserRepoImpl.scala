@@ -9,7 +9,7 @@ import com.thangiee.LoLHangouts.domain.entities.{Region, User}
 import com.thangiee.LoLHangouts.domain.exception.{AuthorizationException, ConnectionException}
 import com.thangiee.LoLHangouts.domain.repository.UserRepo
 
-case class UserRepoImpl() extends UserRepo {
+trait UserRepoImpl extends UserRepo {
   /**
    * try to login a user and set it as the active user
    */
@@ -77,3 +77,5 @@ case class UserRepoImpl() extends UserRepo {
     }
   }
 }
+
+object UserRepoImpl extends UserRepoImpl
