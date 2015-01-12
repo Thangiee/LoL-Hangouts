@@ -37,17 +37,17 @@ class FriendListView(implicit ctx: Context) extends CardListView(ctx) with Custo
     cardArrayAdapter.notifyDataSetChanged()
   }
 
-  def refreshCardContent(friendName: String): Unit = {
+  def updateCardContent(friend: Friend): Unit = {
     for (i <- 0 until cardArrayAdapter.getCount) {
       val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[FriendBaseCard] // get the card view
-      if (baseCard.cardName.toLowerCase == friendName.toLowerCase) {
-        info(s"[+] Found $friendName card")
-        baseCard.refreshCard()
+      if (baseCard.cardName.toLowerCase == friend.name.toLowerCase) {
+        info(s"[+] Found ${friend.name} card")
+        baseCard.update(friend)
         cardArrayAdapter.notifyDataSetChanged()
         return
       }
     }
-    warn(s"[-] No card found for $friendName")
+    warn(s"[-] No card found for ${friend.name}")
   }
 
   def showLoading(): Unit = {
