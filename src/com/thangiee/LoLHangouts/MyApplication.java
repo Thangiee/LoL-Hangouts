@@ -30,11 +30,8 @@ import java.util.Set;
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text)
 public class MyApplication extends Application {
-    public Region selectedRegion;
-    public String currentUser = "";
     public boolean isFriendListOpen = false;
     public boolean isChatOpen = false;
-    public String activeFriendChat = "";
     public Set<String> FriendsToNotifyOnAvailable = new HashSet<>();
 
     @Override
@@ -46,9 +43,7 @@ public class MyApplication extends Application {
     }
 
     public void resetState() {
-        currentUser = "";
         isFriendListOpen = false;
         isChatOpen = false;
-        activeFriendChat = "";
     }
 }
