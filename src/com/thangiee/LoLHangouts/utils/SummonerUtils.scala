@@ -6,6 +6,9 @@ import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
 
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
 object SummonerUtils {
 
   def loadProfileIcon(name: String, regionId: String, imageView: ImageView)(implicit ctx: Context): Unit = {
@@ -24,7 +27,7 @@ object SummonerUtils {
       .into(imageView)
   }
 
-  def getProfileIcon(name: String, regionId: String, sideDip: Int)(implicit ctx: Context): Drawable = {
+  def getProfileIcon(name: String, regionId: String, sideDip: Int)(implicit ctx: Context): Future[Drawable] = Future {
     val m = ctx.getResources.getDisplayMetrics
     val s = (sideDip * m.density).toInt
     Picasso.`with`(ctx).load(SummonerUtils.profileIconUrl(name, regionId))

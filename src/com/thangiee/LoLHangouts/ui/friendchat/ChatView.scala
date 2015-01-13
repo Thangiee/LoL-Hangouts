@@ -1,7 +1,6 @@
 package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.widget.{EditText, FrameLayout}
 import com.dd.CircularProgressButton
@@ -12,6 +11,7 @@ import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.{CustomView, R}
 
 import scala.collection.JavaConversions._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
@@ -20,8 +20,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
   private var friend: Option[Friend] = None
 
-  override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), MarkMsgReadUseCaseImp(), SendMsgUseCaseImpl(),
-                                             GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
+  override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), SendMsgUseCaseImpl(), GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
@@ -64,12 +63,18 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
   }
 
-  def setUserIcon(icon: Drawable): Unit = {
-    messageAdapter.setSenderDrawable(icon)
+  def setUserIcon(username: String, regionId: String): Unit = {
+    SummonerUtils.getProfileIcon(username, regionId, 55).map { icon =>
+      runOnUiThread(messageAdapter.setSenderDrawable(icon))
+      runOnUiThread(messageAdapter.notifyDataSetChanged())
+    }
   }
 
-  def setFriendIcon(icon: Drawable): Unit ={
-    messageAdapter.setRecipientDrawable(icon)
+  def setFriendIcon(friendName: String, regionId: String): Unit = {
+    SummonerUtils.getProfileIcon(friendName, regionId, 55).map { icon =>
+      runOnUiThread(messageAdapter.setRecipientDrawable(icon))
+      runOnUiThread(messageAdapter.notifyDataSetChanged())
+    }
   }
 
   def playMsgSentSound(): Unit = {

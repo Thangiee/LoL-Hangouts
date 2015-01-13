@@ -15,19 +15,21 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 class ChatPresenter(view: ChatView,
-                    getMessageUseCase: GetMsgUseCase, markMsgReadUseCase: MarkMsgReadUseCase,
-                    sendMsgUseCase: SendMsgUseCase, getUserUseCase: GetUserUseCase,
-                    getFriendsUseCase: GetFriendsUseCase) extends Presenter {
+                    getMessageUseCase: GetMsgUseCase, sendMsgUseCase: SendMsgUseCase,
+                    getUserUseCase: GetUserUseCase, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
 
 
   override def initialize(): Unit = {
     super.initialize()
-    // set the friend that the user last chatted with
-    for {
-      user   ← getUserUseCase.loadUser()
-      friend ← getFriendsUseCase.loadFriendByName(user.currentFriendChat.getOrElse(""))
-    } yield runOnUiThread {
-      view.setFriend(friend)
+
+    getUserUseCase.loadUser().map { user =>
+      runOnUiThread(view.setUserIcon(user.loginName, user.region.id))
+
+      // setup the friend that the user last chatted with
+      getFriendsUseCase.loadFriendByName(user.currentFriendChat.getOrElse("")).map(friend => runOnUiThread {
+        view.setFriend(friend)
+        view.setFriendIcon(friend.name, friend.regionId)
+      })
     }
   }
 
@@ -39,11 +41,6 @@ class ChatPresenter(view: ChatView,
       case Some(f) => view.setHint(s"Send to ${f.name}")
       case None    => view.setHint("Send to NOBODY")
     }
-
-    view.getFriend.map(f => {
-      info("[*] mark messages in chat between user and friend as read")
-      markMsgReadUseCase.markAsRead(f.name)
-    })
 
     loadAndShowMessages()
   }

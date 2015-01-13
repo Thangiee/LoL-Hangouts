@@ -11,7 +11,7 @@ object Events {
   case class IncomingMessage(from: Friend, msg: Message)
   case class FriendCardClicked(friend: Friend)
   case class ReloadFriendCardList()
-  case class UpdateFriendCard(friend: Friend)
+  case class UpdateFriendCard(friendName: String)
   case class UpdateOnlineFriendsCard()
   case class ClearChatNotification()
   case class ClearLoginNotification()

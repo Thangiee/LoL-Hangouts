@@ -64,11 +64,11 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
   }
 
   def onEvent(event: UpdateFriendCard): Unit = {
-    info("[*] onEvent: request to update " + event.friend.name + "friend card")
+    info("[*] onEvent: request to update " + event.friendName + "friend card")
 
     // block RefreshFriendCard event when friend list is currently loading 
     if (!lock)
-      getFriendsUseCase.loadFriendByName(event.friend.name).map(f => runOnUiThread(view.updateCardContent(f)))
+      getFriendsUseCase.loadFriendByName(event.friendName).map(f => runOnUiThread(view.updateCardContent(f)))
     else
       info("[-] Refresh friend card blocked")
   }
