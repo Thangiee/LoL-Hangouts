@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-class ChatPresenter(view: ChatView,
+class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
                     getMessageUseCase: GetMsgUseCase, sendMsgUseCase: SendMsgUseCase,
                     getUserUseCase: GetUserUseCase, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
 
@@ -72,6 +72,12 @@ class ChatPresenter(view: ChatView,
     view.clearMessages()
     view.setHint(s"Send to ${friend.name}")
     loadAndShowMessages()
+  }
+
+  def handleDeleteMessages(): Unit = {
+    view.getFriend.map { f =>
+      deleteMsgUseCase.deleteAllMessages(f.name).map(_ => runOnUiThread(view.clearMessages()))
+    }
   }
 
   private def loadAndShowMessages(): Unit = {

@@ -8,19 +8,21 @@ import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.utils._
+import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
-  lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
-  lazy val msgField        = find[EditText](R.id.et_msg_field)
-  lazy val messageAdapter  = new MessageAdapter(ctx, 0)
-  lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
+  lazy    val sendButton             = find[CircularProgressButton](R.id.btn_send_msg)
+  lazy    val msgField               = find[EditText](R.id.et_msg_field)
+  lazy    val messageAdapter         = new MessageAdapter(ctx, 0)
+  lazy    val messageListView        = find[MessagesListView](R.id.lsv_chat)
   private var friend: Option[Friend] = None
 
-  override val presenter = new ChatPresenter(this, GetMsgUseCaseImpl(), SendMsgUseCaseImpl(), GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
+  override val presenter = new ChatPresenter(this, DeleteMsgUseCaseImpl(), GetMsgUseCaseImpl(), SendMsgUseCaseImpl(),
+                                                   GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
@@ -61,6 +63,14 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   def showMessages(messages: List[Message]) = {
     messageAdapter.addAll(messages)
     messageListView.setSelection(messageAdapter.getCount - 1) // scroll to the bottom (newer messages)
+  }
+
+  def showDeleteMessageDialog(): Unit = {
+    ConfirmDialog(
+      msg = R.string.dialog_delete_message.r2String,
+      btnTitle = "Delete",
+      code2run = presenter.handleDeleteMessages()
+    ).show()
   }
 
   def setUserIcon(username: String, regionId: String): Unit = {

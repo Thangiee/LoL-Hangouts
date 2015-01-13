@@ -3,7 +3,7 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
-import android.view.{Menu, MenuInflater, View}
+import android.view.{Menu, MenuInflater, MenuItem, View}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.data.repository._
@@ -57,6 +57,13 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     true
   }
 
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    item.getItemId match {
+      case R.id.menu_delete => chatView.showDeleteMessageDialog(); true
+      case _                => false
+    }
+  }
+
   override def onNavIconClick(): Boolean = {
     if (appCtx.isChatOpen) {
       openPane()
@@ -86,7 +93,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
-    getUserUseCase.loadUser().map{ user =>
+    getUserUseCase.loadUser().map { user =>
       user.currentFriendChat.map { friendName =>
         info(s"[*] mark messages in chat between user and $friendName as read")
         markMsgReadUseCase.markAsRead(friendName)
