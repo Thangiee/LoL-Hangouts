@@ -81,7 +81,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     }
 
     msgEntity.save() // save to DB
-    EventBus.getDefault.post(Events.UpdateFriendCard(from))
+    EventBus.getDefault.post(Events.UpdateFriendCard(from.name))
 
     val msg = MessageMapper.transform(msgEntity)
     EventBus.getDefault.post(Events.IncomingMessage(from, msg))
@@ -140,7 +140,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val f = FriendMapper.transform(friend)
     info("[*] Available: " + f.name)
     if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(f)
-    EventBus.getDefault.post(UpdateFriendCard(f))
+    EventBus.getDefault.post(UpdateFriendCard(f.name))
   }
 
   override def onFriendLogin(friend: FriendEntity): Unit = {
@@ -157,12 +157,12 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def onFriendBusy(friend: FriendEntity): Unit = {
     info("[*] Busy: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(FriendMapper.transform(friend)))
+    EventBus.getDefault.post(UpdateFriendCard(friend.name))
   }
 
   override def onFriendAway(friend: FriendEntity): Unit = {
     info("[*] Away: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(FriendMapper.transform(friend)))
+    EventBus.getDefault.post(UpdateFriendCard(friend.name))
   }
 
   override def onFriendLogOff(friend: FriendEntity): Unit = {
@@ -172,7 +172,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def onFriendStatusChange(friend: FriendEntity): Unit = {
     info("[*] Change Status: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(FriendMapper.transform(friend)))
+    EventBus.getDefault.post(UpdateFriendCard(friend.name))
   }
 
   //=============================================

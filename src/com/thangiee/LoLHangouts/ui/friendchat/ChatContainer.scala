@@ -7,7 +7,7 @@ import android.view.{Menu, MenuInflater, View}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.data.repository._
-import com.thangiee.LoLHangouts.domain.interactor.{GetUserUseCaseImpl, SetActiveChatUseCaseImpl}
+import com.thangiee.LoLHangouts.domain.interactor.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
 import com.thangiee.LoLHangouts.utils.Events.{FriendCardClicked, UpdateFriendCard}
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.{Container, R}
@@ -22,6 +22,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
 
   val getUserUseCase       = GetUserUseCaseImpl()
   val setActiveChatUseCase = SetActiveChatUseCaseImpl()
+  val markMsgReadUseCase   = MarkMsgReadUseCaseImp()
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
@@ -31,12 +32,6 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     addView(chatView)
 
     navIcon.setIconState(MaterialMenuDrawable.IconState.BURGER)
-
-    getUserUseCase.loadUser().map { user =>
-      info("[*] loading user info to use in load user summoner icon")
-      val icon = SummonerUtils.getProfileIcon(user.inGameName, user.region.id, 55)
-      runOnUiThread(chatView.setUserIcon(icon))
-    }
 
     openPane() // show the friend list
     setPanelSlideListener(this)
@@ -91,6 +86,13 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
+    getUserUseCase.loadUser().map{ user =>
+      user.currentFriendChat.map { friendName =>
+        info(s"[*] mark messages in chat between user and $friendName as read")
+        markMsgReadUseCase.markAsRead(friendName)
+        EventBus.getDefault.post(UpdateFriendCard(friendName))
+      }
+    }
   }
 
   override def onPanelOpened(view: View): Unit = {
@@ -107,6 +109,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     info(s"[*] onEvent: ${event.friend.name} friend card clicked")
     toolbar.setTitle(event.friend.name)
     chatView.clearMessages()
+    setActiveChatUseCase.setActiveChat(event.friend)
     closePane()
 
     Future {
@@ -114,12 +117,9 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
       // to avoid laggy sliding animation
       while (appCtx.isFriendListOpen) {}
 
-      val icon = SummonerUtils.getProfileIcon(event.friend.name, event.friend.regionId, 55)
       runOnUiThread {
-        setActiveChatUseCase.setActiveChat(event.friend)
-        chatView.setFriendIcon(icon)
+        chatView.setFriendIcon(event.friend.name, event.friend.regionId)
         chatView.setFriend(event.friend)
-        EventBus.getDefault.post(UpdateFriendCard(event.friend))
       }
     }
   }
