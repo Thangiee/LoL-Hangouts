@@ -35,6 +35,11 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     }
   }
 
+  def isAppInForeground(implicit ctx: Context): Boolean = {
+    val tasks = activityManager.getRunningTasks(Integer.MAX_VALUE)
+    tasks.get(0).topActivity.getPackageName == appCtx.getPackageName
+  }
+
   def screenAbsWidth(implicit ctx: Context): Int = {
     val display = ctx.asInstanceOf[ActionBarActivity].getWindowManager.getDefaultDisplay
     val size = new Point()
