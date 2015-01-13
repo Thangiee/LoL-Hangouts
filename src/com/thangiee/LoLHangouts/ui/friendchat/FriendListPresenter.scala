@@ -1,8 +1,10 @@
 package com.thangiee.LoLHangouts.ui.friendchat
 
+import android.os.Handler
+import com.github.nscala_time.time.Imports._
 import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCase
-import com.thangiee.LoLHangouts.utils.Events.{UpdateOnlineFriendsCard, UpdateFriendCard, ReloadFriendCardList}
+import com.thangiee.LoLHangouts.utils.Events.{ReloadFriendCardList, UpdateFriendCard, UpdateOnlineFriendsCard}
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 
@@ -10,26 +12,23 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   var lock        = false
-  var autoRefresh = true
+  val autoUpdateHandler = new Handler()
+  val autoUpdateTask = new Runnable {
+    override def run(): Unit = {
+      info("[*] Auto updating online friend cards")
+      EventBus.getDefault.post(UpdateOnlineFriendsCard())
+      handler.postDelayed(this, 1.minutes.millis)
+    }
+  }
 
   override def initialize(): Unit = {
     super.initialize()
     EventBus.getDefault.register(this)
-
-//    Future {
-//      while (true) {
-//        Thread.sleep(60 * 1000)
-//        if (autoRefresh) {
-//          info("[*] Auto refresh friend list")
-//          refreshCardList()
-//        }
-//      }
-//    }
   }
 
   override def resume(): Unit = {
     super.resume()
-    autoRefresh = true
+    handler.postDelayed(autoUpdateTask, 1.minutes.millis)
 
     view.showLoading()
     loadCardList()
@@ -38,7 +37,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
 
   override def pause(): Unit = {
     super.pause()
-    autoRefresh = false
+    handler.removeCallbacksAndMessages(null)
   }
 
   override def shutdown(): Unit = {
