@@ -66,7 +66,7 @@ object DB {
    * @return
    */
   def getUnreadMessages(username:String, n: Int = Int.MaxValue): List[MessageEntity] = {
-    new Select().from(classOf[MessageEntity]).where("username = ? AND isRead = false", username)
+    new Select().from(classOf[MessageEntity]).where("username = ? AND isRead = 0", username)
       .orderBy("date DESC").limit(n).execute[MessageEntity]().reverse.toList
   }
 
@@ -78,7 +78,7 @@ object DB {
    * @return
    */
   def getUnreadMessages(username: String, friendName: String): List[MessageEntity] = {
-    new Select().from(classOf[MessageEntity]).where("username = ? AND friendName = ? AND isRead = false", username, friendName)
+    new Select().from(classOf[MessageEntity]).where("username = ? AND friendName = ? AND isRead = 0", username, friendName)
       .orderBy("date DESC").execute[MessageEntity]().reverse.toList
   }
 }
