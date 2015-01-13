@@ -104,7 +104,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
     val dialog = new AlertDialog.Builder(ctx)
       .setView(view)
-      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {presenter.handleChangeStatusMsg(input.getText.toString)})
+      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {presenter.handleChangeStatusMsg(input.txt2str)})
       .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
       .create()
 
