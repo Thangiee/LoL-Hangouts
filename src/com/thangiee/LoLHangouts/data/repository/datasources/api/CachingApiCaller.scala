@@ -31,5 +31,5 @@ class CachingApiCaller extends ApiCaller with TagUtil {
           case Failure(e) => Left(RiotException("Service unavailable", ServiceUnavailable))
         }
     }
-  }.left.map(e => {warn(s"[!] ${e.msg}"); e}) // log any RiotException
+  }.left.map(e => {warn(s"[!] ${e.msg}: $url"); e}) // log any RiotException
 }
