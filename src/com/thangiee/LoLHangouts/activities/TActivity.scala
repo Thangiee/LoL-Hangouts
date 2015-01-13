@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
 import android.support.v7.widget.Toolbar
 import android.view._
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.data.cache.{PrefsCache, MemCache}
+import com.thangiee.LoLHangouts.data.cache.{MemCache, PrefsCache}
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
@@ -107,7 +107,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   }
 
   def onEvent(event: ShowNiftyNotification): Unit = {
-    if (find[RelativeLayout](R.id.nifty_view) != null) {
+    if (find[FrameLayout](R.id.crouton_holder) != null) {
       val cfg = new Configuration.Builder()
         .setAnimDuration(700)
         .setDispalyDuration(3000)
@@ -125,7 +125,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
         val senderIcon = Picasso.`with`(ctx).load(url).error(R.drawable.ic_load_unknown).get()
 
         runOnUiThread {
-          NiftyNotificationView.build(this, s"${msg.friendName}: ${msg.text}", Effects.thumbSlider, R.id.nifty_view, cfg)
+          NiftyNotificationView.build(this, s"${msg.friendName}: ${msg.text}", Effects.thumbSlider, R.id.crouton_holder, cfg)
             .setIcon(new BitmapDrawable(getResources, senderIcon))
             // switch to the sender chat if notification is clicked
             .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.friendName).map(f => ctx.startActivity(QuickChatActivity(f.name))))

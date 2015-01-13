@@ -65,7 +65,9 @@
             android:id="@+id/tv_friend_last_msg"
             android:layout_alignBottom="@+id/img_profile_icon"
             android:layout_toRightOf="@+id/img_profile_icon"
-            android:paddingRight="8dp"/>
+            android:paddingRight="8dp"
+            android:layout_alignRight="@+id/tv_friend_status"
+            android:layout_alignEnd="@+id/tv_friend_status"/>
 
     <ImageView
             android:layout_width="34dp"
