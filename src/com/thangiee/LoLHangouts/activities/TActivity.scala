@@ -13,7 +13,8 @@ import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.data.cache.MemCache
+import com.thangiee.LoLHangouts.data.cache.{PrefsCache, MemCache}
+import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
@@ -120,7 +121,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
       Future {
         val msg = event.msg
-        val url = SummonerUtils.profileIconUrl(msg.friendName, appCtx.selectedRegion.id)
+        val url = SummonerUtils.profileIconUrl(msg.friendName, PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""))
         val senderIcon = Picasso.`with`(ctx).load(url).error(R.drawable.ic_load_unknown).get()
 
         runOnUiThread {
