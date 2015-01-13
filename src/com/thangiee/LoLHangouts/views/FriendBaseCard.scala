@@ -13,8 +13,10 @@ import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener
 import it.gmariotti.cardslib.library.view.CardView
 import org.scaloid.common.{TagUtil, TraitView}
 
-abstract class FriendBaseCard(private var friend : Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId)
-  with TraitView[CardView] with OnCardClickListener with TagUtil {
+import scala.util.Try
+
+abstract class FriendBaseCard(private var friend: Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId)
+with TraitView[CardView] with OnCardClickListener with TagUtil {
 
   setOnClickListener(this)
 
@@ -35,8 +37,8 @@ abstract class FriendBaseCard(private var friend : Friend, layoutId: Int)(implic
 
   protected def friend_(friend: Friend): Unit = this.friend = friend
 
-  protected def fetchLatestMessage(): Unit = {
-    val latestMsgTextView = find[TextView](R.id.tv_friend_last_msg)
+  protected def fetchLatestMessage(): Unit = Try {
+    val latestMsgTextView = find[TextView](R.id.tv_friend_last_msg) // use Try since possible NPE
     friend.latestMsg match {
       case Some(msg) =>
         // add "You:" if user sent the last msg
