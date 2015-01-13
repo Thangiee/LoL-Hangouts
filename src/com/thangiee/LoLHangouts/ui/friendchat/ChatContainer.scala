@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view.{Menu, MenuInflater, View}
+import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{GetUserUseCaseImpl, SetActiveChatUseCaseImpl}
@@ -28,6 +29,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     removeAllViews()
     addView(friendListView)
     addView(chatView)
+
+    navIcon.setIconState(MaterialMenuDrawable.IconState.BURGER)
 
     getUserUseCase.loadUser().map { user =>
       info("[*] loading user info to use in load user summoner icon")
@@ -78,7 +81,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   override def getView: View = this
 
   override def onPanelSlide(view: View, v: Float): Unit = {
-    materialMenu.setTransformationOffset(AnimationState.BURGER_ARROW, 1 - v)
+    navIcon.setTransformationOffset(AnimationState.BURGER_ARROW, 1 - v)
   }
 
   override def onPanelClosed(view: View): Unit = {

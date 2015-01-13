@@ -10,7 +10,7 @@ trait Container extends AnyRef with TagUtil {
 
   // assuming the parent activity is an instance of TActivity
   val toolbar = getContext.asInstanceOf[TActivity].toolbar
-  val materialMenu = getContext.asInstanceOf[TActivity].navIcon
+  val navIcon = getContext.asInstanceOf[TActivity].navIcon
 
   def getView: View
 
