@@ -2,6 +2,7 @@ package com.thangiee.LoLHangouts.utils
 
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
 
 trait Helpers extends org.scaloid.common.Helpers with ViewHelpers
 
@@ -17,5 +18,9 @@ trait ViewHelpers {
         case _ =>
       }
     }
+  }
+
+  implicit class BetterTextView(tv: TextView) {
+    def txt2str: String = tv.getText.toString
   }
 }

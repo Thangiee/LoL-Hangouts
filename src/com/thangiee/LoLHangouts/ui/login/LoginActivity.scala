@@ -28,7 +28,7 @@ class LoginActivity extends TActivity with LoginView {
     logInButton.setIndeterminateProgressMode(true)
     logInButton.onClick { v: View =>
       if (logInButton.getProgress == -1) logInButton.setProgress(0)
-      else presenter.handleLogin(userEditText.getText.toString, passwordEditText.getText.toString)
+      else presenter.handleLogin(userEditText.txt2str, passwordEditText.txt2str)
     }
 
     navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
@@ -90,9 +90,9 @@ class LoginActivity extends TActivity with LoginView {
 
   override def setUsername(name: String): Unit = userEditText.setText(name)
 
-  override def getPassword: String = if (savePassCheckBox.isChecked) passwordEditText.getText.toString else ""
+  override def getPassword: String = if (savePassCheckBox.isChecked) passwordEditText.txt2str else ""
 
-  override def getUsername: String = if (saveUserCheckBox.isChecked) userEditText.getText.toString else ""
+  override def getUsername: String = if (saveUserCheckBox.isChecked) userEditText.txt2str else ""
 
   override def isLoginOffline: Boolean = offlineLoginCheckBox.isChecked
 

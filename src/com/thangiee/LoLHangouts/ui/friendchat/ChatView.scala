@@ -26,7 +26,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
     super.onAttached()
     addView(layoutInflater.inflate(R.layout.chat_view, null))
 
-    sendButton.onClick(presenter.handleMessageSend(msgField.getText.toString))
+    sendButton.onClick(presenter.handleMessageSend(msgField.txt2str))
     sendButton.setIndeterminateProgressMode(true)
 
     messageListView.setAdapter(messageAdapter)
