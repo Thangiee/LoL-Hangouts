@@ -133,7 +133,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
   def showIsOfflineMsg(): Unit = {
     val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
-    Crouton.makeText(ctx.asInstanceOf[ActionBarActivity], R.string.offline_mode_warning.r2String, customStyle)
+    Crouton.makeText(ctx.asInstanceOf[ActionBarActivity], R.string.offline_mode_warning.r2String, customStyle, R.id.crouton_holder)
       .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build())
       .show()
   }

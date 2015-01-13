@@ -10,6 +10,7 @@ import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
 import com.ami.fundapter.interfaces.ItemClickListener
+import com.thangiee.LoLHangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 
 
@@ -35,7 +36,7 @@ trait ConversionImplicits {
   }
 
   implicit class StringConversion(string: String)(implicit ctx: Context) {
-    def makeCrouton(style: Style, duration: Int): Crouton = Crouton.makeText(ctx.asInstanceOf[Activity], string, style)
+    def makeCrouton(style: Style, duration: Int): Crouton = Crouton.makeText(ctx.asInstanceOf[Activity], string, style, R.id.crouton_holder)
       .setConfiguration(new Configuration.Builder().setDuration(duration).build())
 
     def croutonWarn(duration: Int = Configuration.DURATION_SHORT) = runOnUiThread(makeCrouton(Style.ALERT, duration).show())

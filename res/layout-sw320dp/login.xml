@@ -6,14 +6,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
         >
-     <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
 
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/img_login_bg"
             android:scaleType="centerCrop"
-            android:layout_below="@+id/toolbar"/>
+            android:layout_below="@+id/toolbar"
+            />
 
     <RelativeLayout
             android:layout_width="fill_parent"
@@ -23,7 +23,8 @@
             android:layout_alignParentLeft="false"
             android:layout_centerInParent="true"
             android:paddingRight="16dp"
-            android:paddingLeft="16dp">
+            android:paddingLeft="16dp"
+            >
 
         <com.makeramen.RoundedImageView
                 android:layout_width="match_parent"
@@ -52,7 +53,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                />
 
         <EditText
                 android:id="@+id/et_password"
@@ -72,7 +74,8 @@
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                />
 
         <com.dd.CircularProgressButton
                 android:id="@+id/btn_login"
@@ -94,7 +97,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_toRightOf="@+id/ancher"
-                android:layout_marginLeft="8dp"/>
+                android:layout_marginLeft="8dp"
+                />
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -110,7 +114,8 @@
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
                 android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp"
+                />
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -125,7 +130,8 @@
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
                 android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp"
+                />
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -142,7 +148,8 @@
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -155,15 +162,30 @@
                 android:layout_alignLeft="@+id/et_username"
                 android:layout_alignStart="@+id/et_username"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:id="@+id/ancher"
                 android:layout_below="@+id/cb_offline_login"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                />
 
     </RelativeLayout>
+
+    <include
+            layout="@layout/crouton_holder"
+            android:id="@+id/crouton_holder"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar"
+            />
 
 </RelativeLayout>
