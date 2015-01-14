@@ -61,7 +61,7 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
 
   def handleLogout(): Unit = {
     info("[*] Logging out")
-    logoutUseCaseImpl.logout().map(_ => EventBus.getDefault.post(Events.FinishMainActivity()))
+    logoutUseCaseImpl.logout().map(_ => EventBus.getDefault.post(Events.FinishMainActivity(goToLogin = true)))
   }
 
   def handleChangeStatusMsg(msg: String) = {
