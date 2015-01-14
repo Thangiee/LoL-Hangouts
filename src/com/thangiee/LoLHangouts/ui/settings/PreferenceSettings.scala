@@ -1,18 +1,19 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.settings
 
 import java.util.concurrent.TimeUnit
 
 import android.app.{AlarmManager, PendingIntent}
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.{Intent, SharedPreferences}
-import android.os.{SystemClock, Bundle}
-import android.preference.{PreferenceActivity, PreferenceManager}
+import android.os.{Bundle, SystemClock}
+import android.preference.{PreferenceFragment, PreferenceManager}
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.utils._
-import org.scaloid.common.SContext
+import org.scaloid.common.TagUtil
 
-class PreferenceSettings extends PreferenceActivity with SContext with UpButton with Logger with OnSharedPreferenceChangeListener {
+class PreferenceSettings extends PreferenceFragment with OnSharedPreferenceChangeListener with TagUtil {
+  implicit lazy val ctx = getActivity.getBaseContext
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -21,13 +22,12 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
   override def onResume(): Unit = {
     super.onResume()
-    PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
+    PreferenceManager.getDefaultSharedPreferences(ctx).registerOnSharedPreferenceChangeListener(this)
   }
-
 
   override def onPause(): Unit = {
     super.onPause()
-    PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this)
+    PreferenceManager.getDefaultSharedPreferences(ctx).unregisterOnSharedPreferenceChangeListener(this)
   }
 
   override def onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String): Unit = {
@@ -35,7 +35,7 @@ class PreferenceSettings extends PreferenceActivity with SContext with UpButton 
 
     key match {
       case HistoryKey => onHistoryChanged(sharedPreferences.getString(key, "3 days"))
-      case _          => // do nothing
+      case _          => info(s"[+] setting change $key:${sharedPreferences.getBoolean(key, false)}")
     }
   }
 

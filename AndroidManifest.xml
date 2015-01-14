@@ -12,25 +12,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
             android:label="@string/app_name"
-            android:theme="@style/MyTheme"
+            android:theme="@style/Theme.MyTheme"
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
             android:name="com.thangiee.LoLHangouts.MyApplication">
-        <meta-data
-                android:name="AA_DB_NAME"
-                android:value="MessageLogs.db"/>
 
-        <meta-data
-                android:name="com.google.android.gms.version"
-                android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
+
+
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="AA_DB_VERSION" android:value="2" />
+        <meta-data android:name="AA_MODELS" android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity" />
 
         <service android:name="com.thangiee.LoLHangouts.services.LoLHangoutsService"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.login.LoginActivity"
+                android:name=".ui.login.LoginActivity"
                 android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -51,7 +52,7 @@
                 android:launchMode="singleTop"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.PreferenceSettings"
+                android:name=".ui.settings.SettingsActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="Settings">
             <meta-data

@@ -2,35 +2,41 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Notification">
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+                android:widgetLayout="@layout/pref_switch"
                 android:defaultValue="true"
                 android:key="@string/pref_notify_login"
                 android:textColor="@android:color/darker_gray"
                 android:title="Notify friend login"/>
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_msg"
+                android:widgetLayout="@layout/pref_switch"
                 android:title="Notify receive Msg"/>
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_sound"
+                android:widgetLayout="@layout/pref_switch"
                 android:title="Sound"/>
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_vibrate"
+                android:widgetLayout="@layout/pref_switch"
                 android:title="Vibration"/>
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_app_running"
+                android:widgetLayout="@layout/pref_switch"
                 android:title="Notify app running"
                 android:summary="@string/pref_notify_app_running_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Friend">
-        <SwitchPreference
+        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_load_icon"
                 android:title="Load friend icon"
+                android:widgetLayout="@layout/pref_switch"
                 android:summary="@string/pref_load_icon_summary"/>
     </PreferenceCategory>
 
