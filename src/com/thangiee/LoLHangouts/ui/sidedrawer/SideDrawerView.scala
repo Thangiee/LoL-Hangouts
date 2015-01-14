@@ -10,13 +10,13 @@ import android.view._
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
-import com.thangiee.LoLHangouts.activities.PreferenceSettings
+import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
+import com.thangiee.LoLHangouts.ui.settings.SettingsActivity
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.views.ConfirmDialog
-import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.{CustomView, R}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
@@ -139,7 +139,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   }
 
   def showSettings(): Unit = {
-    ctx.startActivity(new Intent(ctx, classOf[PreferenceSettings]))
+    ctx.startActivity(new Intent(ctx, classOf[SettingsActivity]))
   }
 
   def showLogoutConfirmation(): Unit = ConfirmDialog(
