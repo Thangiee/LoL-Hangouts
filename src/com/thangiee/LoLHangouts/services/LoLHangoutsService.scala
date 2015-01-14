@@ -76,7 +76,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
     // chat pane fragment is not open
     // or the current open chat is not with sender of the message
-    if (!appCtx.isChatOpen || activeFriendChat != from.name) {
+    if (!appCtx.isChatOpen || activeFriendChat != from.name || !isAppInForeground) {
       msgEntity.setRead(false) // set to false because user has not seen it
     }
 
