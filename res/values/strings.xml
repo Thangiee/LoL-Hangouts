@@ -62,13 +62,13 @@
     </string-array>
 
     <string-array name="regions">
-        <item>NA</item>
         <item>BR</item>
         <item>EUNE</item>
         <item>EUW</item>
         <item>KR</item>
         <item>LAN</item>
         <item>LAS</item>
+        <item>NA</item>
         <item>OCE</item>
         <item>RU</item>
         <item>TR</item>

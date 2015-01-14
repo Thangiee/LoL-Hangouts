@@ -48,6 +48,7 @@ proguardOptions in Android ++= Seq(
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
   "-keepclassmembers class com.thangiee.LoLHangouts.data.repository.datasources.net.stats {*;}",
   "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
+  "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
   "-keepclassmembers class ** {public void processHTML(**);}",
   "-keepclassmembers class ** {public static Document parse(**);}",
   "-keepclassmembers class ** {public void onEvent*(**);}")
