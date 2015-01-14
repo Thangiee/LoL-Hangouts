@@ -1,20 +1,13 @@
 package com.thangiee.LoLHangouts.activities
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.MenuItem
+import com.balysv.materialmenu.MaterialMenuDrawable
+import com.thangiee.LoLHangouts.utils._
 
-trait UpButton extends Activity {
-
+trait UpButton extends TActivity {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    getActionBar.setDisplayHomeAsUpEnabled(true)
-  }
-
-  override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    item.getItemId match {
-      case android.R.id.home => this.finish(); true
-      case _                 => super.onOptionsItemSelected(item)
-    }
+    navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
+    toolbar.setNavigationOnClickListener(finish())
   }
 }
