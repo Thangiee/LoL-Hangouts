@@ -3,13 +3,12 @@ package com.thangiee.LoLHangouts.activities
 import android.os.Bundle
 import android.view.{MenuItem, View}
 import android.widget.{AdapterView, ListView}
-import com.ami.fundapter.extractors.StringExtractor
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.utils._
 import de.psdev.licensesdialog.SingleLicenseDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.model.Notice
-import org.scaloid.common._
 
 import scala.collection.JavaConversions._
 
@@ -19,21 +18,15 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
     About("App version", R.string.app_version.r2String)
   )
 
-  override val layoutId     = R.layout.about_screen
+  override val layoutId     = R.layout.act_about_screen
   private lazy val listView = find[ListView](android.R.id.list)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
 
     val aboutDictionary = new BindDictionary[About]()
-
-    aboutDictionary.addStringField(R.id.tv_title, new StringExtractor[About] {
-      override def getStringValue(about: About, p2: Int): String = about.title
-    })
-
-    aboutDictionary.addStringField(R.id.tv_sub_title, new StringExtractor[About] {
-      override def getStringValue(about: About, p2: Int): String = about.subTitle
-    })
+    aboutDictionary.addStringField(R.id.tv_title, (about: About) => about.title)
+    aboutDictionary.addStringField(R.id.tv_sub_title, (about: About) => about.subTitle)
 
     val adapter = new FunDapter[About](this, aboutItems, R.layout.about_item, aboutDictionary)
     listView.setAdapter(adapter)
