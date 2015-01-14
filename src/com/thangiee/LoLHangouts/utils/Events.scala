@@ -16,7 +16,7 @@ object Events {
   case class ClearChatNotification()
   case class ClearLoginNotification()
   case class ClearDisConnectNotification()
-  case class FinishMainActivity()
+  case class FinishMainActivity(goToLogin: Boolean = false)
   case class ShowNiftyNotification(msg: Message)
   case class SwitchScreen(drawerTitle: String)
 }
