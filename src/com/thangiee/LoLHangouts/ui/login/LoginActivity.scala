@@ -24,6 +24,7 @@ class LoginActivity extends TActivity with LoginView {
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
+    overridePendingTransition(R.anim.right_slide_in, R.anim.stay_still)
 
     logInButton.setIndeterminateProgressMode(true)
     logInButton.onClick { v: View =>
