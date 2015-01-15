@@ -76,14 +76,18 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
 
   def handleDeleteMessages(): Unit = {
     view.getFriend.map { f =>
-      deleteMsgUseCase.deleteAllMessages(f.name).map(_ => runOnUiThread(view.clearMessages()))
+      deleteMsgUseCase.deleteAllMessages(f.name).map(_ => runOnUiThread(view.showDeletingMessages()))
     }
   }
 
   private def loadAndShowMessages(): Unit = {
     view.getFriend.map { f =>
       info(s"[*] loading at messages from ${f.name}")
-      getMessageUseCase.loadMessages(f.name).map(messages => runOnUiThread(view.showMessages(messages))) //todo: set msg limit?
+      view.showLoading()
+      getMessageUseCase.loadMessages(f.name).map(messages => runOnUiThread {
+        view.showMessages(messages) //todo: set msg limit?
+        view.hideLoading()
+      })
     }.getOrElse(warn("[!] friend is not set for ChatView"))
   }
 
