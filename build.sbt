@@ -53,6 +53,12 @@ proguardOptions in Android ++= Seq(
   "-keepclassmembers class ** {public static Document parse(**);}",
   "-keepclassmembers class ** {public void onEvent*(**);}")
 
+val androidViewAnimations = Seq(
+  "com.nineoldandroids" % "library" % "2.4.0",
+  aar("com.daimajia.easing" % "library" % "1.0.1"),
+  aar("com.daimajia.androidanimations" % "library" % "1.1.3")
+)
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -79,7 +85,7 @@ libraryDependencies ++= Seq(
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0"),
-  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1"))
+  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1")) ++ androidViewAnimations
 
 run <<= run in Android
 
