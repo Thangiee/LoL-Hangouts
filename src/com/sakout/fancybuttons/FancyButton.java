@@ -227,7 +227,7 @@ public class FancyButton  extends LinearLayout{
         mDefaultBackgroundColor 		= attrsArray.getColor(R.styleable.FancyButtonsAttrs_defaultColor,mDefaultBackgroundColor);
         mFocusBackgroundColor 			= attrsArray.getColor(R.styleable.FancyButtonsAttrs_focusColor,mFocusBackgroundColor);
 
-        mDefaultTextColor 				= attrsArray.getColor(R.styleable.FancyButtonsAttrs_textColor,mDefaultTextColor);
+        mDefaultTextColor 				= attrsArray.getColor(R.styleable.FancyButtonsAttrs_textColor1,mDefaultTextColor);
         mDefaultTextSize				= (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_textSize,mDefaultTextSize);
 
         mBorderColor 					= attrsArray.getColor(R.styleable.FancyButtonsAttrs_borderColor,mBorderColor);

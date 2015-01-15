@@ -60,6 +60,8 @@ val androidViewAnimations = Seq(
 
 val smoothProgressBar = Seq(aar("com.github.castorflex.smoothprogressbar" % "library-circular" % "1.0.2"))
 
+val materialTabs = Seq(aar("it.neokree" % "MaterialTabs" % "0.11"))
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -85,8 +87,8 @@ libraryDependencies ++= Seq(
   aar("com.pixplicity.easyprefs" % "library" % "1.3"),
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
-  aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0"),
-  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1")) ++ androidViewAnimations ++ smoothProgressBar
+  aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")
+  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs
 
 run <<= run in Android
 
