@@ -1,17 +1,22 @@
 package com.thangiee.LoLHangouts.utils
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import com.daimajia.androidanimations.library.{Techniques, YoYo}
 import com.github.nscala_time.time.Imports._
+import com.nineoldandroids.animation.Animator
+import com.nineoldandroids.animation.Animator.AnimatorListener
+import fr.castorflex.android.circularprogressbar.{CircularProgressDrawable, CircularProgressBar}
 
-trait Helpers extends org.scaloid.common.Helpers with ViewHelpers with AnimationHelpers
+trait Helpers extends org.scaloid.common.Helpers with ViewHelpers
 
 object Helpers extends Helpers
 
 trait ViewHelpers {
-  implicit class BetterView(v: View) {
+
+  implicit class ViewHelper(v: View) {
     def setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bot: Int = 0) = {
       v.getLayoutParams match {
         case p: MarginLayoutParams =>
@@ -22,16 +27,33 @@ trait ViewHelpers {
     }
   }
 
-  implicit class BetterTextView(tv: TextView) {
+  implicit class TextViewHelper(tv: TextView) {
     def txt2str: String = tv.getText.toString
   }
-}
 
-trait AnimationHelpers {
+  implicit class CircularProgressBarHelper(v: CircularProgressBar) {
+    private lazy val drawable = v.getIndeterminateDrawable.asInstanceOf[CircularProgressDrawable]
+    def stop() = drawable.stop()
+    def start() = drawable.start()
+    def restart() = { drawable.stop(); drawable.start() }
+  }
 
-  implicit class BetterYoYo(v: View) {
+  implicit class AnimationViewHelper(v: View) {
+    private lazy val inListener = new AnimatorListener {
+      override def onAnimationEnd(animator: Animator): Unit = {}
+      override def onAnimationRepeat(animator: Animator): Unit = {}
+      override def onAnimationCancel(animator: Animator): Unit = {}
+      override def onAnimationStart(animator: Animator): Unit = {
+        new Handler().postDelayed(() => v.setVisibility(View.VISIBLE), animator.getStartDelay + 150)
+      }
+    }
+
     def shake(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.Shake, duration, delay).playOn(v)
     def fadeOutUp(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.FadeOutUp, duration, delay).playOn(v)
+    def fadeInDown(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.FadeInDown, duration, delay).withListener(inListener).playOn(v)
+    def slideOutUp(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.SlideOutUp, duration, delay).playOn(v)
+    def slideInDown(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.SlideInDown, duration, delay).withListener(inListener).playOn(v)
+    def slideInUp(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.SlideInUp, duration, delay).withListener(inListener).playOn(v)
 
     private def compose(tech: Techniques, dur: Long, del: Long) = YoYo.`with`(tech).duration(dur).delay(del)
   }

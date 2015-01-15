@@ -56,8 +56,9 @@ proguardOptions in Android ++= Seq(
 val androidViewAnimations = Seq(
   "com.nineoldandroids" % "library" % "2.4.0",
   aar("com.daimajia.easing" % "library" % "1.0.1"),
-  aar("com.daimajia.androidanimations" % "library" % "1.1.3")
-)
+  aar("com.daimajia.androidanimations" % "library" % "1.1.3"))
+
+val smoothProgressBar = Seq(aar("com.github.castorflex.smoothprogressbar" % "library-circular" % "1.0.2"))
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
@@ -85,7 +86,7 @@ libraryDependencies ++= Seq(
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0"),
-  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1")) ++ androidViewAnimations
+  aar("com.astuetz" % "pagerslidingtabstrip" % "1.0.1")) ++ androidViewAnimations ++ smoothProgressBar
 
 run <<= run in Android
 

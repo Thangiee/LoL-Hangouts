@@ -1,7 +1,10 @@
 package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.Context
+import android.graphics.Color
 import android.media.MediaPlayer
+import android.os.SystemClock
+import android.view.View
 import android.widget.{EditText, FrameLayout}
 import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.data.repository._
@@ -10,17 +13,20 @@ import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
+import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
-  lazy    val sendButton             = find[CircularProgressButton](R.id.btn_send_msg)
-  lazy    val msgField               = find[EditText](R.id.et_msg_field)
-  lazy    val messageAdapter         = new MessageAdapter(ctx, 0)
-  lazy    val messageListView        = find[MessagesListView](R.id.lsv_chat)
-  private var friend: Option[Friend] = None
-
+  lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
+  lazy val msgField        = find[EditText](R.id.et_msg_field)
+  lazy val messageAdapter  = new MessageAdapter(ctx, 0)
+  lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
+  lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
+  
+  private  var friend: Option[Friend] = None
   override val presenter = new ChatPresenter(this, DeleteMsgUseCaseImpl(), GetMsgUseCaseImpl(), SendMsgUseCaseImpl(),
                                                    GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
 
@@ -32,8 +38,8 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
     sendButton.setIndeterminateProgressMode(true)
 
     messageListView.setAdapter(messageAdapter)
-    messageListView.setBackgroundColor(R.color.my_dark_blue.r2Color)
-
+    messageListView.setBackgroundColor(Color.TRANSPARENT)
+    messageListView.setCacheColorHint(Color.TRANSPARENT)
     msgField.clearFocus()
   }
 
@@ -50,6 +56,17 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def hideProgress(): Unit = sendButton.setProgress(0)
 
+  def showLoading(): Unit = {
+    loadingWheel.restart()
+    loadingWheel.visibility = View.VISIBLE
+    messageListView.visibility = View.INVISIBLE
+  }
+
+  def hideLoading(): Unit = {
+    loadingWheel.fadeOutUp(duration = 1250)
+    messageListView.fadeInDown(delay = 1250)
+  }
+
   def showSentSuccess(): Unit = sendButton.setProgress(100)
 
   def showSendFail(): Unit = sendButton.setProgress(-1)
@@ -59,6 +76,17 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   def clearMessageInput(): Unit = msgField.setText("")
 
   def clearMessages(): Unit = messageAdapter.clear()
+
+  def showDeletingMessages(): Unit = {
+    messageListView.fadeOutUp()
+    Future {
+      SystemClock.sleep(1000)
+      runOnUiThread {
+        messageAdapter.clear()
+        messageListView.fadeInDown(duration = 1) // reset list visibility
+      }
+    }
+  }
 
   def showMessages(messages: List[Message]) = {
     messageAdapter.addAll(messages)
