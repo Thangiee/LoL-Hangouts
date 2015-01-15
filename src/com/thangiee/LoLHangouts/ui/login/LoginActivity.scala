@@ -69,6 +69,8 @@ class LoginActivity extends TActivity with LoginView {
   override def showLoginSuccess(): Unit = logInButton.setProgress(100)
 
   override def showErrorMsg(msg: String): Unit = runOnUiThread {
+    userEditText.shake()
+    passwordEditText.shake()
     msg.croutonWarn()
     logInButton.setProgress(-1)
   }
