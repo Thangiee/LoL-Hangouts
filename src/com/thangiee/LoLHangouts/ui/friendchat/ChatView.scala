@@ -64,7 +64,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def hideLoading(): Unit = {
     loadingWheel.fadeOutUp(duration = 1250)
-    messageListView.fadeInDown(delay = 1250)
+    messageListView.fadeInDown(duration = 750, delay = 1250)
   }
 
   def showSentSuccess(): Unit = sendButton.setProgress(100)
