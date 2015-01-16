@@ -12,6 +12,19 @@ trait Container extends AnyRef with TagUtil {
   val toolbar = getContext.asInstanceOf[TActivity].toolbar
   val navIcon = getContext.asInstanceOf[TActivity].navIcon
 
+  override def onWindowVisibilityChanged(visibility: Int): Unit = {
+    self.onWindowVisibilityChanged(visibility)
+    visibility match {
+      case View.VISIBLE   => onVisible()
+      case View.INVISIBLE =>
+      case View.GONE      => onInvisible()
+    }
+  }
+
+  def onInvisible(): Unit = {}
+
+  def onVisible(): Unit = {}
+  
   def getView: View
 
   def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = false
