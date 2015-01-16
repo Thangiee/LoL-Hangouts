@@ -31,6 +31,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     addView(friendListView)
     addView(chatView)
 
+    toolbar.setTitle(R.string.app_name)
+    toolbar.setSubtitle(null)
     navIcon.setIconState(MaterialMenuDrawable.IconState.BURGER)
 
     openPane() // show the friend list
