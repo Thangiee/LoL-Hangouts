@@ -58,4 +58,9 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(assetFile.path), null))
       .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
   }
+
+  implicit class RightBiasedEither[A,B](e: Either[A,B]) {
+    def map[C](f: B => C) = e.right map f
+    def flatMap[C](f: B => Either[A,C]) = e.right flatMap f
+  }
 }
