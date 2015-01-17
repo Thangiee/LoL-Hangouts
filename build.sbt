@@ -46,6 +46,7 @@ proguardOptions in Android ++= Seq(
   "-keep class org.jsoup.Jsoup.** {*;}",
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
+  "-keepclassmembers class com.thangiee.LoLWithFriends.** {*;}",
   "-keepclassmembers class com.thangiee.LoLHangouts.data.repository.datasources.net.stats {*;}",
   "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
   "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
@@ -61,6 +62,10 @@ val androidViewAnimations = Seq(
 val smoothProgressBar = Seq(aar("com.github.castorflex.smoothprogressbar" % "library-circular" % "1.0.2"))
 
 val materialTabs = Seq(aar("it.neokree" % "MaterialTabs" % "0.11"))
+
+val errorView = Seq(aar("com.github.xiprox.errorview" % "library" % "1.0.0"))
+
+val snackbar = Seq(aar("com.nispok" % "snackbar" % "2.7.4"))
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
@@ -88,7 +93,7 @@ libraryDependencies ++= Seq(
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")
-  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs
+  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar
 
 run <<= run in Android
 

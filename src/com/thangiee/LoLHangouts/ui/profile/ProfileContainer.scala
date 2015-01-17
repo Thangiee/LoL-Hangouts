@@ -5,13 +5,20 @@ import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view.{ViewGroup, View}
 import android.widget.FrameLayout
+import com.thangiee.LoLHangouts.data.repository.userRepoImpl
+import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.{R, Container}
 import com.thangiee.LoLHangouts.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabListener, MaterialTabHost}
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   lazy val tabs = this.find[MaterialTabHost](R.id.tabs)
   lazy val pager = this.find[ViewPager](R.id.pager)
+  lazy val profileSummaryView = this.find[ProfileSummaryView](R.id.page_1)
+
+  val getUserUseCase = GetUserUseCaseImpl()
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
@@ -29,6 +36,10 @@ class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Cont
 
     (0 until pagerAdapter.getCount).map { i =>
       tabs.addTab(tabs.newTab().setText("Test" + i).setTabListener(this))
+    }
+
+    getUserUseCase.loadUser().map { user =>
+      runOnUiThread(profileSummaryView.setProfile(user.inGameName, user.region.id))
     }
   }
 
