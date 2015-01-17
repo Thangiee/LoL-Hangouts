@@ -1,5 +1,7 @@
 package com.thangiee.LoLHangouts.data.repository.datasources.api
 
+import java.net.SocketTimeoutException
+
 import android.os.SystemClock
 import com.thangiee.LoLHangouts.data.cache.MemCache
 import com.thangiee.LoLHangouts.domain.utils.TagUtil
@@ -31,7 +33,10 @@ class CachingApiCaller extends ApiCaller with TagUtil {
                 case 500 => return Left(RiotException("Internal server error", ServerError))
                 case 503 => info("[-] Service unavailable. ReAttempting...")
               }
-            case Failure(e) => info("[-] Connection timeout. ReAttempting...")
+            case Failure(e) => e match {
+              case e: SocketTimeoutException => info("[-] Connection timeout. ReAttempting...")
+              case _                         => throw e
+            }
           }
       }
       SystemClock.sleep(250) // wait a bit
