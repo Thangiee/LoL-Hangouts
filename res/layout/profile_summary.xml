@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:errorview="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/my_dark_blue"
+        >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+                >
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativeLayout"
+                >
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Ranked Solo Queue"
+                        android:id="@+id/tv_profile_header"
+                        android:gravity="center"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/center"
+                    android:layout_centerInParent="true"
+                    />
+
+
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_alignLeft="@+id/center"
+                    android:layout_alignStart="@+id/center"
+                    android:layout_alignBottom="@+id/badge_group"
+                    android:id="@+id/pie_group"
+                    >
+
+                <com.echo.holographlibrary.PieGraph
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:id="@+id/pie_graph_win_rate"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        />
+
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="win rate"
+                        android:id="@+id/tv_profile_rate"
+                        android:textSize="18sp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:gravity="center"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="52dp"
+                        />
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/linearLayout2"
+                        android:layout_below="@+id/tv_profile_rate"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        >
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/red"
+                            android:text="Lost"
+                            android:id="@+id/tv_profile_lost"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:gravity="right"
+                            android:paddingRight="2dp"
+                            android:paddingLeft="2dp"
+                            />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:id="@+id/textView2"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/holo_purple"
+                            />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Win0"
+                            android:id="@+id/tv_profile_win"
+                            android:textColor="@android:color/holo_green_dark"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:gravity="left"
+                            android:paddingLeft="2dp"
+                            android:paddingRight="2dp"
+                            />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/badge_group"
+                    android:id="@+id/stats_group"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Ranked Stats"
+                        android:id="@+id/textView26"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:background="#CC000000"
+                        />
+
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="0,2"
+                        android:layout_marginBottom="16dp"
+                        >
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_dark"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Elo"
+                                android:id="@+id/textView8"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="450"
+                                android:id="@+id/tv_profile_elo"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_light"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Game Played"
+                                android:id="@+id/textView7"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_games"
+                                android:layout_marginRight="8dp"
+                                />
+
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_dark"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Kills"
+                                android:id="@+id/textView11"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_kills"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_light"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Deaths"
+                                android:id="@+id/textView14"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_deaths"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_dark"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Assists"
+                                android:id="@+id/textView16"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_assists"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_light"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Double Kills"
+                                android:id="@+id/textView18"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_doubles"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_dark"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Triple Kills"
+                                android:id="@+id/textView20"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_triples"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_light"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quadra Kills"
+                                android:id="@+id/textView22"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_quadra"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                    <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:background="@color/row_alt_dark"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Penta Kills"
+                                android:id="@+id/textView24"
+                                android:layout_marginLeft="8dp"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/tv_profile_penta"
+                                android:layout_marginRight="8dp"
+                                />
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/badge_group"
+                    android:layout_below="@+id/tv_profile_header"
+                    android:layout_alignRight="@+id/center"
+                    android:layout_alignEnd="@+id/center"
+                    android:layout_marginLeft="16dp"
+                    >
+
+                <ImageView
+                        android:layout_width="112dp"
+                        android:layout_height="112dp"
+                        android:id="@+id/img_profile_badge"
+                        android:src="@drawable/badge_bronze"
+                        android:layout_centerHorizontal="true"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="tier divison"
+                        android:id="@+id/tv_profile_tier"
+                        android:textColor="#A68FE6"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_alignBottom="@+id/img_profile_badge"
+                        android:layout_centerHorizontal="true"
+                        />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="League"
+                        android:id="@+id/tv_profile_league_name"
+                        android:layout_below="@+id/img_profile_badge"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="points"
+                        android:id="@+id/tv_profile_point"
+                        android:layout_below="@+id/tv_profile_league_name"
+                        android:layout_alignLeft="@+id/tv_profile_league_name"
+                        android:layout_alignStart="@+id/tv_profile_league_name"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="KDA"
+                        android:id="@+id/tv_profile_kda"
+                        android:textSize="12sp"
+                        android:layout_below="@+id/tv_profile_point"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+        <include
+            layout="@layout/circular_loader"
+            android:id="@+id/circular_loader"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_height="42dp"
+            android:layout_width="42dp"
+            />
+
+    <tr.xip.errorview.ErrorView
+            android:id="@+id/error_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            errorview:ev_showRetryButton="true"
+            errorview:ev_showTitle="true"
+            errorview:ev_showSubtitle="true"
+            errorview:ev_retryButtonTextColor="@color/light_blue"
+            errorview:ev_retryButtonBackground="@drawable/error_view_retry_button_background"
+            android:visibility="gone"
+            />
+</RelativeLayout>
