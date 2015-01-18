@@ -23,7 +23,6 @@ class ProfileMatchHistPresenter(view: ProfileMatchHistView, viewProfileUseCase: 
       }
       case Failure(e) => runOnUiThread {
         error(s"[!] ${e.getMessage}")
-        throw e
         view.showLoadingError("Opps", e.getMessage)
       }
     }
