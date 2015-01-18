@@ -14,10 +14,11 @@ import it.neokree.materialtabs.{MaterialTab, MaterialTabListener, MaterialTabHos
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
-  lazy val tabs                = this.find[MaterialTabHost](R.id.tabs)
-  lazy val pager               = this.find[ViewPager](R.id.pager)
-  lazy val profileSummaryView  = this.find[ProfileSummaryView](R.id.page_1)
-  lazy val profileTopChampView = this.find[ProfileTopChampsView](R.id.page_2)
+  lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
+  lazy val pager                = this.find[ViewPager](R.id.pager)
+  lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
+  lazy val profileTopChampView  = this.find[ProfileTopChampsView](R.id.page_2)
+  lazy val profileMatchHistView = this.find[ProfileMatchHistView](R.id.page_3)
 
   case class Page(title: String, var isSet: Boolean = false)
   val loadUser = GetUserUseCaseImpl().loadUser()
@@ -57,6 +58,9 @@ class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Cont
           if (position == 1) {
             profileTopChampView.setProfile(user.inGameName, user.region.id)
             pages(1).isSet = true
+          } else if (position == 2){
+            profileMatchHistView.setProfile(user.inGameName, user.region.id)
+            pages(2).isSet = true
           }
         }
       }
@@ -75,9 +79,9 @@ class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Cont
 
     override def instantiateItem(container: ViewGroup, position: Int): AnyRef = {
       position match {
-        case 0 => findViewById(R.id.page_1)
-        case 1 => findViewById(R.id.page_2)
-        case 2 => findViewById(R.id.page_3)
+        case 0 => profileSummaryView
+        case 1 => profileTopChampView
+        case 2 => profileMatchHistView
       }
     }
 

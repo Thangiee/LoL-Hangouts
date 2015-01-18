@@ -10,5 +10,5 @@ trait ViewProfileUseCase extends Interactor {
 
   def loadTopChamps(username: String, regionId: String): Future[List[TopChampion]]
 
-  def loadMatchHistories(username: String, regionId: String): Future[List[Match]]
+  def loadMatchHistory(username: String, regionId: String): Future[List[Match]]
 }
