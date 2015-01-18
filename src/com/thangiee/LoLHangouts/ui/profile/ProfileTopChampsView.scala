@@ -28,7 +28,7 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
 
   override def onAttached(): Unit = {
     super.onAttached()
-    addView(layoutInflater.inflate(R.layout.profile_top_champs, null))
+    addView(layoutInflater.inflate(R.layout.profile_top_champs, this, false))
     champListView.setVisibility(View.INVISIBLE)
   }
 

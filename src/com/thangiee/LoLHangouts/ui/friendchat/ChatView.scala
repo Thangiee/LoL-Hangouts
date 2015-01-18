@@ -32,7 +32,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   override def onAttached(): Unit = {
     super.onAttached()
-    addView(layoutInflater.inflate(R.layout.chat_view, null))
+    addView(layoutInflater.inflate(R.layout.chat_view, this, false))
 
     sendButton.onClick(presenter.handleMessageSend(msgField.txt2str))
     sendButton.setIndeterminateProgressMode(true)
