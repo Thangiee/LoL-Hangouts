@@ -20,5 +20,9 @@ case class ViewProfileUseCaseImpl(implicit profileDataRepo: ProfileDataRepo) ext
       .orElseLogAndReturn("Top Champions loaded")
   }
 
-  override def loadMatchHistories(username: String, regionId: String): Future[List[Match]] = ???
+  override def loadMatchHistory(username: String, regionId: String): Future[List[Match]] = Future {
+    profileDataRepo.getMatchHistory(username.toLowerCase, regionId)
+      .ifErrorThenLogAndThrow()
+      .orElseLogAndReturn("Top Champions loaded")
+  }
 }
