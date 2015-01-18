@@ -36,7 +36,7 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
 
   override def onAttached(): Unit = {
     super.onAttached()
-    addView(layoutInflater.inflate(R.layout.profile_summary, null))
+    addView(layoutInflater.inflate(R.layout.profile_summary, this, false))
     pieGroup.setVisibility(View.INVISIBLE)
     badgeGroup.setVisibility(View.INVISIBLE)
     statsGroup.setVisibility(View.INVISIBLE)

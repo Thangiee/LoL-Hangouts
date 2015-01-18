@@ -14,15 +14,18 @@ import it.neokree.materialtabs.{MaterialTab, MaterialTabListener, MaterialTabHos
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
-  lazy val tabs = this.find[MaterialTabHost](R.id.tabs)
-  lazy val pager = this.find[ViewPager](R.id.pager)
-  lazy val profileSummaryView = this.find[ProfileSummaryView](R.id.page_1)
+  lazy val tabs                = this.find[MaterialTabHost](R.id.tabs)
+  lazy val pager               = this.find[ViewPager](R.id.pager)
+  lazy val profileSummaryView  = this.find[ProfileSummaryView](R.id.page_1)
+  lazy val profileTopChampView = this.find[ProfileTopChampsView](R.id.page_2)
 
-  val getUserUseCase = GetUserUseCaseImpl()
+  case class Page(title: String, var isSet: Boolean = false)
+  val loadUser = GetUserUseCaseImpl().loadUser()
+  val pages    = List(Page("Summary", isSet = true), Page("Champions"), Page("History"))
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
-    addView(layoutInflater.inflate(R.layout.view_pager, null))
+    addView(layoutInflater.inflate(R.layout.view_pager, this, false))
 
     val pagerAdapter = new ViewPagerAdapter()
     pager.setOffscreenPageLimit(3)
@@ -31,23 +34,38 @@ class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Cont
       override def onPageSelected(position: Int): Unit = {
         // when user do a swipe the selected tab change
         tabs.setSelectedNavigationItem(position)
+        handleSwitchPage(position)
       }
     })
 
-    (0 until pagerAdapter.getCount).map { i =>
-      tabs.addTab(tabs.newTab().setText("Test" + i).setTabListener(this))
+    (0 until pages.size).map { i =>
+      tabs.addTab(tabs.newTab()
+        .setText(pages(i).title)
+        .setTabListener(this))
     }
 
-    getUserUseCase.loadUser().map { user =>
-      runOnUiThread(profileSummaryView.setProfile(user.inGameName, user.region.id))
+    loadUser onSuccess { case user =>
+      runOnUiThread(profileSummaryView.setProfile(user.inGameName, user.region.id)) // initialize the first page
+    }
+  }
+
+  private def handleSwitchPage(position: Int): Unit = {
+    // only load the page the user is currently viewing and initialize it only once
+    if (!pages(position).isSet) {
+      loadUser onSuccess { case user =>
+        runOnUiThread {
+          if (position == 1) {
+            profileTopChampView.setProfile(user.inGameName, user.region.id)
+            pages(1).isSet = true
+          }
+        }
+      }
     }
   }
 
   override def getView: View = this
 
-  override def onTabSelected(tab: MaterialTab): Unit = {
-    pager.setCurrentItem(tab.getPosition)
-  }
+  override def onTabSelected(tab: MaterialTab): Unit = pager.setCurrentItem(tab.getPosition)
 
   override def onTabReselected(materialTab: MaterialTab): Unit = {}
 
@@ -65,11 +83,12 @@ class ProfileContainer(implicit ctx: Context) extends FrameLayout(ctx) with Cont
 
     override def destroyItem(container: ViewGroup, position: Int, `object`: scala.Any): Unit = {}
 
-    override def getCount: Int = 3
+    override def getCount: Int = pages.size
 
     override def isViewFromObject(view: View, o: scala.Any): Boolean = {
       view == o.asInstanceOf[View]
     }
   }
+
 }
 
