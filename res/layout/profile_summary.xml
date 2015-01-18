@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:errorview="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/my_dark_blue"
         >
 
-        <ScrollView
+    <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrollView"
@@ -16,7 +15,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
-                >
+            >
 
         <RelativeLayout
                 android:layout_width="fill_parent"
@@ -25,20 +24,20 @@
                 >
 
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Ranked Solo Queue"
-                        android:id="@+id/tv_profile_header"
-                        android:gravity="center"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Ranked Solo Queue"
+                    android:id="@+id/tv_profile_header"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    />
 
-                <TextView
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/center"
@@ -448,7 +447,7 @@
 
     </ScrollView>
 
-        <include
+    <include
             layout="@layout/circular_loader"
             android:id="@+id/circular_loader"
             android:layout_centerVertical="true"
@@ -457,15 +456,10 @@
             android:layout_width="42dp"
             />
 
-    <tr.xip.errorview.ErrorView
-            android:id="@+id/error_view"
+    <include
+            layout="@layout/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            errorview:ev_showRetryButton="true"
-            errorview:ev_showTitle="true"
-            errorview:ev_showSubtitle="true"
-            errorview:ev_retryButtonTextColor="@color/light_blue"
-            errorview:ev_retryButtonBackground="@drawable/error_view_retry_button_background"
             android:visibility="gone"
             />
 </RelativeLayout>

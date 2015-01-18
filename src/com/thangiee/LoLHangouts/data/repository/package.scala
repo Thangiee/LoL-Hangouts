@@ -5,5 +5,5 @@ package object repository {
   implicit val friendRepoImpl         = FriendRepoImpl
   implicit val messageRepoImpl        = MessageRepoImpl
   implicit val userRepoImpl           = UserRepoImpl
-  implicit val profileSummaryRepoImpl = ProfileSummaryRepoImpl
+  implicit val profileDataRepoImpl    = ProfileDataRepoImpl
 }
