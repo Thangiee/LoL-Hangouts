@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/my_dark_blue">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/my_dark_blue"
+        >
 
 
     <RelativeLayout
@@ -13,7 +14,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/header_layout"
             android:weightSum="1"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            >
 
         <ImageView
                 android:layout_width="24dp"
@@ -22,7 +24,8 @@
                 android:src="@drawable/ic_preformace_graph"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/textView2"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="16dp"
+                />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -33,7 +36,8 @@
                 android:padding="4dp"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imageView3"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -43,7 +47,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imageView4"
                 android:layout_marginRight="8dp"
-                android:padding="4dp"/>
+                android:padding="4dp"
+                />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -53,7 +58,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imageView5"
                 android:layout_marginRight="8dp"
-                android:padding="4dp"/>
+                android:padding="4dp"
+                />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -63,7 +69,8 @@
                 android:layout_alignTop="@+id/imageView6"
                 android:layout_toLeftOf="@+id/imageView6"
                 android:layout_marginRight="8dp"
-                android:padding="4dp"/>
+                android:padding="4dp"
+                />
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -74,7 +81,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="16dp"
-                android:padding="4dp"/>
+                android:padding="4dp"
+                />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -82,15 +90,17 @@
                 android:text="#Game"
                 android:id="@+id/textView2"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/imageView"/>
+                android:layout_toLeftOf="@+id/imageView"
+                />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rank Champ."
+                android:text="Rank"
                 android:id="@+id/textView3"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="4dp"/>
+                android:layout_marginLeft="4dp"
+                />
 
     </RelativeLayout>
 
@@ -102,7 +112,8 @@
             android:layout_below="@+id/header_layout"
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="true"
-            android:background="@color/my_orange">
+            android:background="@color/my_orange"
+            >
     </LinearLayout>
 
     <ListView
@@ -110,6 +121,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/linearLayout"/>
+            android:layout_below="@+id/linearLayout"
+            />
 
+    <include
+            layout="@layout/circular_loader"
+            android:id="@+id/circular_loader"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_height="42dp"
+            android:layout_width="42dp"
+            />
+
+    <include
+            layout="@layout/error_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
 </RelativeLayout>

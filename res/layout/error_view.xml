@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tr.xip.errorview.ErrorView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:errorview="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        errorview:ev_showRetryButton="true"
+        errorview:ev_showTitle="true"
+        errorview:ev_showSubtitle="true"
+        errorview:ev_retryButtonTextColor="@color/light_blue"
+        errorview:ev_retryButtonBackground="@drawable/error_view_retry_button_background"
+        android:visibility="gone"
+        >
+
+</tr.xip.errorview.ErrorView>

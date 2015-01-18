@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:minWidth="25dp">
 
     <ImageView
@@ -14,8 +14,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:src="@drawable/league_icon"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginRight="2dp"
             android:layout_marginLeft="4dp"/>
 
@@ -51,13 +51,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="game"
             android:id="@+id/tv_champ_game"
-            android:layout_alignTop="@+id/tv_champ_perf"
-            android:layout_toLeftOf="@+id/tv_champ_avg_k"
             android:minWidth="40dp"
             android:textSize="14sp"
             android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_alignBottom="@+id/tv_champ_perf"/>
+            android:layout_alignTop="@+id/tv_champ_perf"
+            android:layout_toLeftOf="@+id/tv_champ_avg_k"
+            android:layout_toStartOf="@+id/tv_champ_avg_k"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -195,5 +195,18 @@
             android:layout_alignParentEnd="true"
             android:textSize="12sp"
             android:gravity="center_horizontal"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rate"
+                android:id="@+id/tv_champ_win_rate"
+                android:minWidth="40dp"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:layout_below="@+id/tv_champ_game"
+                android:layout_toRightOf="@+id/tv_champ_perf"
+                android:layout_toEndOf="@+id/tv_champ_perf"
+                />
 
 </RelativeLayout>

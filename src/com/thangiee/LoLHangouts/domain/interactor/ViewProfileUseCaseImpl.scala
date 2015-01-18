@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.domain.interactor
 
-import com.thangiee.LoLHangouts.domain.entities.ProfileSummary
+import com.thangiee.LoLHangouts.domain.entities.{TopChampion, ProfileSummary}
 import com.thangiee.LoLHangouts.domain.repository.ProfileSummaryRepo
 
 import scala.concurrent.Future
@@ -12,5 +12,11 @@ case class ViewProfileUseCaseImpl(implicit profileSummaryRepo: ProfileSummaryRep
     profileSummaryRepo.getProfileSummary(username.toLowerCase, regionId)
       .ifErrorThenLogAndThrow()
       .orElseLogAndReturn("Profile summary loaded")
+  }
+
+  override def loadTopChamps(username: String, regionId: String): Future[List[TopChampion]] = Future {
+    profileSummaryRepo.getTopChampions(username.toLowerCase, regionId)
+      .ifErrorThenLogAndThrow()
+      .orElseLogAndReturn("Top Champions loaded")
   }
 }
