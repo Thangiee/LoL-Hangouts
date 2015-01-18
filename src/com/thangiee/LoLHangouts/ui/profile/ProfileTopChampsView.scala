@@ -28,7 +28,7 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
 
   override def onAttached(): Unit = {
     super.onAttached()
-    addView(layoutInflater.inflate(R.layout.summoner_top_champ, null))
+    addView(layoutInflater.inflate(R.layout.profile_top_champs, null))
     champListView.setVisibility(View.INVISIBLE)
   }
 
@@ -78,7 +78,7 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
     champDict.addStringField(R.id.tv_champ_avg_more_g, (c: TopChampion) => c.avgGoldPerformance.toString)
       .conditionalTextColor((c: TopChampion) => c.avgGoldPerformance >= 0, green, red)
 
-    val adapter = new FunDapter[TopChampion](ctx, champions, R.layout.champion_stats, champDict)
+    val adapter = new FunDapter[TopChampion](ctx, champions, R.layout.top_champ_item, champDict)
     adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
 
     Future {

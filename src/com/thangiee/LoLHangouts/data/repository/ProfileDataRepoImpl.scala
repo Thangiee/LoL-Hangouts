@@ -4,7 +4,7 @@ import com.thangiee.LoLHangouts.data.entities.mappers.{ProfileSummaryMapper, Top
 import com.thangiee.LoLHangouts.data.entities.{ProfileSummaryEntity, TopChampEntity}
 import com.thangiee.LoLHangouts.data.repository.datasources.api.CachingApiCaller
 import com.thangiee.LoLHangouts.domain.entities.{ProfileSummary, TopChampion}
-import com.thangiee.LoLHangouts.domain.repository.ProfileSummaryRepo
+import com.thangiee.LoLHangouts.domain.repository.ProfileDataRepo
 import com.thangiee.LoLHangouts.utils.Parser._
 import com.thangiee.LoLHangouts.utils._
 import thangiee.riotapi.core.RiotApi
@@ -12,10 +12,10 @@ import thangiee.riotapi.league.{League, LeagueEntry}
 
 import scala.collection.JavaConversions._
 
-trait ProfileSummaryRepoImpl extends ProfileSummaryRepo {
+trait ProfileDataRepoImpl extends ProfileDataRepo {
   implicit val caller = new CachingApiCaller()
 
-  override def getProfileSummary(name: String, regionId: String): Either[Exception, ProfileSummary] = {
+  override def getSummary(name: String, regionId: String): Either[Exception, ProfileSummary] = {
     for {
       summ      ← RiotApi.summonerByName(name, regionId)
       leagues   ← RiotApi.leagueEntryById(summ.id, regionId)
@@ -74,4 +74,4 @@ trait ProfileSummaryRepoImpl extends ProfileSummaryRepo {
   }
 }
 
-object ProfileSummaryRepoImpl extends ProfileSummaryRepoImpl
+object ProfileDataRepoImpl extends ProfileDataRepoImpl

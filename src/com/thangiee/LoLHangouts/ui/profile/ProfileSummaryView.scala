@@ -10,7 +10,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
 import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.LoLHangouts.activities.TActivity
-import com.thangiee.LoLHangouts.data.repository.profileSummaryRepoImpl
+import com.thangiee.LoLHangouts.data.repository.profileDataRepoImpl
 import com.thangiee.LoLHangouts.domain.entities.ProfileSummary
 import com.thangiee.LoLHangouts.domain.interactor.ViewProfileUseCaseImpl
 import com.thangiee.LoLHangouts.utils._
