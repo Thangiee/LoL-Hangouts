@@ -5,7 +5,7 @@ import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewOtherSummonerActivity}
+import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewProfileActivity}
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, Friend}
 import com.thangiee.LoLHangouts.utils._
@@ -109,7 +109,7 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
       leagueTextView.setText(friend.rankedLeagueName)
       winTextView.setText(friend.wins + " wins")
 
-      profileBtn.onClick(ctx.startActivity(ViewOtherSummonerActivity(friend.name, friend.regionId)))
+      profileBtn.onClick(ctx.startActivity(ViewProfileActivity(friend.name, friend.regionId)))
       liveGameBtn.onClick(ctx.startActivity(ViewLiveGameStatsActivity(friend.name, friend.regionId)))
 
       removeFriendBtn.onClick(ConfirmDialog(
