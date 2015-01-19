@@ -36,7 +36,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
   var container: Container        = _
 
-  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3100022376"
   override      val layoutId              = R.layout.act_main_screen
 
@@ -71,7 +71,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     startService[LoLHangoutsService]
     notificationManager.cancelAll() // clear any left over notification
 
-//    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     setUpFirstTimeLaunch()
 
     rateMyApp()

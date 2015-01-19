@@ -8,7 +8,7 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 
 class QuickChatActivity extends TActivity with UpButton with Ads {
-  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3016063176"
   override      val layoutId              = R.layout.act_with_container
 

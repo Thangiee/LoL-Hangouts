@@ -4,10 +4,11 @@ import android.content.{Context, Intent}
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
 
 class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
-  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.linear_layout)
+  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/7264366775"
   override      val layoutId              = R.layout.act_with_container
 
@@ -20,7 +21,7 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     val fragment = null
     getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
-//    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
   }
 }
 
