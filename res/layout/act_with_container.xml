@@ -11,6 +11,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/ads_holder"
+            />
+
+    <include layout="@layout/ads_holder"
+            android:id="@+id/ads_holder"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             />
 
     <include
