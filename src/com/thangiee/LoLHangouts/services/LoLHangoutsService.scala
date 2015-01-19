@@ -103,7 +103,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     }
 
     // show nifty notifications
-    if (activeFriendChat != from.name && isAppInForeground) {
+    if ((activeFriendChat != from.name || !appCtx.isChatOpen) && isAppInForeground) {
       niftyNotificationEventBus.post(Events.ShowNiftyNotification(msg))
     }
   }

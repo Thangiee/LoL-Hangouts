@@ -128,7 +128,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
           NiftyNotificationView.build(this, s"${msg.friendName}: ${msg.text}", Effects.thumbSlider, R.id.crouton_holder, cfg)
             .setIcon(new BitmapDrawable(getResources, senderIcon))
             // switch to the sender chat if notification is clicked
-            .setOnClickListener((v: View) ⇒ LoLChat.getFriendByName(msg.friendName).map(f => ctx.startActivity(QuickChatActivity(f.name))))
+            .setOnClickListener((v: View) ⇒ ctx.startActivity(QuickChatActivity(msg.friendName)))
             .show()
         }
       }
