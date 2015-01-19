@@ -7,19 +7,26 @@ import android.content.Intent
 import android.os.{Bundle, SystemClock}
 import android.support.v4.widget.DrawerLayout.SimpleDrawerListener
 import android.view.View.OnClickListener
-import android.view.{View, ViewGroup}
+import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
+import com.thangiee.LoLHangouts.data.repository._
+import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
+import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.ui.friendchat.ChatContainer
+import com.thangiee.LoLHangouts.ui.login.LoginActivity
+import com.thangiee.LoLHangouts.ui.profile.ProfileContainer
 import com.thangiee.LoLHangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
 import com.thangiee.LoLHangouts.utils.Events.{FinishMainActivity, SwitchScreen}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R, SimpleContainer}
+import com.thangiee.LoLHangouts.{Container, R, SearchContainer, SimpleContainer}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
   lazy val contentContainer = find[LinearLayout](R.id.content_container)
@@ -33,39 +40,56 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3100022376"
   override      val layoutId              = R.layout.act_main_screen
 
+  val loadUser = GetUserUseCaseImpl().loadUser()
+  private var switchContainer = false
+
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     EventBus.getDefault.register(this)
 
     container = new ChatContainer()
-    contentContainer.addView(container.getView, 1)
+    contentContainer.addView(container.getView)
+
+    //todo: functional
+    find[SideDrawerView](R.id.drawer_layout).setDrawerListener(new SimpleDrawerListener {
+      override def onDrawerClosed(drawerView: View): Unit = {
+        if (switchContainer) {
+          // wait til drawer close animation complete before changing view to avoid UI lag
+          contentContainer.removeAllViews()
+          contentContainer.addView(container.getView)
+          invalidateOptionsMenu()
+          switchContainer = false
+        }
+      }
+    })
 
     // if the container did not handle the nav icon click event then open the drawer
     toolbar.setNavigationOnClickListener(new OnClickListener {
       def onClick(view: View): Unit = if (!container.onNavIconClick()) sideDrawerView.openDrawer()
     })
 
-    //    if (Prefs.getBoolean("offline-login", false)) LoLChat.appearOffline() else LoLChat.appearOnline()
-    //    startService[LoLHangoutsService]
-    //    notificationManager.cancelAll() // clear any left over notification
-    //
-    //
-    //    val tv = new TypedValue()
-    //    if (getTheme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-    //      val actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources.getDisplayMetrics)
-    //      sideDrawer.setMenuSize(getScreenWidth - actionBarHeight.toInt)
-    //    }
-    //
-    //    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
-    //    setUpFirstTimeLaunch()
-    //
+    startService[LoLHangoutsService]
+    notificationManager.cancelAll() // clear any left over notification
 
-    //    rateMyApp()
+//    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    setUpFirstTimeLaunch()
+
+    rateMyApp()
   }
 
   override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
     if (!bp.handleActivityResult(requestCode, resultCode, data))
       super.onActivityResult(requestCode, resultCode, data)
+  }
+
+  override def onCreateOptionsMenu(menu: Menu): Boolean = {
+    if (container.onCreateOptionsMenu(getMenuInflater, menu)) true
+    else super.onCreateOptionsMenu(menu)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    if (container.onOptionsItemSelected(item)) true
+    else super.onOptionsItemSelected(item)
   }
 
   override def onBackPressed(): Unit = {
@@ -137,28 +161,38 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     bp.release()
   }
 
-  def onEventMainThread(event: SwitchScreen): Unit = {
+  def onEvent(event: SwitchScreen): Unit = runOnUiThread {
     if (event.drawerTitle == DrawerItem.RemoveAds) {
-      setUpBilling(); return
+      setUpBilling()
+      return
     }
 
-    container = event.drawerTitle match {
-      case DrawerItem.Chat     => new ChatContainer()
-      case DrawerItem.LiveGame => new SimpleContainer() { override def layoutId: Int = R.layout.test }
+    event.drawerTitle match {
+      case DrawerItem.Chat     =>
+        container = new ChatContainer()
+      case DrawerItem.Profile  =>
+        loadUser onSuccess {
+          case user => runOnUiThread {
+            container = new ProfileContainer(user.inGameName, user.region.id)
+          }
+        }
+      case DrawerItem.LiveGame =>
+        container = new SimpleContainer() {
+          override def layoutId: Int = R.layout.test
+        }
+      case DrawerItem.Search   =>
+        container = new SearchContainer() {
+          override def onSearchCompleted(query: String, region: String): Unit = {
+            startActivity(ViewProfileActivity(query, region))
+          }
+        }
     }
-
-    //todo: functional
-    find[SideDrawerView](R.id.drawer_layout).setDrawerListener(new SimpleDrawerListener {
-      override def onDrawerClosed(drawerView: View): Unit = {
-        // wait til drawer close animation complete before changing view to avoid UI lag
-        contentContainer.removeViewAt(1)
-        contentContainer.addView(container.getView, 1)
-      }
-    })
+    switchContainer = true
   }
 
   def onEvent(event: FinishMainActivity): Unit = {
     cleanUpAndDisconnect()
     finish()
+    if (event.goToLogin) startActivity[LoginActivity]
   }
 }
