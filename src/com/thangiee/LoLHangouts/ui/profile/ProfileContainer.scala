@@ -29,7 +29,7 @@ class ProfileContainer(username: String, regionId: String)(implicit ctx: Context
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
-    addView(layoutInflater.inflate(R.layout.view_pager, this, false))
+    addView(layoutInflater.inflate(R.layout.view_profile_screen, this, false))
 
     val pageChangeListener = new SimpleOnPageChangeListener() {
       override def onPageSelected(position: Int): Unit = {
