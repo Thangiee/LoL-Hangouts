@@ -28,14 +28,16 @@
                 android:layout_height="match_parent"
                 />
 
-        <include
-                layout="@layout/test"
+        <com.thangiee.LoLHangouts.ui.profile.ProfileTopChampsView
                 android:id="@+id/page_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 />
 
-        <include
-                layout="@layout/test"
+        <com.thangiee.LoLHangouts.ui.profile.ProfileMatchHistView
                 android:id="@+id/page_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 />
 
     </android.support.v4.view.ViewPager>
