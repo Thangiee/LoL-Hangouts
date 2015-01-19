@@ -2,23 +2,32 @@ package com.thangiee.LoLHangouts.activities
 
 import android.content.{Context, Intent}
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.data.repository._
+import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
+import com.thangiee.LoLHangouts.ui.friendchat.ChatView
+import com.thangiee.LoLHangouts.utils.Events.ClearChatNotification
+import de.greenrobot.event.EventBus
 
-class QuickChatActivity extends TActivity with UpButton with Ads {
-  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
-  override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3016063176"
-  override      val layoutId              = R.layout.act_with_container
+import scala.concurrent.ExecutionContext.Implicits.global
+
+class QuickChatActivity extends TActivity with UpButton {
+  override val layoutId              = R.layout.act_with_container
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     val friendName = getIntent.getStringExtra("name-key")
 
-    //    val chatFrag = ChatPaneFragment(friendName)
-    //    getFragmentManager.beginTransaction().replace(R.id.container, chatFrag).commit()
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    for {
+      friend ← GetFriendsUseCaseImpl().loadFriendByName(friendName)
+    } yield runOnUiThread {
+      val chatView = new ChatView()
+      find[LinearLayout](R.id.content_container).addView(chatView)
+      chatView.setFriend(friend)
+    }
+
+    EventBus.getDefault.post(ClearChatNotification())
   }
 }
 

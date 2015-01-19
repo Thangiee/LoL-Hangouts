@@ -18,23 +18,10 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
                     getMessageUseCase: GetMsgUseCase, sendMsgUseCase: SendMsgUseCase,
                     getUserUseCase: GetUserUseCase, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
 
+  val loadUser = getUserUseCase.loadUser()
 
   override def initialize(): Unit = {
     super.initialize()
-
-    getUserUseCase.loadUser().map { user =>
-      runOnUiThread(view.setUserIcon(user.loginName, user.region.id))
-
-      // setup the friend that the user last chatted with
-      getFriendsUseCase.loadFriendByName(user.currentFriendChat.getOrElse("")).map(friend => runOnUiThread {
-        view.setFriend(friend)
-        view.setFriendIcon(friend.name, friend.regionId)
-      })
-    }
-  }
-
-  override def resume(): Unit = {
-    super.resume()
     EventBus.getDefault.register(this)
 
     view.getFriend match {
@@ -45,10 +32,9 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
     loadAndShowMessages()
   }
 
-  override def pause(): Unit = {
-    super.pause()
+  override def shutdown(): Unit = {
     EventBus.getDefault.unregister(this)
-    view.clearMessages()
+    super.shutdown()
   }
 
   def handleMessageSend(text: String): Unit = {
@@ -71,6 +57,11 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
   def handleFriendChange(friend: Friend): Unit = {
     view.clearMessages()
     view.setHint(s"Send to ${friend.name}")
+    view.setFriendIcon(friend.name, friend.regionId)
+    loadUser onSuccess { case user =>
+      runOnUiThread(view.setUserIcon(user.inGameName, user.region.id))
+    }
+
     loadAndShowMessages()
   }
 
