@@ -10,6 +10,7 @@ import android.view._
 import android.widget._
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.LoLHangouts.ui.settings.SettingsActivity
@@ -147,6 +148,8 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     code2run = presenter.handleLogout(),
     btnTitle = "Logout"
   ).show()
+
+  def showRemoveAdsConfirmation() = ctx.asInstanceOf[MainActivity].setUpBilling()
 
   def updateDrawer(selectedItem: DrawerItem): Unit = {
     currentDrawerItem.isSelected = false

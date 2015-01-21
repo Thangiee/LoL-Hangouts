@@ -48,7 +48,7 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     drawer.title match {
       case Settings  => view.showSettings(); return
       case Logout    => view.showLogoutConfirmation(); return
-      case RemoveAds => return // todo
+      case RemoveAds => view.showRemoveAdsConfirmation(); return
       case _         =>
     }
 
