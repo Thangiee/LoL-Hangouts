@@ -6,20 +6,21 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.ui.livegame.LiveGameContainer
 
 class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/7264366775"
   override      val layoutId              = R.layout.act_with_container
 
+  lazy val contentContainer = find[LinearLayout](R.id.content_container)
+
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-
     val summonerName = getIntent.getStringExtra("name-key")
-    val region = getIntent.getStringExtra("region-key")
+    val regionId = getIntent.getStringExtra("region-key")
 
-    val fragment = null
-    getFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+    contentContainer.addView(new LiveGameContainer(summonerName, regionId).getView)
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
   }

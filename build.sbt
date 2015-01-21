@@ -45,7 +45,7 @@ proguardOptions in Android ++= Seq(
   "-keep class org.jsoup.Jsoup.** {*;}",
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
-  "-keepclassmembers class com.thangiee.LoLWithFriends.** {*;}",
+  "-keep class com.nispok.snackbar.Snackbar.** {*;}",
   "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
   "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
   "-keepclassmembers class ** {public void processHTML(**);}",

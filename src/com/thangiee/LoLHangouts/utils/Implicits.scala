@@ -10,6 +10,8 @@ import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
 import com.ami.fundapter.interfaces.ItemClickListener
+import com.nispok.snackbar.Snackbar
+import com.nispok.snackbar.listeners.ActionClickListener
 import com.thangiee.LoLHangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 
@@ -87,6 +89,12 @@ trait InterfaceImplicits {
   implicit def func2ItemClickListener[T](f: T ⇒ Unit): ItemClickListener[T] = {
     new ItemClickListener[T] {
       override def onClick(p1: T, p2: Int, p3: View): Unit = f.apply(p1)
+    }
+  }
+
+  implicit def func2ActionClickListener(f: Snackbar => Unit): ActionClickListener = {
+    new ActionClickListener {
+      override def onActionClicked(snackbar: Snackbar): Unit = f(snackbar)
     }
   }
 }

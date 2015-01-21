@@ -17,16 +17,16 @@ object MemCache extends AnyRef with TagUtil {
     val result = cache.getIfPresent(key)
 
     if (result != null) {
-      debug(s"[+] mem cache hit: [$key, $result]")
+      debug(s"[+] mem cache hit: KEY:$key - VALUE:${result.toString.take(20)}")
       Some(result.asInstanceOf[T])
     } else {
-      debug(s"[-] mem cache miss: $key")
+      debug(s"[-] mem cache miss: KEY:$key")
       None
     }
   }
 
   def put(key: String, value: Object): Unit = {
-    debug(s"[*] saving to mem cache [$key, $value]")
+    verbose(s"[*] saving to mem cache [$key, ${value.toString.take(20)}]")
     cache.put(key, value)
   }
 
