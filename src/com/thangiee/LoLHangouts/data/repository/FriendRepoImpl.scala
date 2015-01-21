@@ -1,11 +1,14 @@
 package com.thangiee.LoLHangouts.data.repository
 
 import com.thangiee.LoLHangouts.data.entities.mappers.FriendMapper
+import com.thangiee.LoLHangouts.data.repository.datasources.api.CachingApiCaller
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.repository.FriendRepo
+import thangiee.riotapi.core.RiotApi
 
 trait FriendRepoImpl extends FriendRepo {
+  implicit val caller = new CachingApiCaller()
 
   override def getFriendList: Either[Exception, List[Friend]] = {
     if (LoLChat.isLogin) {
@@ -15,9 +18,14 @@ trait FriendRepoImpl extends FriendRepo {
       Left(new IllegalStateException("LoLChat is not login"))
   }
 
-  override def addFriend(id: String): Option[Exception] = {
-    //todo: implement
-    None
+  override def addFriend(name: String): Option[Exception] = {
+    RiotApi.summonerByName(name).fold(
+      e => Some(e),
+      summ => {
+        LoLChat.connection.getRoster.createEntry(s"sum${summ.id}@pvp.net", name, null)
+        None
+      }
+    )
   }
 
   override def removeFriend(id: String): Option[Exception] = {

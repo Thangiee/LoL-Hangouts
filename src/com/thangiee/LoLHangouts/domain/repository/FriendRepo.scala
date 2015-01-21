@@ -13,7 +13,7 @@ trait FriendRepo {
 
   def setFriendListListener(): Option[Exception]
 
-  def addFriend(id: String): Option[Exception]
+  def addFriend(name: String): Option[Exception]
 
-  def removeFriend(id: String): Option[Exception]
+  def removeFriend(name: String): Option[Exception]
 }
