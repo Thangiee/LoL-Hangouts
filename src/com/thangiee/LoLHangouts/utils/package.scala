@@ -62,5 +62,7 @@ package object utils extends SystemServices with Helpers with Implicits with Log
   implicit class RightBiasedEither[A,B](e: Either[A,B]) {
     def map[C](f: B => C) = e.right map f
     def flatMap[C](f: B => Either[A,C]) = e.right flatMap f
+    def get = e.right get
+    def getOrElse(f: => B) = e.right getOrElse f
   }
 }

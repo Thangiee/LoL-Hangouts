@@ -21,7 +21,7 @@ import com.thangiee.LoLHangouts.ui.profile.ProfileContainer
 import com.thangiee.LoLHangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
 import com.thangiee.LoLHangouts.utils.Events.{FinishMainActivity, SwitchScreen}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R, SearchContainer, SimpleContainer}
+import com.thangiee.LoLHangouts.{Container, R, SearchContainer}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
@@ -177,8 +177,10 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
           }
         }
       case DrawerItem.LiveGame =>
-        container = new SimpleContainer() {
-          override def layoutId: Int = R.layout.test
+        container = new SearchContainer() {
+          override def onSearchCompleted(query: String, region: String): Unit = {
+            startActivity(ViewLiveGameStatsActivity(query, region))
+          }
         }
       case DrawerItem.Search   =>
         container = new SearchContainer() {

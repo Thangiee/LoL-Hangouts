@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
+
+    <it.neokree.materialtabs.MaterialTabHost
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            tab:textColor="#FFFFFF"
+            tab:primaryColor="?attr/colorPrimary"
+            tab:accentColor="@color/my_orange"
+            />
+
+    <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pager"
+            android:layout_below="@+id/tabs"
+            >
+
+        <com.thangiee.LoLHangouts.ui.livegame.LiveGameTeamView
+                android:id="@+id/page_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        <com.thangiee.LoLHangouts.ui.livegame.LiveGameTeamView
+                android:id="@+id/page_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>
