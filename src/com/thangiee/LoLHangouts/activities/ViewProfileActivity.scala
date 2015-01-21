@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.activities
 
 import android.content.{Context, Intent}
 import android.os.Bundle
-import android.view.ViewGroup
+import android.view.{MenuItem, Menu, ViewGroup}
 import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
@@ -13,16 +13,26 @@ case class ViewProfileActivity() extends TActivity with UpButton with Ads {
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/4576755572"
   override      val layoutId              = R.layout.act_with_container
 
+  lazy val summonerName = getIntent.getStringExtra("name-key")
+  lazy val regionId = getIntent.getStringExtra("region-key")
   lazy val contentContainer = find[LinearLayout](R.id.content_container)
+  lazy val container = new ProfileContainer(summonerName, regionId)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    val summonerName = getIntent.getStringExtra("name-key")
-    val regionId = getIntent.getStringExtra("region-key")
-
-    contentContainer.addView(new ProfileContainer(summonerName, regionId).getView)
+    contentContainer.addView(container.getView)
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+  }
+
+  override def onCreateOptionsMenu(menu: Menu): Boolean = {
+    if (container.onCreateOptionsMenu(getMenuInflater, menu)) true
+    else super.onCreateOptionsMenu(menu)
+  }
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    if (container.onOptionsItemSelected(item)) true
+    else super.onOptionsItemSelected(item)
   }
 }
 

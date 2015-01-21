@@ -103,7 +103,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   }
 
   def onEvent(event: CroutonMsg): Unit = {
-    event.msg.makeCrouton(event.style, event.duration).show()
+    runOnUiThread(event.msg.makeCrouton(event.style, event.duration).show())
   }
 
   def onEvent(event: ShowNiftyNotification): Unit = {

@@ -4,18 +4,19 @@ import android.content.Context
 import android.os.SystemClock
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
-import android.view.{View, ViewGroup}
+import android.view._
 import android.widget.FrameLayout
-import com.thangiee.LoLHangouts.data.repository.userRepoImpl
-import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
+import com.thangiee.LoLHangouts.data.repository._
+import com.thangiee.LoLHangouts.domain.interactor.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.LoLHangouts.utils._
 import com.thangiee.LoLHangouts.{Container, R}
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
-class ProfileContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
+class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
   lazy val pager                = this.find[ViewPager](R.id.pager)
   lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
@@ -51,8 +52,34 @@ class ProfileContainer(username: String, regionId: String)(implicit ctx: Context
     }
 
     Future {
-      while (!profileSummaryView.isAttachedToWindow) { SystemClock.sleep(100) } // make sure view is attached first
+      while (!profileSummaryView.isAttachedToWindow) {
+        SystemClock.sleep(100)
+      } // make sure view is attached first
       runOnUiThread(pageChangeListener.onPageSelected(0))
+    }
+  }
+
+  override def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = {
+    menuInflater.inflate(R.menu.overflow, menu)
+    GetFriendsUseCaseImpl().loadFriendByName(name) onFailure { case e => // not in friend list
+      loadUser onSuccess { case user =>
+        // don't inflate if viewing your own profile or a profile from a different region
+        if (name.toLowerCase != user.inGameName.toLowerCase && regionId.toLowerCase == user.region.id.toLowerCase)
+          runOnUiThread(menuInflater.inflate(R.menu.add_friend, menu))
+      }
+    }
+    true
+  }
+
+  override def onOptionsItemSelected(item: MenuItem): Boolean = {
+    item.getItemId match {
+      case R.id.menu_add_friend =>
+        AddFriendUseCaseImpl().addFriend(name) onComplete {
+          case Success(_)  => info(s"[+] $name added to friend list")
+          case Failure(e) => "Failed to add friend".croutonWarn()
+        }
+        true
+      case _                    => false
     }
   }
 
@@ -60,9 +87,9 @@ class ProfileContainer(username: String, regionId: String)(implicit ctx: Context
     // only load the page the user is currently viewing and initialize it only once
     if (!pages(position).isSet) {
       position match {
-        case 0 => profileSummaryView.setProfile(username, regionId)
-        case 1 => profileTopChampView.setProfile(username, regionId)
-        case 2 => profileMatchHistView.setProfile(username, regionId)
+        case 0 => profileSummaryView.setProfile(name, regionId)
+        case 1 => profileTopChampView.setProfile(name, regionId)
+        case 2 => profileMatchHistView.setProfile(name, regionId)
       }
       pages(position).isSet = true
     }
