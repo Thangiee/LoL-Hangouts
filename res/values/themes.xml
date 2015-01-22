@@ -12,7 +12,10 @@
         <item name="android:textColorSecondary">@color/secondary_text</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowBackground">@color/md_grey_200</item>
+        <item name="android:windowBackground">@color/window_background</item>
+
+        <item name="colorSwitchThumbNormal">@color/md_grey_300</item>
+        <item name="android:colorForeground">@color/md_grey_600</item>
 
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
         <item name="android:actionBarTabBarStyle">@style/MyActionBarStyle</item>
