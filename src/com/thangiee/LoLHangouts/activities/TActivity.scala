@@ -1,7 +1,6 @@
 package com.thangiee.LoLHangouts.activities
 
 import android.content.DialogInterface
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
@@ -34,7 +33,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
   // any class that extends TActivity needs to include a toolbar in its layout
   lazy val toolbar = find[Toolbar](R.id.toolbar)
-  lazy val navIcon = new MaterialMenuDrawable(this, Color.YELLOW, Stroke.THIN)
+  lazy val navIcon = new MaterialMenuDrawable(this, R.color.abc_secondary_text_material_dark.r2Color, Stroke.THIN)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
