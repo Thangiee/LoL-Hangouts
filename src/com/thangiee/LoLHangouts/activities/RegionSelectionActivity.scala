@@ -27,6 +27,7 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with Adap
 
     navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(finish())
+    getSupportActionBar.setTitle("Regions")
 
     val serverDictionary = new BindDictionary[Region]()
     serverDictionary.addStringField(R.id.tv_region_name, (item: Region) ⇒ item.name)
