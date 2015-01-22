@@ -4,7 +4,7 @@
                 xmlns:circle="http://schemas.android.com/apk/res-auto"
                 xmlns:ebm="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
     <com.makeramen.RoundedImageView
             android:layout_width="56dp"
@@ -17,7 +17,7 @@
             circle:corner_radius="32dip"
             circle:border_color="@color/my_orange"
             circle:border_width="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/side_drawer_top_margin"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             />
@@ -46,7 +46,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:id="@+id/img_edit_status"
-            android:src="@drawable/ic_action_edit"
+            android:src="@drawable/ic_action_edit_24"
             android:scaleType="fitCenter"
             android:visibility="visible"
             android:layout_alignParentLeft="false"
@@ -54,7 +54,9 @@
             android:layout_marginRight="16dp"
             android:paddingLeft="4dp"
             android:paddingTop="4dp"
-            android:layout_alignBottom="@+id/tv_status_msg"/>
+            android:layout_alignBottom="@+id/tv_status_msg"
+            android:tint="@color/my_orange"
+            />
 
     <View
             android:id="@+id/divider"

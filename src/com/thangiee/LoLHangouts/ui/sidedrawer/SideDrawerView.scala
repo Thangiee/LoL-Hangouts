@@ -75,10 +75,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
       presenter.handleDrawerItemClicked(selectedDrawerItem, currentDrawerItem == selectedDrawerItem)
     })
 
-    // 16:9 ratio - drawer width to header height
-    val height = (9.0 / 16.0) * width
     val header = layoutInflater.inflate(R.layout.side_menu_header, null)
-    header.setLayoutParams(new AbsListView.LayoutParams(MATCH_PARENT, height.toInt)) // set header height
     drawer.addHeaderView(header)
 
     // setup button to control setting online/away/offline status
