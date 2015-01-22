@@ -7,24 +7,6 @@
 
     <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/region_selection_header"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/my_dark_blue"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-    <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="@color/my_orange"
-            android:id="@+id/view1"/>
-
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
