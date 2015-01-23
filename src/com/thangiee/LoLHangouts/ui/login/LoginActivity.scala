@@ -22,7 +22,7 @@ class LoginActivity extends TActivity with LoginView {
   lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
 
   override val presenter = new LoginPresenter(this, LoginUseCaseImpl())
-  override val layoutId  = R.layout.login
+  override val layoutId  = R.layout.act_login_screen
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
