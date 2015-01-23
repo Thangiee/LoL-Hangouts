@@ -21,10 +21,8 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
             view.setUsername(username)
             view.setPassword(password)
             view.showLoginOffline(isLoginOffline)
-
-            if (!username.isEmpty) view.showSaveUsername(isEnable = true)
-            if (!password.isEmpty) view.showSavePassword(isEnable = true)
-
+            view.showSaveUsername(isEnable = !username.isEmpty)
+            view.showSavePassword(isEnable = !password.isEmpty)
             checkAndUpdateAppVersion()
           case None         =>
             view.navigateBack()
