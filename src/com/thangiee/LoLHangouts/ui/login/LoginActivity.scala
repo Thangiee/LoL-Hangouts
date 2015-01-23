@@ -1,10 +1,12 @@
 package com.thangiee.LoLHangouts.ui.login
 
 import android.os.Bundle
+import android.support.v7.widget.SwitchCompat
 import android.view.View
-import android.widget.{CheckBox, EditText, ImageView}
+import android.widget.{EditText, TextView}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
+import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{MainActivity, RegionSelectionActivity, TActivity}
 import com.thangiee.LoLHangouts.data.repository._
@@ -12,15 +14,15 @@ import com.thangiee.LoLHangouts.domain.interactor.LoginUseCaseImpl
 import com.thangiee.LoLHangouts.utils._
 
 class LoginActivity extends TActivity with LoginView {
-  lazy val userEditText         = find[EditText](R.id.et_username)
-  lazy val passwordEditText     = find[EditText](R.id.et_password)
-  lazy val logInButton          = find[CircularProgressButton](R.id.btn_login)
-  lazy val saveUserCheckBox     = find[CheckBox](R.id.cb_save_user)
-  lazy val savePassCheckBox     = find[CheckBox](R.id.cb_save_pass)
-  lazy val offlineLoginCheckBox = find[CheckBox](R.id.cb_offline_login)
+  lazy val userEditText       = find[MaterialEditText](R.id.et_username)
+  lazy val passwordEditText   = find[EditText](R.id.et_password)
+  lazy val logInButton        = find[CircularProgressButton](R.id.btn_login)
+  lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
+  lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
+  lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
 
-  override val presenter    = new LoginPresenter(this, LoginUseCaseImpl())
-  override val layoutId     = R.layout.login
+  override val presenter = new LoginPresenter(this, LoginUseCaseImpl())
+  override val layoutId  = R.layout.login
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -34,21 +36,17 @@ class LoginActivity extends TActivity with LoginView {
 
     navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(navigateBack())
+    getSupportActionBar.setTitle(null)
   }
 
   override def onStart(): Unit = {
     super.onStart()
     presenter.initialize()
-    find[ImageView](R.id.img_login_bg).setImageResource(R.drawable.shadow_isles_640)
   }
 
   override def onResume(): Unit = {
     super.onResume()
     presenter.resume()
-
-    // check the checkbox if those fields are not empty
-    if (userEditText.length() != 0) saveUserCheckBox.setChecked(true)
-    if (passwordEditText.length() != 0) savePassCheckBox.setChecked(true)
   }
 
   override def onPause(): Unit = {
@@ -57,7 +55,6 @@ class LoginActivity extends TActivity with LoginView {
   }
 
   override def onStop(): Unit = {
-    find[ImageView](R.id.img_login_bg).setImageDrawable(null)
     presenter.shutdown()
     super.onStop()
   }
@@ -87,23 +84,23 @@ class LoginActivity extends TActivity with LoginView {
     startActivity[RegionSelectionActivity]
   }
 
-  override def setTitle(title: String): Unit = toolbar.setTitle(title)
+  override def setTitle(title: String): Unit = find[TextView](R.id.tv_region_name).setText(title)
 
   override def setPassword(password: String): Unit = passwordEditText.setText(password)
 
   override def setUsername(name: String): Unit = userEditText.setText(name)
 
-  override def getPassword: String = if (savePassCheckBox.isChecked) passwordEditText.txt2str else ""
+  override def getPassword: String = if (savePassSwitch.isChecked) passwordEditText.txt2str else ""
 
-  override def getUsername: String = if (saveUserCheckBox.isChecked) userEditText.txt2str else ""
+  override def getUsername: String = if (saveUserSwitch.isChecked) userEditText.txt2str else ""
 
-  override def isLoginOffline: Boolean = offlineLoginCheckBox.isChecked
+  override def isLoginOffline: Boolean = offlineLoginSwitch.isChecked
 
-  override def showLoginOffline(isEnable: Boolean): Unit = offlineLoginCheckBox.setChecked(isEnable)
+  override def showLoginOffline(isEnable: Boolean): Unit = offlineLoginSwitch.setChecked(isEnable)
 
-  override def showSaveUsername(isEnable: Boolean): Unit = saveUserCheckBox.setChecked(isEnable)
+  override def showSaveUsername(isEnable: Boolean): Unit = saveUserSwitch.setChecked(isEnable)
 
-  override def showSavePassword(isEnable: Boolean): Unit = savePassCheckBox.setChecked(isEnable)
+  override def showSavePassword(isEnable: Boolean): Unit = savePassSwitch.setChecked(isEnable)
 
   override def getCurrentAppVersion: String = getPackageManager.getPackageInfo(ctx.getPackageName, 0).versionName
 }
