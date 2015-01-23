@@ -31,6 +31,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
   lazy val contentContainer = find[LinearLayout](R.id.content_container)
   lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
+  lazy val toolbarShadow    = find[View](R.id.toolbar_shadow)
 
   var bp       : BillingProcessor = _
   val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
@@ -42,6 +43,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   val loadUser = GetUserUseCaseImpl().loadUser()
   private var switchContainer = false
+  private var showToolBarShadow = true
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -59,6 +61,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
           contentContainer.addView(container.getView)
           invalidateOptionsMenu()
           switchContainer = false
+          toolbarShadow.setVisibility(if (showToolBarShadow) View.VISIBLE else View.INVISIBLE)
         }
       }
     })
@@ -167,12 +170,14 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       return
     }
 
+    showToolBarShadow = true // reset shadow
     event.drawerTitle match {
       case DrawerItem.Chat     =>
         container = new ChatContainer()
       case DrawerItem.Profile  =>
         loadUser onSuccess {
           case user => runOnUiThread {
+            showToolBarShadow = false // remove the shadow since profile already has shadow under the tabs
             container = new ProfileContainer(user.inGameName, user.region.id)
           }
         }

@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.activities
 
 import android.content.{Context, Intent}
 import android.os.Bundle
-import android.view.{MenuItem, Menu, ViewGroup}
+import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R

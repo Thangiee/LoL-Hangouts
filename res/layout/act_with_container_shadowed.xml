@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-        >
+                android:layout_height="match_parent">
 
-    <FrameLayout
-            android:id="@+id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+    <LinearLayout
+            android:id="@+id/content_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"
-            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/ads_holder"
+            />
+
+    <include layout="@layout/ads_holder"
+            android:id="@+id/ads_holder"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             />
 
     <include
             layout="@layout/crouton_holder"
             android:id="@+id/crouton_holder"
+            android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/toolbar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             />
 
     <include layout="@layout/toolbar_shadow"
