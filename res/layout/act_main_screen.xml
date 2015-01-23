@@ -23,6 +23,13 @@
                 android:layout_below="@+id/toolbar"
                 />
 
+        <include layout="@layout/toolbar_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/toolbar"
+                android:id="@+id/toolbar_shadow"
+                />
+
         <include layout="@layout/ads_holder"
                  android:id="@+id/ads_holder"
                  android:layout_alignParentBottom="true"
