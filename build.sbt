@@ -65,6 +65,15 @@ val errorView = Seq(aar("com.github.xiprox.errorview" % "library" % "1.0.0"))
 
 val snackbar = Seq(aar("com.nispok" % "snackbar" % "2.7.4"))
 
+val materialEditText = Seq(aar("com.rengwuxian.materialedittext" % "library" % "1.8.2"))
+
+val cardslib = Seq(
+  aar("com.github.gabrielemariotti.cards" % "cardslib-core" % "2.0.1"),
+  aar("com.github.gabrielemariotti.cards" % "cardslib-cards" % "2.0.1"),
+  aar("com.github.gabrielemariotti.cards" % "cardslib-recyclerview" % "2.0.1"),
+  aar("com.nhaarman.listviewanimations" % "lib-core" % "3.1.0")
+)
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -81,7 +90,6 @@ libraryDependencies ++= Seq(
   aar("com.android.support" % "appcompat-v7" % "21.0.+"),
   aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0"),
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
-  aar("com.github.gabrielemariotti.cards" % "library-extra" % "1.9.0"),
   aar("de.psdev.licensesdialog" % "licensesdialog" % "1.5.0"),
   aar("com.google.android.gms" % "play-services" % "6.1.+"),
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+"),
@@ -91,7 +99,7 @@ libraryDependencies ++= Seq(
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")
-  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar
+  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar ++ cardslib
 
 run <<= run in Android
 
