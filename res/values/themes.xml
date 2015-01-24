@@ -28,13 +28,24 @@
         <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
     </style>
 
-    <style name="FriendListStyle">
+    <!-- setting screen -->
+    <style name="PreferenceScreenStyle" parent="AppTheme.Base">
+        <item name="android:listSeparatorTextViewStyle">@style/PrefCategoryHeaderStyle</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+
+    <!--setting category header-->
+    <style name="PrefCategoryHeaderStyle" parent="@android:style/Widget.TextView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:minHeight">10dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingTop">@dimen/native_list_card_margin_top</item>
-        <item name="android:paddingBottom">@dimen/native_list_card_margin_bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawableBottom">@drawable/section_header</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingLeft">12dp</item>
     </style>
 
 </resources>
