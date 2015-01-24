@@ -6,7 +6,6 @@
                 android:widgetLayout="@layout/pref_switch"
                 android:defaultValue="true"
                 android:key="@string/pref_notify_login"
-                android:textColor="@android:color/darker_gray"
                 android:title="Notify friend login"/>
         <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"

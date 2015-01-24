@@ -4,7 +4,7 @@
        android:shape="rectangle">
     <size
             android:width="1000dp"
-            android:height="2dp"/>
+            android:height="1dp"/>
     <solid
-            android:color="@color/my_orange"/>
+            android:color="@color/divider"/>
 </shape>
