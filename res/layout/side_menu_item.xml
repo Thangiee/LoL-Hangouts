@@ -15,6 +15,7 @@
             android:layout_height="48dp"
             android:text="Large Text"
             android:textSize="16sp"
+            android:textColor="@color/primary_text"
             android:id="@+id/tv_menu_item_name"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
