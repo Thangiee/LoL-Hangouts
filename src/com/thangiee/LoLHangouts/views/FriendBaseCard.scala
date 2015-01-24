@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts.views
 
 import android.content.Context
 import android.graphics.Typeface
-import android.view.{ViewGroup, View}
+import android.view.{View, ViewGroup}
 import android.widget.TextView
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.domain.entities.Friend
@@ -10,17 +10,17 @@ import com.thangiee.LoLHangouts.utils.{Events, _}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.Card
 import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener
-import it.gmariotti.cardslib.library.view.CardView
+import it.gmariotti.cardslib.library.view.CardViewNative
 import org.scaloid.common.{TagUtil, TraitView}
 
 import scala.util.Try
 
 abstract class FriendBaseCard(private var friend: Friend, layoutId: Int)(implicit ctx: Context) extends Card(ctx, layoutId)
-with TraitView[CardView] with OnCardClickListener with TagUtil {
+with TraitView[CardViewNative] with OnCardClickListener with TagUtil {
 
   setOnClickListener(this)
 
-  override def basis: CardView = getCardView
+  override def basis: CardViewNative = getCardView.asInstanceOf[CardViewNative]
 
   override def onClick(p1: Card, p2: View): Unit = {
     EventBus.getDefault.post(Events.FriendCardClicked(friend))
@@ -37,8 +37,8 @@ with TraitView[CardView] with OnCardClickListener with TagUtil {
 
   protected def friend_(friend: Friend): Unit = this.friend = friend
 
-  protected def fetchLatestMessage(): Unit = Try {
-    val latestMsgTextView = find[TextView](R.id.tv_friend_last_msg) // use Try since possible NPE
+  protected def fetchLatestMessage(): Unit = Try { // use Try since possible NPE
+    val latestMsgTextView = find[TextView](R.id.tv_friend_last_msg)
     friend.latestMsg match {
       case Some(msg) =>
         // add "You:" if user sent the last msg

@@ -1,8 +1,9 @@
 package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.Context
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
-import com.thangiee.LoLHangouts.CustomView
+import android.widget.FrameLayout
+import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
+import com.thangiee.LoLHangouts.{R, CustomView}
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
@@ -13,21 +14,22 @@ import it.gmariotti.cardslib.library.view.CardListView
 
 import scala.collection.JavaConversions._
 
-class FriendListView(implicit ctx: Context) extends CardListView(ctx) with CustomView {
-
+class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   override val presenter = new FriendListPresenter(this, GetFriendsUseCaseImpl())
 
+  lazy val cardListView = find[CardListView](R.id.card_list)
   val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   val cardArrayAdapter = new CardArrayAdapter(ctx, cards)
 
   override def onAttached(): Unit = {
     super.onAttached()
+    addView(layoutInflater.inflate(R.layout.friend_list_view, this, false))
     cardArrayAdapter.setNotifyOnChange(false)
     cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
 
-    val animationAdapter = new AlphaInAnimationAdapter(cardArrayAdapter)
-    animationAdapter.setAbsListView(this)
-    setExternalAdapter(animationAdapter, cardArrayAdapter)
+    val animationAdapter = new SwingLeftInAnimationAdapter(cardArrayAdapter)
+    animationAdapter.setAbsListView(cardListView)
+    cardListView.setExternalAdapter(animationAdapter, cardArrayAdapter)
   }
 
   def initCardList(onFriends: List[Friend], offFriends: List[Friend]): Unit = {
