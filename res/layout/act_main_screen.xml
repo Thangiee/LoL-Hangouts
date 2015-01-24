@@ -9,16 +9,31 @@
 
     <!-- The main content view -->
     <RelativeLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@color/primary_dark"
             >
+
+        <include
+                layout="@layout/crouton_holder"
+                android:id="@+id/crouton_holder"
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        <include
+                layout="@layout/toolbar"
+                android:id="@+id/toolbar"
+                />
 
         <LinearLayout
                 android:id="@+id/content_container"
                 android:orientation="vertical"
+                android:background="@color/window_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/ads_holder"
                 android:layout_below="@+id/toolbar"
                 />
@@ -36,19 +51,6 @@
                  android:layout_alignParentLeft="false"
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
-                />
-
-        <include
-                layout="@layout/crouton_holder"
-                android:id="@+id/crouton_holder"
-                android:layout_below="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-
-        <include
-                layout="@layout/toolbar"
-                android:id="@+id/toolbar"
                 />
 
     </RelativeLayout>

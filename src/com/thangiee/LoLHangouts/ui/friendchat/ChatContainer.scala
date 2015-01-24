@@ -37,6 +37,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
 
     openPane() // show the friend list
     setPanelSlideListener(this)
+    setShadowDrawableLeft(R.drawable.sliding_pane_shadow)
+    setCoveredFadeColor(R.color.md_grey_500.r2Color)
 
     appCtx.isFriendListOpen = isOpen
     appCtx.isChatOpen = !isOpen

@@ -15,7 +15,7 @@ import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToEx
 case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
   lazy val statusTextView    = find[TextView](R.id.tv_friend_status)
   lazy val iconImageView     = find[ImageView](R.id.img_profile_icon)
-  lazy val infoButton        = find[ImageView](R.id.img_info)
+  lazy val infoButton        = find[ImageButton](R.id.img_info)
   lazy val notifyButton      = find[ImageButton](R.id.img_bell)
   addCardExpand(new SummonerCardExpand())
 

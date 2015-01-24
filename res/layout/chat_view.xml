@@ -2,11 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:progress="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="false"
-                android:background="@color/my_dark_blue"
         >
 
     <com.thangiee.LoLHangouts.ui.friendchat.MessagesListView
@@ -28,13 +25,12 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:weightSum="1"
             android:background="@android:color/white"
             >
 
         <EditText
                 android:id="@+id/et_msg_field"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences|textMultiLine"
                 android:background="@android:color/white"
@@ -58,6 +54,10 @@
                 android:textStyle="bold"
                 progress:cpb_iconComplete="@drawable/ic_action_accept"
                 progress:cpb_iconError="@drawable/ic_action_cancel"
+                progress:cpb_selectorIdle="@drawable/idle_state_selector"
+                progress:cpb_colorIndicator="@color/md_light_blue_500"
+                progress:cpb_colorIndicatorBackground="@color/white"
+                progress:cpb_colorProgress="@android:color/transparent"
                 progress:cpb_textIdle="send"
                 android:layout_margin="4dp"
                 />

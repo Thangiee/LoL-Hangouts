@@ -36,10 +36,10 @@ public class MessagesListView extends ListView {
         final Drawable defaultTransparent = res.getDrawable(R.drawable.default_messages_list_view_transparent);
         final boolean defaultSound = res.getBoolean(R.bool.default_messages_list_view_sound);
         final int defaultBackgroundColor = res.getColor(R.color.default_messages_list_view_background);
-        final int defaultRecipientColor = res.getColor(R.color.default_messages_list_view_recipient_color);
-        final int defaultSenderColor = res.getColor(R.color.default_messages_list_view_sender_color);
-        final int defaultMessageTextColor = res.getColor(R.color.default_messages_list_view_message_text_color);
-        final int defaultDateTextColor = res.getColor(R.color.default_messages_list_view_date_text_color);
+        final int defaultRecipientColor = res.getColor(R.color.md_grey_100);
+        final int defaultSenderColor = res.getColor(R.color.md_teal_100);
+        final int defaultMessageTextColor = res.getColor(R.color.primary_text);
+        final int defaultDateTextColor = res.getColor(R.color.secondary_text);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MessagesListView, defStyle, 0);
         recipientDrawable = a.getDrawable(R.styleable.MessagesListView_recipientDrawable);
