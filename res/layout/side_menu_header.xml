@@ -4,9 +4,23 @@
                 xmlns:circle="http://schemas.android.com/apk/res-auto"
                 xmlns:ebm="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+        >
 
-    <com.makeramen.RoundedImageView
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView7"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:layout_alignBottom="@+id/divider"
+                android:src="@drawable/mat1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop"
+                />
+
+        <com.makeramen.RoundedImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:id="@+id/img_my_profile_icon"
@@ -16,7 +30,7 @@
             android:layout_alignParentStart="true"
             circle:corner_radius="32dip"
             circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:border_width="2dp"
             android:layout_marginTop="@dimen/side_drawer_top_margin"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -43,19 +57,17 @@
             android:layout_alignRight="@+id/img_edit_status"/>
 
     <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:id="@+id/img_edit_status"
-            android:src="@drawable/ic_action_edit_24"
+            android:src="@drawable/ic_drawer_edit"
             android:scaleType="fitCenter"
             android:visibility="visible"
             android:layout_alignParentLeft="false"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp"
             android:layout_alignBottom="@+id/tv_status_msg"
-            android:tint="@color/my_orange"
+            android:tint="@color/md_blue_grey_100"
             />
 
     <View
@@ -95,4 +107,5 @@
             android:layout_toLeftOf="@+id/img_edit_status"
             android:layout_toStartOf="@+id/img_edit_status"
             android:singleLine="true"/>
+
 </RelativeLayout>
