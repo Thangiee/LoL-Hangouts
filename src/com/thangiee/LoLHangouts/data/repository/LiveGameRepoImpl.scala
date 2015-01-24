@@ -63,7 +63,7 @@ trait LiveGameRepoImpl extends LiveGameRepo {
   }
 
   private def fetchGameInfo(name: String, regionId: String): Either[Exception, SpectatorGameInfo] = {
-    val url = s"https://spectator-league-of-legends-v1.p.mashape.com/lol/${regionId.toLowerCase}/v1/spectator/by-name/$name"
+    val url = s"https://spectator-league-of-legends-v1.p.mashape.com/lol/${regionId.toLowerCase}/v1/spectator/by-name/${name.replace(" ", "")}"
 
     val request = Try(Http(url).header("X-Mashape-Key", "7uHRIbmcapmshQCKPZCBsQozWKRQp1vJz0kjsne9rnsYwwPqLo")
       .option(HttpOptions.connTimeout(5000))
