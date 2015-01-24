@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-abstract class SearchContainer(implicit ctx: Context) extends FrameLayout(ctx) with Container with OnQueryTextListener with OnSuggestionListener {
+abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends FrameLayout(ctx) with Container with OnQueryTextListener with OnSuggestionListener {
 
   private var searchView   : SearchView = _
   private var regionSpinner: Spinner    = _
@@ -59,7 +59,7 @@ abstract class SearchContainer(implicit ctx: Context) extends FrameLayout(ctx) w
     true
   }
 
-  override def getView: View = layoutInflater.inflate(R.layout.test, null)
+  override def getView: View = layoutInflater.inflate(layoutId, this, false)
 
   def onSearchCompleted(query: String, region: String)
 
