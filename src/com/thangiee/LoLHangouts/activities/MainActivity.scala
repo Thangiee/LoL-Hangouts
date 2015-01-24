@@ -182,13 +182,13 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
           }
         }
       case DrawerItem.LiveGame =>
-        container = new SearchContainer() {
+        container = new SearchContainer(R.layout.search_container_live_game) {
           override def onSearchCompleted(query: String, region: String): Unit = {
             startActivity(ViewLiveGameStatsActivity(query, region))
           }
         }
       case DrawerItem.Search   =>
-        container = new SearchContainer() {
+        container = new SearchContainer(R.layout.search_container_profile) {
           override def onSearchCompleted(query: String, region: String): Unit = {
             startActivity(ViewProfileActivity(query, region))
           }
