@@ -46,7 +46,7 @@ with TraitView[CardView] with OnCardClickListener with TagUtil {
         // bold if msg hasn't been read
         latestMsgTextView.setTypeface(null, if (!msg.isRead) Typeface.BOLD_ITALIC else Typeface.NORMAL)
         // different color for read/unread
-        latestMsgTextView.setTextColor((if (!msg.isRead) R.color.friend_card_last_msg_unread else R.color.friend_card_last_msg).r2Color)
+        latestMsgTextView.setTextColor((if (!msg.isRead) R.color.primary else R.color.secondary_text).r2Color)
       case None      =>
         latestMsgTextView.setText("")
     }

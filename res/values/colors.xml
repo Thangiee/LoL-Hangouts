@@ -8,27 +8,19 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
-    <color name="window_background">@color/md_grey_200</color>
+    <color name="window_background">@color/md_grey_300</color>
 
-    <color name="status_available">@color/my_green</color>
-    <color name="status_busy">@color/my_dark_orange</color>
-    <color name="status_away">@color/light_red</color>
+    <color name="status_available">@color/md_light_green_700</color>
+    <color name="status_busy">@color/accent</color>
+    <color name="status_away">@color/md_red_500</color>
     <color name="status_offline">@color/gray</color>
     <color name="offline_warning">#70FF0000</color>
-
-    <color name="slider_fade">#64013639</color>
 
     <color name="action_bar">@color/my_dark_blue</color>
     <color name="action_bar_bottom_boarder">@color/my_orange</color>
     <color name="action_bar_text_color">@color/my_orange</color>
 
     <color name="scroll_bar">@color/my_orange</color>
-
-    <color name="friend_card">@color/my_dark_blue</color>
-    <color name="friend_card_last_msg">@android:color/darker_gray</color>
-    <color name="friend_card_last_msg_unread">@color/light_blue</color>
-
-    <color name="login_screen_bg">@color/my_dark_blue</color>
 
     <!--custom colors-->
     <color name="my_orange">#ffbb33</color>
@@ -56,14 +48,11 @@
     <color name="light_purple">#8C2ECC</color>
 
     <!--cardslib color-->
-    <color name="card_background">@android:color/transparent</color>
-    <color name="card_backgroundExpand">@android:color/transparent</color>
-    <color name="card_pressed">#efffbb33</color>
-    <color name="card_activated">#CFE9F3</color>
-    <color name="card_foreground_activated">#99CFE9F3</color>
-
-    <!--menu drawer-->
-    <color name="md__defaultBackground">@color/my_tran_dark_blue2</color>
+    <color name="card_background">@color/md_grey_50</color>
+    <color name="card_backgroundExpand">@color/md_grey_800</color>
+    <color name="card_pressed">@color/accent</color>
+    <color name="card_activated">@color/accent</color>
+    <color name="card_foreground_activated">@color/accent</color>
 
     <!-- Error view -->
     <color name="error_view_text">#656565</color>

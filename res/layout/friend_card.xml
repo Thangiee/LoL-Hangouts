@@ -5,20 +5,13 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
-                android:background="@android:color/transparent"
         >
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/imageView"
-            android:alpha=".9"
-            android:src="@color/my_dark_blue"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
+            android:textColor="@color/primary_text"
             android:textSize="@dimen/friend_name_txt_size"
             android:id="@+id/tv_friend_name"
             android:layout_alignParentTop="true"
@@ -26,7 +19,8 @@
             android:layout_marginTop="8dp"
             android:layout_alignRight="@+id/tv_friend_status"
             android:layout_alignEnd="@+id/tv_friend_status"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            />
 
     <com.makeramen.RoundedImageView
             android:layout_width="56dp"
@@ -38,9 +32,10 @@
             android:cropToPadding="false"
             android:layout_margin="8dp"
             circle:corner_radius="28dip"
-            circle:border_color="@color/my_orange"
+            circle:border_color="@color/accent"
             circle:border_width="1dp"
-            android:src="@drawable/ic_load_unknown"/>
+            android:src="@drawable/ic_load_unknown"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -52,14 +47,15 @@
             android:layout_toRightOf="@id/img_profile_icon"
             android:singleLine="true"
             android:layout_toLeftOf="@+id/img_info"
-            android:textColor="@color/light_green"/>
+            android:textColor="@color/md_light_green_500"
+            />
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/friend_last_msg_txt_size"
             android:text="message"
-            android:textColor="@color/friend_card_last_msg"
+            android:textColor="@color/secondary_text"
             android:singleLine="true"
             android:ellipsize="end"
             android:id="@+id/tv_friend_last_msg"
@@ -67,29 +63,33 @@
             android:layout_toRightOf="@+id/img_profile_icon"
             android:paddingRight="8dp"
             android:layout_alignRight="@+id/tv_friend_status"
-            android:layout_alignEnd="@+id/tv_friend_status"/>
+            android:layout_alignEnd="@+id/tv_friend_status"
+            />
 
-    <ImageView
+    <ImageButton
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:id="@+id/img_info"
-            android:src="@drawable/ic_friend_info"
+            android:src="@drawable/ic_card_info_selector"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="4dp"
-            android:layout_marginRight="8dp"/>
+            android:layout_marginRight="8dp"
+            android:background="@android:color/transparent"
+            />
 
     <ImageButton
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:id="@+id/img_bell"
-            android:src="@drawable/ic_notify_available"
+            android:src="@drawable/ic_card_alarm_selector"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="4dp"
             android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            />
 
 </RelativeLayout>
