@@ -17,7 +17,7 @@ trait ProfileDataRepoImpl extends ProfileDataRepo {
 
   override def getSummary(name: String, regionId: String): Either[Exception, ProfileSummary] = {
     for {
-      summ      ← RiotApi.summonerByName(name, regionId)
+      summ      ← RiotApi.summonerByName(name.replace(" ", ""), regionId)
       leagues   ← RiotApi.leagueEntryById(summ.id, regionId)
       rankStats ← RiotApi.rankedStatsById(summ.id, 4, regionId).map(_.getChampions.find(_.id == 0).head.stats.data2)
       league    = leagues.headOption.getOrElse(League(name = "N/A", tier = "Unranked")) // set default values
@@ -41,7 +41,7 @@ trait ProfileDataRepoImpl extends ProfileDataRepo {
   }
 
   override def getTopChampions(name: String, regionId: String): Either[Exception, List[TopChampion]] = {
-    val url = s"http://www.lolskill.net/summoner/$regionId/$name/champions"
+    val url = s"http://www.lolskill.net/summoner/$regionId/${name.replace(" ", "")}/champions"
     val doc = fetchDocument(url)
 
     doc.map { doc =>
@@ -74,7 +74,7 @@ trait ProfileDataRepoImpl extends ProfileDataRepo {
   }
 
   override def getMatchHistory(name: String, regionId: String): Either[Exception, List[Match]] = {
-    val url = s"http://www.lolskill.net/summoner/$regionId/$name/matches"
+    val url = s"http://www.lolskill.net/summoner/$regionId/${name.replace(" ", "")}/matches"
     val fetchDoc = fetchDocument(url)
 
     fetchDoc map { doc =>
