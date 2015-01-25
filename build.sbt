@@ -47,6 +47,7 @@ proguardOptions in Android ++= Seq(
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
   "-keep class com.nispok.snackbar.Snackbar.** {*;}",
   "-keep class android.support.v7.graphics.Palette {*;}",
+  "-keepclassmembers public class * extends com.skocken.efficientadapter.lib.viewholder.AbsViewHolder {public <init>(...);}",
   "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
   "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
   "-keepclassmembers class ** {public void processHTML(**);}",
@@ -75,6 +76,8 @@ val cardslib = Seq(
   aar("com.nhaarman.listviewanimations" % "lib-core" % "3.1.0")
 )
 
+val efficientAdapter = Seq(aar("com.skocken" % "efficientadapter.lib" % "1.2.+"))
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -89,6 +92,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.google.code.findbugs" % "jsr305" % "3.0.0", // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
   "com.android.support" % "palette-v7" % "21.0.+",
+  aar("com.android.support" % "recyclerview-v7" % "21.0.+"),
   aar("com.android.support" % "appcompat-v7" % "21.0.+"),
   aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0"),
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
@@ -101,7 +105,7 @@ libraryDependencies ++= Seq(
   aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")
-  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar ++ cardslib
+  ) ++ androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar ++ cardslib ++ efficientAdapter
 
 run <<= run in Android
 
