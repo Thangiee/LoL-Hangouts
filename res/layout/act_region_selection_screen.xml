@@ -12,9 +12,9 @@
              android:layout_height="5dp"
             />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:divider="@drawable/listview_divider"
-            android:id="@android:id/list"/>
+            android:id="@+id/recycler_view"/>
 </LinearLayout>
