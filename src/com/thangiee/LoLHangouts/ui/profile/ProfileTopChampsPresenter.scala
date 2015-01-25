@@ -23,7 +23,7 @@ class ProfileTopChampsPresenter(view: ProfileTopChampsView, viewProfileUseCase: 
       }
       case Failure(e) => runOnUiThread {
         error(s"[!] ${e.getMessage}")
-        view.showLoadingError("Opps", e.getMessage)
+        view.showLoadingError("Opps", "Issues connecting to server.")
       }
     }
   }

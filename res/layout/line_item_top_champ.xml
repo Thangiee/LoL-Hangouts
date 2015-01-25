@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minWidth="25dp">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativeLayout"
+                android:minWidth="25dp"
+        >
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:id="@+id/divider"
+            android:layout_alignParentBottom="false"
+            android:layout_below="@+id/img_champ_icon"
+            />
 
     <ImageView
             android:layout_width="32dp"
@@ -16,8 +27,8 @@
             android:src="@drawable/league_icon"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginLeft="4dp"/>
+            android:layout_marginLeft="4dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -26,10 +37,13 @@
             android:text="Mordekaiser"
             android:id="@+id/tv_champ_name"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/img_champ_icon"
             android:textSize="14sp"
             android:singleLine="true"
-            android:layout_toLeftOf="@+id/tv_champ_perf"/>
+            android:layout_toLeftOf="@+id/tv_champ_perf"
+            android:layout_toRightOf="@+id/rect"
+            android:layout_toEndOf="@+id/rect"
+            android:layout_marginLeft="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -43,7 +57,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_champ_game"
             android:layout_alignTop="@+id/tv_champ_avg_k"
-            android:layout_alignBottom="@+id/tv_champ_avg_more_k"/>
+            android:layout_alignBottom="@+id/tv_champ_avg_more_k"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -71,7 +86,8 @@
             android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -85,7 +101,8 @@
             android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -99,7 +116,8 @@
             android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -113,7 +131,8 @@
             android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"/>
+            android:layout_marginRight="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -128,7 +147,8 @@
             android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="4dp"/>
+            android:layout_marginRight="4dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -141,7 +161,8 @@
             android:layout_alignStart="@+id/tv_champ_avg_k"
             android:layout_toLeftOf="@+id/tv_champ_avg_more_d"
             android:textSize="12sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -154,7 +175,8 @@
             android:layout_alignStart="@+id/tv_champ_avg_d"
             android:layout_toLeftOf="@+id/tv_champ_avg_more_a"
             android:textSize="12sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -167,7 +189,8 @@
             android:layout_alignStart="@+id/tv_champ_avg_a"
             android:layout_toLeftOf="@+id/tv_champ_avg_more_cs"
             android:textSize="12sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -181,7 +204,8 @@
             android:layout_alignRight="@+id/tv_champ_avg_cs"
             android:layout_alignEnd="@+id/tv_champ_avg_cs"
             android:textSize="12sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -194,19 +218,31 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:textSize="12sp"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            />
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="rate"
-                android:id="@+id/tv_champ_win_rate"
-                android:minWidth="40dp"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:layout_below="@+id/tv_champ_game"
-                android:layout_toRightOf="@+id/tv_champ_perf"
-                android:layout_toEndOf="@+id/tv_champ_perf"
-                />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rate"
+            android:id="@+id/tv_champ_win_rate"
+            android:minWidth="40dp"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:layout_below="@+id/tv_champ_game"
+            android:layout_toRightOf="@+id/tv_champ_perf"
+            android:layout_toEndOf="@+id/tv_champ_perf"
+            />
+
+    <ImageView
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rect"
+            android:layout_alignTop="@+id/img_champ_icon"
+            android:layout_toRightOf="@+id/img_champ_icon"
+            android:layout_toEndOf="@+id/img_champ_icon"
+            android:layout_alignBottom="@+id/img_champ_icon"
+            android:background="@color/accent"
+            />
 
 </RelativeLayout>
