@@ -3,11 +3,12 @@ package com.thangiee.LoLHangouts.utils
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.TextView
+import android.widget.{ImageView, TextView}
 import com.daimajia.androidanimations.library.{Techniques, YoYo}
 import com.github.nscala_time.time.Imports._
 import com.nineoldandroids.animation.Animator
 import com.nineoldandroids.animation.Animator.AnimatorListener
+import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import fr.castorflex.android.circularprogressbar.{CircularProgressDrawable, CircularProgressBar}
 
 trait Helpers extends org.scaloid.common.Helpers with ViewHelpers
@@ -66,5 +67,12 @@ trait ViewHelpers {
     def slideInRight(duration: Long = 1.second.millis, delay: Long = 0) = compose(Techniques.SlideInRight, duration, delay).withListener(inListener).playOn(v)
 
     private def compose(tech: Techniques, dur: Long, del: Long) = YoYo.`with`(tech).duration(dur).delay(del)
+  }
+
+  implicit class AbsViewHolderHelper[T](adapter: AbsViewHolder[T]) {
+    def findTextView(id: Int) = adapter.findViewByIdEfficient[TextView](id)
+    def findTextView(parent: Int, id: Int) = adapter.findViewByIdEfficient[TextView](parent, id)
+    def findImageView(id: Int) = adapter.findViewByIdEfficient[ImageView](id)
+    def findImageView(parent: Int, id: Int) = adapter.findViewByIdEfficient[ImageView](parent, id)
   }
 }

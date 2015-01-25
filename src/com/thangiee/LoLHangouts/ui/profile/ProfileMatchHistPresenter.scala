@@ -23,7 +23,7 @@ class ProfileMatchHistPresenter(view: ProfileMatchHistView, viewProfileUseCase: 
       }
       case Failure(e) => runOnUiThread {
         error(s"[!] ${e.getMessage}")
-        view.showLoadingError("Opps", e.getMessage)
+        view.showLoadingError("Opps", "Issues connecting to server.")
       }
     }
   }
