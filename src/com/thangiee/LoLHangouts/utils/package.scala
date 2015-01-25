@@ -2,7 +2,7 @@ package com.thangiee.LoLHangouts
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Point
+import android.graphics.{BitmapFactory, Bitmap, Point}
 import android.graphics.drawable.Drawable
 import android.os.{Looper, Handler}
 import android.support.v7.app.ActionBarActivity
@@ -57,6 +57,9 @@ package object utils extends SystemServices with Helpers with Implicits with Log
   implicit class Asset2Drawable(assetFile: AssetFile)(implicit ctx: Context) {
     def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(assetFile.path), null))
       .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
+
+    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(assetFile.path)))
+      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
   }
 
   implicit class RightBiasedEither[A,B](e: Either[A,B]) {

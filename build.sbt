@@ -46,6 +46,7 @@ proguardOptions in Android ++= Seq(
   "-keep class com.activeandroid.** {*;}",
   "-keep class com.thangiee.LoLWithFriends.** {*;}",
   "-keep class com.nispok.snackbar.Snackbar.** {*;}",
+  "-keep class android.support.v7.graphics.Palette {*;}",
   "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
   "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
   "-keepclassmembers class ** {public void processHTML(**);}",
@@ -87,6 +88,7 @@ libraryDependencies ++= Seq(
   "ch.acra" % "acra" % "4.5.0",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.google.code.findbugs" % "jsr305" % "3.0.0", // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
+  "com.android.support" % "palette-v7" % "21.0.+",
   aar("com.android.support" % "appcompat-v7" % "21.0.+"),
   aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0"),
   aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),

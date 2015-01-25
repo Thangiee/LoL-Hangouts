@@ -12,7 +12,7 @@
             android:layout_height="48dp"
             tab:textColor="#FFFFFF"
             tab:primaryColor="?attr/colorPrimary"
-            tab:accentColor="@color/my_orange"
+            tab:accentColor="@color/accent"
             />
 
     <android.support.v4.view.ViewPager
