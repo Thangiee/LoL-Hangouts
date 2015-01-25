@@ -2,17 +2,16 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_height="84dp"
               android:minWidth="25dp"
         >
 
-        <View android:layout_width="wrap_content"
+        <View android:layout_width="fill_parent"
               android:layout_height="1dp"
-              android:layout_alignBottom="@+id/img_match_champ"
-              android:layout_toRightOf="@+id/img_match_champ"
               android:background="@color/divider"
               android:id="@+id/divider"
+              android:layout_alignParentBottom="true"
                 />
 
     <ImageView
@@ -32,7 +31,7 @@
             android:text="K"
             android:id="@+id/tv_match_avg_k"
             android:minWidth="27dp"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_below="@+id/tv_match_perf"
             android:layout_alignLeft="@+id/tv_match_avg_d"
             android:layout_alignStart="@+id/tv_match_avg_d"
@@ -45,7 +44,7 @@
             android:text="D"
             android:id="@+id/tv_match_avg_d"
             android:minWidth="27dp"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_below="@+id/tv_match_avg_k"
             android:layout_alignLeft="@+id/tv_match_avg_a"
             android:layout_alignStart="@+id/tv_match_avg_a"
@@ -58,7 +57,7 @@
             android:text="A0"
             android:id="@+id/tv_match_avg_a"
             android:minWidth="27dp"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_below="@+id/tv_match_avg_d"
             android:layout_alignLeft="@+id/tv_match_avg_cs"
             android:layout_alignStart="@+id/tv_match_avg_cs"
@@ -71,7 +70,7 @@
             android:text="CS"
             android:id="@+id/tv_match_avg_cs"
             android:minWidth="27dp"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_below="@+id/tv_match_avg_a"
             android:gravity="bottom"
             android:layout_toLeftOf="@+id/tv_match_avg_more_cs"
@@ -84,7 +83,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="K"
             android:id="@+id/tv_match_avg_more_k"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_below="@+id/tv_match_perf"
             android:layout_alignLeft="@+id/tv_match_avg_more_d"
@@ -99,7 +98,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="D"
             android:id="@+id/tv_match_avg_more_d"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_above="@+id/tv_match_avg_a"
             android:layout_alignLeft="@+id/tv_match_avg_more_a"
@@ -114,7 +113,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="A"
             android:id="@+id/tv_match_avg_more_a"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_below="@+id/tv_match_avg_more_d"
             android:layout_alignLeft="@+id/tv_match_avg_more_cs"
@@ -129,7 +128,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="CS"
             android:id="@+id/tv_match_avg_more_cs"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:layout_below="@+id/tv_match_avg_more_a"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -146,7 +145,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/tv_match_avg_k"
             android:layout_alignStart="@+id/tv_match_avg_k"
-            android:textSize="12dp"
+            android:textSize="12sp"
             />
 
     <TextView
@@ -268,14 +267,13 @@
 
     <ImageView
             android:layout_width="8dp"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:id="@+id/rect"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/img_match_champ"
-            android:layout_toEndOf="@+id/img_match_champ"
             android:background="@color/primary"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="false"
             android:layout_above="@+id/divider"
-            android:alpha=".5"
+            android:layout_toRightOf="@+id/img_match_champ"
             />
 
 </RelativeLayout>
