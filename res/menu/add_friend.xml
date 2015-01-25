@@ -6,7 +6,7 @@
     <item
             android:id="@+id/menu_add_friend"
             android:title="add friend"
-            android:icon="@drawable/ic_social_add_person"
+            android:icon="@drawable/ic_menu_person_add_white"
             android:orderInCategory="120"
             app:showAsAction="always"/>
 </menu>
