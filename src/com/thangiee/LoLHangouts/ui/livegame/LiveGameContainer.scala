@@ -64,7 +64,10 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
         runOnUiThread {
           Snackbar.`with`(ctx)
             .text("Failed to load live game")
+            .textColorResource(R.color.md_white)
+            .colorResource(R.color.md_grey_900)
             .actionLabel("Retry")
+            .actionColorResource(R.color.accent)
             .actionListener((snackbar: Snackbar) => reloadGame())
             .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
             .show(ctx.asInstanceOf[TActivity])

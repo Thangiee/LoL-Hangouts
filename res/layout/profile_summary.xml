@@ -12,7 +12,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
             >
 
         <RelativeLayout
@@ -397,7 +396,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="tier divison"
                         android:id="@+id/tv_profile_tier"
-                        android:textColor="#A68FE6"
+                        android:textColor="@color/primary_text"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_alignBottom="@+id/img_profile_badge"
@@ -413,6 +412,7 @@
                         android:layout_centerHorizontal="true"
                         android:textSize="12sp"
                         android:gravity="center"
+                        android:textColor="@color/secondary_text"
                         />
 
                 <TextView
@@ -425,6 +425,7 @@
                         android:layout_alignStart="@+id/tv_profile_league_name"
                         android:textSize="12sp"
                         android:gravity="center"
+                        android:textColor="@color/secondary_text"
                         />
 
                 <TextView
@@ -436,6 +437,7 @@
                         android:layout_below="@+id/tv_profile_point"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
+                        android:textColor="@color/secondary_text"
                         />
 
             </RelativeLayout>
