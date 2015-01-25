@@ -19,7 +19,7 @@ trait ProfileDataRepoImpl extends ProfileDataRepo {
     for {
       summ      ← RiotApi.summonerByName(name.replace(" ", ""), regionId)
       leagues   ← RiotApi.leagueEntryById(summ.id, regionId)
-      rankStats ← RiotApi.rankedStatsById(summ.id, 4, regionId).map(_.getChampions.find(_.id == 0).head.stats.data2)
+      rankStats ← RiotApi.rankedStatsById(summ.id, 2015, regionId).map(_.getChampions.find(_.id == 0).head.stats.data2)
       league    = leagues.headOption.getOrElse(League(name = "N/A", tier = "Unranked")) // set default values
       entry     = league.entries.headOption.getOrElse(LeagueEntry())
       series    = entry.miniSeries
