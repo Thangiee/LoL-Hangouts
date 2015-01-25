@@ -2,6 +2,8 @@ package com.thangiee.LoLHangouts.ui.profile
 
 import android.content.Context
 import android.os.SystemClock
+import android.support.v7.graphics.Palette
+import android.support.v7.graphics.Palette.PaletteAsyncListener
 import android.util.AttributeSet
 import android.view.View
 import android.widget.{FrameLayout, ImageView, ListView}
@@ -40,13 +42,21 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
   }
 
   def initializeViewData(matches: List[Match]): Unit = {
-    val green = R.color.green.r2Color
+    val green = R.color.md_light_green_600.r2Color
     val red   = R.color.red.r2Color
     val matchDict = new BindDictionary[Match]()
 
     matchDict.addStaticImageField(R.id.img_match_champ, new StaticImageLoader[Match] {
       override def loadImage(m: Match, iv: ImageView, p3: Int): Unit =
         iv.setImageDrawable(ChampIconAssetFile(m.champName).toDrawable)
+    })
+
+    matchDict.addStaticImageField(R.id.rect, new StaticImageLoader[Match] {
+      override def loadImage(m: Match, iv: ImageView, i: Int): Unit = {
+        Palette.generateAsync(ChampIconAssetFile(m.champName).toBitmap, new PaletteAsyncListener {
+          override def onGenerated(palette: Palette): Unit = iv.setBackgroundColor(palette.getVibrantColor(R.color.primary.r2Color))
+        })
+      }
     })
 
     matchDict.addStringField(R.id.tv_match_type, (m: Match) ⇒ m.queueType)
@@ -77,12 +87,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
     matchDict.addStringField(R.id.tv_match_avg_more_cs, (m: Match) ⇒ m.avgCsPerformance.toString)
       .conditionalTextColor((m: Match) ⇒ m.avgCsPerformance >= 0, green, red)
 
-    matchDict.addStringField(R.id.tv_match_avg_g, (m: Match) ⇒ m.avgGold.toString)
-    matchDict.addStringField(R.id.tv_match_avg_more_g, (m: Match) ⇒ m.avgGoldPerformance.toString)
-      .conditionalTextColor((m: Match) ⇒ m.avgGoldPerformance >= 0, green, red)
-
-    val adapter = new FunDapter[Match](ctx, matches, R.layout.match_history, matchDict)
-    adapter.setAlternatingBackground(R.color.my_dark_blue, R.color.my_dark_blue2)
+    val adapter = new FunDapter[Match](ctx, matches, R.layout.line_item_match_history, matchDict)
 
     Future {
       SystemClock.sleep(1500) // wait for loading wheel to hide

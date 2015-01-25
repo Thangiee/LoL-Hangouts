@@ -5,19 +5,24 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:minWidth="25dp"
-              android:paddingTop="4dp"
-              android:paddingBottom="4dp">
+        >
+
+        <View android:layout_width="wrap_content"
+              android:layout_height="1dp"
+              android:layout_alignBottom="@+id/img_match_champ"
+              android:layout_toRightOf="@+id/img_match_champ"
+              android:background="@color/divider"
+              android:id="@+id/divider"
+                />
 
     <ImageView
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:id="@+id/img_match_champ"
             android:src="@drawable/league_icon"
-            android:layout_marginLeft="15dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
-            android:layout_alignBottom="@+id/imageView6"
             />
 
     <TextView
@@ -68,24 +73,12 @@
             android:minWidth="27dp"
             android:textSize="12dp"
             android:layout_below="@+id/tv_match_avg_a"
-            android:layout_alignLeft="@+id/tv_match_avg_g"
-            android:layout_alignStart="@+id/tv_match_avg_g"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="gold0"
-            android:id="@+id/tv_match_avg_g"
-            android:minWidth="40dp"
-            android:textSize="12dp"
-            android:layout_below="@+id/tv_match_avg_cs"
-            android:layout_toLeftOf="@+id/tv_match_avg_more_g"
             android:gravity="bottom"
+            android:layout_toLeftOf="@+id/tv_match_avg_more_cs"
+            android:layout_toStartOf="@+id/tv_match_avg_more_cs"
             />
 
-    <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -95,7 +88,10 @@
             android:gravity="center_horizontal"
             android:layout_below="@+id/tv_match_perf"
             android:layout_alignLeft="@+id/tv_match_avg_more_d"
-            android:layout_alignStart="@+id/tv_match_avg_more_d"/>
+            android:layout_alignStart="@+id/tv_match_avg_more_d"
+            android:layout_alignRight="@+id/tv_match_avg_more_d"
+            android:layout_alignEnd="@+id/tv_match_avg_more_d"
+                />
 
     <TextView
             android:layout_width="wrap_content"
@@ -107,7 +103,10 @@
             android:gravity="center_horizontal"
             android:layout_above="@+id/tv_match_avg_a"
             android:layout_alignLeft="@+id/tv_match_avg_more_a"
-            android:layout_alignStart="@+id/tv_match_avg_more_a"/>
+            android:layout_alignStart="@+id/tv_match_avg_more_a"
+            android:layout_alignRight="@+id/tv_match_avg_more_a"
+            android:layout_alignEnd="@+id/tv_match_avg_more_a"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -119,7 +118,10 @@
             android:gravity="center_horizontal"
             android:layout_below="@+id/tv_match_avg_more_d"
             android:layout_alignLeft="@+id/tv_match_avg_more_cs"
-            android:layout_alignStart="@+id/tv_match_avg_more_cs"/>
+            android:layout_alignStart="@+id/tv_match_avg_more_cs"
+            android:layout_alignRight="@+id/tv_match_avg_more_cs"
+            android:layout_alignEnd="@+id/tv_match_avg_more_cs"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -128,26 +130,18 @@
             android:text="CS"
             android:id="@+id/tv_match_avg_more_cs"
             android:textSize="12dp"
-            android:gravity="center_horizontal"
             android:layout_below="@+id/tv_match_avg_more_a"
-            android:layout_toRightOf="@+id/tv_match_avg_g"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="(gold0)"
-            android:id="@+id/tv_match_avg_more_g"
-            android:textSize="12dp"
-            android:layout_below="@+id/tv_match_avg_more_cs"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:minWidth="50dp"/>
+            android:minWidth="30dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="8dp"
+            />
 
-    <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="performance"
+            android:text="perf"
             android:id="@+id/tv_match_perf"
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/tv_match_avg_k"
@@ -165,7 +159,8 @@
             android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textSize="16dp"/>
+            android:textSize="16sp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -179,8 +174,9 @@
             android:gravity="center"
             android:layout_alignLeft="@+id/tv_match_type"
             android:layout_alignStart="@+id/tv_match_type"
-            android:textSize="22dp"
-            android:textStyle="bold"/>
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -194,13 +190,13 @@
             android:gravity="center"
             android:layout_alignLeft="@+id/tv_match_outcome"
             android:layout_alignStart="@+id/tv_match_outcome"
-            android:textSize="14dp"
-            android:textIsSelectable="true"/>
+            android:textSize="14sp"
+            android:textIsSelectable="true"
+            />
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="= 55 mins"
             android:id="@+id/tv_match_len"
             android:layout_below="@+id/tv_match_date"
@@ -208,7 +204,10 @@
             android:layout_alignEnd="@+id/tv_match_date"
             android:gravity="center"
             android:layout_alignLeft="@+id/tv_match_date"
-            android:layout_alignStart="@+id/tv_match_date"/>
+            android:layout_alignStart="@+id/tv_match_date"
+            android:textSize="14sp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
 
     <ImageView
             android:layout_width="14dp"
@@ -263,21 +262,20 @@
             android:layout_below="@+id/tv_match_avg_a"
             android:layout_toLeftOf="@+id/tv_match_avg_cs"
             android:src="@drawable/ic_cs"
-            android:layout_above="@+id/tv_match_avg_g"
             android:layout_alignLeft="@+id/imageView4"
             android:layout_alignStart="@+id/imageView4"
             android:layout_marginRight="4dp"/>
 
     <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="8dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView6"
-            android:layout_below="@+id/tv_match_avg_cs"
-            android:layout_toLeftOf="@+id/tv_match_avg_g"
-            android:src="@drawable/ic_gold"
-            android:layout_alignBottom="@+id/tv_match_avg_g"
-            android:layout_alignLeft="@+id/imageView5"
-            android:layout_alignStart="@+id/imageView5"
-            android:layout_marginRight="4dp"/>
+            android:id="@+id/rect"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_match_champ"
+            android:layout_toEndOf="@+id/img_match_champ"
+            android:background="@color/primary"
+            android:layout_above="@+id/divider"
+            android:alpha=".5"
+            />
 
 </RelativeLayout>
