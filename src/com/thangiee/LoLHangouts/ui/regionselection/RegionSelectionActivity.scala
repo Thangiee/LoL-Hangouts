@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.regionselection
 
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
@@ -8,6 +8,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.skocken.efficientadapter.lib.adapter.AbsViewHolderAdapter.OnItemClickListener
 import com.skocken.efficientadapter.lib.adapter.{AbsViewHolderAdapter, SimpleAdapter}
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.activities.TActivity
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.repository.datasources.api.Keys
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
