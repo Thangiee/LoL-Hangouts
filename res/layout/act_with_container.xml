@@ -23,16 +23,16 @@
             />
 
     <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar"
+            />
+
+    <include
             layout="@layout/crouton_holder"
             android:id="@+id/crouton_holder"
             android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
-
-    <include
-            layout="@layout/toolbar"
-            android:id="@+id/toolbar"
             />
 
 </RelativeLayout>
