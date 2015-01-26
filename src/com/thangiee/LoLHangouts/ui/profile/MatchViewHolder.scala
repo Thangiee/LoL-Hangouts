@@ -34,7 +34,7 @@ class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
   override def updateView(context: Context, m: Match): Unit = {
     this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAssetFile(m.champName).toDrawable)
     this.findTextView(R.id.tv_match_type).text(m.queueType)
-    this.findTextView(R.id.tv_match_outcome).text(m.queueType)
+    this.findTextView(R.id.tv_match_outcome).text(m.outCome)
       .textColor(if (m.outCome.toLowerCase == "win") green else red)
 
     this.findTextView(R.id.tv_match_date).text(m.date)
