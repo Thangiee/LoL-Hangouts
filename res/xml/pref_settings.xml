@@ -47,13 +47,5 @@
                 android:entries="@array/history"
                 android:entryValues="@array/history"
                 android:defaultValue="3 days"/>
-
-        <EditTextPreference
-                android:title="Show max # of messages"
-                android:summary="@string/pref_max_msg_summary"
-                android:inputType="number"
-                android:defaultValue="20"
-                android:key="@string/pref_max_msg"
-                />
     </PreferenceCategory>
 </PreferenceScreen>
