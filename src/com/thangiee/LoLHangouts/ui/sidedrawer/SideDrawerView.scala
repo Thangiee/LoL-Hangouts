@@ -1,15 +1,16 @@
 package com.thangiee.LoLHangouts.ui.sidedrawer
 
-import android.app.AlertDialog
-import android.content.{Context, DialogInterface, Intent}
+import android.content.{Context, Intent}
 import android.support.v4.widget.DrawerLayout
 import android.support.v4.widget.DrawerLayout.LayoutParams
 import android.support.v7.app.ActionBarActivity
 import android.util.AttributeSet
 import android.view._
 import android.widget._
+import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
+import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
@@ -17,7 +18,6 @@ import com.thangiee.LoLHangouts.ui.settings.SettingsActivity
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
@@ -101,20 +101,16 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
   def showChangeStatusMsgDialog(): Unit = {
     val view = View.inflate(ctx, R.layout.change_status_msg_dialog, null)
-    val input = view.findViewById(R.id.et_status_msg).asInstanceOf[EditText]
+    val input = view.findViewById(R.id.et_status_msg).asInstanceOf[MaterialEditText]
+    input.setFloatingLabelText("Current: " + statusMsgTextView.getText)
 
-    val dialog = new AlertDialog.Builder(ctx)
-      .setView(view)
-      .setPositiveButton("Ok", (dialog: DialogInterface, i: Int) ⇒ {presenter.handleChangeStatusMsg(input.txt2str)})
-      .setNegativeButton("Cancel", (dialog: DialogInterface, i: Int) ⇒ dialog.dismiss())
-      .create()
-
-    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
-    dialog.show()
-    List(DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE).map(button ⇒ {
-      dialog.getButton(button).setBackgroundColor(R.color.my_tran_dark_blue2.r2Color)
-      dialog.getButton(button).setTextColor(R.color.my_orange.r2Color)
-    })
+    new Builder(ctx)
+      .title("Set Status Message")
+      .positiveText("Change")
+      .negativeText("Cancel")
+      .onPositive((dialog) => presenter.handleChangeStatusMsg(input.txt2str))
+      .customView(view, true)
+      .show()
   }
 
   def setStatusMsg(msg: String): Unit = statusMsgTextView.setText(msg)
@@ -143,11 +139,14 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     ctx.startActivity(new Intent(ctx, classOf[SettingsActivity]))
   }
 
-  def showLogoutConfirmation(): Unit = ConfirmDialog(
-    msg = R.string.dialog_logout_message.r2String,
-    code2run = presenter.handleLogout(),
-    btnTitle = "Logout"
-  ).show()
+  def showLogoutConfirmation(): Unit = {
+    new Builder(ctx)
+      .content(R.string.dialog_logout_message)
+      .positiveText("Logout")
+      .negativeText("Cancel")
+      .onPositive((dialog) => presenter.handleLogout())
+      .show()
+  }
 
   def showRemoveAdsConfirmation() = ctx.asInstanceOf[MainActivity].setUpBilling()
 

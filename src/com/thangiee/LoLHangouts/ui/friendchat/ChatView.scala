@@ -6,12 +6,12 @@ import android.media.MediaPlayer
 import android.os.SystemClock
 import android.view.View
 import android.widget.{EditText, FrameLayout}
+import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.views.ConfirmDialog
 import com.thangiee.LoLHangouts.{CustomView, R}
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
@@ -94,11 +94,13 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   }
 
   def showDeleteMessageDialog(): Unit = {
-    ConfirmDialog(
-      msg = R.string.dialog_delete_message.r2String,
-      btnTitle = "Delete",
-      code2run = presenter.handleDeleteMessages()
-    ).show()
+    new Builder(ctx)
+      .title(R.string.dialog_delete_title)
+      .content(R.string.dialog_delete_message)
+      .positiveText("Delete")
+      .negativeText("Cancel")
+      .onPositive((dialog) => presenter.handleDeleteMessages())
+      .show()
   }
 
   def setUserIcon(username: String, regionId: String): Unit = {
