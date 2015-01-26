@@ -4,6 +4,7 @@ case class LiveGame(queueType: String, mapName: String, blueTeam: List[PlayerSta
 
 case class PlayerStats
 (playerName: String,
+ teamNumber: Int,
  regionId: String,
  championName: String,
  leagueTier: String,
@@ -16,7 +17,7 @@ case class PlayerStats
  deathRatio: Double,
  assistRatio: Double,
  elo: Int,
- partyId: Option[Long],
+ partyNumber: Option[Int],
  series: Option[Array[Char]],
  spellOne: String,
  spellTwo: String
