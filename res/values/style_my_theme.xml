@@ -3,7 +3,6 @@
     <style name="MyTheme" parent="@android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
         <item name="android:actionOverflowButtonStyle">@style/MyTheme.ActionButton.Overflow</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_navigation_previous</item>
         <item name="android:listViewStyle">@style/MyTheme.listView</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
@@ -26,7 +25,6 @@
     </style>
 
     <style name="MyTheme.ActionButton.Overflow" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_action_overflow_round</item>
     </style>
 
     <style name="MyTheme.PopupMenu" parent="@android:style/Widget.PopupMenu">
