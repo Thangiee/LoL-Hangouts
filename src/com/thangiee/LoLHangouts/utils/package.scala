@@ -35,6 +35,14 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     }
   }
 
+  def setToolbarTitle(title: String)(implicit ctx: Context): Unit = {
+    ctx.asInstanceOf[ActionBarActivity].getSupportActionBar.setTitle(title)
+  }
+
+  def setToolbarSubTitle(subTitle: String)(implicit ctx: Context): Unit = {
+    ctx.asInstanceOf[ActionBarActivity].getSupportActionBar.setSubtitle(subTitle)
+  }
+
   def isAppInForeground(implicit ctx: Context): Boolean = {
     val tasks = activityManager.getRunningTasks(Integer.MAX_VALUE)
     tasks.get(0).topActivity.getPackageName == appCtx.getPackageName

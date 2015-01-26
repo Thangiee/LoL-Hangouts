@@ -50,11 +50,18 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
     
     loadGame()
   }
-  
+
+  override def onDetachedFromWindow(): Unit = {
+    super.onDetachedFromWindow()
+    toolbar.setSubtitle(null)
+  }
+
   def loadGame(): Unit = {
     viewLiveGameUseCase.loadLiveGame(username, regionId) onComplete {
       case Success(liveGame) =>
         runOnUiThread {
+          setToolbarTitle(liveGame.queueType.replace("_", " ").toLowerCase.capitalize)
+          toolbar.setSubtitle(liveGame.mapName)
           blueTeamView.initializeViewData(liveGame.blueTeam, BlueTeam)
           blueTeamView.hideLoading()
           purpleTeamView.initializeViewData(liveGame.purpleTeam, PurpleTeam)
@@ -63,11 +70,11 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
       case Failure(e)        =>
         runOnUiThread {
           Snackbar.`with`(ctx)
-            .text("Failed to load live game")
+            .text("Failed to load game")
             .textColorResource(R.color.md_white)
             .colorResource(R.color.md_grey_900)
             .actionLabel("Retry")
-            .actionColorResource(R.color.accent)
+            .actionColorResource(R.color.accent_light)
             .actionListener((snackbar: Snackbar) => reloadGame())
             .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
             .show(ctx.asInstanceOf[TActivity])
