@@ -25,7 +25,7 @@ trait LiveGameRepoImpl extends LiveGameRepo {
       allPlayers = gameInfo.data.game.teamOne ++ gameInfo.data.game.teamTwo
       ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap
       normals    = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
-      leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId))
+      leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId), regionId)
     } yield LiveGameMapper.transform {
       LiveGameEntity(
         gameInfo.data.game.queueTypeName,
