@@ -106,6 +106,8 @@
             android:layout_below="@+id/tv_name"
             android:layout_toLeftOf="@+id/img_edit_status"
             android:layout_toStartOf="@+id/img_edit_status"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:textColor="@color/md_grey_100"
+            />
 
 </RelativeLayout>

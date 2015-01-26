@@ -37,7 +37,7 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
 
     // setup regions spinner
     val regionAdapter = ArrayAdapter.createFromResource(ctx, R.array.regions, R.layout.spinner_item)
-    regionAdapter.setDropDownViewResource(R.layout.spinner_item)
+    regionAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item)
     regionSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.menu_spinner_regions)).asInstanceOf[Spinner]
     regionSpinner.setAdapter(regionAdapter)
 
