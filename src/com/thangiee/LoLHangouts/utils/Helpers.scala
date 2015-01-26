@@ -4,6 +4,8 @@ import android.os.Handler
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.{ImageView, TextView}
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.MaterialDialog.ButtonCallback
 import com.daimajia.androidanimations.library.{Techniques, YoYo}
 import com.github.nscala_time.time.Imports._
 import com.nineoldandroids.animation.Animator
@@ -74,5 +76,32 @@ trait ViewHelpers {
     def findTextView(parent: Int, id: Int) = adapter.findViewByIdEfficient[TextView](parent, id)
     def findImageView(id: Int) = adapter.findViewByIdEfficient[ImageView](id)
     def findImageView(parent: Int, id: Int) = adapter.findViewByIdEfficient[ImageView](parent, id)
+  }
+
+  implicit class MaterialDialogHelper(builder: MaterialDialog.Builder) {
+    private var positiveListener: Option[MaterialDialog => Unit] = None
+    private var negativeListener: Option[MaterialDialog => Unit] = None
+    private var neutralListener: Option[MaterialDialog => Unit] = None
+
+    builder.callback(new ButtonCallback {
+      override def onPositive(dialog: MaterialDialog): Unit = positiveListener.map(l => l(dialog))
+      override def onNegative(dialog: MaterialDialog): Unit = negativeListener.map(l => l(dialog))
+      override def onNeutral(dialog: MaterialDialog): Unit = negativeListener.map(l => l(dialog))
+    })
+
+    def onPositive(f: MaterialDialog => Unit): MaterialDialog.Builder = {
+      positiveListener = Some(f)
+      builder
+    }
+
+    def onNegative(f: MaterialDialog => Unit): MaterialDialog.Builder = {
+      negativeListener = Some(f)
+      builder
+    }
+
+    def onNeutral(f: MaterialDialog => Unit): MaterialDialog.Builder = {
+      neutralListener = Some(f)
+      builder
+    }
   }
 }

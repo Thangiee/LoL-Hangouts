@@ -1,12 +1,12 @@
 package com.thangiee.LoLHangouts.activities
 
-import android.content.DialogInterface
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
 import android.support.v7.widget.Toolbar
 import android.view._
 import android.widget.FrameLayout
+import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
@@ -19,7 +19,7 @@ import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
-import org.scaloid.common.{AlertDialogBuilder, SContext, TraitActivity}
+import org.scaloid.common.{SContext, TraitActivity}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -89,16 +89,11 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
 
   protected def showChangeLog(): Unit = {
     val changeList = getLayoutInflater.inflate(R.layout.change_log_view, null)
-
-    val dialog = new AlertDialogBuilder()
-      .setView(changeList)
-      .setPositiveButton(android.R.string.ok, (dialog: DialogInterface) ⇒ dialog.dismiss())
-      .create()
-
-    dialog.getWindow.requestFeature(Window.FEATURE_NO_TITLE)
-    dialog.show()
-    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(R.color.my_dark_blue.r2Color)
-    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.my_orange.r2Color)
+    new Builder(ctx)
+      .title("Change Log")
+      .customView(changeList, false)
+      .positiveText("Ok")
+      .show()
   }
 
   def onEvent(event: CroutonMsg): Unit = {

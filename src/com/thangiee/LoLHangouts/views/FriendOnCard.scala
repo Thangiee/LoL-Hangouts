@@ -3,6 +3,7 @@ package com.thangiee.LoLHangouts.views
 import android.content.Context
 import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
+import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewProfileActivity}
@@ -112,11 +113,14 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
       profileBtn.onClick(ctx.startActivity(ViewProfileActivity(friend.name, friend.regionId)))
       liveGameBtn.onClick(ctx.startActivity(ViewLiveGameStatsActivity(friend.name, friend.regionId)))
 
-      removeFriendBtn.onClick(ConfirmDialog(
-        msg = s"You are about to REMOVE\n ${friend.name}",
-        code2run = LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry), // todo: temporary
-        btnTitle = "Remove"
-      ).show())
+      removeFriendBtn.onClick(new Builder(ctx)
+        .title("Remove friend?")
+        .content(s"You are about to REMOVE ${friend.name} from your friend list!")
+        .positiveText("Remove")
+        .negativeText("Cancel")
+        .onPositive((dialog) => LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry))
+        .show()
+      )
 
       // set summoner rank badge
       friend.rankedLeagueTier match {
