@@ -9,6 +9,7 @@ import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success}
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   var lock        = false
@@ -50,9 +51,14 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     if (!lock) {
       lock = true
       info("[*] loading all friends")
-      val (onFriends, offFriends) = getFriendsUseCase.loadFriendList().partition(_.isOnline)
-      runOnUiThread(view.initCardList(onFriends, offFriends))
-      lock = false
+      getFriendsUseCase.loadFriendList() onComplete {
+        case Success(friends) =>
+          val (onFriends, offFriends) = friends.partition(_.isOnline)
+          runOnUiThread(view.initCardList(onFriends, offFriends))
+          lock = false
+        case Failure(_) =>
+          lock = false
+      }
     }
     else info("[-] repopulate friend card list blocked")
   }

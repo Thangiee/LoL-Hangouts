@@ -19,4 +19,5 @@ object Events {
   case class FinishMainActivity(goToLogin: Boolean = false)
   case class ShowNiftyNotification(msg: Message)
   case class SwitchScreen(drawerTitle: String)
+  case class ShowDisconnection()
 }

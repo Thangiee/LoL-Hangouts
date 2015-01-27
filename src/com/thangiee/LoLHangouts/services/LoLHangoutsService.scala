@@ -18,14 +18,13 @@ import com.thangiee.LoLHangouts.data.repository.datasources.net.core.{FriendList
 import com.thangiee.LoLHangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.LoLHangouts.domain.entities
 import com.thangiee.LoLHangouts.domain.entities.Friend
-import com.thangiee.LoLHangouts.ui.login.LoginActivity
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.Style
+import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
 import org.jivesoftware.smack.packet.{Message => XMPPMessage, Packet, Presence}
 import org.jivesoftware.smack.util.StringUtils
-import org.jivesoftware.smack.{Chat, ConnectionListener, MessageListener}
+import org.jivesoftware.smack._
 import org.scaloid.common.SService
 import thangiee.riotapi.core.RiotApi
 
@@ -116,7 +115,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     implicit val apiCaller = new CachingApiCaller
     RiotApi.summonerNameById(summonerId.toLong).fold(
       error => warn(s"[!] Unable to find summoner name: ${error.msg}"),
-      name  => {
+      name => {
         LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend list
         // notify sender of approved friend request
         val subscribed = new Presence(Presence.Type.subscribed)
@@ -128,7 +127,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def onFriendAdded(id: String, name: String): Unit = {
     EventBus.getDefault.post(ReloadFriendCardList())
-    croutonEventBus.post(CroutonMsg(s"$name has been added to your friend list"))
+    croutonEventBus.post(CroutonMsg(s"Friend request has be sent to $name"))
   }
 
   override def onFriendRemove(id: String, name: String): Unit = {
@@ -149,7 +148,8 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
     if (R.string.pref_notify_login.pref2Boolean(default = true)) {
       // show notification when friendList is not in view or screen is not on
-      if (!appCtx.isFriendListOpen || !powerManager.isScreenOn || !isAppInForeground) { // check setting
+      if (!appCtx.isFriendListOpen || !powerManager.isScreenOn || !isAppInForeground) {
+        // check setting
         notifyLogin(f)
       }
     }
@@ -178,27 +178,37 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   //=============================================
   //    ConnectionListener Implementations
   //=============================================
+  override def connected(xmppConnection: XMPPConnection): Unit = {
+    info("[*] connected")
+  }
+
+  override def authenticated(xmppConnection: XMPPConnection): Unit = {
+    info("[*] authenticated")
+  }
+
   override def connectionClosed(): Unit = {
-    info("[*] Connection closed."); notificationManager.cancel(runningNotificationId)
+    info("[*] Connection closed.")
+    notificationManager.cancel(runningNotificationId)
   }
 
   override def reconnectionFailed(p1: Exception): Unit = {
-    warn("[!] Reconnection failed")
+    warn("[-] Reconnection failed")
   }
 
   override def reconnectionSuccessful(): Unit = {
     info("[*] Reconnection successful")
+    notificationManager.cancel(disconnectNotificationId)
+    EventBus.getDefault.post(ReloadFriendCardList())
+    runOnUiThread(Crouton.cancelAllCroutons())
   }
 
-  override def connectionClosedOnError(p1: Exception): Unit = {
-    warn("[!] Connection lost")
-    notificationManager.cancel(runningNotificationId)
+  override def connectionClosedOnError(e: Exception): Unit = {
+    warn("[!] Connection lost:" + e.getMessage)
     notifyDisconnection()
-    stopSelf()
   }
 
   override def reconnectingIn(sec: Int): Unit = {
-    info("Connecting in " + sec)
+    info("[*] Connecting in " + sec)
   }
 
   //=============================================
@@ -258,11 +268,10 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   private def notifyDisconnection(): Unit = {
-    EventBus.getDefault.post(Events.FinishMainActivity()) // kill the main activity
-    val i = new Intent(ctx, classOf[LoginActivity])
+    val i = new Intent(ctx, classOf[MainActivity])
     i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
     val p = PendingIntent.getActivity(ctx, 0, i, 0)
-    val contentText = "Connection lost. Touch to log in again."
+    val contentText = "Connection lost!"
     val builder = makeNotificationBuilder(R.drawable.ic_action_warning, R.string.app_name.r2String, contentText, Color.YELLOW)
     builder.setContentIntent(p)
 
@@ -274,6 +283,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
 
     notificationManager.notify(disconnectNotificationId, notification)
+    EventBus.getDefault.post(Events.ShowDisconnection())
   }
 
   private def notifyAppRunning(): Unit = {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.{BitmapFactory, Bitmap, Point}
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.{Looper, Handler}
 import android.support.v7.app.ActionBarActivity
 import android.util.TypedValue
@@ -33,6 +34,10 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     } else {
       0
     }
+  }
+
+  def hasWifiConnection(implicit ctx: Context): Boolean = {
+    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected
   }
 
   def setToolbarTitle(title: String)(implicit ctx: Context): Unit = {

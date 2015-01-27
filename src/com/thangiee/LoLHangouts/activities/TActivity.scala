@@ -19,6 +19,7 @@ import com.thangiee.LoLHangouts.services.LoLHangoutsService
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
+import de.keyboardsurfer.android.widget.crouton.{Configuration => Config}
 import org.scaloid.common.{SContext, TraitActivity}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -127,5 +128,9 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
         }
       }
     }
+  }
+
+  def onEvent(event: ShowDisconnection): Unit = runOnUiThread {
+    "Chat connection lost! Reconnecting...".croutonInfo(Config.DURATION_INFINITE)
   }
 }

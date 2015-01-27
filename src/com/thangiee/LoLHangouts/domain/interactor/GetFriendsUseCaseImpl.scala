@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 case class GetFriendsUseCaseImpl(implicit friendRepo: FriendRepo) extends GetFriendsUseCase {
 
-  override def loadFriendList(): List[Friend] = {
+  override def loadFriendList(): Future[List[Friend]] = Future {
     friendRepo.getFriendList.fold(
       e => {
         error(s"[!] ${e.getMessage}", e.getCause)

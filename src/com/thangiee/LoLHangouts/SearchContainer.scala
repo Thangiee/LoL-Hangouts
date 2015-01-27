@@ -24,7 +24,7 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
 
   val checkSummExistUseCase = CheckSummExistUseCaseImpl()
   val getUserUseCase        = GetUserUseCaseImpl()
-  val friendNames           = GetFriendsUseCaseImpl().loadFriendList().map(_.name)
+  val loadFriendList        = GetFriendsUseCaseImpl().loadFriendList()
   val regions               = R.array.regions.r2StringArray
 
   override def onAttachedToWindow(): Unit = {
@@ -78,8 +78,12 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
   override def onQueryTextChange(query: String): Boolean = {
     val columnNames = Array("_id", "name")
     val cursor = new MatrixCursor(columnNames)
-    val friendMatch = friendNames.filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
-    (0 to friendMatch.size).zip(friendMatch).map(p => cursor.addRow(p.productIterator.toList))
+    loadFriendList.map { friends =>
+      runOnUiThread {
+        val friendMatched = friends.map(_.name).filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
+        (0 to friendMatched.size).zip(friendMatched).map(p => cursor.addRow(p.productIterator.toList))
+      }
+    }
 
     suggestionAdapter.changeCursor(cursor)
     false

@@ -13,6 +13,7 @@ import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.LoginUseCaseImpl
 import com.thangiee.LoLHangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.LoLHangouts.utils._
+import org.jivesoftware.smack.SmackAndroid
 
 class LoginActivity extends TActivity with LoginView {
   lazy val userEditText       = find[MaterialEditText](R.id.et_username)
@@ -27,6 +28,7 @@ class LoginActivity extends TActivity with LoginView {
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
+    SmackAndroid.init(ctx)
     overridePendingTransition(R.anim.right_slide_in, R.anim.stay_still)
 
     logInButton.setIndeterminateProgressMode(true)

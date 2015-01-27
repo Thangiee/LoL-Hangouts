@@ -7,6 +7,7 @@ import org.jivesoftware.smack.packet.Message.Type
 import org.jivesoftware.smack.packet.Presence.Mode
 import org.jivesoftware.smack.packet.Presence.Type.{available, unavailable}
 import org.jivesoftware.smack.packet.{Message, Presence}
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
 
 import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
@@ -43,10 +44,12 @@ object LoLChat {
    */
   def connect(region: Region): Boolean = {
     // set up configuration to connect
-    SmackConfiguration.setPacketReplyTimeout(7000) // 7 sec timeout
     val config = new ConnectionConfiguration(region.url, 5223, "pvp.net") // url ex. chat.na1.lol.riotgames.com
     config.setSocketFactory(new DummySSLSocketFactory())
-    _connection = Some(new XMPPConnection(config))
+    config.setRosterLoadedAtLogin(true)
+    config.setSendPresence(true)
+    config.setReconnectionAllowed(true)
+    _connection = Some(new XMPPTCPConnection(config))
     connection.addPacketListener(FriendRequest.Listener(), FriendRequest.Filter())
     _region = region
     XMPPExceptionHandler(connection.connect())
@@ -63,10 +66,17 @@ object LoLChat {
 
   def login(user: String, pass: String, replaceLeague: Boolean): Boolean = {
     _loginName = user
-    if (replaceLeague)
+    val isLogin = if (replaceLeague)
       XMPPExceptionHandler(connection.login(user, "AIR_" + pass, "xiff"))
     else
       XMPPExceptionHandler(connection.login(user, "AIR_" + pass))
+
+    if (isLogin) {
+      connection.getRoster //todo: weird bug; need to call this or else all friends appear offline after login... :\
+      true
+    } else {
+      false
+    }
   }
 
   /**
@@ -181,7 +191,7 @@ object LoLChat {
    * @param listener the message listener
    */
   def initChatListener(listener: MessageListener) {
-    connection.getChatManager.addChatListener(new ChatManagerListener {
+    ChatManager.getInstanceFor(connection).addChatListener(new ChatManagerListener {
       override def chatCreated(chat: Chat, createdLocally: Boolean): Unit = {
         if (!createdLocally)
           chat.addMessageListener(listener)
@@ -232,8 +242,8 @@ object LoLChat {
     try {
       function; true
     } catch {
-      case e: XMPPException => false
-      case e: Exception => false
+      case e: XMPPException => e.printStackTrace(); false
+      case e: Exception => e.printStackTrace(); false
     }
   }
 }
