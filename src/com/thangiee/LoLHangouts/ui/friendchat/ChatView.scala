@@ -40,7 +40,6 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
     messageListView.setAdapter(messageAdapter)
     messageListView.setBackgroundColor(Color.TRANSPARENT)
     messageListView.setCacheColorHint(Color.TRANSPARENT)
-    msgField.clearFocus()
   }
 
   def setFriend(friend: Friend) = {
