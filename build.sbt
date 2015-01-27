@@ -104,6 +104,8 @@ val efficientAdapter = Seq(aar("com.skocken" % "efficientadapter.lib" % "1.2.+")
 
 val materialDialog = Seq(aar("com.afollestad" % "material-dialogs" % "0.6.1.6"))
 
+val rippleView = Seq(aar("com.github.traex.rippleeffect" % "library" % "1.2.4"))
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -132,7 +134,7 @@ libraryDependencies ++= Seq(
   aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
   aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")) ++
                         androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar ++
-                        cardslib ++ efficientAdapter ++ materialDialog
+                        cardslib ++ efficientAdapter ++ materialDialog ++ rippleView
 
 run <<= run in Android
 

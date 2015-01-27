@@ -1,37 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.andexert.library.RippleView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ripple="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ripple:rv_type="rectangle"
+        ripple:rv_color="@color/md_grey_500"
+        ripple:rv_zoom="true"
+        ripple:rv_framerate="1"
+        ripple:rv_rippleDuration="15"
+        >
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            >
+
+        <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="48dp"
+                android:id="@+id/bg_side_menu_item"
+                android:layout_centerVertical="true"
+                />
 
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:id="@+id/bg_side_menu_item"
-            android:layout_centerVertical="true"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Large Text"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text"
+                android:id="@+id/tv_menu_item_name"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"
+                />
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Large Text"
-            android:textSize="16sp"
-            android:textColor="@color/primary_text"
-            android:id="@+id/tv_menu_item_name"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="16dp"/>
-
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/img_drawer_item"
-            android:src="@drawable/ic_action_dialog"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
-            />
-</RelativeLayout>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_drawer_item"
+                android:src="@drawable/ic_action_dialog"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                />
+    </RelativeLayout>
+</com.andexert.library.RippleView>
