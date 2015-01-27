@@ -106,8 +106,8 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
       val cfg = new Configuration.Builder()
         .setAnimDuration(700)
         .setDispalyDuration(3000)
-        .setBackgroundColor("#f0022426")
-        .setTextColor("#ffbb33")
+        .setBackgroundColor("#f0%06X".format(0xFFFFFF & R.color.primary_dark.r2Color))
+        .setTextColor("#%06X".format(0xFFFFFF & R.color.accent.r2Color))
         .setTextPadding(4) //dp
         .setViewHeight(42) //dp
         .setTextLines(2) //You had better use setViewHeight and setTextLines together

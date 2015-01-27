@@ -18,6 +18,7 @@ class QuickChatActivity extends TActivity with UpButton {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     val friendName = getIntent.getStringExtra("name-key")
+    setTitle(friendName)
 
     for {
       friend ← GetFriendsUseCaseImpl().loadFriendByName(friendName)
