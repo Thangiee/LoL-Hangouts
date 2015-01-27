@@ -41,11 +41,11 @@ trait ConversionImplicits {
     def makeCrouton(style: Style, duration: Int): Crouton = Crouton.makeText(ctx.asInstanceOf[Activity], string, style, R.id.crouton_holder)
       .setConfiguration(new Configuration.Builder().setDuration(duration).build())
 
-    def croutonWarn(duration: Int = Configuration.DURATION_SHORT) = runOnUiThread(makeCrouton(Style.ALERT, duration).show())
+    def croutonWarn(duration: Int = Configuration.DURATION_SHORT): Unit = runOnUiThread(makeCrouton(Style.ALERT, duration).show())
 
-    def croutonConfirm(duration: Int = Configuration.DURATION_SHORT) = runOnUiThread(makeCrouton(Style.CONFIRM, duration).show())
+    def croutonConfirm(duration: Int = Configuration.DURATION_SHORT): Unit = runOnUiThread(makeCrouton(Style.CONFIRM, duration).show())
 
-    def croutonInfo(duration: Int = Configuration.DURATION_SHORT) = runOnUiThread(makeCrouton(Style.INFO, duration).show())
+    def croutonInfo(duration: Int = Configuration.DURATION_SHORT): Unit = runOnUiThread(makeCrouton(Style.INFO, duration).show())
   }
 
   implicit class DrawableConversion(drawableId: Int)(implicit ctx: Context) {

@@ -8,7 +8,7 @@ trait GetFriendsUseCase extends Interactor {
 
   def loadOnlineFriends(): List[Friend]
 
-  def loadFriendList(): List[Friend]
+  def loadFriendList(): Future[List[Friend]]
 
   def loadFriendByName(name: String): Future[Friend]
 }
