@@ -6,12 +6,12 @@ import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.nispok.snackbar.Snackbar
-import com.thangiee.LoLHangouts.activities.TActivity
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.ViewLiveGameUseCaseImpl
+import com.thangiee.LoLHangouts.ui.core.{TActivity, Container}
 import com.thangiee.LoLHangouts.ui.livegame.LiveGameTeamView._
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R}
+import com.thangiee.LoLHangouts.R
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global

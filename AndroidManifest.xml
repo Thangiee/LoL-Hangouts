@@ -46,7 +46,7 @@
                 android:noHistory="true"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.MainActivity"
+                android:name=".ui.main.MainActivity"
                 android:label="@string/app_name"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:launchMode="singleTop"/>
@@ -58,26 +58,26 @@
                 android:label="Settings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.MainActivity"/>
+                    android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.ViewProfileActivity"
+                android:name=".ui.profile.ViewProfileActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.AboutActivity"
+                android:name=".ui.main.AboutActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.ViewLiveGameStatsActivity"
+                android:name=".ui.livegame.ViewLiveGameStatsActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"/>
 
         <activity
-                android:name="com.thangiee.LoLHangouts.activities.QuickChatActivity"
+                android:name=".ui.friendchat.QuickChatActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"/>
 

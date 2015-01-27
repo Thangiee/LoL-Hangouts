@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.core
 
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -16,6 +16,8 @@ import com.thangiee.LoLHangouts.data.cache.{MemCache, PrefsCache}
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
+import com.thangiee.LoLHangouts.ui.friendchat.QuickChatActivity
+import com.thangiee.LoLHangouts.ui.main.AboutActivity
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus

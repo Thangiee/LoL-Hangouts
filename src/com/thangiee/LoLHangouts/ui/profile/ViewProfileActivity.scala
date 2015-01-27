@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.profile
 
 import android.content.{Context, Intent}
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.ui.profile.ProfileContainer
+import com.thangiee.LoLHangouts.ui.core.{TActivity, TIntent, UpButton, Ads}
 
 case class ViewProfileActivity() extends TActivity with UpButton with Ads {
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)

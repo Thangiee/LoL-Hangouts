@@ -1,19 +1,20 @@
-package com.thangiee.LoLHangouts
+package com.thangiee.LoLHangouts.ui.core
 
 import android.content.Context
 import android.database.MatrixCursor
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.SimpleCursorAdapter
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.SearchView.{OnSuggestionListener, OnQueryTextListener}
+import android.support.v7.widget.SearchView.{OnQueryTextListener, OnSuggestionListener}
 import android.view.{Menu, MenuInflater, View}
-import android.widget.{ArrayAdapter, Spinner, FrameLayout}
+import android.widget.{ArrayAdapter, FrameLayout, Spinner}
 import com.balysv.materialmenu.MaterialMenuDrawable
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.LoLHangouts.utils._
-import scala.collection.JavaConversions._
 
+import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends FrameLayout(ctx) with Container with OnQueryTextListener with OnSuggestionListener {

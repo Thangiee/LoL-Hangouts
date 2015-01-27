@@ -1,8 +1,8 @@
-package com.thangiee.LoLHangouts
+package com.thangiee.LoLHangouts.ui.core
 
 import android.view.{View, ViewGroup}
-import org.scaloid.common.{TagUtil, TraitViewGroup}
 import com.thangiee.LoLHangouts.utils._
+import org.scaloid.common.{TagUtil, TraitViewGroup}
 
 trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {
   self: ViewGroup =>

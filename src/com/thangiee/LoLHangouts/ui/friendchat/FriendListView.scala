@@ -3,12 +3,12 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import android.widget.FrameLayout
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
-import com.thangiee.LoLHangouts.{R, CustomView}
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.Friend
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
+import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.views.{FriendBaseCard, FriendOffCard, FriendOnCard}
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
 

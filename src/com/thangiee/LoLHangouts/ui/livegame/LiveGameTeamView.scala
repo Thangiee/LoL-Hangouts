@@ -8,9 +8,10 @@ import android.view.View
 import android.widget.FrameLayout
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.LoLHangouts.domain.entities.PlayerStats
+import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.ui.livegame.LiveGameTeamView.BlueTeam
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView
 

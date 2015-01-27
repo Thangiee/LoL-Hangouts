@@ -10,9 +10,10 @@ import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.Match
 import com.thangiee.LoLHangouts.domain.interactor.ViewProfileUseCaseImpl
+import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.ui.regionselection.RegionViewHolder
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.{ErrorView, RetryListener}
 

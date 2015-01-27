@@ -7,8 +7,8 @@ import android.widget.ImageView
 import com.sakout.fancybuttons.FancyButton
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.ViewProfileActivity
 import com.thangiee.LoLHangouts.domain.entities.PlayerStats
+import com.thangiee.LoLHangouts.ui.profile.ViewProfileActivity
 import com.thangiee.LoLHangouts.utils._
 
 class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {

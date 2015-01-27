@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.ui.sidedrawer
 
-import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor._
+import com.thangiee.LoLHangouts.ui.core.Presenter
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils.Events.SwitchScreen

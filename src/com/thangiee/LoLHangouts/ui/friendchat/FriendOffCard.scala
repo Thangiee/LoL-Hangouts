@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.views
+package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.Context
 import android.view.{View, ViewGroup}

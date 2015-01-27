@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.core
 
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams._

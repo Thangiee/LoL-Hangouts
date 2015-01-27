@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.views
+package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.Context
 import android.view.{View, ViewGroup}
@@ -6,9 +6,10 @@ import android.widget.{ImageButton, ImageView, TextView}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{ViewLiveGameStatsActivity, ViewProfileActivity}
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.LoLHangouts.domain.entities.{ChatMode, Friend}
+import com.thangiee.LoLHangouts.ui.livegame.ViewLiveGameStatsActivity
+import com.thangiee.LoLHangouts.ui.profile.ViewProfileActivity
 import com.thangiee.LoLHangouts.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}

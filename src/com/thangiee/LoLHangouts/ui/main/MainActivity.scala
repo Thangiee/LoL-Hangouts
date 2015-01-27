@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.main
 
 import java.util.concurrent.TimeUnit
 
@@ -11,17 +11,19 @@ import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.LoLHangouts.services.LoLHangoutsService
+import com.thangiee.LoLHangouts.ui.core.{SearchContainer, TActivity, Ads, Container}
 import com.thangiee.LoLHangouts.ui.friendchat.ChatContainer
+import com.thangiee.LoLHangouts.ui.livegame.ViewLiveGameStatsActivity
 import com.thangiee.LoLHangouts.ui.login.LoginActivity
-import com.thangiee.LoLHangouts.ui.profile.ProfileContainer
+import com.thangiee.LoLHangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.LoLHangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
 import com.thangiee.LoLHangouts.utils.Events.{FinishMainActivity, SwitchScreen}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R, SearchContainer}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}

@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
 import android.os.{Build, IBinder}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.entities.mappers.{FriendMapper, MessageMapper}
 import com.thangiee.LoLHangouts.data.entities.{FriendEntity, MessageEntity}
@@ -18,6 +17,7 @@ import com.thangiee.LoLHangouts.data.repository.datasources.net.core.{FriendList
 import com.thangiee.LoLHangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.LoLHangouts.domain.entities
 import com.thangiee.LoLHangouts.domain.entities.Friend
+import com.thangiee.LoLHangouts.ui.main.MainActivity
 import com.thangiee.LoLHangouts.utils.Events._
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus

@@ -1,10 +1,11 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.main
 
 import android.os.Bundle
 import android.view.{MenuItem, View}
 import android.widget.{AdapterView, ListView}
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.ui.core.{TActivity, UpButton}
 import com.thangiee.LoLHangouts.utils._
 import de.psdev.licensesdialog.SingleLicenseDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
