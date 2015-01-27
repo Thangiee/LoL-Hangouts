@@ -30,6 +30,7 @@ import java.util.Set;
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text)
 public class MyApplication extends Application {
+    public static String PLAY_SERVICE_KEY = "";
     public boolean isFriendListOpen = false;
     public boolean isChatOpen = false;
     public Set<String> FriendsToNotifyOnAvailable = new HashSet<>();

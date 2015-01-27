@@ -11,7 +11,7 @@ import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.LoLHangouts.R
+import com.thangiee.LoLHangouts.{MyApplication, R}
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.GetUserUseCaseImpl
 import com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver
@@ -129,9 +129,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   }
 
   def setUpBilling(): Unit = {
-    val key = "google-play-service-key"
-
-    bp = new BillingProcessor(ctx, key, this)
+    bp = new BillingProcessor(ctx, MyApplication.PLAY_SERVICE_KEY, this)
   }
 
   override def onProductPurchased(productId: String, details: TransactionDetails): Unit = {
