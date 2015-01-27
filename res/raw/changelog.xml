@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="2.0.0" changeDate="Jan 27, 2015">
+        <changelogtext>[b][font color=red]New![/font][/b] Update UI to [font color=red]material design[/font] guidelines!!!</changelogtext>
+        <changelogtext>New animations and ripple effects</changelogtext>
+        <changelogtext>Quick chat notification now appears on other screens too.</changelogtext>
+        <changelogtext>Use friends name for searching suggestions</changelogtext>
+        <changelogtext>Better performance and memory usage</changelogtext>
+        <changelogtext>Improve connection stability</changelogtext>
+        <changelogtext>Add auto reconnection</changelogtext>
+        <changelogtext>Update to season 5</changelogtext>
+        <changelogtext>Bug fixes</changelogtext>
+        <changelogtext>Better support for large screen and landscape view coming soon.</changelogtext>
+    </changelogversion>
 
     <changelogversion versionName="1.4.2" changeDate="Dec 6,2014">
         <changelogtext>Fix logging into NA server issue</changelogtext>
