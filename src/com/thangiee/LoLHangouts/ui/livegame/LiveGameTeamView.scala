@@ -1,23 +1,20 @@
 package com.thangiee.LoLHangouts.ui.livegame
 
 import android.content.Context
-import android.os.SystemClock
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.domain.entities.PlayerStats
 import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.ui.livegame.LiveGameTeamView.BlueTeam
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class LiveGameTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   lazy val playersRecView = find[RecyclerView](R.id.recycler_view)
@@ -53,13 +50,10 @@ class LiveGameTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayo
     loadingWheel.zoomOut()
     errorView.showRetryButton(false)
 
-    Future {
-      SystemClock.sleep(1000)
-      runOnUiThread {
-        errorView.setErrorTitle(title)
-        errorView.setErrorSubtitle(subTitle)
-        errorView.setVisibility(View.VISIBLE)
-      }
+    delay(1000) {
+      errorView.setErrorTitle(title)
+      errorView.setErrorSubtitle(subTitle)
+      errorView.setVisibility(View.VISIBLE)
     }
   }
 

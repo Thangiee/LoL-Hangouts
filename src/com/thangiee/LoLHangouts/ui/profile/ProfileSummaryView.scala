@@ -3,23 +3,19 @@ package com.thangiee.LoLHangouts.ui.profile
 import java.text.DecimalFormat
 
 import android.content.Context
-import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
 import com.echo.holographlibrary.{PieGraph, PieSlice}
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository.profileDataRepoImpl
 import com.thangiee.LoLHangouts.domain.entities.ProfileSummary
 import com.thangiee.LoLHangouts.domain.interactor.ViewProfileUseCaseImpl
-import com.thangiee.LoLHangouts.ui.core.{TActivity, CustomView}
+import com.thangiee.LoLHangouts.ui.core.{CustomView, TActivity}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
-import tr.xip.errorview.{RetryListener, ErrorView}
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import tr.xip.errorview.{ErrorView, RetryListener}
 
 class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   lazy val pieGraph     = find[PieGraph](R.id.pie_graph_win_rate)
@@ -128,22 +124,17 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     statsGroup.slideInUp(delay = 1600)
 
     // don't animate pie chat (cause chat to not show) if user has not play any game
-    if (find[TextView](R.id.tv_profile_games).txt2str.toInt != 0) Future {
-      SystemClock.sleep(2600)
-      runOnUiThread(pieGraph.animateToGoalValues())
-    }
+    if (find[TextView](R.id.tv_profile_games).txt2str.toInt != 0)
+      delay(2600) { pieGraph.animateToGoalValues() }
   }
 
   def showLoadingError(title: String, subTitle: String): Unit = {
     loadingWheel.zoomOut(delay = 1000) // delay in millis
 
-    Future {
-      SystemClock.sleep(2000)
-      runOnUiThread {
-        errorView.setErrorTitle(title)
-        errorView.setErrorSubtitle(subTitle)
-        errorView.setVisibility(View.VISIBLE)
-      }
+    delay(2000) {
+      errorView.setErrorTitle(title)
+      errorView.setErrorSubtitle(subTitle)
+      errorView.setVisibility(View.VISIBLE)
     }
   }
 }

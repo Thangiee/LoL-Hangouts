@@ -3,22 +3,20 @@ package com.thangiee.LoLHangouts.ui.friendchat
 import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
-import android.os.SystemClock
 import android.view.View
 import android.widget.{EditText, FrameLayout}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.interactor._
 import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
@@ -79,12 +77,9 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def showDeletingMessages(): Unit = {
     messageListView.fadeOutUp()
-    Future {
-      SystemClock.sleep(1000)
-      runOnUiThread {
-        messageAdapter.clear()
-        messageListView.fadeInDown(duration = 1) // reset list visibility
-      }
+    delay(1000) {
+      messageAdapter.clear()
+      messageListView.fadeInDown(duration = 1) // reset list visibility
     }
   }
 
