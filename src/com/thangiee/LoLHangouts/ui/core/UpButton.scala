@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.core
 
 import android.os.Bundle
 import com.balysv.materialmenu.MaterialMenuDrawable

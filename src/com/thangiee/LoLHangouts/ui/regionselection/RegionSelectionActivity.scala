@@ -8,11 +8,11 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.skocken.efficientadapter.lib.adapter.AbsViewHolderAdapter.OnItemClickListener
 import com.skocken.efficientadapter.lib.adapter.{AbsViewHolderAdapter, SimpleAdapter}
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.TActivity
 import com.thangiee.LoLHangouts.data.cache.PrefsCache
 import com.thangiee.LoLHangouts.data.repository.datasources.api.Keys
 import com.thangiee.LoLHangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.LoLHangouts.domain.entities._
+import com.thangiee.LoLHangouts.ui.core.TActivity
 import com.thangiee.LoLHangouts.utils._
 import thangiee.riotapi.core.RiotApi
 

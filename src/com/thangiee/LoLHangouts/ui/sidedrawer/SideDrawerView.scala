@@ -11,14 +11,15 @@ import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.rengwuxian.materialedittext.MaterialEditText
-import com.thangiee.LoLHangouts.activities.MainActivity
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
+import com.thangiee.LoLHangouts.ui.core.CustomView
+import com.thangiee.LoLHangouts.ui.main.MainActivity
 import com.thangiee.LoLHangouts.ui.settings.SettingsActivity
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}

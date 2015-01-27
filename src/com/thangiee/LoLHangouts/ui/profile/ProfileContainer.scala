@@ -8,8 +8,9 @@ import android.view._
 import android.widget.FrameLayout
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
+import com.thangiee.LoLHangouts.ui.core.Container
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R}
+import com.thangiee.LoLHangouts.R
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global

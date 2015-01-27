@@ -8,9 +8,10 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.LoLHangouts.R
-import com.thangiee.LoLHangouts.activities.{MainActivity, TActivity}
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.LoginUseCaseImpl
+import com.thangiee.LoLHangouts.ui.core.TActivity
+import com.thangiee.LoLHangouts.ui.main.MainActivity
 import com.thangiee.LoLHangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.LoLHangouts.utils._
 import org.jivesoftware.smack.SmackAndroid

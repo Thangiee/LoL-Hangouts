@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts
+package com.thangiee.LoLHangouts.ui.core
 
 import android.content.Context
 import android.view.View

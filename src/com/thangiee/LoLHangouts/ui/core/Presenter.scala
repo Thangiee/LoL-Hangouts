@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts
+package com.thangiee.LoLHangouts.ui.core
 
 import com.thangiee.LoLHangouts.utils.Logger._
 import org.scaloid.common.TagUtil

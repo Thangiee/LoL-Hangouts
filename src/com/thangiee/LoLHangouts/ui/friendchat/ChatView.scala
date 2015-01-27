@@ -11,8 +11,9 @@ import com.dd.CircularProgressButton
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.entities.{Friend, Message}
 import com.thangiee.LoLHangouts.domain.interactor._
+import com.thangiee.LoLHangouts.ui.core.CustomView
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
 import scala.collection.JavaConversions._

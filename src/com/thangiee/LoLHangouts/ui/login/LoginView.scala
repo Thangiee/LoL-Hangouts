@@ -1,6 +1,6 @@
 package com.thangiee.LoLHangouts.ui.login
 
-import com.thangiee.LoLHangouts.Presenter
+import com.thangiee.LoLHangouts.ui.core.Presenter
 
 trait LoginView {
 

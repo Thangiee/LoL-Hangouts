@@ -1,4 +1,4 @@
-package com.thangiee.LoLHangouts.activities
+package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.content.{Context, Intent}
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCaseImpl
-import com.thangiee.LoLHangouts.ui.friendchat.ChatView
+import com.thangiee.LoLHangouts.ui.core.{TActivity, TIntent, UpButton}
 import com.thangiee.LoLHangouts.utils.Events.ClearChatNotification
 import de.greenrobot.event.EventBus
 

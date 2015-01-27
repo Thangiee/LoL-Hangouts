@@ -1,7 +1,7 @@
 package com.thangiee.LoLHangouts.ui.profile
 
-import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor.ViewProfileUseCase
+import com.thangiee.LoLHangouts.ui.core.Presenter
 import com.thangiee.LoLHangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global

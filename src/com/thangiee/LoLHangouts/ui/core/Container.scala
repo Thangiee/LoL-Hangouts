@@ -1,8 +1,7 @@
-package com.thangiee.LoLHangouts
+package com.thangiee.LoLHangouts.ui.core
 
 import android.support.v7.app.ActionBarActivity
 import android.view._
-import com.thangiee.LoLHangouts.activities.TActivity
 import org.scaloid.common.TagUtil
 
 trait Container extends AnyRef with TagUtil {

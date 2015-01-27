@@ -8,9 +8,10 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
+import com.thangiee.LoLHangouts.ui.core.Container
 import com.thangiee.LoLHangouts.utils.Events.{FriendCardClicked, UpdateFriendCard}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{Container, R}
+import com.thangiee.LoLHangouts.R
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global

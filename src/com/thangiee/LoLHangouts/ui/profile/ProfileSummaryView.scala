@@ -9,12 +9,12 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
 import com.echo.holographlibrary.{PieGraph, PieSlice}
-import com.thangiee.LoLHangouts.activities.TActivity
 import com.thangiee.LoLHangouts.data.repository.profileDataRepoImpl
 import com.thangiee.LoLHangouts.domain.entities.ProfileSummary
 import com.thangiee.LoLHangouts.domain.interactor.ViewProfileUseCaseImpl
+import com.thangiee.LoLHangouts.ui.core.{TActivity, CustomView}
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.{CustomView, R}
+import com.thangiee.LoLHangouts.R
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.{RetryListener, ErrorView}
 

@@ -2,8 +2,8 @@ package com.thangiee.LoLHangouts.ui.friendchat
 
 import android.os.Handler
 import com.github.nscala_time.time.Imports._
-import com.thangiee.LoLHangouts.Presenter
 import com.thangiee.LoLHangouts.domain.interactor.GetFriendsUseCase
+import com.thangiee.LoLHangouts.ui.core.Presenter
 import com.thangiee.LoLHangouts.utils.Events.{ReloadFriendCardList, UpdateFriendCard, UpdateOnlineFriendsCard}
 import com.thangiee.LoLHangouts.utils._
 import de.greenrobot.event.EventBus
