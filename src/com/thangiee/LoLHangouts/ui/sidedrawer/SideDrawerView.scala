@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.ami.fundapter.interfaces.StaticImageLoader
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.rengwuxian.materialedittext.MaterialEditText
+import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository._
 import com.thangiee.LoLHangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.LoLHangouts.ui.core.CustomView
@@ -19,7 +20,6 @@ import com.thangiee.LoLHangouts.ui.settings.SettingsActivity
 import com.thangiee.LoLHangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.LoLHangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.LoLHangouts.utils._
-import com.thangiee.LoLHangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}
@@ -73,14 +73,15 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
     val width = screenAbsWidth - toolbarHeight
     drawer.setLayoutParams(new LayoutParams(width, MATCH_PARENT, Gravity.START)) // set drawer width
     drawer.setBackgroundColor(R.color.md_grey_50.r2Color)
-    drawer.setAdapter(adapter)
-    drawer.onItemClick((_: AdapterView[_], v: View, position: Int, id: Long) => {
+    drawer.onItemClick((_: AdapterView[_], v: View, position: Int, id: Long) => delay(500) {
       val selectedDrawerItem = drawerItems(position - 1) // minus 1 to compensate for adding a header
       presenter.handleDrawerItemClicked(selectedDrawerItem, currentDrawerItem == selectedDrawerItem)
     })
 
     val header = layoutInflater.inflate(R.layout.side_menu_header, null)
     drawer.addHeaderView(header)
+    drawer.setAdapter(adapter)
+
 
     // setup button to control setting online/away/offline status
     presenceBtn.setOnMenuButtonClickListener(new OnMenuButtonClick {

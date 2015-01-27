@@ -40,13 +40,15 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with OnIt
   }
 
   override def onItemClick(adapter: AbsViewHolderAdapter[Region], view: View, region: Region, p: Int): Unit = {
-    // set the default region and key for the riot api caller
-    RiotApi.region(region.id)
-    RiotApi.key(Keys.productionKey)
+    delay(600) {
+      // set the default region and key for the riot api caller
+      RiotApi.region(region.id)
+      RiotApi.key(Keys.productionKey)
 
-    // save the selected region to avoid needing this activity after restating the app
-    PrefsCache.put(CacheKey.LoginRegionId → region.id)
-    startActivity[com.thangiee.LoLHangouts.ui.login.LoginActivity]
+      // save the selected region to avoid needing this activity after restating the app
+      PrefsCache.put(CacheKey.LoginRegionId → region.id)
+      startActivity[com.thangiee.LoLHangouts.ui.login.LoginActivity]
+    }
   }
 }
 

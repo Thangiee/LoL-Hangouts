@@ -36,6 +36,11 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     }
   }
 
+  def delay(mills: Long)(f: => Unit): Unit = {
+    val handler = new Handler()
+    handler.postDelayed(() => f, mills)
+  }
+
   def hasWifiConnection(implicit ctx: Context): Boolean = {
     connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected
   }

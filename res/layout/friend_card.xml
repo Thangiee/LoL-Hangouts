@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:circle="http://schemas.android.com/apk/res-auto"
+                xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
@@ -46,7 +47,7 @@
             android:layout_below="@+id/tv_friend_name"
             android:layout_toRightOf="@id/img_profile_icon"
             android:singleLine="true"
-            android:layout_toLeftOf="@+id/img_info"
+            android:layout_toLeftOf="@+id/img_info_ripple"
             android:textColor="@color/md_light_green_500"
             />
 
@@ -66,30 +67,57 @@
             android:layout_alignEnd="@+id/tv_friend_status"
             />
 
-    <ImageButton
+
+    <com.andexert.library.RippleView
+            android:id="@+id/img_info_ripple"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:id="@+id/img_info"
-            android:src="@drawable/ic_card_info_selector"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
-            android:background="@android:color/transparent"
-            />
+            ripple:rv_framerate="10"
+            ripple:rv_rippleDuration="200"
+            ripple:rv_alpha="176"
+            ripple:rv_centered="true"
+            ripple:rv_type="doubleRipple"
+            ripple:rv_color="@color/accent"
+            >
+
+        <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/img_info"
+                android:src="@drawable/ic_card_info_selector"
+                android:background="@android:color/transparent"
+                />
+    </com.andexert.library.RippleView>
+
+        <com.andexert.library.RippleView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:id="@+id/img_bell_ripple"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginRight="8dp"
+                ripple:rv_framerate="10"
+                ripple:rv_rippleDuration="200"
+                ripple:rv_alpha="176"
+                ripple:rv_centered="true"
+                ripple:rv_type="doubleRipple"
+                ripple:rv_color="@color/accent"
+                >
 
     <ImageButton
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/img_bell"
             android:src="@drawable/ic_card_alarm_selector"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="8dp"
             android:background="@android:color/transparent"
             />
+        </com.andexert.library.RippleView>
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
+import com.andexert.library.RippleView
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.LoLHangouts.R
 import com.thangiee.LoLHangouts.data.repository.datasources.net.core.LoLChat
@@ -15,10 +16,10 @@ import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListene
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 
 case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
-  lazy val statusTextView    = find[TextView](R.id.tv_friend_status)
-  lazy val iconImageView     = find[ImageView](R.id.img_profile_icon)
-  lazy val infoButton        = find[ImageButton](R.id.img_info)
-  lazy val notifyButton      = find[ImageButton](R.id.img_bell)
+  lazy val statusTextView = find[TextView](R.id.tv_friend_status)
+  lazy val iconImageView  = find[ImageView](R.id.img_profile_icon)
+  lazy val infoButton     = find[ImageButton](R.id.img_info)
+  lazy val notifyButton   = find[RippleView](R.id.img_bell_ripple)
   addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {
@@ -111,17 +112,18 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
       leagueTextView.setText(friend.rankedLeagueName)
       winTextView.setText(friend.wins + " wins")
 
-      profileBtn.onClick(ctx.startActivity(ViewProfileActivity(friend.name, friend.regionId)))
-      liveGameBtn.onClick(ctx.startActivity(ViewLiveGameStatsActivity(friend.name, friend.regionId)))
+      profileBtn.onClick(delay(500) { ctx.startActivity(ViewProfileActivity(friend.name, friend.regionId)) })
+      liveGameBtn.onClick(delay(500) { ctx.startActivity(ViewLiveGameStatsActivity(friend.name, friend.regionId)) })
 
-      removeFriendBtn.onClick(new Builder(ctx)
-        .title("Remove friend?")
-        .content(s"You are about to REMOVE ${friend.name} from your friend list!")
-        .positiveText("Remove")
-        .negativeText("Cancel")
-        .onPositive((dialog) => LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry))
-        .show()
-      )
+      removeFriendBtn.onClick(delay(500) {
+        new Builder(ctx)
+          .title("Remove friend?")
+          .content(s"You are about to REMOVE ${friend.name} from your friend list!")
+          .positiveText("Remove")
+          .negativeText("Cancel")
+          .onPositive((dialog) => LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry))
+          .show()
+      })
 
       // set summoner rank badge
       friend.rankedLeagueTier match {
