@@ -47,7 +47,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       LoLChat.initFriendListListener(this)
       LoLChat.connection.addConnectionListener(this)
       EventBus.getDefault.registerSticky(ctx)
-      if (R.string.pref_notify_app_running.pref2Boolean(default = true)) notifyAppRunning()
+      if (isNotifyAppRunningPrefOn) notifyAppRunning()
     } catch {
       case e: IllegalStateException ⇒ warn("[!] " + e.getMessage); notifyDisconnection(); stopSelf()
     }
@@ -198,12 +198,14 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   override def reconnectionSuccessful(): Unit = {
     info("[*] Reconnection successful")
     notificationManager.cancel(disconnectNotificationId)
+    if (isNotifyAppRunningPrefOn) notifyAppRunning()
     EventBus.getDefault.post(ReloadFriendCardList())
     runOnUiThread(Crouton.cancelAllCroutons())
   }
 
   override def connectionClosedOnError(e: Exception): Unit = {
     warn("[!] Connection lost:" + e.getMessage)
+    notificationManager.cancel(runningNotificationId)
     notifyDisconnection()
   }
 
@@ -218,8 +220,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val content = "Touch to open application"
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_yellow, title, content)
 
-    if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
+    if (isNotifySoundPrefOn) builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
 
     val notification = builder.getNotification
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
@@ -232,8 +233,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val content = "Touch to open application"
     val builder = makeNotificationBuilder(R.drawable.ic_action_user_green, title, content)
 
-    if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
+    if (isNotifySoundPrefOn) builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
 
     val notification = builder.getNotification
     notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
@@ -248,7 +248,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
     builder.setTicker(content)
 
-    if (R.string.pref_notify_sound.pref2Boolean(default = true)) // check setting
+    if (isNotifySoundPrefOn) // check setting
       MediaPlayer.create(ctx, R.raw.alert_pm_receive).start()
 
     if (Build.VERSION.SDK_INT >= 16) {
@@ -275,13 +275,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     val builder = makeNotificationBuilder(R.drawable.ic_action_warning, R.string.app_name.r2String, contentText, Color.YELLOW)
     builder.setContentIntent(p)
 
-    if (R.string.pref_notify_sound.pref2Boolean(default = true))
-      builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) // set sound
-
     val notification = builder.getNotification
-    if (R.string.pref_notify_vibrate.pref2Boolean(default = true)) // check setting
-      notification.defaults |= Notification.DEFAULT_VIBRATE // enable vibration
-
     notificationManager.notify(disconnectNotificationId, notification)
     EventBus.getDefault.post(Events.ShowDisconnection())
   }
@@ -309,6 +303,10 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       .setLights(lightColor, 300, 3000) // blue light, 300ms on, 3s off
       .setAutoCancel(true)
   }
+
+  private def isNotifySoundPrefOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
+
+  private def isNotifyAppRunningPrefOn: Boolean = R.string.pref_notify_app_running.pref2Boolean(default = true)
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
     notificationManager.cancel(msgNotificationId) // clear notification
