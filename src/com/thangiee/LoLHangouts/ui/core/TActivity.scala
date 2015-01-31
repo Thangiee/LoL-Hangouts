@@ -85,9 +85,11 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
     info("[*] cleaning up and disconnecting...")
     EventBus.getDefault.unregister(this)
     MemCache.removeAll()
-    stopService[LoLHangoutsService]
     appCtx.resetState()
-    Future(LoLChat.disconnect())
+    Future{
+      LoLChat.disconnect()
+      stopService[LoLHangoutsService]
+    }
   }
 
   protected def showChangeLog(): Unit = {

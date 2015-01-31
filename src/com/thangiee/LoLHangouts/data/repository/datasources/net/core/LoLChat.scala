@@ -16,11 +16,13 @@ object LoLChat {
   Roster.setDefaultSubscriptionMode(Roster.SubscriptionMode.manual)
   private var _connection        : Option[XMPPConnection]     = None
   private var _friendListListener: Option[FriendListListener] = None
+  private var _connectionListListener: Option[ConnectionListener] = None
   private var _statusMsg    = "Using LoL Hangouts App"
   private var _presenceMode = Mode.away
   private var _presenceType = unavailable
   private var _loginName    = ""
   private var _region: Region = NA
+  private var rosterListener: Option[RosterListener] = None
 
   /**
    * @return the connected XMPPConnection 
@@ -87,7 +89,14 @@ object LoLChat {
   /**
    * Disconnect from the chat server
    */
-  def disconnect() = { connection.disconnect(); _statusMsg = "Using LoL Hangouts App" }
+  def disconnect() = {
+    _connectionListListener.map(connection.removeConnectionListener)
+    rosterListener.map(connection.getRoster.removeRosterListener)
+    _connectionListListener = None
+    rosterListener = None
+    connection.disconnect()
+    _statusMsg = "Using LoL Hangouts App"
+  }
 
   /**
    * @return list of friends from the user's friend List
@@ -210,7 +219,13 @@ object LoLChat {
    */
   def initFriendListListener(listener: FriendListListener) {
     _friendListListener = Some(listener)
-    connection.getRoster.addRosterListener(new FriendRosterListener)
+    rosterListener = Some(new FriendRosterListener())
+    connection.getRoster.addRosterListener(rosterListener.get)
+  }
+
+  def initConnectionListener(listener: ConnectionListener): Unit = {
+    _connectionListListener = Some(listener)
+    connection.addConnectionListener(listener)
   }
 
   private[net] def updateStatus(`type`: Presence.Type, mode: Mode = Mode.chat) {

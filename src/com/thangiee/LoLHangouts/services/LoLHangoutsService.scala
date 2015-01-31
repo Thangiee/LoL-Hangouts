@@ -45,7 +45,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       info("[*] Service started")
       LoLChat.initChatListener(this)
       LoLChat.initFriendListListener(this)
-      LoLChat.connection.addConnectionListener(this)
+      LoLChat.initConnectionListener(this)
       EventBus.getDefault.registerSticky(ctx)
       if (isNotifyAppRunningPrefOn) notifyAppRunning()
     } catch {
@@ -210,6 +210,8 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   override def reconnectingIn(sec: Int): Unit = {
+    // cancel reconnection and go to login screen if the wait time is longer than 30 secs
+    if (sec > 30) EventBus.getDefault.post(FinishMainActivity(goToLogin = true))
     info("[*] Connecting in " + sec)
   }
 

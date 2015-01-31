@@ -51,7 +51,7 @@ class FriendRosterListener extends RosterListener {
 
     // notify when a friend chat status change
     val previousStatus = statusSnapShot.getOrElse(id, "")
-    if (!previousStatus.equals(friend.status)) listener.onFriendStatusChange(friend)
+    if (previousStatus != friend.status) listener.onFriendStatusChange(friend)
 
     updateSnapShots(friend)
   }
