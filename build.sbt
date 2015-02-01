@@ -1,4 +1,5 @@
 import android.Keys._
+import Dependencies._
 
 android.Plugin.androidBuild
 
@@ -26,115 +27,16 @@ apkbuildExcludes in Android ++= Seq(
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
-proguardOptions in Android ++= Seq(
-  "-dontobfuscate",
-  "-dontoptimize",
-  "-keepattributes Signature",
-  "-dontwarn scala.collection.**",
-  "-dontwarn scala.collection.mutable.**",
-  "-dontwarn scala.**",
-  "-dontwarn org.slf4j.**",
-  "-dontwarn com.squareup.okhttp.**",
-  "-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry",
-  "-dontwarn javax.xml.bind.DatatypeConverter",
-  "-dontwarn javax.annotation.**",
-  "-dontwarn javax.inject.**",
-  "-dontwarn sun.misc.Unsafe",
-  "-dontnote org.xbill.DNS.spi.DNSJavaNameServiceDescriptor",
-  "-dontwarn org.xbill.DNS.spi.DNSJavaNameServiceDescriptor",
-  "-keep class * implements org.jivesoftware.smack.provider.IQProvider",
-  "-keep class * implements org.jivesoftware.smack.provider.PacketExtensionProvider",
-  "-keep class de.measite.smack.AndroidDebugger { *; }",
-  "-keep class * implements org.jivesoftware.smack.initializer.SmackInitializer",
-  "-keep class * extends org.jivesoftware.smack.packet.Packet",
-  "-keep class org.jivesoftware.smack.XMPPConnection",
-  "-keep class org.jivesoftware.smack.ReconnectionManager",
-  "-keep class org.jivesoftware.smack.CustomSmackConfiguration",
-  "-keep class org.jivesoftware.smackx.disco.ServiceDiscoveryManager",
-  "-keep class org.jivesoftware.smackx.xhtmlim.XHTMLManager",
-  "-keep class org.jivesoftware.smackx.muc.MultiUserChat",
-  "-keep class org.jivesoftware.smackx.bytestreams.ibb.InBandBytestreamManager",
-  "-keep class org.jivesoftware.smackx.bytestreams.socks5.Socks5BytestreamManager",
-  "-keep class org.jivesoftware.smackx.filetransfer.FileTransferManager",
-  "-keep class org.jivesoftware.smackx.iqlast.LastActivityManager",
-  "-keep class org.jivesoftware.smackx.commands.AdHocCommandManager",
-  "-keep class org.jivesoftware.smackx.ping.PingManager",
-  "-keep class org.jivesoftware.smackx.privacy.PrivacyListManager",
-  "-keep class org.jivesoftware.smackx.time.EntityTimeManager",
-  "-keep class org.jivesoftware.smackx.vcardtemp.VCardManager",
-  "-keep class org.jivesoftware.smackx.hoxt.HOXTManager",
-  "-keep class org.jivesoftware.smack.SASLAuthentication",
-  "-keep class org.jivesoftware.smack.** {*;}",
-  "-keep class org.scaloid.common.**",
-  "-keep class org.jsoup.Jsoup.** {*;}",
-  "-keep class com.activeandroid.** {*;}",
-  "-keep class com.thangiee.LoLWithFriends.** {*;}",
-  "-keep class com.nispok.snackbar.Snackbar.** {*;}",
-  "-keep class android.support.v7.graphics.Palette {*;}",
-  "-keepclassmembers public class * extends com.skocken.efficientadapter.lib.viewholder.AbsViewHolder {public <init>(...);}",
-  "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
-  "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
-  "-keepclassmembers class ** {public void processHTML(**);}",
-  "-keepclassmembers class ** {public static Document parse(**);}",
-  "-keepclassmembers class ** {public void onEvent*(**);}")
+proguardOptions in Android ++= ProguardSettings.buildSettings
 
-val androidViewAnimations = Seq(
-  "com.nineoldandroids" % "library" % "2.4.0",
-  aar("com.daimajia.easing" % "library" % "1.0.1"),
-  aar("com.daimajia.androidanimations" % "library" % "1.1.3"))
+// core dependencies
+libraryDependencies ++= appCompat ++ googleBilling :+ scaloid :+ scalaLogging :+ playJson :+ scalajHttp
 
-val smoothProgressBar = Seq(aar("com.github.castorflex.smoothprogressbar" % "library-circular" % "1.0.2"))
-
-val materialTabs = Seq(aar("it.neokree" % "MaterialTabs" % "0.11"))
-
-val errorView = Seq(aar("com.github.xiprox.errorview" % "library" % "1.0.0"))
-
-val snackbar = Seq(aar("com.nispok" % "snackbar" % "2.7.4"))
-
-val materialEditText = Seq(aar("com.rengwuxian.materialedittext" % "library" % "1.8.2"))
-
-val cardslib = Seq(
-  aar("com.github.gabrielemariotti.cards" % "cardslib-core" % "2.0.1"),
-  aar("com.github.gabrielemariotti.cards" % "cardslib-cards" % "2.0.1"),
-  aar("com.github.gabrielemariotti.cards" % "cardslib-recyclerview" % "2.0.1"),
-  aar("com.nhaarman.listviewanimations" % "lib-core" % "3.1.0")
-)
-
-val efficientAdapter = Seq(aar("com.skocken" % "efficientadapter.lib" % "1.2.+"))
-
-val materialDialog = Seq(aar("com.afollestad" % "material-dialogs" % "0.6.1.6"))
-
-val rippleView = Seq(aar("com.github.traex.rippleeffect" % "library" % "1.2.4"))
-
-libraryDependencies ++= Seq(
-  "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
-  "org.scalaj" %% "scalaj-http" % "1.1.0",
-  "org.scaloid" %% "scaloid" % "3.6.1-10",
-  "com.android.support" % "support-v13" % "21.0.+",
-  "com.google.code.gson" % "gson" % "2.2.4",
-  "com.github.amigold.fundapter2" % "library" % "1.01",
-  "de.keyboardsurfer.android.widget" % "crouton" % "1.8.5",
-  "com.github.nscala-time" %% "nscala-time" % "1.6.0",
-  "org.jsoup" % "jsoup" % "1.7.3",
-  "ch.acra" % "acra" % "4.5.0",
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
-  "com.google.code.findbugs" % "jsr305" % "3.0.0", // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
-  "com.android.support" % "palette-v7" % "21.0.+",
-  aar("com.android.support" % "recyclerview-v7" % "21.0.+"),
-  aar("com.android.support" % "appcompat-v7" % "21.0.+"),
-  aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0"),
-  aar("com.github.gabrielemariotti.changeloglib" % "library" % "1.5.1"),
-  aar("de.psdev.licensesdialog" % "licensesdialog" % "1.5.0"),
-  aar("com.google.android.gms" % "play-services" % "6.1.+"),
-  aar("com.anjlab.android.iab.v3" % "library" % "1.0.+"),
-  aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.2"),
-  aar("com.makeramen" % "roundedimageview" % "1.3.0"),
-  aar("com.pixplicity.easyprefs" % "library" % "1.3"),
-  aar("fr.nicolaspomepuy" % "discreetapprate" % "1.0.5"),
-  aar("com.github.johnkil.android-progressfragment" % "progressfragment-native" % "1.4.0"),
-  aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")) ++
-                        androidViewAnimations ++ smoothProgressBar ++ materialTabs ++ errorView ++ snackbar ++
-                        cardslib ++ efficientAdapter ++ materialDialog ++ rippleView
+libraryDependencies ++= androidViewAnimations ++ cardsLib :+ smoothProgressBar :+ materialTabs :+ errorView :+
+                        snackbar :+ efficientAdapter :+ materialDialog :+ rippleView :+ changeLogLib :+
+                        licensesDialog :+ roundedImageView :+ discreetAppRate :+ easyPrefs :+ materialMenu :+
+                        circularProgressBtn :+ expandableBtnMenu :+ funAdapter :+ crouton :+ jsoup :+ acra :+
+                        nscalaTime
 
 run <<= run in Android
 
