@@ -10,7 +10,7 @@ import com.thangiee.lolhangouts.ui.core.{TActivity, TIntent, UpButton, Ads}
 
 case class ViewProfileActivity() extends TActivity with UpButton with Ads {
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
-  override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/4576755572"
+  override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/6324061176"
   override      val layoutId              = R.layout.act_with_container
 
   lazy val summonerName = getIntent.getStringExtra("name-key")
