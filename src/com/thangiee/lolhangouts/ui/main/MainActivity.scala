@@ -49,7 +49,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-    EventBus.getDefault.register(this)
+    EventBus.getDefault.registerSticky(this)
 
     container = new ChatContainer()
     contentContainer.addView(container.getView)
@@ -198,6 +198,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   }
 
   def onEvent(event: FinishMainActivity): Unit = {
+    EventBus.getDefault.removeAllStickyEvents()
     cleanUpAndDisconnect()
     finish()
     if (event.goToLogin) startActivity[LoginActivity]
