@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.thangiee.LoLHangouts"
+          package="com.thangiee.lolhangouts"
           android:versionCode="2000"
           android:versionName="@string/app_version">
 
@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme"
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
-            android:name="com.thangiee.LoLHangouts.MyApplication">
+            android:name=".MyApplication">
 
         <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
 
@@ -28,7 +28,7 @@
         <meta-data android:name="AA_DB_VERSION" android:value="2" />
         <meta-data android:name="AA_MODELS" android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity" />
 
-        <service android:name="com.thangiee.LoLHangouts.services.LoLHangoutsService"/>
+        <service android:name=".services.LoLHangoutsService"/>
 
         <activity
                 android:name=".ui.login.LoginActivity"
@@ -58,7 +58,7 @@
                 android:label="Settings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ui.main.MainActivity"/>
+                    android:value="ScClass: MainActivity"/>
         </activity>
 
         <activity
@@ -85,6 +85,6 @@
                 android:name="com.google.android.gms.ads.AdActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <receiver android:name="com.thangiee.LoLHangouts.receivers.DeleteOldMsgReceiver"/>
+        <receiver android:name=".receivers.DeleteOldMsgReceiver"/>
     </application>
 </manifest>

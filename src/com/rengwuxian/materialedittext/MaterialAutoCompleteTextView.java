@@ -33,7 +33,7 @@ import android.content.res.ColorStateList;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.rengwuxian.materialedittext.validation.METValidator;
-import com.thangiee.LoLHangouts.R;
+import com.thangiee.lolhangouts.R;
 
 import java.util.ArrayList;
 import java.util.List;

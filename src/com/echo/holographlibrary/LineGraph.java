@@ -39,7 +39,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import com.thangiee.LoLHangouts.R;
+import com.thangiee.lolhangouts.R;
 
 import java.util.ArrayList;
 

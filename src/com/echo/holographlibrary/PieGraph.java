@@ -43,7 +43,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import com.thangiee.LoLHangouts.R;
+import com.thangiee.lolhangouts.R;
 
 import java.util.ArrayList;
 

@@ -2,27 +2,27 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Notification">
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:widgetLayout="@layout/pref_switch"
                 android:defaultValue="true"
                 android:key="@string/pref_notify_login"
                 android:title="Notify friend login"/>
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_msg"
                 android:widgetLayout="@layout/pref_switch"
                 android:title="Notify receive Msg"/>
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_sound"
                 android:widgetLayout="@layout/pref_switch"
                 android:title="Sound"/>
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_vibrate"
                 android:widgetLayout="@layout/pref_switch"
                 android:title="Vibration"/>
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_notify_app_running"
                 android:widgetLayout="@layout/pref_switch"
@@ -31,7 +31,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Friend">
-        <com.thangiee.LoLHangouts.ui.settings.SwitchCompatPreference
+        <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
                 android:defaultValue="true"
                 android:key="@string/pref_load_icon"
                 android:title="Load friend icon"

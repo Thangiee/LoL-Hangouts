@@ -8,7 +8,7 @@
                 android:focusableInTouchMode="true"
         >
 
-    <com.thangiee.LoLHangouts.ui.friendchat.MessagesListView
+    <com.thangiee.lolhangouts.ui.friendchat.MessagesListView
             android:id="@+id/lsv_chat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -22,19 +22,19 @@
             android:layout_below="@+id/tabs"
             >
 
-        <com.thangiee.LoLHangouts.ui.profile.ProfileSummaryView
+        <com.thangiee.lolhangouts.ui.profile.ProfileSummaryView
                 android:id="@+id/page_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
-        <com.thangiee.LoLHangouts.ui.profile.ProfileTopChampsView
+        <com.thangiee.lolhangouts.ui.profile.ProfileTopChampsView
                 android:id="@+id/page_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
-        <com.thangiee.LoLHangouts.ui.profile.ProfileMatchHistView
+        <com.thangiee.lolhangouts.ui.profile.ProfileMatchHistView
                 android:id="@+id/page_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
