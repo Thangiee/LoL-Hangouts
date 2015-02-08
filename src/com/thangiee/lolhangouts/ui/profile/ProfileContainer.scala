@@ -1,20 +1,18 @@
 package com.thangiee.lolhangouts.ui.profile
 
 import android.content.Context
-import android.os.SystemClock
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view._
 import android.widget.FrameLayout
+import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.interactor.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.utils._
-import com.thangiee.lolhangouts.R
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
@@ -52,11 +50,8 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
         .setTabListener(this))
     }
 
-    Future {
-      while (!profileSummaryView.isAttachedToWindow) {
-        SystemClock.sleep(100)
-      } // make sure view is attached first
-      runOnUiThread(pageChangeListener.onPageSelected(0))
+    delay(150) { // make sure view is attached first
+      pageChangeListener.onPageSelected(0)
     }
   }
 

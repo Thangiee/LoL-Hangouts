@@ -21,6 +21,9 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
       if (data.isLoginOffline) runOnUiThread {
         view.switchToOffline()
         view.showIsOfflineMsg()
+      } else {
+        changeStatusUseCase.appearOnline()
+        runOnUiThread(view.switchToOnline())
       }
     }
 
