@@ -3,8 +3,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:background="@color/white"
                 android:layout_width="match_parent"
+                android:id="@+id/relativeLayout"
                 android:layout_height="56dp"
         >
+
+    <at.markushi.ui.RevealColorView
+            android:id="@+id/reveal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -19,7 +26,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginBottom="2dp"/>
+            android:layout_marginBottom="2dp"
+            />
 
     <TextView
             android:layout_width="wrap_content"
@@ -33,6 +41,7 @@
             android:layout_alignLeft="@+id/tv_friend_name"
             android:layout_alignStart="@+id/tv_friend_name"
             android:layout_marginBottom="4dp"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            />
 
 </RelativeLayout>

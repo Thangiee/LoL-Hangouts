@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.view._
 import android.widget._
 import com.afollestad.materialdialogs.MaterialDialog.Builder
-import com.ami.fundapter.interfaces.StaticImageLoader
-import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.repository._
@@ -17,7 +15,6 @@ import com.thangiee.lolhangouts.domain.interactor.{ChangeUserStatusCaseImpl, Get
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.settings.SettingsActivity
-import com.thangiee.lolhangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.lolhangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.lolhangouts.utils._
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
@@ -25,63 +22,29 @@ import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
 
-import scala.collection.JavaConversions._
-
 class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayout(ctx, a) with CustomView {
-  val drawerItems = List(
-    DrawerItem(Chat, R.drawable.ic_drawer_chat, isSelected = true), // default selection
-    DrawerItem(Profile, R.drawable.ic_drawer_person),
-    DrawerItem(Search, R.drawable.ic_drawer_search),
-    DrawerItem(LiveGame, R.drawable.ic_drawer_tv),
-    DrawerItem(Settings, R.drawable.ic_drawer_settings),
-    DrawerItem(RemoveAds, R.drawable.ic_drawer_thumb_up),
-    DrawerItem(Logout, R.drawable.ic_drawer_exit))
+  lazy val drawer            = new ListView(ctx)
+  lazy val adapter           = new DrawerItemAdapter()
+  lazy val presenceBtn       = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
+  lazy val statusMsgTextView = find[TextView](R.id.tv_status_msg)
 
-  lazy    val drawer                         = new ListView(ctx)
-  lazy    val presenceBtn = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
-  lazy    val statusMsgTextView = find[TextView](R.id.tv_status_msg)
-  private var adapter: FunDapter[DrawerItem] = _
-  private var currentDrawerItem              = drawerItems(0)
-
-  override val presenter    = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
+  override val presenter = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
-    val drawerDictionary = new BindDictionary[DrawerItem]()
-
-    // drawer drawer item title and color
-    drawerDictionary.addStringField(R.id.tv_menu_item_name, (item: DrawerItem) ⇒ item.title)
-      .conditionalTextColor((item: DrawerItem) ⇒ item.isSelected, R.color.primary_dark.r2Color, R.color.primary_text.r2Color)
-
-    // drawer drawer item icon
-    drawerDictionary.addStaticImageField(R.id.img_drawer_item, new StaticImageLoader[DrawerItem] {
-      override def loadImage(i: DrawerItem, iv: ImageView, p: Int): Unit = {
-        iv.setImageResource(i.icon)
-        iv.setColorFilter(if (i.isSelected) R.color.md_teal_600.r2Color else R.color.md_grey_500.r2Color)
-      }
-    })
-
-    // drawer drawer item background color
-    drawerDictionary.addStaticImageField(R.id.bg_side_menu_item, new StaticImageLoader[DrawerItem] {
-      override def loadImage(i: DrawerItem, iv: ImageView, p: Int): Unit =
-        iv.setBackgroundColor(if (i.isSelected) R.color.md_grey_200.r2Color else R.color.md_grey_50.r2Color)
-    })
-
-    adapter = new FunDapter[DrawerItem](ctx, drawerItems, R.layout.side_menu_item, drawerDictionary)
 
     addView(drawer)
     val width = screenAbsWidth - toolbarHeight
     drawer.setLayoutParams(new LayoutParams(width, MATCH_PARENT, Gravity.START)) // set drawer width
     drawer.setBackgroundColor(R.color.md_grey_50.r2Color)
     drawer.onItemClick((_: AdapterView[_], v: View, position: Int, id: Long) => delay(500) {
-      val selectedDrawerItem = drawerItems(position - 1) // minus 1 to compensate for adding a header
-      presenter.handleDrawerItemClicked(selectedDrawerItem, currentDrawerItem == selectedDrawerItem)
+      val selectedDrawerItem = adapter.getItem(position - 1) // minus 1 to compensate for adding a header
+      presenter.handleDrawerItemClicked(selectedDrawerItem, position - 1)
     })
 
     val header = layoutInflater.inflate(R.layout.side_menu_header, null)
     drawer.addHeaderView(header)
     drawer.setAdapter(adapter)
-
 
     // setup button to control setting online/away/offline status
     presenceBtn.setOnMenuButtonClickListener(new OnMenuButtonClick {
@@ -152,11 +115,9 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
   def showRemoveAdsConfirmation() = ctx.asInstanceOf[MainActivity].setUpBilling()
 
-  def updateDrawer(selectedItem: DrawerItem): Unit = {
-    currentDrawerItem.isSelected = false
-    selectedItem.isSelected = true
-    currentDrawerItem = selectedItem // update current with the selected
-    adapter.updateData(drawerItems)
+  def updateDrawer(position: Int): Unit = {
+    adapter.setCurrentDrawer(position)
+    adapter.notifyDataSetChanged()
   }
 
   def isOpen: Boolean = isDrawerOpen(drawer)

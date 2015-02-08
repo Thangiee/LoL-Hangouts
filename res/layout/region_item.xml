@@ -9,7 +9,7 @@
         ripple:rv_color="@color/md_grey_500"
         ripple:rv_zoom="true"
         ripple:rv_framerate="10"
-        ripple:rv_rippleDuration="300"
+        ripple:rv_rippleDuration="0"
         >
 
     <RelativeLayout
@@ -17,6 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
+        <at.markushi.ui.RevealColorView
+                android:id="@+id/reveal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/window_background"/>
 
         <TextView
                 android:layout_width="wrap_content"

@@ -40,7 +40,7 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with OnIt
   }
 
   override def onItemClick(adapter: AbsViewHolderAdapter[Region], view: View, region: Region, p: Int): Unit = {
-    delay(600) {
+    delay(500) {
       // set the default region and key for the riot api caller
       RiotApi.region(region.id)
       RiotApi.key(Keys.productionKey)

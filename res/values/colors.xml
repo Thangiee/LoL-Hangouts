@@ -10,6 +10,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="window_background">@color/md_grey_300</color>
+    <color name="ripple">#80bdbdbd</color>
 
     <color name="status_available">@color/md_light_green_700</color>
     <color name="status_busy">@color/accent</color>

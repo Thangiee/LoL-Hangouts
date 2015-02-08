@@ -44,7 +44,7 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
       view.switchToAway()
   }
 
-  def handleDrawerItemClicked(drawer: DrawerItem, sameDrawerSelected: Boolean): Unit = {
+  def handleDrawerItemClicked(drawer: DrawerItem, position: Int): Unit = {
     drawer.title match {
       case Settings  => view.showSettings(); return
       case Logout    => view.showLogoutConfirmation(); return
@@ -53,8 +53,8 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     }
 
     view.closeDrawer()
-    if (!sameDrawerSelected) {
-      view.updateDrawer(drawer)
+    if (!drawer.isSelected) { // don't reload if same drawer is selected
+      view.updateDrawer(position)
       EventBus.getDefault.post(SwitchScreen(drawer.title))
     }
   }

@@ -18,6 +18,7 @@ object Dependencies {
   val materialMenu        = aar("com.balysv.materialmenu" % "material-menu-toolbar" % "1.5.0")
   val circularProgressBtn = aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.2")
   val expandableBtnMenu   = aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0")
+  val revealColorView     = aar("com.github.markushi" % "android-ui" % "1.2")
 
   val funAdapter   = "com.github.amigold.fundapter2" % "library" % "1.01"
   val crouton      = "de.keyboardsurfer.android.widget" % "crouton" % "1.8.5"
