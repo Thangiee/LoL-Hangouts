@@ -43,7 +43,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def setFriend(friend: Friend) = {
     this.friend = Some(friend)
-    if (isAttachedToWindow) presenter.handleFriendChange(friend)
+    presenter.handleFriendChange(friend)
   }
 
   def getFriend: Option[Friend] = friend
