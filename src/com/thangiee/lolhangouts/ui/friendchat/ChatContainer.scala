@@ -48,11 +48,10 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   }
 
   override def onDetachedFromWindow(): Unit = {
-    super.onDetachedFromWindow()
-    removeAllViews()
     EventBus.getDefault.unregister(this)
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
+    super.onDetachedFromWindow()
   }
 
   override def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = {
