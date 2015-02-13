@@ -11,6 +11,8 @@
             android:id="@android:id/list"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/toolbar"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             />
 
     <include layout="@layout/toolbar_shadow"
