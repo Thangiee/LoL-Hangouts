@@ -55,7 +55,7 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
       // set the default spinner selection to the user region
       regionSpinner.setSelection(regions.indexOf(user.region.id.toUpperCase))
       // set the username as default
-      searchView.setQuery(user.loginName, false)
+      searchView.setQuery(user.inGameName, false)
     }
     true
   }
