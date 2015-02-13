@@ -1,10 +1,16 @@
 package com.thangiee.lolhangouts.ui.regionselection
 
-import android.os.Bundle
+import java.util.concurrent.TimeUnit
+
+import android.app.{AlarmManager, PendingIntent}
+import android.content.Intent
+import android.os.{SystemClock, Bundle}
 import android.support.v7.app.ActionBarActivity
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
 import android.view.View
 import com.balysv.materialmenu.MaterialMenuDrawable
+import com.parse.ParseObject
+import com.pixplicity.easyprefs.library.Prefs
 import com.skocken.efficientadapter.lib.adapter.AbsViewHolderAdapter.OnItemClickListener
 import com.skocken.efficientadapter.lib.adapter.{AbsViewHolderAdapter, SimpleAdapter}
 import com.thangiee.lolhangouts.R
@@ -12,6 +18,7 @@ import com.thangiee.lolhangouts.data.cache.PrefsCache
 import com.thangiee.lolhangouts.data.repository.datasources.api.Keys
 import com.thangiee.lolhangouts.data.repository.datasources.helper.CacheKey
 import com.thangiee.lolhangouts.domain.entities._
+import com.thangiee.lolhangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.utils._
 import thangiee.riotapi.core.RiotApi
@@ -23,6 +30,24 @@ class RegionSelectionActivity extends ActionBarActivity with TActivity with OnIt
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
+
+    // run once when first time opening app
+    if (Prefs.getBoolean("first_launch", true)) {
+      // setup alarm to delete msg older than a time period
+      val millis = TimeUnit.DAYS.toMillis(3)
+      val i = new Intent(ctx, classOf[DeleteOldMsgReceiver])
+      i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
+      val p = PendingIntent.getBroadcast(ctx, 0, i, 0)
+      alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(1), p)
+
+      // track new installs
+      val parseObj = new ParseObject("NewInstall")
+      parseObj.put("deviceModel", android.os.Build.MODEL)
+      parseObj.put("androidVersion", s"${android.os.Build.VERSION.CODENAME} - ${android.os.Build.VERSION.SDK_INT}")
+      parseObj.saveInBackground()
+
+      Prefs.putBoolean("first_launch", false)
+    }
 
     navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(finish())

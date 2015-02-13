@@ -58,7 +58,7 @@
                 android:label="Settings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="ScClass: MainActivity"/>
+                    android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity

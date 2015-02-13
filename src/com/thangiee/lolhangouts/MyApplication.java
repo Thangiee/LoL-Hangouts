@@ -1,7 +1,9 @@
 package com.thangiee.lolhangouts;
 
 import com.activeandroid.app.Application;
+import com.parse.Parse;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.typesafe.config.ConfigException;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -40,6 +42,9 @@ public class MyApplication extends Application {
 
         Prefs.initPrefs(getApplicationContext());
 //        ACRA.init(this);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "LOIXdGNLWVUnWqF4vuKjTdolMR23FpYTiNgArrib", "VDdyddCDyZW0yLS5jQoUf4lnxWPMCCsSCRnCvbJc");
     }
 
     public void resetState() {

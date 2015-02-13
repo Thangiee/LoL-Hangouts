@@ -36,7 +36,7 @@ libraryDependencies ++= androidViewAnimations ++ cardsLib :+ smoothProgressBar :
                         snackbar :+ efficientAdapter :+ materialDialog :+ rippleView :+ changeLogLib :+
                         licensesDialog :+ roundedImageView :+ discreetAppRate :+ easyPrefs :+ materialMenu :+
                         circularProgressBtn :+ expandableBtnMenu :+ funAdapter :+ crouton :+ jsoup :+ acra :+
-                        nscalaTime :+ revealColorView
+                        nscalaTime :+ revealColorView :+ parse
 
 run <<= run in Android
 
