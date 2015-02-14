@@ -31,7 +31,7 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     info("[*] loading user")
     getUserUseCase.loadUser().map(user => runOnUiThread {
       changeStatusUseCase.setStatusMsg(user.statusMsg)
-      view.setUserProfileIcon(user.loginName, user.region.id)
+      view.setUserProfileIcon(user.inGameName, user.region.id)
       view.setStatusMsg(user.statusMsg)
       view.setName(user.inGameName)
     })
