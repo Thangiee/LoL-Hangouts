@@ -43,18 +43,16 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
     super.resume()
     info("[*] loading login info")
     loginUseCase.loadLoginInfo().onSuccess {
-      case (username, password, selectedRegion, isLoginOffline) => runOnUiThread {
-        selectedRegion match {
-          case Some(region) =>
-            view.setTitle(region.name)
-            view.setUsername(username)
-            view.setPassword(password)
-            view.showLoginOffline(isLoginOffline)
-            view.showSaveUsername(isEnable = !username.isEmpty)
-            view.showSavePassword(isEnable = !password.isEmpty)
-          case None         =>
-            view.navigateBack()
-        }
+      case (username, password, selectedRegion, isLoginOffline) => selectedRegion match {
+        case Some(region) =>
+          view.setTitle(region.name)
+          view.setUsername(username)
+          view.setPassword(password)
+          view.showLoginOffline(isLoginOffline)
+          view.showSaveUsername(isEnable = !username.isEmpty)
+          view.showSavePassword(isEnable = !password.isEmpty)
+        case None         =>
+          view.navigateBack()
       }
     }
   }

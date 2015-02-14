@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.SwitchCompat
 import android.view.View
-import android.widget.{EditText, TextView}
+import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
@@ -23,7 +23,7 @@ import scala.util.Try
 
 class LoginActivity extends TActivity with LoginView {
   lazy val userEditText       = find[MaterialEditText](R.id.et_username)
-  lazy val passwordEditText   = find[EditText](R.id.et_password)
+  lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
   lazy val logInButton        = find[CircularProgressButton](R.id.btn_login)
   lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
   lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
@@ -95,9 +95,9 @@ class LoginActivity extends TActivity with LoginView {
 
   override def setTitle(title: String): Unit = find[TextView](R.id.tv_region_name).setText(title)
 
-  override def setPassword(password: String): Unit = passwordEditText.setText(password)
+  override def setPassword(password: String): Unit = runOnUiThread(passwordEditText.setText(password))
 
-  override def setUsername(name: String): Unit = userEditText.setText(name)
+  override def setUsername(name: String): Unit = runOnUiThread(userEditText.setText(name))
 
   override def getPassword: String = if (savePassSwitch.isChecked) passwordEditText.txt2str else ""
 
