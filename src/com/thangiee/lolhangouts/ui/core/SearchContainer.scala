@@ -46,10 +46,11 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
     val searchItem = menu.findItem(R.id.menu_search)
     searchItem.expandActionView()
     searchView = MenuItemCompat.getActionView(searchItem).asInstanceOf[SearchView]
-    searchView.setIconified(false)
+    searchView.requestFocus()
     searchView.setOnQueryTextListener(this)
     searchView.setSuggestionsAdapter(suggestionAdapter)
     searchView.setOnSuggestionListener(this)
+    searchView.setIconified(false)
 
     getUserUseCase.loadUser().map { user =>
       // set the default spinner selection to the user region
@@ -80,13 +81,12 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
     val columnNames = Array("_id", "name")
     val cursor = new MatrixCursor(columnNames)
     loadFriendList.map { friends =>
-      runOnUiThread {
-        val friendMatched = friends.map(_.name).filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
-        (0 to friendMatched.size).zip(friendMatched).map(p => cursor.addRow(p.productIterator.toList))
-      }
+      val friendMatched = friends.map(_.name).filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
+      (0 to friendMatched.size).zip(friendMatched).map(p => cursor.addRow(p.productIterator.toList))
     }
 
     suggestionAdapter.changeCursor(cursor)
+    suggestionAdapter.notifyDataSetChanged()
     false
   }
 
