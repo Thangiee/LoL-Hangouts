@@ -12,15 +12,12 @@ import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.cache.{MemCache, PrefsCache}
+import com.thangiee.lolhangouts.data.cache.PrefsCache
 import com.thangiee.lolhangouts.data.repository.datasources.helper.CacheKey
-import com.thangiee.lolhangouts.data.repository.datasources.net.core.LoLChat
-import com.thangiee.lolhangouts.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.friendchat.QuickChatActivity
 import com.thangiee.lolhangouts.ui.main.AboutActivity
 import com.thangiee.lolhangouts.utils.Events._
 import com.thangiee.lolhangouts.utils._
-import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration => Config}
 import org.scaloid.common.{SContext, TraitActivity}
 
@@ -62,11 +59,6 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
     super.onPause()
   }
 
-  override def onStop(): Unit = {
-    System.gc()
-    super.onStop()
-  }
-
   override def onCreateOptionsMenu(menu: Menu): Boolean = {
     getMenuInflater.inflate(R.menu.overflow, menu)
     true
@@ -79,17 +71,6 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
       case _                   => return false
     }
     super.onOptionsItemSelected(item)
-  }
-
-  protected def cleanUpAndDisconnect() {
-    info("[*] cleaning up and disconnecting...")
-    EventBus.getDefault.unregister(this)
-    MemCache.removeAll()
-    appCtx.resetState()
-    Future{
-      LoLChat.disconnect()
-      stopService[LoLHangoutsService]
-    }
   }
 
   protected def showChangeLog(): Unit = {
@@ -135,6 +116,10 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   }
 
   def onEvent(event: ShowDisconnection): Unit = runOnUiThread {
-    "Chat connection lost! Reconnecting...".croutonInfo(Config.DURATION_INFINITE)
+    R.string.reconnecting.r2String.croutonInfo(Config.DURATION_INFINITE)
+  }
+
+  def onEvent(event: FinishActivity): Unit = {
+    finish()
   }
 }

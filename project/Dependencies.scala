@@ -29,6 +29,7 @@ object Dependencies {
   val scaloid      = "org.scaloid" %% "scaloid" % "3.6.1-10"
   val playJson     = "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2"
   val scalajHttp   = "org.scalaj" %% "scalaj-http" % "1.1.0"
+  val parse        = "com.parse.bolts" % "bolts-android" % "1.+"
 
 
   val googleBilling = Seq(

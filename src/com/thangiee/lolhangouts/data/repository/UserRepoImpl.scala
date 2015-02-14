@@ -8,6 +8,7 @@ import com.thangiee.lolhangouts.data.repository.datasources.net.core.LoLChat
 import com.thangiee.lolhangouts.domain.entities.{Region, User}
 import com.thangiee.lolhangouts.domain.exception.{AuthorizationException, ConnectionException}
 import com.thangiee.lolhangouts.domain.repository.UserRepo
+import thangiee.riotapi.core.RiotApi
 
 trait UserRepoImpl extends UserRepo {
   /**
@@ -15,6 +16,8 @@ trait UserRepoImpl extends UserRepo {
    */
   override def loginUser(username: String, password: String): Option[Exception] = {
     val region = Region.getFromId(PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""))
+    RiotApi.region(region.id)
+
     if (!LoLChat.connect(region)) {
       return Some(new ConnectionException("Fail to connect to server."))
     }
@@ -72,6 +75,7 @@ trait UserRepoImpl extends UserRepo {
     if (!LoLChat.isLogin) {
       Some(new IllegalStateException("LoLChat is not login"))
     } else {
+      PrefsCache.put[String](CacheKey.statusMsg(LoLChat.summId) → msg)
       LoLChat.changeStatusMsg(msg)
       None
     }
@@ -81,7 +85,7 @@ trait UserRepoImpl extends UserRepo {
     if (!LoLChat.isLogin) {
       Some(new IllegalStateException("LoLChat is not login"))
     } else {
-      PrefsCache.put[String](CacheKey.friendChat(LoLChat.loginName()) → friendName)
+      PrefsCache.put[String](CacheKey.friendChat(LoLChat.loginName) → friendName)
       None
     }
   }

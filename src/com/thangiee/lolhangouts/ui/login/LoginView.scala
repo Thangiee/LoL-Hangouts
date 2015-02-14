@@ -38,5 +38,7 @@ trait LoginView {
   
   def showSavePassword(isEnable: Boolean): Unit
 
+  def showUpdateApp(version: String): Unit
+
   def isLoginOffline: Boolean
 }

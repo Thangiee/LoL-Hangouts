@@ -1,29 +1,24 @@
 package com.thangiee.lolhangouts.ui.main
 
-import java.util.concurrent.TimeUnit
-
-import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
-import android.os.{Bundle, SystemClock}
+import android.os.Bundle
 import android.support.v4.widget.DrawerLayout.SimpleDrawerListener
 import android.view.View.OnClickListener
 import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.{MyApplication, R}
 import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.interactor.GetUserUseCaseImpl
-import com.thangiee.lolhangouts.receivers.DeleteOldMsgReceiver
 import com.thangiee.lolhangouts.services.LoLHangoutsService
-import com.thangiee.lolhangouts.ui.core.{SearchContainer, TActivity, Ads, Container}
+import com.thangiee.lolhangouts.ui.core.{Ads, Container, SearchContainer, TActivity}
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
 import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
-import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
-import com.thangiee.lolhangouts.utils.Events.{FinishMainActivity, SwitchScreen}
+import com.thangiee.lolhangouts.utils.Events.SwitchScreen
 import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.{MyApplication, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration
 import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
@@ -77,9 +72,13 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     notificationManager.cancelAll() // clear any left over notification
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
-    setUpFirstTimeLaunch()
-
     rateMyApp()
+  }
+
+  override def onDestroy(): Unit = {
+    EventBus.getDefault.removeAllStickyEvents()
+    EventBus.getDefault.unregister(this)
+    super.onDestroy()
   }
 
   override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
@@ -106,19 +105,6 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     homeScreen.addCategory(Intent.CATEGORY_HOME)
     homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(homeScreen)
-  }
-
-  private def setUpFirstTimeLaunch() {
-    if (Prefs.getBoolean("first_launch", true)) {
-      // setup alarm to delete msg older than a time period
-      val millis = TimeUnit.DAYS.toMillis(3)
-      val i = new Intent(ctx, classOf[DeleteOldMsgReceiver])
-      i.putExtra(DeleteOldMsgReceiver.TIME_KEY, millis)
-      val p = PendingIntent.getBroadcast(ctx, 0, i, 0)
-      alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TimeUnit.HOURS.toMillis(1), p)
-
-      Prefs.putBoolean("first_launch", false)
-    }
   }
 
   private def rateMyApp(): Unit = {
@@ -197,10 +183,4 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     switchContainer = true
   }
 
-  def onEvent(event: FinishMainActivity): Unit = {
-    EventBus.getDefault.removeAllStickyEvents()
-    cleanUpAndDisconnect()
-    finish()
-    if (event.goToLogin) startActivity[LoginActivity]
-  }
 }

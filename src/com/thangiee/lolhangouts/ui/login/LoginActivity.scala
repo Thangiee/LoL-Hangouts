@@ -1,9 +1,12 @@
 package com.thangiee.lolhangouts.ui.login
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.SwitchCompat
 import android.view.View
-import android.widget.{EditText, TextView}
+import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
 import com.rengwuxian.materialedittext.MaterialEditText
@@ -16,9 +19,11 @@ import com.thangiee.lolhangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.lolhangouts.utils._
 import org.jivesoftware.smack.SmackAndroid
 
+import scala.util.Try
+
 class LoginActivity extends TActivity with LoginView {
   lazy val userEditText       = find[MaterialEditText](R.id.et_username)
-  lazy val passwordEditText   = find[EditText](R.id.et_password)
+  lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
   lazy val logInButton        = find[CircularProgressButton](R.id.btn_login)
   lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
   lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
@@ -90,9 +95,9 @@ class LoginActivity extends TActivity with LoginView {
 
   override def setTitle(title: String): Unit = find[TextView](R.id.tv_region_name).setText(title)
 
-  override def setPassword(password: String): Unit = passwordEditText.setText(password)
+  override def setPassword(password: String): Unit = runOnUiThread(passwordEditText.setText(password))
 
-  override def setUsername(name: String): Unit = userEditText.setText(name)
+  override def setUsername(name: String): Unit = runOnUiThread(userEditText.setText(name))
 
   override def getPassword: String = if (savePassSwitch.isChecked) passwordEditText.txt2str else ""
 
@@ -107,4 +112,12 @@ class LoginActivity extends TActivity with LoginView {
   override def showSavePassword(isEnable: Boolean): Unit = savePassSwitch.setChecked(isEnable)
 
   override def getCurrentAppVersion: String = getPackageManager.getPackageInfo(ctx.getPackageName, 0).versionName
+
+  override def showUpdateApp(version: String): Unit = new Builder(ctx)
+    .title("Update Available!")
+    .content(s"New app version $version is now available in the Play store.")
+    .negativeText("Later")
+    .positiveText("Update")
+    .onPositive((dialog) => Try(startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName))))) // open app page in play store
+    .show()
 }

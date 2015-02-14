@@ -2,6 +2,7 @@ package com.thangiee.lolhangouts.ui.friendchat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -164,5 +165,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     @Override
     public int getViewTypeCount() {
         return 2;
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
+        }
     }
 }

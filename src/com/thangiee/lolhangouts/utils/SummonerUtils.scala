@@ -39,6 +39,6 @@ object SummonerUtils {
   }
 
   def profileIconUrl(name: String, regionId: String): String = {
-    s"http://avatar.leagueoflegends.com/$regionId/$name.png"
+    s"http://avatar.leagueoflegends.com/$regionId/${name.replace(" ", "")}.png"
   }
 }

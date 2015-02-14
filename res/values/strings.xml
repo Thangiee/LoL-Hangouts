@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LoL Hangouts</string>
-    <string name="app_version">2.0.1</string>
+    <string name="app_version">2.0.2</string>
     <string name="region_name">region name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
@@ -33,6 +33,7 @@
     <string name="connection_error_short">ERROR loading data!</string>
     <string name="connection_error_long">Try refreshing or check your connection. Otherwise, try again later as server could be busy.</string>
     <string name="server_down">server is currently down. Try again later.</string>
+    <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this take too long)</string>
 
     <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages?</string>

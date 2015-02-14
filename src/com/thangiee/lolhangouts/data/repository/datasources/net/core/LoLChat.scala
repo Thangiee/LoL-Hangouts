@@ -82,9 +82,14 @@ object LoLChat {
   }
 
   /**
-    * @return summoner ID
-    */
-  def summonerId(): Option[String] = "[0-9]+".r.findFirstIn(connection.getUser)
+   * @return summoner ID or -1 if unable to find the Id
+   */
+  def summId: String = "[0-9]+".r.findFirstIn(connection.getUser).getOrElse("-1")
+
+  /**
+   * @return summoner Id option
+   */
+  def SummIdOption: Option[String] = "[0-9]+".r.findFirstIn(connection.getUser)
 
   /**
    * Disconnect from the chat server
@@ -167,7 +172,7 @@ object LoLChat {
    *
    * @return presence type
    */
-  def presenceType() = _presenceType
+  def presenceType = _presenceType
 
   /**
    * Send a text message to a friend
@@ -185,7 +190,7 @@ object LoLChat {
   /**
    * @return your status message that all your friends see in their friend list
    */
-  def statusMsg(): String = _statusMsg
+  def statusMsg: String = _statusMsg
 
   /**
    * change your status message
@@ -208,9 +213,9 @@ object LoLChat {
     })
   }
 
-  def loginName(): String = _loginName
+  def loginName: String = _loginName
 
-  def region(): Region = _region
+  def region: Region = _region
 
   /**
    * Setup the listener that notify when a friend status change i.e. login, logout, enter queue, etc...

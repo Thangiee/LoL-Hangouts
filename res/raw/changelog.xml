@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="2.0.2" changeDate="Feb 14, 2015">
+        <changelogtext>Status message is now saved after logging out</changelogtext>
+        <changelogtext>Fix displaying icon and summoner name issues for some users</changelogtext>
+        <changelogtext>Add notification for when new App update is available</changelogtext>
+        <changelogtext>Fix search suggestions</changelogtext>
+        <changelogtext>Other small bug and crash fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.0.1" changeDate="Feb 8, 2015">
         <changelogtext>Make ripple effect smoother</changelogtext>
         <changelogtext>Fix crash when open a chat for devices with version before KitKat</changelogtext>

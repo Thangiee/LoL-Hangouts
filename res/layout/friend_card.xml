@@ -40,7 +40,7 @@
             android:layout_margin="8dp"
             circle:corner_radius="28dip"
             circle:border_color="@color/accent"
-            circle:border_width="1dp"
+            circle:border_width="2dp"
             android:src="@drawable/ic_load_unknown"
             />
 

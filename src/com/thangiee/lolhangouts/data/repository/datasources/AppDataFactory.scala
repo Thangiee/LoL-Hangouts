@@ -9,7 +9,7 @@ case class AppDataFactory() {
 
   def createAppDataEntity(): Either[Exception, AppDataEntity] = Right {
     AppDataEntity(
-      if (LoLChat.isLogin) LoLChat.loginName() else PrefsCache.getString(CacheKey.LoginName).getOrElse(""),
+      if (LoLChat.isLogin) LoLChat.loginName else PrefsCache.getString(CacheKey.LoginName).getOrElse(""),
       PrefsCache.getString(CacheKey.LoginPass).getOrElse(""),
       PrefsCache.getString(CacheKey.AppVersion).getOrElse("-1"),
       PrefsCache.getBoolean(CacheKey.LoginOffline, defValue = false),
