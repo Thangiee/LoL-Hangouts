@@ -14,10 +14,9 @@ import com.thangiee.lolhangouts.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.core.{Ads, Container, SearchContainer, TActivity}
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
 import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
-import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
-import com.thangiee.lolhangouts.utils.Events.{FinishMainActivity, SwitchScreen}
+import com.thangiee.lolhangouts.utils.Events.SwitchScreen
 import com.thangiee.lolhangouts.utils._
 import com.thangiee.lolhangouts.{MyApplication, R}
 import de.greenrobot.event.EventBus
@@ -74,6 +73,12 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     rateMyApp()
+  }
+
+  override def onDestroy(): Unit = {
+    EventBus.getDefault.removeAllStickyEvents()
+    EventBus.getDefault.unregister(this)
+    super.onDestroy()
   }
 
   override def onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Unit = {
@@ -178,10 +183,4 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     switchContainer = true
   }
 
-  def onEvent(event: FinishMainActivity): Unit = {
-    EventBus.getDefault.removeAllStickyEvents()
-    cleanUpAndDisconnect()
-    finish()
-    if (event.goToLogin) startActivity[LoginActivity]
-  }
 }

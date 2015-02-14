@@ -13,10 +13,13 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.CustomView
+import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.settings.SettingsActivity
 import com.thangiee.lolhangouts.ui.sidedrawer.SideDrawerView._
+import com.thangiee.lolhangouts.utils.Events.FinishActivity
 import com.thangiee.lolhangouts.utils._
+import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButton, OnMenuButtonClick}
@@ -118,6 +121,11 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   def updateDrawer(position: Int): Unit = {
     adapter.setCurrentDrawer(position)
     adapter.notifyDataSetChanged()
+  }
+
+  def navigateToLoginScreen(): Unit = {
+    EventBus.getDefault.post(FinishActivity())
+    ctx.startActivity(new Intent(ctx, classOf[LoginActivity]))
   }
 
   def isOpen: Boolean = isDrawerOpen(drawer)

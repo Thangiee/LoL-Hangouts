@@ -17,17 +17,20 @@ import com.thangiee.lolhangouts.data.repository.datasources.net.core.{FriendList
 import com.thangiee.lolhangouts.data.repository.datasources.sqlite.DB
 import com.thangiee.lolhangouts.domain.entities
 import com.thangiee.lolhangouts.domain.entities.Friend
+import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.utils.Events._
 import com.thangiee.lolhangouts.utils._
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
+import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.{Message => XMPPMessage, Packet, Presence}
 import org.jivesoftware.smack.util.StringUtils
-import org.jivesoftware.smack._
 import org.scaloid.common.SService
 import thangiee.riotapi.core.RiotApi
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.util.Random
 
 class LoLHangoutsService extends SService with MessageListener with FriendListListener with ConnectionListener {
@@ -211,7 +214,13 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def reconnectingIn(sec: Int): Unit = {
     // cancel reconnection and go to login screen if the wait time is longer than 30 secs
-    if (sec > 30) EventBus.getDefault.post(FinishMainActivity(goToLogin = true))
+    if (sec > 30) {
+      EventBus.getDefault.post(FinishActivity())
+      EventBus.getDefault.post(Events.Logout())
+      val i = new Intent(getBaseContext, classOf[LoginActivity])
+      i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      startActivity(i)
+    }
     info("[*] Connecting in " + sec)
   }
 
@@ -316,5 +325,14 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   def onEvent(event: Events.ClearLoginNotification): Unit = {
     notificationManager.cancel(loginNotificationId) // clear notification
+  }
+
+  def onEvent(event: Events.Logout): Unit = {
+    info("[*] Cleaning up and disconnecting")
+    Future {
+      LoLChat.disconnect()
+    } onSuccess { case () =>
+      stopSelf()
+    }
   }
 }

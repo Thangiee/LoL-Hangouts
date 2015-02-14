@@ -33,6 +33,7 @@
     <string name="connection_error_short">ERROR loading data!</string>
     <string name="connection_error_long">Try refreshing or check your connection. Otherwise, try again later as server could be busy.</string>
     <string name="server_down">server is currently down. Try again later.</string>
+    <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this take too long)</string>
 
     <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages?</string>

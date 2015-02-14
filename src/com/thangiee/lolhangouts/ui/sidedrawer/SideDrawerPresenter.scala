@@ -7,6 +7,7 @@ import com.thangiee.lolhangouts.ui.sidedrawer.SideDrawerView._
 import com.thangiee.lolhangouts.utils.Events.SwitchScreen
 import com.thangiee.lolhangouts.utils._
 import de.greenrobot.event.EventBus
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUseCase,
@@ -64,8 +65,8 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
   }
 
   def handleLogout(): Unit = {
-    info("[*] Logging out")
-    logoutUseCaseImpl.logout().map(_ => EventBus.getDefault.post(Events.FinishMainActivity(goToLogin = true)))
+    EventBus.getDefault.post(Events.Logout())
+    view.navigateToLoginScreen()
   }
 
   def handleChangeStatusMsg(msg: String) = {
