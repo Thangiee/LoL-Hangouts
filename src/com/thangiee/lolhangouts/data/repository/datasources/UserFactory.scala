@@ -17,12 +17,15 @@ case class UserFactory() {
         .getOrElse(return Left(new IllegalStateException("Cant find region id")))
     }
 
+    val statusMsg = PrefsCache.getString(CacheKey.statusMsg(LoLChat.summonerId().get))
+      .getOrElse(LoLChat.statusMsg())
+
     Right {
       UserEntity(
         LoLChat.loginName(),
         inGameName,
         regionId,
-        LoLChat.statusMsg(),
+        statusMsg,
         PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName()))
       )
     }

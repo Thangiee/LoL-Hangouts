@@ -72,6 +72,7 @@ trait UserRepoImpl extends UserRepo {
     if (!LoLChat.isLogin) {
       Some(new IllegalStateException("LoLChat is not login"))
     } else {
+      PrefsCache.put[String](CacheKey.statusMsg(LoLChat.summonerId().get) → msg)
       LoLChat.changeStatusMsg(msg)
       None
     }
