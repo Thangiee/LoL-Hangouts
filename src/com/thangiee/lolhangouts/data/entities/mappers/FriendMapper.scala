@@ -17,7 +17,7 @@ object FriendMapper {
       friendEntity.name,
       "[0-9]+".r.findFirstIn(friendEntity.addr).getOrElse("0"),
       PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""),
-      DB.getLatestMessage(LoLChat.loginName(), friendEntity.name).map(m => Some(MessageMapper.transform(m))).getOrElse(None),
+      DB.getLatestMessage(LoLChat.loginName, friendEntity.name).map(m => Some(MessageMapper.transform(m))).getOrElse(None),
       transformChatMode(friendEntity.chatMode),
       transformChatType(friendEntity.chatType),
       friendEntity.isOnline,

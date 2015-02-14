@@ -23,7 +23,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def deleteAllMessages(friendName: String): Option[Exception] = {
     Try {
-      DB.deleteMessages(LoLChat.loginName(), friendName)
+      DB.deleteMessages(LoLChat.loginName, friendName)
     } match {
       case Success(_)  => None
       case Failure(e) => Some(new RuntimeException("Fail to delete all Messages", e))
@@ -32,7 +32,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def saveMessages(message: List[Message]): Option[Exception] = {
     Try {
-      message.map(m => new MessageEntity(LoLChat.loginName(), m.friendName, m.text, m.isSentByUser, m.isRead, m.date).save())
+      message.map(m => new MessageEntity(LoLChat.loginName, m.friendName, m.text, m.isSentByUser, m.isRead, m.date).save())
     } match {
       case Success(_)  => None
       case Failure(e) => Some(new RuntimeException("Fail to save messages", e))
@@ -41,7 +41,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def getMessages(friendName: String, n: Int): Either[Exception, List[Message]] = {
     Try {
-      DB.getMessages(LoLChat.loginName(), friendName, n)
+      DB.getMessages(LoLChat.loginName, friendName, n)
     } match {
       case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
@@ -50,7 +50,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def getUnreadMessages(n: Int): Either[Exception, List[Message]] = {
     Try {
-      DB.getUnreadMessages(LoLChat.loginName(), n)
+      DB.getUnreadMessages(LoLChat.loginName, n)
     } match {
       case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
@@ -59,7 +59,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def getUnreadMessages(friendName: String): Either[Exception, List[Message]] = {
     Try {
-      DB.getUnreadMessages(LoLChat.loginName(), friendName)
+      DB.getUnreadMessages(LoLChat.loginName, friendName)
     } match {
       case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
@@ -68,7 +68,7 @@ trait MessageRepoImpl extends MessageRepo {
 
   override def getLastMessage(friendName: String): Either[Exception, Option[Message]] = {
     Try {
-      DB.getLatestMessage(LoLChat.loginName(), friendName)
+      DB.getLatestMessage(LoLChat.loginName, friendName)
     } match {
       case Success(m) => Right(m.map(MessageMapper.transform))
       case Failure(e) => Left(GetMessageException(e))
@@ -86,7 +86,7 @@ trait MessageRepoImpl extends MessageRepo {
   }
 
   override def setMessagesRead(friendName: String): Option[Exception] = {
-    DB.getUnreadMessages(LoLChat.loginName(), friendName).map(_.setRead(true).save())
+    DB.getUnreadMessages(LoLChat.loginName, friendName).map(_.setRead(true).save())
     None
   }
 }

@@ -67,11 +67,11 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   //    MessageListener Implementation
   //=============================================
   override def processMessage(chat: Chat, m: XMPPMessage): Unit = {
-    val activeFriendChat = PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName())).getOrElse("")
+    val activeFriendChat = PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName)).getOrElse("")
     val from = FriendMapper.transform(LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get)
 
     // create Message object with the received chat message
-    val msgEntity = new MessageEntity(LoLChat.loginName(), from.name, m.getBody, false, true, new Date())
+    val msgEntity = new MessageEntity(LoLChat.loginName, from.name, m.getBody, false, true, new Date())
 
     // chat pane fragment is not open
     // or the current open chat is not with sender of the message
@@ -244,7 +244,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   private def notifyMessage(newestMsg: entities.Message) {
-    val unReadMsg = DB.getUnreadMessages(LoLChat.loginName(), 5) // get the 5 newest unread messages
+    val unReadMsg = DB.getUnreadMessages(LoLChat.loginName, 5) // get the 5 newest unread messages
     val title = (if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages"
     val content = newestMsg.friendName + ": " + newestMsg.text
     val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
@@ -287,7 +287,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_launcher)
       .setContentIntent(pendingActivity[MainActivity])
-      .setContentTitle(LoLChat.loginName())
+      .setContentTitle(LoLChat.loginName)
       .setContentText("LoL Hangouts is running")
       .setOngoing(true)
 

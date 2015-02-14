@@ -72,7 +72,7 @@ trait UserRepoImpl extends UserRepo {
     if (!LoLChat.isLogin) {
       Some(new IllegalStateException("LoLChat is not login"))
     } else {
-      PrefsCache.put[String](CacheKey.statusMsg(LoLChat.summonerId().get) → msg)
+      PrefsCache.put[String](CacheKey.statusMsg(LoLChat.summId) → msg)
       LoLChat.changeStatusMsg(msg)
       None
     }
@@ -82,7 +82,7 @@ trait UserRepoImpl extends UserRepo {
     if (!LoLChat.isLogin) {
       Some(new IllegalStateException("LoLChat is not login"))
     } else {
-      PrefsCache.put[String](CacheKey.friendChat(LoLChat.loginName()) → friendName)
+      PrefsCache.put[String](CacheKey.friendChat(LoLChat.loginName) → friendName)
       None
     }
   }
