@@ -23,7 +23,7 @@ case class UserFactory() {
     Right {
       UserEntity(
         LoLChat.loginName,
-        inGameName,
+        inGameName(regionId),
         regionId,
         statusMsg,
         PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName))
@@ -31,11 +31,11 @@ case class UserFactory() {
     }
   }
 
-  private def inGameName: String = {
+  private def inGameName(regionId: String): String = {
     val cacheKey = s"inGameName-${LoLChat.loginName.toLowerCase}"
     implicit val caller = new CachingApiCaller()
 
-    RiotApi.summonerNameById(LoLChat.summId.toLong) match {
+    RiotApi.summonerNameById(LoLChat.summId.toLong, regionId) match {
       case Right(name) => // successful api call
         PrefsCache.put(cacheKey → name) // save it for backup
         name
