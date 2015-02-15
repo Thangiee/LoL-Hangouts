@@ -16,7 +16,7 @@ trait UserRepoImpl extends UserRepo {
    */
   override def loginUser(username: String, password: String): Option[Exception] = {
     val region = Region.getFromId(PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""))
-    RiotApi.region(region.id)
+    RiotApi.regionId = region.id
 
     if (!LoLChat.connect(region)) {
       return Some(new ConnectionException("Fail to connect to server."))
