@@ -28,6 +28,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
     EventBus.getDefault.register(this)
+    removeAllViews()
     addView(friendListView)
     addView(chatView)
 
