@@ -17,7 +17,6 @@ case class PlayerStats
  deathRatio: Double,
  assistRatio: Double,
  elo: Int,
- partyNumber: Option[Int],
  series: Option[Array[Char]],
  spellOne: String,
  spellTwo: String

@@ -60,8 +60,7 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
     viewLiveGameUseCase.loadLiveGame(username, regionId) onComplete {
       case Success(liveGame) =>
         runOnUiThread {
-          setToolbarTitle(liveGame.queueType.replace("_", " ").toLowerCase.capitalize)
-          toolbar.setSubtitle(liveGame.mapName)
+          setToolbarTitle(s"${liveGame.mapName} - $regionId")
           blueTeamView.initializeViewData(liveGame.blueTeam, BlueTeam)
           blueTeamView.hideLoading()
           purpleTeamView.initializeViewData(liveGame.purpleTeam, PurpleTeam)
