@@ -21,7 +21,7 @@ trait AppDataRepoImpl extends AppDataRepo {
 
   override def saveRegion(region: Region): Option[Exception] = {
     PrefsCache.put(CacheKey.LoginRegionId → region.id)
-    RiotApi.region(region.id)
+    RiotApi.regionId = region.id
     None
   }
 

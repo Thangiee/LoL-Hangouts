@@ -18,7 +18,7 @@ case class PlayerStatsEntity
  deaths: Int,
  assists: Int,
  rankGames: Int,
- partyId: Option[Long],
+ teamId: Long,
  series: Option[MiniSeries],
  spellOneId: Int,
  spellTwoId: Int

@@ -22,18 +22,6 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
     // load spell 2 icon
     this.findImageView(R.id.img_live_game_spell2).setImageDrawable(SummonerSpellAssetFile(p.spellTwo).toDrawable)
 
-    // load icon to indicate player is in a pre-made party
-    p.partyNumber match {
-      case Some(partyNum) =>
-      this.findImageView(R.id.img_live_game_pre_made).setImageResource(if (p.teamNumber == 1) R.drawable.ic_action_users_light_blue else R.drawable.ic_action_users_light_purp)
-      // show a number for the pre-made party to differentiate btw multiple pre-made party on the same team
-      this.findTextView(R.id.tv_live_game_pre_made_num).text((partyNum + 1).toString)
-        .textColor(if (p.teamNumber == 1) android.R.color.holo_blue_bright.r2Color else android.R.color.holo_purple.r2Color)
-      case None =>
-        this.findImageView(R.id.img_live_game_pre_made).setImageResource(android.R.color.transparent)
-        this.findTextView(R.id.tv_live_game_pre_made_num).text(" ")
-    }
-
     // load season 4 badge
     setBadgeDrawable(p.leagueTier, this.findImageView(R.id.img_s4_badge))
 

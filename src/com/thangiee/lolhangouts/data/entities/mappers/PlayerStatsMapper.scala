@@ -10,7 +10,7 @@ import thangiee.riotapi.static_data.{Champion, SummonerSpell}
 object PlayerStatsMapper {
   implicit val caller = new CachingApiCaller()
 
-  def transform(p: PlayerStatsEntity, teamNumber: Int, preMadeParties: Map[Long, Int]): PlayerStats = {
+  def transform(p: PlayerStatsEntity, teamNumber: Int): PlayerStats = {
     PlayerStats(
       p.playerName,
       teamNumber,
@@ -26,7 +26,6 @@ object PlayerStatsMapper {
       deathRatio = ((p.deaths + 0.0) / p.rankGames).roundTo(1),
       assistRatio = ((p.assists + 0.0) / p.rankGames).roundTo(1),
       calculateElo(p.leagueTier, p.leagueDivision, p.leaguePoints, p.series),
-      preMadeParties.get(p.partyId.getOrElse(-1)),
       p.series.map(m => m.progress.toCharArray),
       RiotApi.spellStaticDataById(p.spellOneId).getOrElse(SummonerSpell(name = "flash")).name,
       RiotApi.spellStaticDataById(p.spellTwoId).getOrElse(SummonerSpell(name = "ignite")).name

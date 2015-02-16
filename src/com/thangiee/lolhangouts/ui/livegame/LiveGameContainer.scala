@@ -6,12 +6,12 @@ import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.nispok.snackbar.Snackbar
+import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.interactor.ViewLiveGameUseCaseImpl
-import com.thangiee.lolhangouts.ui.core.{TActivity, Container}
+import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
 import com.thangiee.lolhangouts.ui.livegame.LiveGameTeamView._
 import com.thangiee.lolhangouts.utils._
-import com.thangiee.lolhangouts.R
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -60,8 +60,7 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
     viewLiveGameUseCase.loadLiveGame(username, regionId) onComplete {
       case Success(liveGame) =>
         runOnUiThread {
-          setToolbarTitle(liveGame.queueType.replace("_", " ").toLowerCase.capitalize)
-          toolbar.setSubtitle(liveGame.mapName)
+          setToolbarTitle(s"${liveGame.mapName} - $regionId")
           blueTeamView.initializeViewData(liveGame.blueTeam, BlueTeam)
           blueTeamView.hideLoading()
           purpleTeamView.initializeViewData(liveGame.purpleTeam, PurpleTeam)
@@ -79,8 +78,14 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
             .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
             .show(ctx.asInstanceOf[TActivity])
 
-          blueTeamView.showLoadingError("Oops", e.getMessage)
-          purpleTeamView.showLoadingError("Oops", e.getMessage)
+          // todo: temp
+          val errMsg = if (e.getMessage.contains("JsResultException"))
+            s"$username is not in a game or it has not started."
+          else
+            "Server is busy, try again later..."
+
+          blueTeamView.showLoadingError("Oops", errMsg)
+          purpleTeamView.showLoadingError("Oops", errMsg)
         }
     }
   }
