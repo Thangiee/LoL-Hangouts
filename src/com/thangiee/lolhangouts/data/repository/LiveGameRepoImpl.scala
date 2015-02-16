@@ -22,7 +22,7 @@ trait LiveGameRepoImpl extends LiveGameRepo {
       id         ← RiotApi.summonerByName(name.replace(" ", ""), regionId).map(_.id)
       gameInfo   ← RiotApi.currentGameInfoById(id, regionId)
       allPlayers = gameInfo.participants
-      ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap
+      ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap  // todo: run in parallel possible?
       normals    = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
       leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId), regionId)
     } yield LiveGameMapper.transform {

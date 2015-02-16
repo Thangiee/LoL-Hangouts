@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+
+    <changelogversion versionName="2.0.3" changeDate="Feb 15, 2015">
+        <changelogtext>Switch to using official support for getting live game info. It has better stability but we lose pre-made team info.</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.0.2" changeDate="Feb 14, 2015">
         <changelogtext>Status message is now saved after logging out</changelogtext>
         <changelogtext>Fix displaying icon and summoner name issues for some users</changelogtext>
