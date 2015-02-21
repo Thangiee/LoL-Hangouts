@@ -1,30 +1,34 @@
-package com.thangiee.lolhangouts.utils
+package com.thangiee.lolhangouts.domain.utils
 
+import com.thangiee.lolhangouts.domain.exception.DataAccessException
+import com.thangiee.lolhangouts.domain.exception.DataAccessException.{DataNotFound, GetDataError}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
-import org.scaloid.common.TagUtil
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 trait Parser extends AnyRef with TagUtil {
-  def fetchDocument(url: String): Either[Exception, Document] = {
+  def fetchDocument(url: String): Try[Document] = {
     // do multiple attempts to get the document(aka html stuff)
     for (attempt ← 1 to 5) {
       info(s"[*] Attempt $attempt |Connecting to: $url")
       val response = Jsoup.connect(url).timeout(5000).execute()
       response.statusCode() match {
         case 200 =>
-          if (response.body().contains("Summoner Not Found"))
-            return Left(new IllegalArgumentException("Unable to find the request data"))
+          if (response.body().contains("Summoner Not Found")) {
+            info("[-] Summoner info not available")
+            return Failure(DataAccessException("[-] Summoner info not available", DataNotFound))
+          }
           else
-            return Right(response.parse())
+            return Success(response.parse())
         case _   =>
           if (attempt == 5) Thread.sleep(200) // wait a bit and retry
       }
     }
 
-    Left(new IllegalStateException("Server is busy/unavailable"))
+    info("[-] Server is busy/unavailable")
+    Failure(DataAccessException("[-] Server is busy/unavailable", GetDataError))
   }
 
   def getNumber[T: NumberOp](s: String): Option[T] = {

@@ -8,7 +8,6 @@ import android.widget.{EditText, FrameLayout}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.entities.{Friend, Message}
 import com.thangiee.lolhangouts.domain.interactor._
 import com.thangiee.lolhangouts.ui.core.CustomView
@@ -69,7 +68,11 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def showSendFail(): Unit = sendButton.setProgress(-1)
 
-  def showErrorMsg(msg: String): Unit = msg.croutonWarn()
+  def showEmptyMsgError(): Unit = R.string.err_empty_msg.croutonWarn()
+
+  def showSendMsgError(): Unit = R.string.err_sending_msg.croutonWarn()
+
+  def showMsgToNobodyError(): Unit = R.string.err_send_to_nobody.croutonWarn()
 
   def clearMessageInput(): Unit = msgField.setText("")
 

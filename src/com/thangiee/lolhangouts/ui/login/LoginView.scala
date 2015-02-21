@@ -14,7 +14,13 @@ trait LoginView {
 
   def showChangeLog(): Unit
 
-  def showErrorMsg(msg: String): Unit
+  def showBlankUsernameError(): Unit
+  
+  def showBlankPasswordError(): Unit
+  
+  def showConnectionError(): Unit
+  
+  def showAuthenticationError(): Unit
 
   def navigateToHome(): Unit
 

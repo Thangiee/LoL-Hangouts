@@ -6,14 +6,13 @@ import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view._
 import android.widget.FrameLayout
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
+import com.thangiee.lolhangouts.domain.exception.UseCaseException
 import com.thangiee.lolhangouts.domain.interactor.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
@@ -70,9 +69,8 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case R.id.menu_add_friend =>
-        AddFriendUseCaseImpl().addFriend(name) onComplete {
-          case Success(_)  => info(s"[+] $name added to friend list")
-          case Failure(e) => "Failed to add friend".croutonWarn()
+        AddFriendUseCaseImpl().addFriend(name) recover {
+          case e: UseCaseException => R.string.error_add_friend.croutonWarn()
         }
         true
       case _                    => false

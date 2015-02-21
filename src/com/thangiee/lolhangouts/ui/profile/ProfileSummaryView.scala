@@ -9,7 +9,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
 import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository.profileDataRepoImpl
 import com.thangiee.lolhangouts.domain.entities.ProfileSummary
 import com.thangiee.lolhangouts.domain.interactor.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{CustomView, TActivity}
@@ -128,7 +127,14 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
       delay(2600) { pieGraph.animateToGoalValues() }
   }
 
-  def showLoadingError(title: String, subTitle: String): Unit = {
+  def showDataNotFound(): Unit = showError("Oops", R.string.no_profile.r2String)
+
+  def showGetDataError(): Unit = showError(
+    title = (if (hasWifiConnection) R.string.server_busy else R.string.no_wifi).r2String,
+    subTitle = R.string.err_get_data.r2String
+  )
+
+  private def showError(title: String, subTitle: String): Unit = {
     loadingWheel.zoomOut(delay = 1000) // delay in millis
 
     delay(2000) {

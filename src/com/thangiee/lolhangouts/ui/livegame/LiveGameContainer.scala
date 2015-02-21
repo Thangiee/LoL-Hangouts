@@ -7,7 +7,8 @@ import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.nispok.snackbar.Snackbar
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
+import com.thangiee.lolhangouts.domain.exception.DataAccessException
+import com.thangiee.lolhangouts.domain.exception.DataAccessException._
 import com.thangiee.lolhangouts.domain.interactor.ViewLiveGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
 import com.thangiee.lolhangouts.ui.livegame.LiveGameTeamView._
@@ -78,11 +79,10 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
             .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
             .show(ctx.asInstanceOf[TActivity])
 
-          // todo: temp
-          val errMsg = if (e.getMessage.contains("JsResultException"))
-            s"$username is not in a game or it has not started."
-          else
-            "Server is busy, try again later..."
+          val errMsg = e match {
+            case DataAccessException(_, DataNotFound) => username + R.string.not_in_game.r2String
+            case DataAccessException(_, GetDataError) => R.string.err_get_data.r2String
+          }
 
           blueTeamView.showLoadingError("Oops", errMsg)
           purpleTeamView.showLoadingError("Oops", errMsg)

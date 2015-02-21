@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.FrameLayout
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.entities.TopChampion
 import com.thangiee.lolhangouts.domain.interactor.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
@@ -62,7 +61,14 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
     champRecView.slideInDown(delay = 1500)
   }
 
-  def showLoadingError(title: String, subTitle: String): Unit = {
+  def showDataNotFound(): Unit = showError("No Result", R.string.no_champion.r2String)
+
+  def showGetDataError(): Unit = showError(
+    title = (if (hasWifiConnection) R.string.server_busy else R.string.no_wifi).r2String,
+    subTitle = R.string.err_get_data.r2String
+  )
+
+  private def showError(title: String, subTitle: String): Unit = {
     loadingWheel.zoomOut(delay = 500) // delay in millis
 
     delay(1500) {

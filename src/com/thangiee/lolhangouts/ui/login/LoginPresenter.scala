@@ -2,13 +2,14 @@ package com.thangiee.lolhangouts.ui.login
 
 import com.parse.{GetCallback, ParseException, ParseObject, ParseQuery}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.domain.exception.{AuthorizationException, ConnectionException, UserInputException}
+import com.thangiee.lolhangouts.domain.exception.UseCaseException.{AuthenticationError, ConnectionError}
+import com.thangiee.lolhangouts.domain.exception.UserInputException._
+import com.thangiee.lolhangouts.domain.exception.{UseCaseException, UserInputException}
 import com.thangiee.lolhangouts.domain.interactor._
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presenter {
 
@@ -66,20 +67,16 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
   def handleLogin(username: String, password: String): Unit = {
     info("[*] attempting to login")
     view.showProgress()
-    loginUseCase.login(username, password) onComplete {
-      case Success(_) => onLoginSuccess()
-      case Failure(e) => showFailure(e)
+
+    loginUseCase.login(username, password) map { _ =>
+      runOnUiThread(view.showLoginSuccess())
+      Thread.sleep(700) // wait a bit for login success animation
+      view.navigateToHome()
+    } recover {
+      case UserInputException(msg, EmptyUsername)     => runOnUiThread(view.showBlankUsernameError())
+      case UserInputException(msg, EmptyPassword)     => runOnUiThread(view.showBlankPasswordError())
+      case UseCaseException(msg, ConnectionError)     => runOnUiThread(view.showConnectionError())
+      case UseCaseException(msg, AuthenticationError) => runOnUiThread(view.showAuthenticationError())
     }
-  }
-
-  def onLoginSuccess(): Unit = {
-    runOnUiThread(view.showLoginSuccess())
-    Thread.sleep(700) // wait a bit for login success animation
-    view.navigateToHome()
-  }
-
-  def showFailure(e: Throwable): Unit = e match {
-    case e@(_: UserInputException | _: AuthorizationException | _: ConnectionException) =>
-      runOnUiThread(view.showErrorMsg(e.getMessage))
   }
 }

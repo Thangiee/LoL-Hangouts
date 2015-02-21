@@ -83,7 +83,9 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     // lock use to prevent multiple calls to load list while it is already loading
     if (!lock) {
       lock = true
-      getFriendsUseCase.loadOnlineFriends().map(f => runOnUiThread(view.updateCardContent(f)))
+      getFriendsUseCase.loadOnlineFriends().onSuccess {
+        case fl => fl.map(f => runOnUiThread(view.updateCardContent(f)))
+      }
       lock = false
     }
     else info("[-] update online friends card blocked")

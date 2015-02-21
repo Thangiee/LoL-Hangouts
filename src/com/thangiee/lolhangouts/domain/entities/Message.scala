@@ -9,4 +9,4 @@ case class Message(
   isSentByUser: Boolean,
   isRead: Boolean,
   date: Date
-  ) // todo: use better date lib
+  )

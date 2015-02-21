@@ -11,7 +11,6 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
 import com.thangiee.lolhangouts.domain.interactor.LoginUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
@@ -74,13 +73,6 @@ class LoginActivity extends TActivity with LoginView {
 
   override def showLoginSuccess(): Unit = logInButton.setProgress(100)
 
-  override def showErrorMsg(msg: String): Unit = runOnUiThread {
-    userEditText.shake()
-    passwordEditText.shake()
-    msg.croutonWarn()
-    logInButton.setProgress(-1)
-  }
-
   override def showChangeLog(): Unit = super.showChangeLog()
 
   override def navigateToHome(): Unit = {
@@ -120,4 +112,26 @@ class LoginActivity extends TActivity with LoginView {
     .positiveText("Update")
     .onPositive((dialog) => Try(startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName))))) // open app page in play store
     .show()
+
+  override def showBlankUsernameError(): Unit = {
+    userEditText.shake()
+    R.string.err_empty_user.croutonWarn()
+    logInButton.setProgress(-1)
+  }
+
+  override def showBlankPasswordError(): Unit = {
+    passwordEditText.shake()
+    R.string.err_empty_pass.croutonWarn()
+    logInButton.setProgress(-1)
+  }
+
+  override def showAuthenticationError(): Unit = {
+    R.string.err_authentication.croutonWarn()
+    logInButton.setProgress(-1)
+  }
+
+  override def showConnectionError(): Unit = {
+    R.string.err_connect_to_server.croutonWarn()
+    logInButton.setProgress(-1)
+  }
 }

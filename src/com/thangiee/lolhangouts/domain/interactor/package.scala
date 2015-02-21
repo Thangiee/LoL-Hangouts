@@ -4,19 +4,21 @@ import com.thangiee.lolhangouts.domain.utils._
 
 package object interactor {
 
-  implicit class LogAndThrow[A](either: Either[Exception, A]) {
-    def ifErrorThenLogAndThrow()(implicit loggerTag: LoggerTag): A = {
-      either.fold(
-        err => { error(s"[!] ${err.getMessage}", err.getCause); throw err },
-        data => data
-      )
+  implicit class LogAndReturn[A](a: A) {
+    def logThenReturn(logMessage: (A) => String)(implicit loggerTag: LoggerTag): A = {
+      info(logMessage.apply(a))
+      a
     }
   }
 
-  implicit class LogAndReturn[A](a: A) {
-    def orElseLogAndReturn(logMessage: String)(implicit loggerTag: LoggerTag): A = {
-      info("[+] " + logMessage)
-      a
-    }
+  implicit class ExceptionHelper(e: Exception) {
+    def logThenThrow(implicit loggerTag: LoggerTag) = LogThenThrow(e)
+  }
+
+  case class LogThenThrow(ex: Exception)(implicit loggerTag: LoggerTag) {
+    def v = { verbose(ex.getMessage, ex); throw ex }
+    def i = { info(ex.getMessage, ex); throw ex }
+    def w = { warn(ex.getMessage, ex); throw ex }
+    def e = { error(ex.getMessage, ex); throw ex }
   }
 }
