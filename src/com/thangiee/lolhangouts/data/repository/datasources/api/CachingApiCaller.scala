@@ -14,23 +14,23 @@ import scalaj.http.Http
 
 class CachingApiCaller extends ApiCaller with TagUtil {
 
-  override def call(url: String)(implicit apiKey: ApiKey): Either[RiotException, String] = {
+  override def call(url: String)(implicit apiKey: ApiKey): Try[String] = {
     for (attempt ← 1 to 7) {
       MemCache.get[String](url) match {
         case Some(cacheHit) =>
-          return Right(cacheHit)
+          return Success(cacheHit)
         case None           => // cache missed, call the API
           RiotApi.key = if (attempt == 10) Keys.productionKey else Keys.testKey
           debug(s"[*] API caller attempt: $attempt - $url - ${apiKey.key}") // make use of test keys until last attempt
           Try(Http(url + apiKey.key).asString) match {
             case Success(response) =>
               response.code match {
-                case 200 => MemCache.put(url, response.body); return Right(response.body) // cache and return the response
-                case 400 => return Left(RiotException("Bad Request", BadRequest))
+                case 200 => MemCache.put(url, response.body); return Success(response.body) // cache and return the response
+                case 400 => return Failure(RiotException("400: Bad request", BadRequest))
                 case 401 => warn(s"[!] Invalid API key: ${apiKey.key}")
-                case 404 => warn("[!] Requested data can not be found. Returning empty json"); return Right("{}")
+                case 404 => warn("[!] Requested data can not be found. Returning empty json"); return Success("{}")
                 case 429 => warn("[-] API key hit limit rate: " + apiKey.key)
-                case 500 => return Left(RiotException("Internal server error", ServerError))
+                case 500 => return Failure(RiotException("500: Internal server error", ServerError))
                 case 503 => info("[-] Service unavailable. ReAttempting...")
               }
             case Failure(e) => e match {
@@ -43,6 +43,6 @@ class CachingApiCaller extends ApiCaller with TagUtil {
     }
 
     warn("[-] Exhausted all api calling attempts")
-    Left(RiotException("Service unavailable", ServiceUnavailable))
+    Failure(RiotException("503: Service unavailable", ServiceUnavailable))
   }
 }

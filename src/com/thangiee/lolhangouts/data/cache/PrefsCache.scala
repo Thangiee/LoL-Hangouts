@@ -13,7 +13,7 @@ object PrefsCache extends AnyRef with TagUtil {
       case (k: String, v: Long)    => Prefs.putLong(k, v)
       case (k: String, v: Float)   => Prefs.putFloat(k, v)
       case (k: String, v: Boolean) => Prefs.putBoolean(k, v)
-      case _                       => throw new IllegalArgumentException("Only primitive types are allow!")
+      case _                       => throw new IllegalArgumentException("Unsupported value type.")
     }
   }
 

@@ -27,7 +27,7 @@ import org.jivesoftware.smack._
 import org.jivesoftware.smack.packet.{Message => XMPPMessage, Packet, Presence}
 import org.jivesoftware.smack.util.StringUtils
 import org.scaloid.common.SService
-import thangiee.riotapi.core.RiotApi
+import thangiee.riotapi.core.{RiotException, RiotApi}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -116,16 +116,15 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def onFriendRequest(address: String, summonerId: String, request: Packet): Unit = {
     implicit val apiCaller = new CachingApiCaller
-    RiotApi.summonerNameById(summonerId.toLong).fold(
-      error => warn(s"[!] Unable to find summoner name: ${error.msg}"),
-      name => {
-        LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend list
-        // notify sender of approved friend request
-        val subscribed = new Presence(Presence.Type.subscribed)
-        subscribed.setTo(request.getFrom)
-        LoLChat.connection.sendPacket(subscribed)
-      }
-    )
+    RiotApi.summonerNameById(summonerId.toLong).map { name =>
+      LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend list
+      // notify sender of approved friend request
+      val subscribed = new Presence(Presence.Type.subscribed)
+      subscribed.setTo(request.getFrom)
+      LoLChat.connection.sendPacket(subscribed)
+    } recover {
+      case RiotException(msg, _) => warn("[!] Unable to find summoner name:" + msg)
+    }
   }
 
   override def onFriendAdded(id: String, name: String): Unit = {

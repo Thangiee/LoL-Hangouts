@@ -21,7 +21,7 @@ class FriendRosterListener extends RosterListener {
 
   override def entriesAdded(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      RiotApi.summonerNameById(id.toLong).right.map(name => LoLChat.friendListListener.onFriendAdded(id, name))
+      RiotApi.summonerNameById(id.toLong).map(name => LoLChat.friendListListener.onFriendAdded(id, name))
     }
   }
 
@@ -29,7 +29,7 @@ class FriendRosterListener extends RosterListener {
 
   override def entriesDeleted(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>
-      RiotApi.summonerNameById(id.toLong).right.map(name => LoLChat.friendListListener.onFriendRemove(id, name))
+      RiotApi.summonerNameById(id.toLong).map(name => LoLChat.friendListListener.onFriendRemove(id, name))
     }
   }
 
