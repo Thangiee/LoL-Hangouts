@@ -14,13 +14,12 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.skocken.efficientadapter.lib.adapter.AbsViewHolderAdapter.OnItemClickListener
 import com.skocken.efficientadapter.lib.adapter.{AbsViewHolderAdapter, SimpleAdapter}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.cache.PrefsCache
-import com.thangiee.lolhangouts.data.repository.datasources.api.Keys
-import com.thangiee.lolhangouts.data.repository.datasources.helper.CacheKey
-import com.thangiee.lolhangouts.domain.entities._
-import com.thangiee.lolhangouts.receivers.DeleteOldMsgReceiver
+import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
+import com.thangiee.lolhangouts.data.datasources.api.Keys
+import com.thangiee.lolhangouts.data.usecases.entities._
+import com.thangiee.lolhangouts.ui.receivers.DeleteOldMsgReceiver
 import com.thangiee.lolhangouts.ui.core.TActivity
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import thangiee.riotapi.core.RiotApi
 
 import scala.collection.JavaConversions._

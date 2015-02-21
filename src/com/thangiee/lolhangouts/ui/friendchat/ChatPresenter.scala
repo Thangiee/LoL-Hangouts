@@ -2,14 +2,14 @@ package com.thangiee.lolhangouts.ui.friendchat
 
 import java.util.Date
 
-import com.thangiee.lolhangouts.domain.entities.{Friend, Message}
-import com.thangiee.lolhangouts.domain.exception.UseCaseException.MessageSentError
-import com.thangiee.lolhangouts.domain.exception.UserInputException.EmptyMessage
-import com.thangiee.lolhangouts.domain.exception.{UseCaseException, UserInputException}
-import com.thangiee.lolhangouts.domain.interactor._
+import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
+import com.thangiee.lolhangouts.data.exception.UseCaseException.MessageSentError
+import com.thangiee.lolhangouts.data.exception.UserInputException.EmptyMessage
+import com.thangiee.lolhangouts.data.exception.{UseCaseException, UserInputException}
+import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.Presenter
-import com.thangiee.lolhangouts.utils.Events.IncomingMessage
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events.IncomingMessage
+import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global

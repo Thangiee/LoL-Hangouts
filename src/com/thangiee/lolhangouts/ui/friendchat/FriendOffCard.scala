@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.ui.friendchat
 import android.content.Context
 import android.view.{View, ViewGroup}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.Friend
+import com.thangiee.lolhangouts.data.usecases.entities.Friend
 
 case class FriendOffCard(private var friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_off_card) {
 

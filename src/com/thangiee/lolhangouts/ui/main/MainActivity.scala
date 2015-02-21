@@ -8,16 +8,15 @@ import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.interactor.GetUserUseCaseImpl
-import com.thangiee.lolhangouts.services.LoLHangoutsService
+import com.thangiee.lolhangouts.data.usecases.GetUserUseCaseImpl
+import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.core.{Ads, Container, SearchContainer, TActivity}
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
 import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
-import com.thangiee.lolhangouts.utils.Events.SwitchScreen
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events.SwitchScreen
+import com.thangiee.lolhangouts.ui.utils._
 import com.thangiee.lolhangouts.{MyApplication, R}
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.Configuration

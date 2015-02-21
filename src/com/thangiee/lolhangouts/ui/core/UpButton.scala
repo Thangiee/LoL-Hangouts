@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.ui.core
 import android.os.Bundle
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 
 trait UpButton extends TActivity {
   override def onCreate(savedInstanceState: Bundle): Unit = {

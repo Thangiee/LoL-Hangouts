@@ -6,8 +6,8 @@ import android.view.{MotionEvent, View, ViewGroup}
 import android.widget.TextView
 import at.markushi.ui.RevealColorView
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.Friend
-import com.thangiee.lolhangouts.utils.{Events, _}
+import com.thangiee.lolhangouts.data.usecases.entities.Friend
+import com.thangiee.lolhangouts.ui.utils.{Events, _}
 import de.greenrobot.event.EventBus
 import it.gmariotti.cardslib.library.internal.Card
 import it.gmariotti.cardslib.library.view.CardViewNative

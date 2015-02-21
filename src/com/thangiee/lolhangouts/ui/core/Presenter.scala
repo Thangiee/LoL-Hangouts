@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.ui.core
 
-import com.thangiee.lolhangouts.utils.Logger._
+import com.thangiee.lolhangouts.ui.utils.Logger._
 import org.scaloid.common.TagUtil
 
 trait Presenter extends AnyRef with TagUtil {

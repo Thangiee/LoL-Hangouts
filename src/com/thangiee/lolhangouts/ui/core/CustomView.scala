@@ -1,7 +1,7 @@
 package com.thangiee.lolhangouts.ui.core
 
 import android.view.{View, ViewGroup}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import org.scaloid.common.{TagUtil, TraitViewGroup}
 
 trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {

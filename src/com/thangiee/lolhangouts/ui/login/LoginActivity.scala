@@ -11,11 +11,11 @@ import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.interactor.LoginUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.LoginUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.regionselection.RegionSelectionActivity
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import org.jivesoftware.smack.SmackAndroid
 
 import scala.util.Try

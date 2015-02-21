@@ -2,10 +2,10 @@ package com.thangiee.lolhangouts.ui.friendchat
 
 import android.os.Handler
 import com.github.nscala_time.time.Imports._
-import com.thangiee.lolhangouts.domain.interactor.GetFriendsUseCase
+import com.thangiee.lolhangouts.data.usecases.GetFriendsUseCase
 import com.thangiee.lolhangouts.ui.core.Presenter
-import com.thangiee.lolhangouts.utils.Events.{ReloadFriendCardList, UpdateFriendCard, UpdateOnlineFriendsCard}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events.{ReloadFriendCardList, UpdateFriendCard, UpdateOnlineFriendsCard}
+import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global

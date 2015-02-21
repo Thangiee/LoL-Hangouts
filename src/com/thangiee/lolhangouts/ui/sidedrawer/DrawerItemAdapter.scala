@@ -7,7 +7,7 @@ import android.widget.{BaseAdapter, ImageView, TextView}
 import at.markushi.ui.RevealColorView
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.ui.sidedrawer.DrawerItem._
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 
 class DrawerItemAdapter(implicit ctx: Context) extends BaseAdapter {
 

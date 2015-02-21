@@ -10,15 +10,14 @@ import android.widget._
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.interactor.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
+import com.thangiee.lolhangouts.data.usecases.{ChangeUserStatusCaseImpl, GetAppDataUseCaseImpl, GetUserUseCaseImpl, LogoutUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.settings.SettingsActivity
 import com.thangiee.lolhangouts.ui.sidedrawer.SideDrawerView._
-import com.thangiee.lolhangouts.utils.Events.FinishActivity
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events.FinishActivity
+import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.MenuButton._

@@ -12,12 +12,11 @@ import com.balysv.materialmenu.MaterialMenuDrawable.Stroke
 import com.gitonway.lee.niftynotification.lib.{Configuration, Effects, NiftyNotificationView}
 import com.squareup.picasso.Picasso
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.cache.PrefsCache
-import com.thangiee.lolhangouts.data.repository.datasources.helper.CacheKey
+import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
 import com.thangiee.lolhangouts.ui.friendchat.QuickChatActivity
 import com.thangiee.lolhangouts.ui.main.AboutActivity
-import com.thangiee.lolhangouts.utils.Events._
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events._
+import com.thangiee.lolhangouts.ui.utils._
 import de.keyboardsurfer.android.widget.crouton.{Configuration => Config}
 import org.scaloid.common.{SContext, TraitActivity}
 

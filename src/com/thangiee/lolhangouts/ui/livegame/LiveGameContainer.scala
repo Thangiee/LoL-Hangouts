@@ -7,12 +7,12 @@ import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.nispok.snackbar.Snackbar
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.exception.DataAccessException
-import com.thangiee.lolhangouts.domain.exception.DataAccessException._
-import com.thangiee.lolhangouts.domain.interactor.ViewLiveGameUseCaseImpl
+import com.thangiee.lolhangouts.data.exception.DataAccessException
+import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.ViewLiveGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
 import com.thangiee.lolhangouts.ui.livegame.LiveGameTeamView._
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global

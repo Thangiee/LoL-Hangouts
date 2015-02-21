@@ -2,12 +2,12 @@ package com.thangiee.lolhangouts.ui.login
 
 import com.parse.{GetCallback, ParseException, ParseObject, ParseQuery}
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.domain.exception.UseCaseException.{AuthenticationError, ConnectionError}
-import com.thangiee.lolhangouts.domain.exception.UserInputException._
-import com.thangiee.lolhangouts.domain.exception.{UseCaseException, UserInputException}
-import com.thangiee.lolhangouts.domain.interactor._
+import com.thangiee.lolhangouts.data.exception.UseCaseException.{AuthenticationError, ConnectionError}
+import com.thangiee.lolhangouts.data.exception.UserInputException._
+import com.thangiee.lolhangouts.data.exception.{UseCaseException, UserInputException}
+import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.Presenter
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

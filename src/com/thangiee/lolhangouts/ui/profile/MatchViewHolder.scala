@@ -8,8 +8,8 @@ import android.view.View
 import android.widget.ImageView
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.Match
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.data.usecases.entities.Match
+import com.thangiee.lolhangouts.ui.utils._
 
 class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
   implicit val ctx = getContext

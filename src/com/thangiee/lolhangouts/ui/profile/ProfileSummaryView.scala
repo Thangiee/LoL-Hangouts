@@ -9,10 +9,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
 import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.ProfileSummary
-import com.thangiee.lolhangouts.domain.interactor.ViewProfileUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.entities.ProfileSummary
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{CustomView, TActivity}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.{ErrorView, RetryListener}
 

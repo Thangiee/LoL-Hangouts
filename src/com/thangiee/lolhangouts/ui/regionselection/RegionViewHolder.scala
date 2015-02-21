@@ -7,8 +7,8 @@ import android.widget.{ImageView, TextView}
 import at.markushi.ui.RevealColorView
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities._
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.data.usecases.entities._
+import com.thangiee.lolhangouts.ui.utils._
 
 class RegionViewHolder(v: View) extends AbsViewHolder[Region](v) with OnTouchListener {
   implicit val ctx = getContext

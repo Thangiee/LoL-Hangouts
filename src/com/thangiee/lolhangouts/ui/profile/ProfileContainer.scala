@@ -6,10 +6,10 @@ import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view._
 import android.widget.FrameLayout
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.exception.UseCaseException
-import com.thangiee.lolhangouts.domain.interactor.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
+import com.thangiee.lolhangouts.data.exception.UseCaseException
+import com.thangiee.lolhangouts.data.usecases.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global

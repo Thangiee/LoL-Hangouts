@@ -7,10 +7,10 @@ import android.view.View
 import android.widget.FrameLayout
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.TopChampion
-import com.thangiee.lolhangouts.domain.interactor.ViewProfileUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.entities.TopChampion
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.{ErrorView, RetryListener}
 

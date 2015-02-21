@@ -7,9 +7,9 @@ import android.widget.ImageView
 import com.sakout.fancybuttons.FancyButton
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.PlayerStats
+import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 
 class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
   implicit val ctx = getContext

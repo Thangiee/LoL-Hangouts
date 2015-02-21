@@ -4,10 +4,9 @@ import android.content.{Context, Intent}
 import android.os.Bundle
 import android.widget.LinearLayout
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.interactor.GetFriendsUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.GetFriendsUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{TActivity, TIntent, UpButton}
-import com.thangiee.lolhangouts.utils.Events.ClearChatNotification
+import com.thangiee.lolhangouts.ui.utils.Events.ClearChatNotification
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global

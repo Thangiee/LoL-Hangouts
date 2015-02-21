@@ -8,10 +8,10 @@ import android.widget.{EditText, FrameLayout}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.domain.entities.{Friend, Message}
-import com.thangiee.lolhangouts.domain.interactor._
+import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
+import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
 import scala.collection.JavaConversions._
