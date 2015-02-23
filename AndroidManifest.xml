@@ -28,7 +28,7 @@
         <meta-data android:name="AA_DB_VERSION" android:value="2" />
         <meta-data android:name="AA_MODELS" android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity" />
 
-        <service android:name=".services.LoLHangoutsService"/>
+        <service android:name=".ui.services.LoLHangoutsService"/>
 
         <activity
                 android:name=".ui.login.LoginActivity"
@@ -85,6 +85,6 @@
                 android:name="com.google.android.gms.ads.AdActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <receiver android:name=".receivers.DeleteOldMsgReceiver"/>
+        <receiver android:name=".ui.receivers.DeleteOldMsgReceiver"/>
     </application>
 </manifest>
