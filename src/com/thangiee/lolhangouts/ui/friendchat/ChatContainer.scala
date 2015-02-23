@@ -6,11 +6,10 @@ import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
 import android.view.{Menu, MenuInflater, MenuItem, View}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.interactor.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
+import com.thangiee.lolhangouts.data.usecases.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
-import com.thangiee.lolhangouts.utils.Events.{FriendCardClicked, UpdateFriendCard}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils.Events.{FriendCardClicked, UpdateFriendCard}
+import com.thangiee.lolhangouts.ui.utils._
 import com.thangiee.lolhangouts.R
 import de.greenrobot.event.EventBus
 
@@ -28,6 +27,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
     EventBus.getDefault.register(this)
+    removeAllViews()
     addView(friendListView)
     addView(chatView)
 

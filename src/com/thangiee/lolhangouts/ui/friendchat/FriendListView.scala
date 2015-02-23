@@ -4,11 +4,10 @@ import android.content.Context
 import android.widget.FrameLayout
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.entities.Friend
-import com.thangiee.lolhangouts.domain.interactor.GetFriendsUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.entities.Friend
+import com.thangiee.lolhangouts.data.usecases.GetFriendsUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter
 import it.gmariotti.cardslib.library.view.CardListView
 

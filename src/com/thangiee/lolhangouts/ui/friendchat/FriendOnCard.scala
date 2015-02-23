@@ -7,11 +7,11 @@ import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.andexert.library.RippleView
 import com.sakout.fancybuttons.FancyButton
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository.datasources.net.core.LoLChat
-import com.thangiee.lolhangouts.domain.entities.{ChatMode, Friend}
+import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
+import com.thangiee.lolhangouts.data.usecases.entities.{ChatMode, Friend}
 import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
 import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 

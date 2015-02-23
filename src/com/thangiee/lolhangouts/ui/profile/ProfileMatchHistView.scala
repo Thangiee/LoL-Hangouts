@@ -7,12 +7,11 @@ import android.view.View
 import android.widget.FrameLayout
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.entities.Match
-import com.thangiee.lolhangouts.domain.interactor.ViewProfileUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.entities.Match
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.regionselection.RegionViewHolder
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.{ErrorView, RetryListener}
 
@@ -62,10 +61,17 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
     matchRecyclerView.slideInDown(delay = 1500)
   }
 
-  def showLoadingError(title: String, subTitle: String): Unit = {
+  def showDataNotFound(): Unit = showError("No Result", R.string.no_match_hist.r2String)
+
+  def showGetDataError(): Unit = showError(
+    title = (if (hasWifiConnection) R.string.server_busy else R.string.no_wifi).r2String,
+    subTitle = R.string.err_get_data.r2String
+  )
+
+  private def showError(title: String, subTitle: String): Unit = {
     loadingWheel.zoomOut(delay = 500) // delay in millis
 
-    delay(1500) { // wait for loading wheel to hide
+    delay(1500) {
       errorView.setErrorTitle(title)
       errorView.setErrorSubtitle(subTitle)
       errorView.setVisibility(View.VISIBLE)

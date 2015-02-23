@@ -8,8 +8,8 @@ import android.content.{Intent, SharedPreferences}
 import android.os.{Bundle, SystemClock}
 import android.preference.{PreferenceFragment, PreferenceManager}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.receivers.DeleteOldMsgReceiver
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.receivers.DeleteOldMsgReceiver
+import com.thangiee.lolhangouts.ui.utils._
 import org.scaloid.common.TagUtil
 
 class PreferenceSettings extends PreferenceFragment with OnSharedPreferenceChangeListener with TagUtil {

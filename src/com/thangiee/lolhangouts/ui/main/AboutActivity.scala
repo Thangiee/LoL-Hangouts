@@ -6,7 +6,7 @@ import android.widget.{AdapterView, ListView}
 import com.ami.fundapter.{BindDictionary, FunDapter}
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.ui.core.{TActivity, UpButton}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.ui.utils._
 import de.psdev.licensesdialog.SingleLicenseDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.model.Notice

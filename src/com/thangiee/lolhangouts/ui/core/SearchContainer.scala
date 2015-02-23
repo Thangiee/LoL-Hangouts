@@ -10,9 +10,8 @@ import android.view.{Menu, MenuInflater, View}
 import android.widget.{ArrayAdapter, FrameLayout, Spinner}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.repository._
-import com.thangiee.lolhangouts.domain.interactor.{CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
-import com.thangiee.lolhangouts.utils._
+import com.thangiee.lolhangouts.data.usecases.{CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
+import com.thangiee.lolhangouts.ui.utils._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global

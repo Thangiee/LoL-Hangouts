@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.thangiee.lolhangouts.R;
-import com.thangiee.lolhangouts.domain.entities.Message;
+import com.thangiee.lolhangouts.data.usecases.entities.Message;
 
 
 import java.text.SimpleDateFormat;

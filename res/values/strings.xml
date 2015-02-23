@@ -27,13 +27,24 @@
     <string name="pref_notify_app_running_summary">Show an icon when the app is running and you are connected. *Require logging in again </string>
 
     <!--error messages-->
-    <string name="no_current_chat">Select a friend in your friend list to start a chat</string>
-    <string name="no_match_hist">Did not find any match history for this user.</string>
-    <string name="no_champion">Did not find any ranked champion for this user.</string>
-    <string name="connection_error_short">ERROR loading data!</string>
-    <string name="connection_error_long">Try refreshing or check your connection. Otherwise, try again later as server could be busy.</string>
+    <string name="no_match_hist">404: Unable to find any match history.</string>
+    <string name="no_champion">404: Unable to find any champion data.</string>
+    <string name="no_profile">404: Unable to find summoner profile.</string>
     <string name="server_down">server is currently down. Try again later.</string>
     <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this take too long)</string>
+    <string name="error_add_friend">Fail to add friend.</string>
+    <string name="err_empty_user">Username field cannot be empty</string>
+    <string name="err_empty_pass">Password field cannot be empty</string>
+    <string name="err_empty_msg">Can\'t send empty message</string>
+    <string name="err_sending_msg">An error occurred while trying to send the message</string>
+    <string name="err_send_to_nobody">Can\'t send message to nobody</string>
+    <string name="err_authentication">Invalid Username or password</string>
+    <string name="err_connect_to_server">Cannot connect to server.</string>
+    <string name="err_get_data">An unexpected error occurred while retrieving the data</string>
+    <string name="data_not_found">404: Data not found.</string>
+    <string name="no_wifi">Connection Issues</string>
+    <string name="server_busy">Server Busy</string>
+    <string name="not_in_game">is not in a game or it has not started.</string>
 
     <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages?</string>
