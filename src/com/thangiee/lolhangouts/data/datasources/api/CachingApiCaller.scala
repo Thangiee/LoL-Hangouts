@@ -20,8 +20,8 @@ class CachingApiCaller extends ApiCaller with TagUtil {
         case Some(cacheHit) =>
           return Success(cacheHit)
         case None           => // cache missed, call the API
-          RiotApi.key = if (attempt == 10) Keys.productionKey else Keys.testKey
-          debug(s"[*] API caller attempt: $attempt - $url - ${apiKey.key}") // make use of test keys until last attempt
+          RiotApi.key = if (attempt == 7) Keys.productionKey else Keys.testKey
+          debug(s"[*] API caller attempt: $attempt - $url${apiKey.key}") // make use of test keys until last attempt
           Try(Http(url + apiKey.key).asString) match {
             case Success(response) =>
               response.code match {

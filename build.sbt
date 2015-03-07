@@ -5,7 +5,7 @@ android.Plugin.androidBuild
 
 name := "LoL Hangouts"
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.6"
 
 minSdkVersion in Android := "14"
 
