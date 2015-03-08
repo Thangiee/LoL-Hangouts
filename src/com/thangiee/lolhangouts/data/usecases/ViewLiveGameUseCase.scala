@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.LiveGameMapper
 import com.thangiee.lolhangouts.data.datasources.entities.{LiveGameEntity, PlayerStatsEntity}
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.usecases.entities.LiveGame
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
@@ -22,7 +22,6 @@ trait ViewLiveGameUseCase extends Interactor {
 }
 
 case class ViewLiveGameUseCaseImpl() extends ViewLiveGameUseCase {
-  implicit val caller = new CachingApiCaller()
 
   override def loadLiveGame(username: String, regionId: String): Future[LiveGame] = Future {
     getGame(username, regionId).map(_.logThenReturn(_ => "[+] Live game loaded successfully")).recover {

@@ -11,10 +11,9 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{FriendMapper, MessageMapper}
 import com.thangiee.lolhangouts.data.datasources.entities.{FriendEntity, MessageEntity}
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.net.core.{FriendListListener, LoLChat}
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
-import com.thangiee.lolhangouts.data.usecases.entities
 import com.thangiee.lolhangouts.data.usecases.entities.Friend
 import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
@@ -114,7 +113,6 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   //=============================================
 
   override def onFriendRequest(address: String, summonerId: String, request: Packet): Unit = {
-    implicit val apiCaller = new CachingApiCaller
     RiotApi.summonerNameById(summonerId.toLong).map { name =>
       LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend list
       // notify sender of approved friend request

@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, ProfileSummaryMapper, TopChampionMapper}
 import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, ProfileSummaryEntity, TopChampEntity}
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
@@ -22,7 +22,6 @@ trait ViewProfileUseCase extends Interactor {
 }
 
 case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
-  implicit val caller = new CachingApiCaller()
 
   override def loadSummary(username: String, regionId: String): Future[ProfileSummary] = Future {
     getSummary(username.toLowerCase, regionId.toLowerCase).map {

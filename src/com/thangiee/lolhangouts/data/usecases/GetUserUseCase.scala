@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.data.usecases
 import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
 import com.thangiee.lolhangouts.data.datasources.entities.UserEntity
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.UserMapper
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
 import com.thangiee.lolhangouts.data.usecases.entities.User
 import com.thangiee.lolhangouts.data.exception.UseCaseException
@@ -44,7 +44,6 @@ case class GetUserUseCaseImpl() extends GetUserUseCase {
 
   private def inGameName(regionId: String): String = {
     val cacheKey = s"inGameName-${LoLChat.loginName.toLowerCase}"
-    implicit val caller = new CachingApiCaller()
 
     RiotApi.summonerNameById(LoLChat.summId.toLong, regionId) map {
       name => // successful api call
