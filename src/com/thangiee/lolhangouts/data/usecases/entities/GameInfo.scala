@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.data.usecases.entities
 
-case class LiveGame(queueType: String, mapName: String, blueTeam: List[PlayerStats], purpleTeam: List[PlayerStats])
+case class GameInfo(queueType: String, mapName: String, blueTeam: List[PlayerStats], purpleTeam: List[PlayerStats])
 
 case class PlayerStats
 (playerName: String,

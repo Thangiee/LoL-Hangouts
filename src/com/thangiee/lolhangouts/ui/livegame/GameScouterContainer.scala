@@ -9,27 +9,27 @@ import com.nispok.snackbar.Snackbar
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
-import com.thangiee.lolhangouts.data.usecases.ViewLiveGameUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
-import com.thangiee.lolhangouts.ui.livegame.LiveGameTeamView._
+import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView._
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-class LiveGameContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
+class GameScouterContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
   lazy val pager          = this.find[ViewPager](R.id.pager)
-  lazy val blueTeamView   = this.find[LiveGameTeamView](R.id.page_1)
-  lazy val purpleTeamView = this.find[LiveGameTeamView](R.id.page_2)
+  lazy val blueTeamView   = this.find[GameScouterTeamView](R.id.page_1)
+  lazy val purpleTeamView = this.find[GameScouterTeamView](R.id.page_2)
 
-  val viewLiveGameUseCase = ViewLiveGameUseCaseImpl()
+  val viewLiveGameUseCase = ScoutGameUseCaseImpl()
   val pages               = List("Blue Team", "Purple Team")
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
-    addView(layoutInflater.inflate(R.layout.view_live_game_screen, this, false))
+    addView(layoutInflater.inflate(R.layout.view_game_scouter_screen, this, false))
 
     val pageChangeListener = new SimpleOnPageChangeListener() {
       override def onPageSelected(position: Int): Unit = {
@@ -42,7 +42,7 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
     pager.setAdapter(pagerAdapter)
     pager.setOnPageChangeListener(pageChangeListener)
 
-    // set tabs title and listener
+    // set tabs title and listener for all pages
     (0 until pages.size).map { i =>
       tabs.addTab(tabs.newTab()
         .setText(pages(i))
@@ -58,7 +58,7 @@ class LiveGameContainer(username: String, regionId: String)(implicit ctx: Contex
   }
 
   def loadGame(): Unit = {
-    viewLiveGameUseCase.loadLiveGame(username, regionId) onComplete {
+    viewLiveGameUseCase.loadGameInfo(username, regionId) onComplete {
       case Success(liveGame) =>
         runOnUiThread {
           setToolbarTitle(s"${liveGame.mapName} - $regionId")

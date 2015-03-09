@@ -1,9 +1,9 @@
 package com.thangiee.lolhangouts.data.datasources.entities.mappers
 
-import com.thangiee.lolhangouts.data.datasources.entities.LiveGameEntity
-import com.thangiee.lolhangouts.data.usecases.entities.LiveGame
+import com.thangiee.lolhangouts.data.datasources.entities.GameInfoEntity
+import com.thangiee.lolhangouts.data.usecases.entities.GameInfo
 
-object LiveGameMapper {
+object GameInfoMapper {
 
   val mapNames = Map[Int, String](
     1 → "Summoner's Rift",
@@ -16,8 +16,8 @@ object LiveGameMapper {
     12 → "Howling Abyss"
   )
 
-  def transform(g: LiveGameEntity): LiveGame = {
-    LiveGame(
+  def transform(g: GameInfoEntity): GameInfo = {
+    GameInfo(
       g.queueType,
       mapNames.getOrElse(g.mapId, ""),
       g.blueTeam.map(p => PlayerStatsMapper.transform(p, 1)),

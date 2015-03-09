@@ -9,23 +9,23 @@ import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.ui.livegame.LiveGameTeamView.BlueTeam
+import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView.BlueTeam
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
 
-class LiveGameTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
+class GameScouterTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   lazy val playersRecView = find[RecyclerView](R.id.recycler_view)
   lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
   lazy val errorView      = find[ErrorView](R.id.error_view)
 
-  override val presenter = new LiveGameTeamPresenter(this)
+  override val presenter = new GameScouterTeamPresenter(this)
 
   override def onAttached(): Unit = {
     super.onAttached()
-    addView(layoutInflater.inflate(R.layout.live_game_team_view, this, false))
+    addView(layoutInflater.inflate(R.layout.game_scouter_team_view, this, false))
     val llm = new LinearLayoutManager(ctx)
     llm.setSmoothScrollbarEnabled(true)
     playersRecView.setLayoutManager(llm)
@@ -59,12 +59,12 @@ class LiveGameTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayo
 
   def initializeViewData(team: List[PlayerStats], teamColor: Int): Unit = {
     playersRecView.setBackgroundColor((if (teamColor == BlueTeam) R.color.md_light_blue_50 else R.color.md_deep_purple_50).r2Color)
-    val adapter = new SimpleAdapter[PlayerStats](R.layout.line_item_live_game_player, classOf[PlayerStatsViewHolder], team)
+    val adapter = new SimpleAdapter[PlayerStats](R.layout.line_item_game_scouter_player, classOf[PlayerStatsViewHolder], team)
     playersRecView.setAdapter(adapter.asInstanceOf[RecyclerView.Adapter[PlayerStatsViewHolder]])
   }
 }
 
-object LiveGameTeamView {
+object GameScouterTeamView {
   val BlueTeam   = 1
   val PurpleTeam = 2
 }
