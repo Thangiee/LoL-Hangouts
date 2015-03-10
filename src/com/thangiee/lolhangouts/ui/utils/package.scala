@@ -41,6 +41,18 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     val handler = new Handler()
     handler.postDelayed(() => f, mills)
   }
+  
+  def api_=(targetVersion: Int)(f: => Unit): Unit = {
+    if (android.os.Build.VERSION.SDK_INT == targetVersion) f
+  }
+
+  def api_>=(targetVersion: Int)(f: => Unit): Unit = {
+    if (android.os.Build.VERSION.SDK_INT >= targetVersion) f
+  }
+
+  def api_<=(targetVersion: Int)(f: => Unit): Unit = {
+    if (android.os.Build.VERSION.SDK_INT <= targetVersion) f
+  }
 
   def hasWifiConnection(implicit ctx: Context): Boolean = {
     connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected
