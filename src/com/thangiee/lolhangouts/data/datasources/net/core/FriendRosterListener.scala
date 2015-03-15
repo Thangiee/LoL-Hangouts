@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.data.datasources.net.core
 import java.util
 
 import com.thangiee.lolhangouts.data.datasources.entities.FriendEntity
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import org.jivesoftware.smack.RosterListener
 import org.jivesoftware.smack.packet.Presence
 import org.jivesoftware.smack.packet.Presence.{Mode, Type}
@@ -16,7 +16,6 @@ class FriendRosterListener extends RosterListener {
   private var typeSnapShot   = Map[String, Type]()
   private var modeSnapShot   = Map[String, Mode]()
   private var statusSnapShot = Map[String, String]()
-  implicit val apiCaller = new CachingApiCaller()
   LoLChat.friends.map((f) => updateSnapShots(f))
 
   override def entriesAdded(addresses: util.Collection[String]): Unit = {

@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.datasources.entities
 
 import thangiee.riotapi.league.MiniSeries
 
-case class LiveGameEntity(queueType: String, mapId: Int, blueTeam: List[PlayerStatsEntity], purpleTeam: List[PlayerStatsEntity])
+case class GameInfoEntity(queueType: String, mapId: Int, blueTeam: List[PlayerStatsEntity], purpleTeam: List[PlayerStatsEntity])
 
 case class PlayerStatsEntity
 (playerName: String,

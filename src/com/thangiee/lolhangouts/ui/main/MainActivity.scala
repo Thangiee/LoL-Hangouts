@@ -12,7 +12,7 @@ import com.thangiee.lolhangouts.data.usecases.GetUserUseCaseImpl
 import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.core.{Ads, Container, SearchContainer, TActivity}
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
-import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
+import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
 import com.thangiee.lolhangouts.ui.utils.Events.SwitchScreen
@@ -166,10 +166,10 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
             container = new ProfileContainer(user.inGameName, user.region.id)
           }
         }
-      case DrawerItem.LiveGame =>
-        container = new SearchContainer(R.layout.search_container_live_game) {
+      case DrawerItem.GameScouter =>
+        container = new SearchContainer(R.layout.search_container_game_scouter) {
           override def onSearchCompleted(query: String, region: String): Unit = {
-            startActivity(ViewLiveGameStatsActivity(query, region))
+            startActivity(ViewGameScouterActivity(query, region))
           }
         }
       case DrawerItem.Search   =>

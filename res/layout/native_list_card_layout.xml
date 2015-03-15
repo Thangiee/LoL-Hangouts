@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+        >
+
+    <it.gmariotti.cardslib.library.view.CardViewNative
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/list_cardId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card:card_layout_resourceID="@layout/native_card_layout"
+            card_view:cardUseCompatPadding="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            />
+</LinearLayout>

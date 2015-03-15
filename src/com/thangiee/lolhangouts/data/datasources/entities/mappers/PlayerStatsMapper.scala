@@ -1,13 +1,12 @@
 package com.thangiee.lolhangouts.data.datasources.entities.mappers
 
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.PlayerStatsEntity
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import thangiee.riotapi.core.RiotApi
 import thangiee.riotapi.static_data.{Champion, SummonerSpell}
 
 object PlayerStatsMapper {
-  implicit val caller = new CachingApiCaller()
 
   def transform(p: PlayerStatsEntity, teamNumber: Int): PlayerStats = {
     PlayerStats(

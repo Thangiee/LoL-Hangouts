@@ -1,9 +1,9 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.entities.mappers.LiveGameMapper
-import com.thangiee.lolhangouts.data.datasources.entities.{LiveGameEntity, PlayerStatsEntity}
-import com.thangiee.lolhangouts.data.datasources.api.CachingApiCaller
-import com.thangiee.lolhangouts.data.usecases.entities.LiveGame
+import com.thangiee.lolhangouts.data.datasources.entities.mappers.GameInfoMapper
+import com.thangiee.lolhangouts.data.datasources.entities.{GameInfoEntity, PlayerStatsEntity}
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
+import com.thangiee.lolhangouts.data.usecases.entities.GameInfo
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
 import play.api.libs.json.JsResultException
@@ -17,14 +17,13 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
 
-trait ViewLiveGameUseCase extends Interactor {
-  def loadLiveGame(username: String, regionId: String): Future[LiveGame]
+trait ScoutGameUseCase extends Interactor {
+  def loadGameInfo(username: String, regionId: String): Future[GameInfo]
 }
 
-case class ViewLiveGameUseCaseImpl() extends ViewLiveGameUseCase {
-  implicit val caller = new CachingApiCaller()
+case class ScoutGameUseCaseImpl() extends ScoutGameUseCase {
 
-  override def loadLiveGame(username: String, regionId: String): Future[LiveGame] = Future {
+  override def loadGameInfo(username: String, regionId: String): Future[GameInfo] = Future {
     getGame(username, regionId).map(_.logThenReturn(_ => "[+] Live game loaded successfully")).recover {
       case RiotException(msg, RiotException.DataNotFound) =>
         DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
@@ -35,7 +34,7 @@ case class ViewLiveGameUseCaseImpl() extends ViewLiveGameUseCase {
     } get
   }
 
-  private def getGame(name: String, regionId: String): Try[LiveGame] = {
+  private def getGame(name: String, regionId: String): Try[GameInfo] = {
     for {
       id         ← RiotApi.summonerByName(name.replace(" ", ""), regionId).map(_.id)
       gameInfo   ← RiotApi.currentGameInfoById(id, regionId)
@@ -43,8 +42,8 @@ case class ViewLiveGameUseCaseImpl() extends ViewLiveGameUseCase {
       ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap  // todo: run in parallel possible?
       normals    = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
       leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId), regionId)
-    } yield LiveGameMapper.transform {
-      LiveGameEntity(
+    } yield GameInfoMapper.transform {
+      GameInfoEntity(
         gameInfo.gameType,
         gameInfo.mapId.toInt,
         allPlayers.filter(_.teamId == 100).map { p =>

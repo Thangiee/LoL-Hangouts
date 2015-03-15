@@ -1,6 +1,7 @@
 package com.thangiee.lolhangouts.ui.core
 
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Bundle
 import android.support.v7.app.ActionBarActivity
 import android.support.v7.widget.Toolbar
@@ -43,6 +44,13 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
       toolbar.setNavigationIcon(navIcon)
     } else {
       error("[!] Can't find toolbar. Make sure to add a toolbar to your layout!")
+    }
+
+    api_>=(LOLLIPOP) {
+      // same as <item name="android:windowTranslucentStatus">true</item> but we
+      // are able to define the color in <item name="android:statusBarColor">...</item>
+      getWindow.getDecorView.setSystemUiVisibility(
+        View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
   }
 

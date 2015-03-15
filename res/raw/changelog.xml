@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="2.0.4" changeDate="Mar 10, 2015">
+        <changelogtext>Rename live game to game scouter</changelogtext>
+        <changelogtext>Fix issue where game scouter can't find some summoners</changelogtext>
+        <changelogtext>Fix friend list spacing for lollipop devices</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.0.3" changeDate="Feb 15, 2015">
         <changelogtext>Switch to using official support for getting live game info. It has better stability but we lose pre-made team info.</changelogtext>
     </changelogversion>

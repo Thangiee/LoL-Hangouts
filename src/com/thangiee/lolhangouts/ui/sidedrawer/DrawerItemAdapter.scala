@@ -15,7 +15,7 @@ class DrawerItemAdapter(implicit ctx: Context) extends BaseAdapter {
     DrawerItem(Chat, R.drawable.ic_drawer_chat, isSelected = true), // default selection
     DrawerItem(Profile, R.drawable.ic_drawer_person),
     DrawerItem(Search, R.drawable.ic_drawer_search),
-    DrawerItem(LiveGame, R.drawable.ic_drawer_tv),
+    DrawerItem(GameScouter, R.drawable.ic_drawer_tv),
     DrawerItem(Settings, R.drawable.ic_drawer_settings),
     DrawerItem(RemoveAds, R.drawable.ic_drawer_thumb_up),
     DrawerItem(Logout, R.drawable.ic_drawer_exit))

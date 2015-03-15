@@ -8,7 +8,7 @@ import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.ui.core.{TActivity, TIntent, UpButton, Ads}
 
-class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
+class ViewGameScouterActivity extends TActivity with UpButton with Ads {
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/3370594775"
   override      val layoutId              = R.layout.act_with_container
@@ -20,14 +20,14 @@ class ViewLiveGameStatsActivity extends TActivity with UpButton with Ads {
     val summonerName = getIntent.getStringExtra("name-key")
     val regionId = getIntent.getStringExtra("region-key")
 
-    contentContainer.addView(new LiveGameContainer(summonerName, regionId).getView)
+    contentContainer.addView(new GameScouterContainer(summonerName, regionId).getView)
 
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
   }
 }
 
-object ViewLiveGameStatsActivity extends TIntent {
+object ViewGameScouterActivity extends TIntent {
   def apply(name: String, regionId: String)(implicit ctx: Context): Intent = {
-    new Intent(ctx, classOf[ViewLiveGameStatsActivity]).args("name-key" → name, "region-key" → regionId)
+    new Intent(ctx, classOf[ViewGameScouterActivity]).args("name-key" → name, "region-key" → regionId)
   }
 }

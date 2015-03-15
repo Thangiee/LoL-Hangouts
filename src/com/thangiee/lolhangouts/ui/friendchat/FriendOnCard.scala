@@ -9,7 +9,7 @@ import com.sakout.fancybuttons.FancyButton
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
 import com.thangiee.lolhangouts.data.usecases.entities.{ChatMode, Friend}
-import com.thangiee.lolhangouts.ui.livegame.ViewLiveGameStatsActivity
+import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
 import com.thangiee.lolhangouts.ui.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
@@ -113,7 +113,7 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
       winTextView.setText(friend.wins + " wins")
 
       profileBtn.onClick(delay(500) { ctx.startActivity(ViewProfileActivity(friend.name, friend.regionId)) })
-      liveGameBtn.onClick(delay(500) { ctx.startActivity(ViewLiveGameStatsActivity(friend.name, friend.regionId)) })
+      liveGameBtn.onClick(delay(500) { ctx.startActivity(ViewGameScouterActivity(friend.name, friend.regionId)) })
 
       removeFriendBtn.onClick(delay(500) {
         new Builder(ctx)
