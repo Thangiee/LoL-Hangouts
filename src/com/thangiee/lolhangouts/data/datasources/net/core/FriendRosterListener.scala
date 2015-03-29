@@ -16,7 +16,7 @@ class FriendRosterListener extends RosterListener {
   private var typeSnapShot   = Map[String, Type]()
   private var modeSnapShot   = Map[String, Mode]()
   private var statusSnapShot = Map[String, String]()
-  LoLChat.friends.map((f) => updateSnapShots(f))
+  LoLChat.friends.foreach((f) => updateSnapShots(f))
 
   override def entriesAdded(addresses: util.Collection[String]): Unit = {
     addresses.map(parseId).map{ id =>

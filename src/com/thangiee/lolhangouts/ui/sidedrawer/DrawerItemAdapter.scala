@@ -20,7 +20,7 @@ class DrawerItemAdapter(implicit ctx: Context) extends BaseAdapter {
     DrawerItem(RemoveAds, R.drawable.ic_drawer_thumb_up),
     DrawerItem(Logout, R.drawable.ic_drawer_exit))
 
-  private var currentDrawerItem = drawerItems(0)
+  private var currentDrawerItem = drawerItems.head
 
   override def getCount: Int = drawerItems.size
 

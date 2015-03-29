@@ -14,7 +14,7 @@ class DeleteOldMsgReceiver extends BroadcastReceiver with TagUtil{
     info("[*] Deleting old messages before: " + then)
 
     new Thread(new Runnable {
-      override def run(): Unit = DB.getAllMessages.filter(_.date.before(then.date)).map(_.delete())
+      override def run(): Unit = DB.getAllMessages.filter(_.date.before(then.date)).foreach(_.delete())
     }).start()
   }
 }

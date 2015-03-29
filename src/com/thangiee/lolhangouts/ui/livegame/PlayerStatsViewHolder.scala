@@ -54,8 +54,8 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
       p.series match {
         case Some(series) =>
           // has active series
-          if (series.size == 3 && index < 3) setSeriesImgRes(iv, series(index))
-          if (series.size == 5) setSeriesImgRes(iv, series(index))
+          if (series.length == 3 && index < 3) setSeriesImgRes(iv, series(index))
+          if (series.length == 5) setSeriesImgRes(iv, series(index))
         case None         =>
           // no active series
           iv.setVisibility(View.INVISIBLE)
