@@ -100,7 +100,7 @@
             android:textSize="16sp"
             android:layout_alignLeft="@+id/tv_name"
             android:layout_alignStart="@+id/tv_name"
-            android:text="status:"
+            android:text="@string/status"
             android:id="@+id/tv_status_msg"
             android:layout_marginBottom="12dp"
             android:layout_below="@+id/tv_name"

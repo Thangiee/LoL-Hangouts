@@ -25,7 +25,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Ranked Solo Queue"
+                    android:text="@string/ranked_solo_queue"
                     android:id="@+id/tv_profile_header"
                     android:gravity="center"
                     android:layout_alignParentTop="true"
@@ -65,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="win rate"
+                        android:text="@string/win_rate"
                         android:id="@+id/tv_profile_rate"
                         android:textSize="18sp"
                         android:paddingLeft="8dp"
@@ -144,10 +144,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Ranked Stats"
+                        android:text="@string/ranked_stats"
                         android:id="@+id/textView26"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:layout_marginTop="16dp"
                         android:background="#CC000000"
@@ -169,7 +167,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Elo"
+                                android:text="@string/elo"
                                 android:id="@+id/textView8"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -192,7 +190,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Game Played"
+                                android:text="@string/game_played"
                                 android:id="@+id/textView7"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -216,7 +214,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Kills"
+                                android:text="@string/total_kills"
                                 android:id="@+id/textView11"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -239,7 +237,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Deaths"
+                                android:text="@string/total_deaths"
                                 android:id="@+id/textView14"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -262,7 +260,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Assists"
+                                android:text="@string/total_assists"
                                 android:id="@+id/textView16"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -285,7 +283,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Double Kills"
+                                android:text="@string/double_kills"
                                 android:id="@+id/textView18"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -308,7 +306,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Triple Kills"
+                                android:text="@string/triple_kills"
                                 android:id="@+id/textView20"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -331,7 +329,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Quadra Kills"
+                                android:text="@string/quadra_kills"
                                 android:id="@+id/textView22"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -354,7 +352,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Penta Kills"
+                                android:text="@string/penta_kills"
                                 android:id="@+id/textView24"
                                 android:layout_marginLeft="8dp"
                                 />
@@ -395,7 +393,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="tier divison"
+                        android:text="@string/tier_division"
                         android:id="@+id/tv_profile_tier"
                         android:textColor="@color/primary_text"
                         android:textSize="16sp"
@@ -407,7 +405,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="League"
+                        android:text="@string/league"
                         android:id="@+id/tv_profile_league_name"
                         android:layout_below="@+id/img_profile_badge"
                         android:layout_centerHorizontal="true"
@@ -419,7 +417,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="points"
+                        android:text="@string/points"
                         android:id="@+id/tv_profile_point"
                         android:layout_below="@+id/tv_profile_league_name"
                         android:layout_alignLeft="@+id/tv_profile_league_name"

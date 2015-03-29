@@ -39,6 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:textCursorDrawable="@null"
                 android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:textColorHint="@color/gray"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"

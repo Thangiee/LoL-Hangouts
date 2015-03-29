@@ -43,7 +43,7 @@
             android:text="1000"
             android:id="@+id/tv_live_game_elo"
             android:gravity="center"
-            android:textSize="42dp"
+            android:textSize="42sp"
             android:textColor="@color/primary"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true"
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Rank Elo"
+            android:text="@string/rank_elo"
             android:id="@+id/textView"
             android:layout_below="@+id/tv_live_game_name"
             android:layout_centerHorizontal="true"
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Normal"
+            android:text="@string/normal"
             android:id="@+id/textView4"
             android:layout_alignParentTop="false"
             android:layout_alignParentLeft="false"
@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Ranked"
+            android:text="@string/ranked"
             android:id="@+id/textView5"
             android:layout_alignTop="@+id/textView4"
             android:layout_centerHorizontal="true"
@@ -335,10 +335,6 @@
                 android:text="100 W"
                 android:id="@+id/tv_live_game_normal_w"
                 android:gravity="center"
-                android:layout_alignBaseline="@+id/btn_live_game_profile"
-                android:layout_alignBottom="@+id/btn_live_game_profile"
-                android:layout_alignLeft="@+id/textView4"
-                android:layout_alignStart="@+id/textView4"
                 android:textColor="@color/md_light_green_700"/>
 
     </LinearLayout>
@@ -357,8 +353,6 @@
                 android:text="999 W"
                 android:id="@+id/tv_live_game_rank_w"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/textView6"
                 android:textColor="@color/md_light_green_700"/>
 
         <TextView

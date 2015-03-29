@@ -66,6 +66,41 @@
 
     <string name="offline_mode_warning">You are in offline mode. Friend list will not update until you switch to a different mode.</string>
 
+    <!-- Others -->
+    <string name="change_log">Change Log</string>
+    <string name="about">About</string>
+    <string name="add_friend">add friend</string>
+    <string name="del_all_msg">delete all messages</string>
+    <string name="new_status_msg">New status message</string>
+    <string name="search">Search</string>
+    <string name="regions">regions</string>
+    <string name="ranked_solo_queue">Ranked Solo Queue</string>
+    <string name="username">Username</string>
+    <string name="win_rate">win rate</string>
+    <string name="rank_elo">Rank Elo</string>
+    <string name="save_username">Save username</string>
+    <string name="rank">Rank</string>
+    <string name="offline_login">Offline login</string>
+    <string name="status">status:</string>
+    <string name="normal">Normal</string>
+    <string name="ranked">Ranked</string>
+    <string name="save_pass">Save password</string>
+    <string name="region">Region:</string>
+    <string name="ranked_stats">Ranked Stats</string>
+    <string name="win">Win</string>
+    <string name="elo">Elo</string>
+    <string name="game_played">Game Played</string>
+    <string name="total_kills">Total Kills</string>
+    <string name="total_deaths">Total Deaths</string>
+    <string name="total_assists">Total Assists</string>
+    <string name="double_kills">Double Kills</string>
+    <string name="triple_kills">Triple Kills</string>
+    <string name="quadra_kills">Quadra Kills</string>
+    <string name="penta_kills">Penta Kills</string>
+    <string name="tier_division">tier division</string>
+    <string name="league">League</string>
+    <string name="points">points</string>
+
     <string-array name="history">
         <item>1 day</item>
         <item>3 days</item>

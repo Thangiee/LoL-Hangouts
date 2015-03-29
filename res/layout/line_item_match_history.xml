@@ -165,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Win"
+            android:text="@string/win"
             android:id="@+id/tv_match_outcome"
             android:layout_below="@+id/tv_match_type"
             android:layout_alignRight="@+id/tv_match_type"
