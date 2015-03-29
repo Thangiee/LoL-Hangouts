@@ -47,7 +47,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Online"
+            android:text="@string/online"
             android:textSize="@dimen/friend_last_msg_txt_size"
             android:id="@+id/tv_friend_status"
             android:layout_below="@+id/tv_friend_name"
@@ -69,6 +69,7 @@
             android:layout_alignBottom="@+id/img_profile_icon"
             android:layout_toRightOf="@+id/img_profile_icon"
             android:paddingRight="8dp"
+            android:paddingLeft="8dp"
             android:layout_alignRight="@+id/tv_friend_status"
             android:layout_alignEnd="@+id/tv_friend_status"
             />

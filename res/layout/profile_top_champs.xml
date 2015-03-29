@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
                 android:src="@drawable/ic_kills"
-                android:layout_weight="0.05"
                 android:padding="4dp"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/imageView3"
@@ -95,7 +94,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rank"
+                android:text="@string/rank"
                 android:id="@+id/textView3"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="4dp"

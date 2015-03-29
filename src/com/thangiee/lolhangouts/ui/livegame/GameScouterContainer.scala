@@ -43,7 +43,7 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
     pager.setOnPageChangeListener(pageChangeListener)
 
     // set tabs title and listener for all pages
-    (0 until pages.size).map { i =>
+    (0 until pages.size).foreach { i =>
       tabs.addTab(tabs.newTab()
         .setText(pages(i))
         .setTabListener(this))
@@ -82,6 +82,7 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
           val errMsg = e match {
             case DataAccessException(_, DataNotFound) => username + R.string.not_in_game.r2String
             case DataAccessException(_, GetDataError) => R.string.err_get_data.r2String
+            case _ => e.printStackTrace(); ""
           }
 
           blueTeamView.showLoadingError("Oops", errMsg)

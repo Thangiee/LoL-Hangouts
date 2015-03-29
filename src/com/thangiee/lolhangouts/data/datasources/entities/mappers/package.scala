@@ -1,6 +1,7 @@
 package com.thangiee.lolhangouts.data.datasources.entities
 
-import java.text.DecimalFormat
+import java.text.{DecimalFormatSymbols, DecimalFormat}
+import java.util.Locale
 
 import thangiee.riotapi.league.MiniSeries
 
@@ -32,7 +33,7 @@ package object mappers {
         case _      => elo += DivisionWeight * 0
       }
 
-    series.map { s =>
+    series.foreach { s =>
       val n = if (s.target == 3) 5 else 3 // determine 5 or 3 games series
       elo += 20.0 * (s.wins / n)
     }
@@ -44,7 +45,10 @@ package object mappers {
   implicit class Rounding(number: Double) {
     def roundTo(DecimalPlace: Int): Double = {
       if (number.isNaN) return 0.0
-      new DecimalFormat("###." + ("#" * DecimalPlace)).format(number).toDouble
+
+      // need to use Locale.US otherwise this throw NumberFormatException: Invalid double
+      // on phones that are set on a language that use comma to denote decimal
+      new DecimalFormat("###." + ("#" * DecimalPlace), new DecimalFormatSymbols(Locale.US)).format(number).toDouble
     }
   }
 }

@@ -95,8 +95,8 @@ object LoLChat {
    * Disconnect from the chat server
    */
   def disconnect() = {
-    _connectionListListener.map(connection.removeConnectionListener)
-    rosterListener.map(connection.getRoster.removeRosterListener)
+    _connectionListListener.foreach(connection.removeConnectionListener)
+    rosterListener.foreach(connection.getRoster.removeRosterListener)
     _connectionListListener = None
     rosterListener = None
     connection.disconnect()

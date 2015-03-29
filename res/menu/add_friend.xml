@@ -5,7 +5,7 @@
 
     <item
             android:id="@+id/menu_add_friend"
-            android:title="add friend"
+            android:title="@string/add_friend"
             android:icon="@drawable/ic_menu_person_add_white"
             android:orderInCategory="120"
             app:showAsAction="always"/>

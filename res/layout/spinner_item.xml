@@ -8,6 +8,7 @@
         android:textSize="16sp"
         android:textColor="@color/white"
         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:gravity="center_vertical"
         android:text="16sp"
         />

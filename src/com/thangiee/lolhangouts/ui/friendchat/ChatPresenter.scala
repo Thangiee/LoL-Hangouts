@@ -101,7 +101,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
   }
 
   def onEvent(event: IncomingMessage): Unit = runOnUiThread {
-    view.getFriend.map { f =>
+    view.getFriend.foreach { f =>
       // make sure incoming message is for the current chat
       if (f.name == event.from.name) {
         view.showMessages(List(event.msg))

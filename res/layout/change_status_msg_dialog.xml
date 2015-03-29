@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:hint="New status message"
+        android:hint="@string/new_status_msg"
         app:floatingLabel="highlight"
         app:baseColor="@color/primary_text"
         app:met_primaryColor="@color/primary"

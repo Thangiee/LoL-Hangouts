@@ -43,7 +43,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
     pager.setAdapter(pagerAdapter)
     pager.setOnPageChangeListener(pageChangeListener)
 
-    (0 until pages.size).map { i =>
+    (0 until pages.size).foreach { i =>
       tabs.addTab(tabs.newTab()
         .setText(pages(i).title)
         .setTabListener(this))

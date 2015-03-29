@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="2.0.5" changeDate="Mar 29, 2015">
+        <changelogtext>Fix game scouter crashing for phones that are set on a language that use comma to denote decimal.</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.0.4" changeDate="Mar 10, 2015">
         <changelogtext>Rename live game to game scouter</changelogtext>
         <changelogtext>Fix issue where game scouter can't find some summoners</changelogtext>

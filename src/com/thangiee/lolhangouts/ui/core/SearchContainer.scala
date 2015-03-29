@@ -81,7 +81,7 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
     val cursor = new MatrixCursor(columnNames)
     loadFriendList.map { friends =>
       val friendMatched = friends.map(_.name).filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
-      (0 to friendMatched.size).zip(friendMatched).map(p => cursor.addRow(p.productIterator.toList))
+      (0 to friendMatched.size).zip(friendMatched).foreach(p => cursor.addRow(p.productIterator.toList))
     }
 
     suggestionAdapter.changeCursor(cursor)

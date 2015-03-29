@@ -30,8 +30,8 @@ trait Helpers extends org.scaloid.common.Helpers with ViewHelpers {
     def onSingleTapUp(f: MotionEvent => Unit): GestureDetectorBuilder = { singleTapUpListener = Some(f); this }
 
     def build(implicit ctx: Context): GestureDetector = new GestureDetector(ctx, new SimpleOnGestureListener() {
-      override def onSingleTapUp(e: MotionEvent): Boolean = { singleTapUpListener.map(f => f(e)); false }
-      override def onLongPress(e: MotionEvent): Unit = longPressListener.map(f => f(e))
+      override def onSingleTapUp(e: MotionEvent): Boolean = { singleTapUpListener.foreach(f => f(e)); false }
+      override def onLongPress(e: MotionEvent): Unit = longPressListener.foreach(f => f(e))
     })
   }
 }
@@ -105,9 +105,9 @@ trait ViewHelpers {
     private var neutralListener: Option[MaterialDialog => Unit] = None
 
     builder.callback(new ButtonCallback {
-      override def onPositive(dialog: MaterialDialog): Unit = positiveListener.map(l => l(dialog))
-      override def onNegative(dialog: MaterialDialog): Unit = negativeListener.map(l => l(dialog))
-      override def onNeutral(dialog: MaterialDialog): Unit = negativeListener.map(l => l(dialog))
+      override def onPositive(dialog: MaterialDialog): Unit = positiveListener.foreach(l => l(dialog))
+      override def onNegative(dialog: MaterialDialog): Unit = negativeListener.foreach(l => l(dialog))
+      override def onNeutral(dialog: MaterialDialog): Unit = negativeListener.foreach(l => l(dialog))
     })
 
     def onPositive(f: MaterialDialog => Unit): MaterialDialog.Builder = {
