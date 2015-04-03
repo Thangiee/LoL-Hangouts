@@ -12,7 +12,8 @@ case class AppDataFactory() {
       PrefsCache.getString(CacheKey.LoginPass).getOrElse(""),
       PrefsCache.getString(CacheKey.AppVersion).getOrElse("-1"),
       PrefsCache.getBoolean(CacheKey.IsLoginOffline, defValue = false),
-      PrefsCache.getString(CacheKey.LoginRegionId)
+      PrefsCache.getString(CacheKey.LoginRegionId),
+      PrefsCache.getBoolean(CacheKey.IsGuestMode, defValue = false)
     )
   }
 }

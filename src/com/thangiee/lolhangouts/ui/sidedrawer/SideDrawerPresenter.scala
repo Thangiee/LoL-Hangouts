@@ -1,24 +1,30 @@
 package com.thangiee.lolhangouts.ui.sidedrawer
 
+import java.util.concurrent.TimeUnit.SECONDS
+
 import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.ui.sidedrawer.DrawerItem._
 import com.thangiee.lolhangouts.ui.sidedrawer.SideDrawerView._
-import com.thangiee.lolhangouts.ui.utils.Events.SwitchScreen
+import com.thangiee.lolhangouts.ui.utils.Events.SwitchContainer
 import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUseCase,
-                        changeStatusUseCase: ChangeUserStatusCase, getUserUseCase: GetUserUseCase,
-                        logoutUseCaseImpl: LogoutUseCase) extends Presenter {
+  changeStatusUseCase: ChangeUserStatusCase, getUserUseCase: GetUserUseCase,
+  logoutUseCaseImpl: LogoutUseCase) extends Presenter {
+
+  private lazy val loadAppData = getAppDataUseCase.loadAppData()
 
   override def initialize(): Unit = {
     super.initialize()
 
     info("[*] loading app data")
-    getAppDataUseCase.loadAppData().map { data =>
+    loadAppData.map { data =>
       if (data.isLoginOffline) runOnUiThread {
         view.switchToOffline()
         view.showIsOfflineMsg()
@@ -50,17 +56,25 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
   }
 
   def handleDrawerItemClicked(drawer: DrawerItem, position: Int): Unit = {
+    // cases were the current container does not need to be switch after an item in the drawer is clicked
     drawer.title match {
-      case Settings  => view.showSettings(); return
-      case Logout    => view.showLogoutConfirmation(); return
-      case RemoveAds => view.showRemoveAdsConfirmation(); return
-      case _         =>
+      case Settings       => view.showSettings(); return
+      case Logout         => view.showLogoutConfirmation(); return
+      case RemoveAds      => view.showRemoveAdsConfirmation(); return
+      case Chat | Profile =>
+        if (Await.result(loadAppData.map(_.isGuestMode), Duration.apply(3, SECONDS))) { // check if guest mode
+          view.showFeatureRestricted()
+          return
+        }
+      case _              => // do nothing; go to the code below
     }
 
     view.closeDrawer()
-    if (!drawer.isSelected) { // don't reload if same drawer is selected
+    // don't reload if the current drawer item is already selected.
+    // i.e. don't reload the chat screen if the user is currently at the chat screen.
+    if (!drawer.isSelected) {
       view.updateDrawer(position)
-      EventBus.getDefault.post(SwitchScreen(drawer.title))
+      EventBus.getDefault.post(SwitchContainer(drawer.title))
     }
   }
 

@@ -100,6 +100,9 @@
     <string name="tier_division">tier division</string>
     <string name="league">League</string>
     <string name="points">points</string>
+    <string name="guest">Guest</string>
+    <string name="in_guest_mode">In guest mode</string>
+    <string name="chat_unavailable_in_guest_mode">Chat feature is unavailable in Guest mode. Please login to use it.</string>
 
     <string-array name="history">
         <item>1 day</item>

@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 trait LoginUseCase extends Interactor {
   def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)]
   def login(user: String, pass: String): Future[Unit]
-  def saveLoginInfo(username: String, password: String, isLoginOffline: Boolean): Future[Unit]
+  def saveLoginInfo(user: String, pass: String, isLoginOffline: Boolean, isGuestMode: Boolean): Future[Unit]
   def updateAppVersion(version: String): Future[Unit]
   def loadAppVersion(): Future[Version]
 }
@@ -45,10 +45,11 @@ case class LoginUseCaseImpl() extends LoginUseCase {
     (data.saveUsername, data.savePassword, data.selectedRegion, data.isLoginOffline)
   }
 
-  override def saveLoginInfo(username: String, password: String, isLoginOffline: Boolean): Future[Unit] = Future {
-    PrefsCache.put(CacheKey.LoginName → username)
-    PrefsCache.put(CacheKey.LoginPass → password)
+  override def saveLoginInfo(user: String, pass: String, isLoginOffline: Boolean, isGuestMode: Boolean): Future[Unit] = Future {
+    PrefsCache.put(CacheKey.LoginName → user)
+    PrefsCache.put(CacheKey.LoginPass → pass)
     PrefsCache.put(CacheKey.IsLoginOffline → isLoginOffline)
+    PrefsCache.put(CacheKey.IsGuestMode → isGuestMode)
   }
 
   override def updateAppVersion(version: String): Future[Unit] = Future {

@@ -12,6 +12,7 @@ import com.thangiee.lolhangouts.ui.utils._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presenter {
+  private var isGuestMode = false
 
   override def initialize(): Unit = {
     super.initialize()
@@ -53,25 +54,26 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
           view.showSaveUsername(isEnable = !username.isEmpty)
           view.showSavePassword(isEnable = !password.isEmpty)
         case None         =>
-          view.navigateBack()
+          view.navigateBack() // redirected to region selection screen
       }
     }
   }
 
   override def pause(): Unit = {
     info("[*] saving login info")
-    loginUseCase.saveLoginInfo(view.getUsername, view.getPassword, view.isLoginOffline)
+    loginUseCase.saveLoginInfo(view.getUsername, view.getPassword, view.isLoginOffline, isGuestMode)
     super.pause()
   }
 
   def handleLogin(username: String, password: String): Unit = {
     info("[*] attempting to login")
+    isGuestMode = false
     view.showProgress()
 
     loginUseCase.login(username, password) map { _ =>
       runOnUiThread(view.showLoginSuccess())
       Thread.sleep(700) // wait a bit for login success animation
-      view.navigateToHome()
+      view.navigateToHome(isGuestMode = false)
     } recover {
       case UserInputException(msg, EmptyUsername)     => runOnUiThread(view.showBlankUsernameError())
       case UserInputException(msg, EmptyPassword)     => runOnUiThread(view.showBlankPasswordError())
@@ -79,4 +81,11 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
       case UseCaseException(msg, AuthenticationError) => runOnUiThread(view.showAuthenticationError())
     }
   }
+
+  def handleGuestLogin(): Unit = {
+    // todo: animate button
+    isGuestMode = true
+    view.navigateToHome(isGuestMode = true)
+  }
+
 }

@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.ui.main
 
-import android.content.Intent
+import android.content.{Context, Intent}
 import android.os.Bundle
 import android.support.v4.widget.DrawerLayout.SimpleDrawerListener
 import android.view.View.OnClickListener
@@ -9,13 +9,13 @@ import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.lolhangouts.data.usecases.GetUserUseCaseImpl
-import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
-import com.thangiee.lolhangouts.ui.core.{Ads, Container, SearchContainer, TActivity}
+import com.thangiee.lolhangouts.ui.core._
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
 import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
+import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
-import com.thangiee.lolhangouts.ui.utils.Events.SwitchScreen
+import com.thangiee.lolhangouts.ui.utils.Events.SwitchContainer
 import com.thangiee.lolhangouts.ui.utils._
 import com.thangiee.lolhangouts.{MyApplication, R}
 import de.greenrobot.event.EventBus
@@ -29,47 +29,48 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
   lazy val toolbarShadow    = find[View](R.id.toolbar_shadow)
 
-  var bp       : BillingProcessor = _
   val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
+  var bp       : BillingProcessor = _
   var container: Container        = _
 
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/1893861576"
   override      val layoutId              = R.layout.act_main_screen
 
-  val loadUser = GetUserUseCaseImpl().loadUser()
-  private var switchContainer = false
-  private var showToolBarShadow = true
+  private lazy val isGuestMode       = getIntent.getBooleanExtra("is-guest-mode-key", false)
+  private lazy val loadUser          = GetUserUseCaseImpl().loadUser()
+  private      var switchContainer   = false  // indicate when the current container needs to be replace
+  private      var showToolBarShadow = true
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     EventBus.getDefault.registerSticky(this)
 
-    container = new ChatContainer()
+    if (!isGuestMode) {
+      container = new ChatContainer()
+      startService[LoLHangoutsService]
+    } else {
+      container = new SimpleContainer() { override val layoutId: Int = R.layout.guest_mode_screen }
+    }
     contentContainer.addView(container.getView)
 
-    //todo: functional
-    find[SideDrawerView](R.id.drawer_layout).setDrawerListener(new SimpleDrawerListener {
-      override def onDrawerClosed(drawerView: View): Unit = {
-        if (switchContainer) {
-          // wait til drawer close animation complete before changing view to avoid UI lag
-          contentContainer.removeAllViews()
-          contentContainer.addView(container.getView)
-          invalidateOptionsMenu()
-          switchContainer = false
-          toolbarShadow.setVisibility(if (showToolBarShadow) View.VISIBLE else View.INVISIBLE)
-        }
+    // wait til drawer close animation complete before changing container to avoid UI lag
+    find[SideDrawerView](R.id.drawer_layout).onDrawerClosed { drawer =>
+      if (switchContainer) {
+        contentContainer.removeAllViews()
+        contentContainer.addView(container.getView)
+        invalidateOptionsMenu()
+        switchContainer = false
+        toolbarShadow.setVisibility(if (showToolBarShadow) View.VISIBLE else View.INVISIBLE)
       }
-    })
+    }
 
     // if the container did not handle the nav icon click event then open the drawer
     toolbar.setNavigationOnClickListener(new OnClickListener {
       def onClick(view: View): Unit = if (!container.onNavIconClick()) sideDrawerView.openDrawer()
     })
 
-    startService[LoLHangoutsService]
     notificationManager.cancelAll() // clear any left over notification
-
     if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
     rateMyApp()
   }
@@ -149,37 +150,52 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     bp.release()
   }
 
-  def onEvent(event: SwitchScreen): Unit = runOnUiThread {
+  def onEvent(event: SwitchContainer): Unit = runOnUiThread {
     if (event.drawerTitle == DrawerItem.RemoveAds) {
       setUpBilling()
       return
     }
 
     showToolBarShadow = true // reset shadow
+    switchContainer = true   // container need switching
     event.drawerTitle match {
-      case DrawerItem.Chat     =>
-        container = new ChatContainer()
-      case DrawerItem.Profile  =>
-        loadUser onSuccess {
-          case user => runOnUiThread {
-            showToolBarShadow = false // remove the shadow since profile already has shadow under the tabs
-            container = new ProfileContainer(user.inGameName, user.region.id)
-          }
-        }
-      case DrawerItem.GameScouter =>
-        container = new SearchContainer(R.layout.search_container_game_scouter) {
-          override def onSearchCompleted(query: String, region: String): Unit = {
-            startActivity(ViewGameScouterActivity(query, region))
-          }
-        }
-      case DrawerItem.Search   =>
-        container = new SearchContainer(R.layout.search_container_profile) {
-          override def onSearchCompleted(query: String, region: String): Unit = {
-            startActivity(ViewProfileActivity(query, region))
-          }
-        }
+      case DrawerItem.Chat        => switchToChat()
+      case DrawerItem.Profile     => switchToMyProfile()
+      case DrawerItem.GameScouter => switchToGameScouter()
+      case DrawerItem.Search      => switchToProfileSearcher()
     }
-    switchContainer = true
   }
 
+  private def switchToChat(): Unit = container = new ChatContainer()
+
+  private def switchToMyProfile(): Unit = {
+    loadUser.onSuccess {
+      case user => runOnUiThread {
+        showToolBarShadow = false // remove the shadow since profile already has shadow under the tabs
+        container = new ProfileContainer(user.inGameName, user.region.id)
+      }
+    }
+  }
+
+  private def switchToGameScouter(): Unit = {
+    container = new SearchContainer(R.layout.search_container_game_scouter) {
+      override def onSearchCompleted(query: String, region: String): Unit = {
+        startActivity(ViewGameScouterActivity(query, region))
+      }
+    }
+  }
+
+  private def switchToProfileSearcher(): Unit = {
+    container = new SearchContainer(R.layout.search_container_profile) {
+      override def onSearchCompleted(query: String, region: String): Unit = {
+        startActivity(ViewProfileActivity(query, region))
+      }
+    }
+  }
+}
+
+object MainActivity extends TIntent {
+  def apply(isGuestMode: Boolean)(implicit ctx: Context): Intent = {
+    new Intent(ctx, classOf[MainActivity]).args("is-guest-mode-key" → isGuestMode)
+  }
 }

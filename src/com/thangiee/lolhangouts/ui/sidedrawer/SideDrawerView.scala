@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.ui.sidedrawer
 
 import android.content.{Context, Intent}
 import android.support.v4.widget.DrawerLayout
-import android.support.v4.widget.DrawerLayout.LayoutParams
+import android.support.v4.widget.DrawerLayout.{SimpleDrawerListener, LayoutParams}
 import android.support.v7.app.ActionBarActivity
 import android.util.AttributeSet
 import android.view._
@@ -30,6 +30,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   lazy val presenceBtn       = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
   lazy val statusMsgTextView = find[TextView](R.id.tv_status_msg)
 
+  private var drawerClosedListener: Option[View => Unit] = None
   override val presenter = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
 
   override def onAttached(): Unit = {
@@ -115,6 +116,14 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
       .show()
   }
 
+  def showFeatureRestricted(): Unit = {
+    new Builder(ctx)
+      .title("Guest Mode")
+      .content("Please login to use this feature.")
+      .positiveText(android.R.string.ok)
+      .show()
+  }
+
   def showRemoveAdsConfirmation() = ctx.asInstanceOf[MainActivity].setUpBilling()
 
   def updateDrawer(position: Int): Unit = {
@@ -132,6 +141,13 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
   def openDrawer(): Unit = openDrawer(drawer)
 
   def closeDrawer(): Unit = closeDrawers()
+
+  def onDrawerClosed(listener: View => Unit) = {
+    drawerClosedListener = Some(listener)
+    setDrawerListener(new SimpleDrawerListener {
+      override def onDrawerClosed(drawerView: View): Unit = drawerClosedListener.foreach(_(drawerView))
+    })
+  }
 }
 
 object SideDrawerView {

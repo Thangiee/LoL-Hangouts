@@ -11,7 +11,8 @@ object AppDataMapper {
       appDataEntity.savePassword,
       appDataEntity.version,
       appDataEntity.isLoginOffline,
-      appDataEntity.selectedRegionId.map(id => Region.getFromId(id))
+      appDataEntity.selectedRegionId.map(id => Region.getFromId(id)),
+      appDataEntity.isGuestMode
     )
   }
 }

@@ -78,7 +78,30 @@
             android:layout_below="@+id/cb_offline_login"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             />
+
+        <com.dd.CircularProgressButton
+                android:id="@+id/btn_guest"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                progress:cpb_cornerRadius="18dp"
+                progress:cpb_iconComplete="@drawable/ic_action_accept"
+                progress:cpb_iconError="@drawable/ic_action_cancel"
+                progress:cpb_textIdle="Guest"
+                progress:cpb_selectorIdle="@drawable/idle_state_selector"
+                progress:cpb_colorIndicator="@color/primary"
+                progress:cpb_colorIndicatorBackground="@color/primary_light"
+                progress:cpb_colorProgress="@android:color/transparent"
+                android:paddingLeft="42dp"
+                android:paddingRight="42dp"
+                android:layout_below="@+id/btn_login"
+                android:layout_alignLeft="@+id/btn_login"
+                android:layout_alignStart="@+id/btn_login"
+                android:layout_marginTop="8dp"
+                />
 
     <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
@@ -123,35 +146,6 @@
             android:layout_alignLeft="@+id/cb_save_user"
             android:layout_alignStart="@+id/cb_save_user"
             />
-
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"
-            >
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/region"
-                android:id="@+id/textView13"
-                android:textColor="@color/abc_primary_text_material_light"
-                android:textSize="16sp"
-                />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="North "
-                android:id="@+id/tv_region_name"
-                android:textColor="@color/accent"
-                android:textSize="16sp"
-                />
-    </LinearLayout>
 
     <include
             layout="@layout/toolbar_shadow"

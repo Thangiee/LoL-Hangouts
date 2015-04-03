@@ -82,7 +82,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
+            android:text="@string/guest"
             android:id="@+id/tv_name"
             android:layout_below="@+id/img_my_profile_icon"
             android:layout_alignParentLeft="true"
@@ -100,7 +100,7 @@
             android:textSize="16sp"
             android:layout_alignLeft="@+id/tv_name"
             android:layout_alignStart="@+id/tv_name"
-            android:text="@string/status"
+            android:text="@string/in_guest_mode"
             android:id="@+id/tv_status_msg"
             android:layout_marginBottom="12dp"
             android:layout_below="@+id/tv_name"

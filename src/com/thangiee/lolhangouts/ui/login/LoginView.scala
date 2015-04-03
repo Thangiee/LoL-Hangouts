@@ -22,7 +22,7 @@ trait LoginView {
   
   def showAuthenticationError(): Unit
 
-  def navigateToHome(): Unit
+  def navigateToHome(isGuestMode: Boolean): Unit
 
   def navigateBack(): Unit
 
