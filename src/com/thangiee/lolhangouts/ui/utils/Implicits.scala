@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.ui.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.{BitmapDrawable, Drawable}
-import android.graphics.{Bitmap, BitmapFactory}
+import android.graphics.{Typeface, Bitmap, BitmapFactory}
 import android.preference.PreferenceManager
 import android.view.View
 import android.widget.CompoundButton
@@ -14,6 +14,8 @@ import com.nispok.snackbar.Snackbar
 import com.nispok.snackbar.listeners.ActionClickListener
 import com.thangiee.lolhangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
+
+import scala.util.Try
 
 
 trait Implicits extends org.scaloid.common.Implicits with ConversionImplicits with InterfaceImplicits
@@ -67,6 +69,18 @@ trait ConversionImplicits {
     def toDrawable: Drawable = new BitmapDrawable(ctx.getResources, bitmap)
   }
 
+
+  implicit class ImageAssetConversion(imageFile: ImageFile)(implicit ctx: Context) {
+    def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(imageFile.path), null))
+      .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
+
+    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(imageFile.path)))
+      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
+  }
+
+  implicit class FontAssetConversion(fontFile: FontFile)(implicit ctx: Context) {
+    def toTypeFace: Typeface = Typeface.createFromAsset(ctx.getAssets, fontFile.path)
+  }
 }
 
 object ConversionImplicits extends ConversionImplicits

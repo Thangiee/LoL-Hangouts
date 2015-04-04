@@ -32,7 +32,7 @@ class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
   }
 
   override def updateView(context: Context, m: Match): Unit = {
-    this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAssetFile(m.champName).toDrawable)
+    this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAsset(m.champName).toDrawable)
     this.findTextView(R.id.tv_match_type).text(m.queueType)
     this.findTextView(R.id.tv_match_outcome).text(m.outCome)
       .textColor(if (m.outCome.toLowerCase == "win") green else red)
@@ -59,6 +59,6 @@ class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
     this.findTextView(R.id.tv_match_avg_more_cs).text(m.avgCsPerformance.toString)
       .textColor(if (m.avgCsPerformance >= 0) green else red)
 
-    Palette.generateAsync(ChampIconAssetFile(m.champName).toBitmap, paletteAsyncListener)
+    Palette.generateAsync(ChampIconAsset(m.champName).toBitmap, paletteAsyncListener)
   }
 }

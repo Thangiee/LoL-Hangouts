@@ -84,19 +84,4 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     display.getSize(size)
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
   }
-
-  implicit class Asset2Drawable(assetFile: AssetFile)(implicit ctx: Context) {
-    def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(assetFile.path), null))
-      .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
-
-    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(assetFile.path)))
-      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
-  }
-
-  implicit class RightBiasedEither[A,B](e: Either[A,B]) {
-    def map[C](f: B => C) = e.right map f
-    def flatMap[C](f: B => Either[A,C]) = e.right flatMap f
-    def get = e.right get
-    def getOrElse(f: => B) = e.right getOrElse f
-  }
 }

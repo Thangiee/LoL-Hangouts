@@ -32,7 +32,7 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
   }
 
   override def updateView(context: Context, c: TopChampion): Unit = {
-    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAssetFile(c.name).toDrawable)
+    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAsset(c.name).toDrawable)
     this.findTextView(R.id.tv_champ_name).text(c.name)
 
     this.findTextView(R.id.tv_champ_perf).text(c.overAllPerformance + "%")
@@ -63,6 +63,6 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
     this.findTextView(R.id.tv_champ_avg_more_g).text(c.avgGoldPerformance.toString)
       .textColor(if (c.avgGoldPerformance >= 0) green else red)
 
-    Palette.generateAsync(ChampIconAssetFile(c.name).toBitmap, paletteAsyncListener)
+    Palette.generateAsync(ChampIconAsset(c.name).toBitmap, paletteAsyncListener)
   }
 }
