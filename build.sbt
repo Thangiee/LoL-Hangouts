@@ -9,7 +9,7 @@ scalaVersion := "2.11.6"
 
 minSdkVersion in Android := "14"
 
-platformTarget in Android := "android-21"
+platformTarget in Android := "android-22"
 
 proguardCache in Android ++= Seq(
   ProguardCache("org.scaloid") % "org.scaloid",
@@ -36,7 +36,7 @@ libraryDependencies ++= androidViewAnimations ++ cardsLib :+ smoothProgressBar :
                         snackbar :+ efficientAdapter :+ materialDialog :+ rippleView :+ changeLogLib :+
                         licensesDialog :+ roundedImageView :+ discreetAppRate :+ easyPrefs :+ materialMenu :+
                         circularProgressBtn :+ expandableBtnMenu :+ funAdapter :+ crouton :+ jsoup :+ acra :+
-                        nscalaTime :+ revealColorView :+ parse
+                        nscalaTime :+ revealColorView :+ parse :+ helloChart
 
 run <<= run in Android
 
