@@ -89,7 +89,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
       view.showLoading()
       getMessageUseCase.loadMessages(f.name).map(messages => runOnUiThread {
         view.showMessages(messages)
-        view.hideLoading()
+        delay(100) { view.hideLoading() }
       })
     }.getOrElse(warn("[!] friend is not set for ChatView"))
   }

@@ -16,7 +16,7 @@ class ProfileSummaryPresenter(view: ProfileSummaryView, viewProfileUseCase: View
     viewProfileUseCase.loadSummary(username, regionId).map { summary =>
       runOnUiThread {
         view.initializeViewData(summary)
-        view.hideLoading()
+        delay(100) { view.hideLoading() }
       }
     } recover {
       case DataAccessException(_, DataNotFound) => runOnUiThread(view.showDataNotFound())

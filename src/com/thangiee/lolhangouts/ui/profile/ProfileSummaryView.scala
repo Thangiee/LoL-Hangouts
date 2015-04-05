@@ -164,7 +164,7 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     rankedCard.fadeIn(delay = 1850)
 
     // don't animate pie chat (cause chat to not show) if user has not play any game
-    delay(2500) {
+    delay(2900) {
       if (hasPlayGame) {
         winRatePieChart.startDataAnimation(1500)
         kdaPieChart.startDataAnimation(1500)
