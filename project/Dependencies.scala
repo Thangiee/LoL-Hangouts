@@ -19,6 +19,7 @@ object Dependencies {
   val circularProgressBtn = aar("com.github.dmytrodanylyk.circular-progress-button" % "library" % "1.1.2")
   val expandableBtnMenu   = aar("co.lemonlabs" % "expandable-button-menu" % "1.0.0")
   val revealColorView     = aar("com.github.markushi" % "android-ui" % "1.2")
+  val helloChart          = aar("com.github.lecho" % "hellocharts-library" % "1.5.4")
 
   val funAdapter   = "com.github.amigold.fundapter2" % "library" % "1.01"
   val crouton      = "de.keyboardsurfer.android.widget" % "crouton" % "1.8.5"
@@ -51,10 +52,10 @@ object Dependencies {
   )
 
   val appCompat = Seq(
-    aar("com.android.support" % "recyclerview-v7" % "21.0.+"),
-    aar("com.android.support" % "appcompat-v7" % "21.0.+"),
-    "com.android.support" % "palette-v7" % "21.0.+",
-    "com.android.support" % "support-v13" % "21.0.+",
+    aar("com.android.support" % "recyclerview-v7" % "21.+"),
+    aar("com.android.support" % "appcompat-v7" % "21.+"),
+    "com.android.support" % "palette-v7" % "21.+",
+    "com.android.support" % "support-v13" % "21.+",
     "com.google.code.findbugs" % "jsr305" % "3.0.0" // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
   )
 }

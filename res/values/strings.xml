@@ -76,7 +76,8 @@
     <string name="regions">regions</string>
     <string name="ranked_solo_queue">Ranked Solo Queue</string>
     <string name="username">Username</string>
-    <string name="win_rate">win rate</string>
+    <string name="win_rate">Win Rate</string>
+    <string name="kda">K/D/A</string>
     <string name="rank_elo">Rank Elo</string>
     <string name="save_username">Save username</string>
     <string name="rank">Rank</string>
@@ -103,6 +104,9 @@
     <string name="guest">Guest</string>
     <string name="in_guest_mode">In guest mode</string>
     <string name="chat_unavailable_in_guest_mode">Chat feature is unavailable in Guest mode. Please login to use it.</string>
+    <string name="stats">Statistics</string>
+    <string name="most_played">Most Played</string>
+    <string name="oops">Oops</string>
 
     <string-array name="history">
         <item>1 day</item>

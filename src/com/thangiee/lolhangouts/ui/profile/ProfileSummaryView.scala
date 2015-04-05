@@ -1,41 +1,44 @@
 package com.thangiee.lolhangouts.ui.profile
 
-import java.text.DecimalFormat
-
 import android.content.Context
+import android.text.Html
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget._
-import com.echo.holographlibrary.{PieGraph, PieSlice}
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.entities.ProfileSummary
 import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
+import com.thangiee.lolhangouts.data.usecases.entities.ProfileSummary
 import com.thangiee.lolhangouts.ui.core.{CustomView, TActivity}
+import com.thangiee.lolhangouts.ui.custom.ChampIconView
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
+import it.gmariotti.cardslib.library.view.CardViewNative
+import lecho.lib.hellocharts.formatter.SimplePieChartValueFormatter
+import lecho.lib.hellocharts.model.{PieChartData, SliceValue}
+import lecho.lib.hellocharts.view.PieChartView
 import tr.xip.errorview.{ErrorView, RetryListener}
 
-class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  lazy val pieGraph     = find[PieGraph](R.id.pie_graph_win_rate)
-  lazy val pieGroup     = find[RelativeLayout](R.id.pie_group)
-  lazy val badgeGroup   = find[RelativeLayout](R.id.badge_group)
-  lazy val statsGroup   = find[LinearLayout](R.id.stats_group)
-  lazy val loadingWheel = find[CircularProgressBar](R.id.circular_loader)
-  lazy val errorView    = find[ErrorView](R.id.error_view)
-  lazy val header       = find[TextView](R.id.tv_profile_header)
+import scala.collection.JavaConversions._
 
-  lazy val toolbar = ctx.asInstanceOf[TActivity].toolbar
+class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
+  lazy val winRatePieChart = find[PieChartView](R.id.pie_graph_win_rate)
+  lazy val kdaPieChart     = find[PieChartView](R.id.pie_graph_kda)
+  lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
+  lazy val errorView       = find[ErrorView](R.id.error_view)
+  lazy val toolbar         = ctx.asInstanceOf[TActivity].toolbar
+
+  lazy val userCard       = find[CardViewNative](R.id.profile_summary_user_card)
+  lazy val statsCard      = find[CardViewNative](R.id.profile_summary_stats_card)
+  lazy val mostPlayedCard = find[CardViewNative](R.id.profile_summary_most_played_card)
+  lazy val rankedCard     = find[CardViewNative](R.id.profile_summary_ranked_card)
 
   override val presenter = new ProfileSummaryPresenter(this, ViewProfileUseCaseImpl())
+  private var hasPlayGame = false
 
   override def onAttached(): Unit = {
     super.onAttached()
     addView(layoutInflater.inflate(R.layout.profile_summary, this, false))
-    pieGroup.setVisibility(View.INVISIBLE)
-    badgeGroup.setVisibility(View.INVISIBLE)
-    statsGroup.setVisibility(View.INVISIBLE)
-    header.setVisibility(View.INVISIBLE)
+    Seq(userCard, statsCard, mostPlayedCard, rankedCard).foreach(_.setVisibility(View.INVISIBLE))
   }
 
   override def onDetached(): Unit = {
@@ -50,31 +53,42 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     })
   }
 
-  def initializeViewData(summary: ProfileSummary): Unit = {
-    toolbar.setTitle(summary.summonerName)
-    toolbar.setSubtitle(s"${summary.regionId.toUpperCase} - Level ${summary.level}")
-    find[TextView](R.id.tv_profile_tier).setText(s"${summary.leagueTier} ${summary.leagueDivision}")
-    find[TextView](R.id.tv_profile_league_name).setText(summary.leagueName)
-    find[TextView](R.id.tv_profile_point).setText(s"${summary.leaguePoints} League Points")
-    find[TextView](R.id.tv_profile_kda).setText(s"KDA: ${summary.kda} (${summary.killsRatio}/${summary.deathsRatio}/${summary.assistsRatio})")
-    find[TextView](R.id.tv_profile_lost).setText(s"${summary.loses} L")
-    find[TextView](R.id.tv_profile_win).setText(s"${summary.wins} W")
-    find[TextView](R.id.tv_profile_games).setText(summary.games.toString)
-    find[TextView](R.id.tv_profile_kills).setText(summary.kills.toString)
-    find[TextView](R.id.tv_profile_deaths).setText(summary.deaths.toString)
-    find[TextView](R.id.tv_profile_assists).setText(summary.assists.toString)
-    find[TextView](R.id.tv_profile_elo).setText(summary.elo.toString)
-    find[TextView](R.id.tv_profile_doubles).setText(summary.doubleKills.toString)
-    find[TextView](R.id.tv_profile_triples).setText(summary.tripleKills.toString)
-    find[TextView](R.id.tv_profile_quadra).setText(summary.quadraKills.toString)
-    find[TextView](R.id.tv_profile_penta).setText(summary.pentaKills.toString)
+  def initializeViewData(ps: ProfileSummary): Unit = {
+    if (ps.games > 0) hasPlayGame = true
+    val frizeFont = FrizFontAsset().toTypeFace
 
-    val rateTextView = find[TextView](R.id.tv_profile_rate)
-    rateTextView.setText(new DecimalFormat("###.##").format(summary.winRate) + "%")
-    rateTextView.setTextColor(if (summary.winRate >= 50) android.R.color.holo_green_dark.r2Color else R.color.red.r2Color)
+    toolbar.setTitle(ps.summonerName)
+    toolbar.setSubtitle(s"${ps.regionId.toUpperCase} - Level ${ps.level}")
+    find[TextView](R.id.profile_summ_user_name).text(ps.summonerName.toUpperCase).typeface(frizeFont)
+    find[TextView](R.id.profile_summ_user_reg_lvl).text(s"${ps.regionId.toUpperCase} - Level ${ps.level}")
+    SummonerUtils.loadProfileIcon(ps.summonerName, ps.regionId, find[ImageView](R.id.profile_summ_user_icon), 64)
+    find[TextView](R.id.tv_stats_title).typeface(frizeFont)
+
+    find[TextView](R.id.tv_most_played_title).typeface(frizeFont)
+    Seq(
+      (0, R.id.profile_summ_champ_icon1, R.id.profile_summ_champ_kda1, R.id.profile_summ_champ_games1),
+      (1, R.id.profile_summ_champ_icon2, R.id.profile_summ_champ_kda2, R.id.profile_summ_champ_games2),
+      (2, R.id.profile_summ_champ_icon3, R.id.profile_summ_champ_kda3, R.id.profile_summ_champ_games3),
+      (3, R.id.profile_summ_champ_icon4, R.id.profile_summ_champ_kda4, R.id.profile_summ_champ_games4)
+    ).foreach {
+      case (i, iconId, kdaId, gamesId) => ps.mostPlayedChamps.lift(i).foreach { champ =>
+        find[ChampIconView](iconId).setChampion(champ.name)
+        find[TextView](gamesId).text = s"Games:${champ.games}"
+        find[TextView](kdaId).text = Html.fromHtml(s"<font color='#8bc34a'>${champ.killsRatio}</font>/" +
+                                                   s"<font color='#e51c23'>${champ.deathsRatio}</font>/" +
+                                                   s"<font color='#fbc02d'>${champ.assistsRatio}</font>")
+      }
+    }
+
+    find[TextView](R.id.tv_ranked_title).typeface(frizeFont)
+    find[TextView](R.id.tv_solo_duo_title).typeface(frizeFont)
+    find[TextView](R.id.profile_summ_rank_league).text(s"${ps.leagueTier} ${ps.leagueDivision}").typeface(frizeFont)
+    find[TextView](R.id.profile_summ_rank_lp).text(s"${ps.leaguePoints} LP").typeface(frizeFont)
+    find[TextView](R.id.profile_summ_rank_wins).text(s"${ps.wins} Wins").typeface(frizeFont)
+    find[TextView](R.id.profile_summ_rank_elo).text(ps.elo + " ELO").typeface(frizeFont)
 
     // set the badge image
-    val badgeResId = summary.leagueTier.toUpperCase match {
+    val badgeResId = ps.leagueTier.toUpperCase match {
       case "BRONZE"     => R.drawable.badge_bronze
       case "SILVER"     => R.drawable.badge_silver
       case "GOLD"       => R.drawable.badge_gold
@@ -84,50 +98,81 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
       case "CHALLENGER" => R.drawable.badge_challenger
       case _            => R.drawable.badge_unranked
     }
-    find[ImageView](R.id.img_profile_badge).setImageResource(badgeResId)
+    find[ImageView](R.id.profile_summ_rank_badge).setImageResource(badgeResId)
 
-    // setup the pie graph
-    val winSlice = new PieSlice
-    winSlice.setColor(android.R.color.holo_green_dark.r2Color)
-    winSlice.setValue(5)
-    winSlice.setGoalValue(summary.wins)
-    pieGraph.addSlice(winSlice)
+    // setup the win rate pie chart
+    val winSlice = new SliceValue(1, R.color.md_light_green_500.r2Color)
+    winSlice.setTarget(ps.wins)
+    val loseSlice = new SliceValue(1, R.color.md_red_500.r2Color)
+    loseSlice.setTarget(ps.loses)
 
-    val loseSlice = new PieSlice
-    loseSlice.setColor(R.color.red.r2Color)
-    loseSlice.setValue(5)
-    loseSlice.setGoalValue(summary.loses)
-    pieGraph.addSlice(loseSlice)
+    val data = new PieChartData(Seq(winSlice, loseSlice))
+    data.setHasLabels(true)
+    data.setHasLabelsOutside(false)
+    data.setHasCenterCircle(true)
+    data.setHasLabelsOnlyForSelected(false)
+    data.setCenterText1(ps.winRate + "%")
+    data.setCenterText1Typeface(frizeFont)
+    data.setCenterText1FontSize(16)
+    data.setCenterText1Color(if (ps.winRate >= 50) R.color.md_light_green_500.r2Color else R.color.md_red_500.r2Color)
+    data.setCenterText2(R.string.win_rate.r2String)
+    data.setCenterText2FontSize(12)
+    data.setValueLabelTextSize(10)
 
-    pieGraph.setPadding(2)
-    pieGraph.setInnerCircleRatio(R.integer.inner_circle_ratio.r2Integer)
-    pieGraph.setInterpolator(new AccelerateDecelerateInterpolator())
-    pieGraph.setDuration(1000)
+    winRatePieChart.setInteractive(true)
+    winRatePieChart.setPieChartData(data)
+    winRatePieChart.setValueSelectionEnabled(false)
+
+    // setup the kda pie chart
+    val killSlice = new SliceValue(1.0f, R.color.md_light_green_500.r2Color)
+    killSlice.setTarget(ps.killsRatio.toFloat)
+    val deathSlice = new SliceValue(1.0f, R.color.md_red_500.r2Color)
+    deathSlice.setTarget(ps.deathsRatio.toFloat)
+    val assistSlice = new SliceValue(1.0f, R.color.md_yellow_500.r2Color)
+    assistSlice.setTarget(ps.assistsRatio.toFloat)
+
+    val data2 = new PieChartData(Seq(killSlice, assistSlice, deathSlice))
+    data2.setHasLabels(true)
+    data2.setHasLabelsOutside(false)
+    data2.setHasCenterCircle(true)
+    data2.setHasLabelsOnlyForSelected(false)
+    data2.setCenterText1(ps.kda.toString)
+    data2.setCenterText1Typeface(frizeFont)
+    data2.setCenterText1FontSize(16)
+    data2.setCenterText2(R.string.kda.r2String)
+    data2.setCenterText2FontSize(12)
+    data2.setValueLabelTextSize(10)
+    data2.setFormatter(new SimplePieChartValueFormatter(1).setDecimalSeparator('.'))
+
+    kdaPieChart.setInteractive(true)
+    kdaPieChart.setPieChartData(data2)
+    kdaPieChart.setValueSelectionEnabled(false)
   }
 
   def showLoading(): Unit = {
     loadingWheel.setVisibility(View.VISIBLE)
     loadingWheel.fadeInDown(duration = 1)
-    pieGroup.setVisibility(View.INVISIBLE)
-    badgeGroup.setVisibility(View.INVISIBLE)
-    statsGroup.setVisibility(View.INVISIBLE)
-    header.setVisibility(View.INVISIBLE)
+    Seq(userCard, statsCard, mostPlayedCard, rankedCard).foreach(_.setVisibility(View.INVISIBLE))
     errorView.setVisibility(View.GONE)
   }
 
   def hideLoading(): Unit = {
     loadingWheel.zoomOut(delay = 1000) // delay in millis
-    header.fadeIn(duration = 1, delay = 2000)
-    badgeGroup.slideInLeft(delay = 1100)
-    pieGroup.slideInRight(delay = 1350)
-    statsGroup.slideInUp(delay = 1600)
+    userCard.fadeIn(delay = 1100)
+    statsCard.fadeIn(delay = 1350)
+    mostPlayedCard.fadeIn(delay = 1600)
+    rankedCard.fadeIn(delay = 1850)
 
     // don't animate pie chat (cause chat to not show) if user has not play any game
-    if (find[TextView](R.id.tv_profile_games).txt2str.toInt != 0)
-      delay(2600) { pieGraph.animateToGoalValues() }
+    delay(2500) {
+      if (hasPlayGame) {
+        winRatePieChart.startDataAnimation(1500)
+        kdaPieChart.startDataAnimation(1500)
+      }
+    }
   }
 
-  def showDataNotFound(): Unit = showError("Oops", R.string.no_profile.r2String)
+  def showDataNotFound(): Unit = showError(R.string.oops.r2String, R.string.no_profile.r2String)
 
   def showGetDataError(): Unit = showError(
     title = (if (hasWifiConnection) R.string.server_busy else R.string.no_wifi).r2String,
