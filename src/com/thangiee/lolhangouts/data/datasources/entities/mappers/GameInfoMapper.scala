@@ -20,8 +20,8 @@ object GameInfoMapper {
     GameInfo(
       g.queueType,
       mapNames.getOrElse(g.mapId, ""),
-      g.blueTeam.map(p => PlayerStatsMapper.transform(p, 1)),
-      g.purpleTeam.map(p => PlayerStatsMapper.transform(p, 2))
+      g.blueTeam.map(p => PlayerStatsMapper.transform(p, 1)).toList,
+      g.purpleTeam.map(p => PlayerStatsMapper.transform(p, 2)).toList
     )
   }
 }
