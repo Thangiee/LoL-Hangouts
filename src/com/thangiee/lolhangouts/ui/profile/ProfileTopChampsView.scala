@@ -44,7 +44,7 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
   def initializeViewData(champions: List[TopChampion]): Unit = {
     val adapter = new SimpleAdapter[TopChampion](R.layout.line_item_top_champ, classOf[TopChampViewHolder], champions)
 
-    delay(1500) { // wait for loading wheel to hide
+    delay(500) { // wait for loading wheel to hide
       champRecView.setAdapter(adapter.asInstanceOf[RecyclerView.Adapter[TopChampViewHolder]])
     }
   }
@@ -58,7 +58,7 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
 
   def hideLoading(): Unit = {
     loadingWheel.zoomOut(delay = 500)
-    champRecView.slideInDown(delay = 1500)
+    champRecView.fadeIn(delay = 500)
   }
 
   def showDataNotFound(): Unit = showError("No Result", R.string.no_champion.r2String)

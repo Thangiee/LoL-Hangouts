@@ -59,7 +59,7 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
     this.findTextView(R.id.tv_champ_avg_more_cs).text(c.avgCsPerformance.toString)
       .textColor(if (c.avgCsPerformance >= 0) green else red)
 
-    this.findTextView(R.id.tv_champ_avg_g).text(c.avgGold.toString)
+    this.findTextView(R.id.tv_champ_avg_g).text((c.avgGold/1000.0).roundTo(1).toString + "k")
     this.findTextView(R.id.tv_champ_avg_more_g).text(c.avgGoldPerformance.toString)
       .textColor(if (c.avgGoldPerformance >= 0) green else red)
 
