@@ -12,7 +12,7 @@ import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
 import com.thangiee.lolhangouts.ui.utils._
 
 class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
-  implicit val ctx = getContext
+  implicit private val ctx = getContext
 
   override def updateView(context: Context, p: PlayerStats): Unit = {
 

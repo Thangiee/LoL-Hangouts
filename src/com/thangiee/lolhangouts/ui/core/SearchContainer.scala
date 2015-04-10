@@ -22,13 +22,14 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
 
   private var searchView   : SearchView = _
   private var regionSpinner: Spinner    = _
-  val suggestionAdapter = new SimpleCursorAdapter(ctx, android.R.layout.simple_dropdown_item_1line, null, Array("name"), Array(android.R.id.text1), 0)
+  private val suggestionAdapter = new SimpleCursorAdapter(ctx, android.R.layout.simple_dropdown_item_1line, null,
+    Array("name"), Array(android.R.id.text1), 0)
 
-  val getAppDataUseCase     = GetAppDataUseCaseImpl()
-  val checkSummExistUseCase = CheckSummExistUseCaseImpl()
-  val getUserUseCase        = GetUserUseCaseImpl()
-  val loadFriendList        = GetFriendsUseCaseImpl().loadFriendList()
-  val regions               = R.array.regions.r2StringArray
+  private val getAppDataUseCase     = GetAppDataUseCaseImpl()
+  private val checkSummExistUseCase = CheckSummExistUseCaseImpl()
+  private val getUserUseCase        = GetUserUseCaseImpl()
+  private val loadFriendList        = GetFriendsUseCaseImpl().loadFriendList()
+  private val regions               = R.array.regions.r2StringArray
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()

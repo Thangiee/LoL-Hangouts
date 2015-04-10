@@ -11,7 +11,7 @@ import com.thangiee.lolhangouts.data.usecases.entities._
 import com.thangiee.lolhangouts.ui.utils._
 
 class RegionViewHolder(v: View) extends AbsViewHolder[Region](v) with OnTouchListener {
-  implicit val ctx = getContext
+  implicit private val ctx = getContext
   v.setOnTouchListener(this)
 
   val gestureDetector = GestureDetectorBuilder()

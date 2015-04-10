@@ -9,9 +9,9 @@ import com.thangiee.lolhangouts.data.usecases.entities.Match
 import com.thangiee.lolhangouts.ui.utils._
 
 class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
-  implicit val ctx = getContext
-  val greaterOrEqToZero = (a: Double) => a >= 0
-  val lessOrEqToZero    = (a: Double) => a <= 0
+  implicit private val ctx = getContext
+  private val greaterOrEqToZero = (a: Double) => a >= 0
+  private val lessOrEqToZero    = (a: Double) => a <= 0
 
   override def updateView(context: Context, m: Match): Unit = {
     this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAsset(m.champName).toDrawable)

@@ -13,10 +13,10 @@ case class ViewProfileActivity() extends TActivity with UpButton with Ads {
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/6324061176"
   override      val layoutId              = R.layout.act_with_container
 
-  lazy val summonerName = getIntent.getStringExtra("name-key")
-  lazy val regionId = getIntent.getStringExtra("region-key")
-  lazy val contentContainer = find[LinearLayout](R.id.content_container)
-  lazy val container = new ProfileContainer(summonerName, regionId)
+  private lazy val summonerName = getIntent.getStringExtra("name-key")
+  private lazy val regionId = getIntent.getStringExtra("region-key")
+  private lazy val contentContainer = find[LinearLayout](R.id.content_container)
+  private lazy val container = new ProfileContainer(summonerName, regionId)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

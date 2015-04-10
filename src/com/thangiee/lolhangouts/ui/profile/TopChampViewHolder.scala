@@ -12,9 +12,9 @@ import com.thangiee.lolhangouts.data.usecases.entities.TopChampion
 import com.thangiee.lolhangouts.ui.utils._
 
 class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
-  implicit val ctx = getContext
-  val green = R.color.md_light_green_600.r2Color
-  val red = R.color.red.r2Color
+  implicit protected val ctx = getContext
+  private val green = R.color.md_light_green_600.r2Color
+  private val red = R.color.red.r2Color
 
   val paletteAsyncListener = new PaletteAsyncListener {
     override def onGenerated(palette: Palette): Unit = {

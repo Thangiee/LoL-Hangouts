@@ -15,16 +15,16 @@ import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListene
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
-  lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
-  lazy val pager                = this.find[ViewPager](R.id.pager)
-  lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
-  lazy val profileTopChampView  = this.find[ProfileTopChampsView](R.id.page_2)
-  lazy val profileMatchHistView = this.find[ProfileMatchHistView](R.id.page_3)
+  private lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
+  private lazy val pager                = this.find[ViewPager](R.id.pager)
+  private lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
+  private lazy val profileTopChampView  = this.find[ProfileTopChampsView](R.id.page_2)
+  private lazy val profileMatchHistView = this.find[ProfileMatchHistView](R.id.page_3)
 
   case class Page(title: String, var isSet: Boolean = false)
 
-  val loadUser = GetUserUseCaseImpl().loadUser()
-  val pages    = List(Page("Summary"), Page("Champions"), Page("History"))
+  private val loadUser = GetUserUseCaseImpl().loadUser()
+  private val pages    = List(Page("Summary"), Page("Champions"), Page("History"))
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()

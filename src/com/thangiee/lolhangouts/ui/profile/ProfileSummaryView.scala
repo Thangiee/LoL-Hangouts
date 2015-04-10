@@ -21,18 +21,18 @@ import tr.xip.errorview.{ErrorView, RetryListener}
 import scala.collection.JavaConversions._
 
 class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  lazy val winRatePieChart = find[PieChartView](R.id.pie_graph_win_rate)
-  lazy val kdaPieChart     = find[PieChartView](R.id.pie_graph_kda)
-  lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
-  lazy val errorView       = find[ErrorView](R.id.error_view)
-  lazy val toolbar         = ctx.asInstanceOf[TActivity].toolbar
+  private lazy val winRatePieChart = find[PieChartView](R.id.pie_graph_win_rate)
+  private lazy val kdaPieChart     = find[PieChartView](R.id.pie_graph_kda)
+  private lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val errorView       = find[ErrorView](R.id.error_view)
+  private lazy val toolbar         = ctx.asInstanceOf[TActivity].toolbar
 
-  lazy val userCard       = find[CardViewNative](R.id.profile_summary_user_card)
-  lazy val statsCard      = find[CardViewNative](R.id.profile_summary_stats_card)
-  lazy val mostPlayedCard = find[CardViewNative](R.id.profile_summary_most_played_card)
-  lazy val rankedCard     = find[CardViewNative](R.id.profile_summary_ranked_card)
+  private lazy val userCard       = find[CardViewNative](R.id.profile_summary_user_card)
+  private lazy val statsCard      = find[CardViewNative](R.id.profile_summary_stats_card)
+  private lazy val mostPlayedCard = find[CardViewNative](R.id.profile_summary_most_played_card)
+  private lazy val rankedCard     = find[CardViewNative](R.id.profile_summary_ranked_card)
 
-  override val presenter = new ProfileSummaryPresenter(this, ViewProfileUseCaseImpl())
+  override protected val presenter = new ProfileSummaryPresenter(this, ViewProfileUseCaseImpl())
   private var hasPlayGame = false
 
   override def onAttached(): Unit = {

@@ -14,11 +14,11 @@ import it.gmariotti.cardslib.library.view.CardListView
 import scala.collection.JavaConversions._
 
 class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
-  override val presenter = new FriendListPresenter(this, GetFriendsUseCaseImpl())
+  private lazy val cardListView     = find[CardListView](R.id.card_list)
+  private      val cards            = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
+  private      val cardArrayAdapter = new CardArrayAdapter(ctx, cards)
 
-  lazy val cardListView = find[CardListView](R.id.card_list)
-  val cards = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
-  val cardArrayAdapter = new CardArrayAdapter(ctx, cards)
+  override protected val presenter = new FriendListPresenter(this, GetFriendsUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
@@ -39,7 +39,7 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
   }
 
   def updateCardContent(friend: Friend): Unit = {
-    for (i <- 0 until cardArrayAdapter.getCount) {
+    for ( i <- 0 until cardArrayAdapter.getCount ) {
       val baseCard = cardArrayAdapter.getItem(i).asInstanceOf[FriendBaseCard] // get the card view
       if (baseCard.cardName.toLowerCase == friend.name.toLowerCase) {
         info(s"[+] Found ${friend.name} card")
@@ -49,13 +49,5 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
       }
     }
     warn(s"[-] No card found for ${friend.name}")
-  }
-
-  def showLoading(): Unit = {
-    // todo: add loading
-  }
-
-  def hideLoading(): Unit ={
-
   }
 }

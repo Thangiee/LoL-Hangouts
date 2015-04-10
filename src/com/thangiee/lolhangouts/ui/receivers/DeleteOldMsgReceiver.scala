@@ -20,5 +20,5 @@ class DeleteOldMsgReceiver extends BroadcastReceiver with TagUtil{
 }
 
 object DeleteOldMsgReceiver {
-  val TIME_KEY = "time_key"
+  lazy val TIME_KEY = "time_key"
 }

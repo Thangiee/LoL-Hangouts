@@ -17,11 +17,11 @@ import tr.xip.errorview.{ErrorView, RetryListener}
 import scala.collection.JavaConversions._
 
 class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  lazy val loadingWheel = find[CircularProgressBar](R.id.circular_loader)
-  lazy val errorView    = find[ErrorView](R.id.error_view)
-  lazy val champRecView = find[RecyclerView](R.id.recycler_view)
+  private lazy val loadingWheel = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val errorView    = find[ErrorView](R.id.error_view)
+  private lazy val champRecView = find[RecyclerView](R.id.recycler_view)
 
-  override val presenter = new ProfileTopChampsPresenter(this, ViewProfileUseCaseImpl())
+  override protected val presenter = new ProfileTopChampsPresenter(this, ViewProfileUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()

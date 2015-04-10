@@ -8,7 +8,7 @@ trait CustomView extends TraitViewGroup[ViewGroup] with TagUtil {
   self: ViewGroup =>
   override def basis: ViewGroup = self
 
-  def presenter: Presenter
+  protected def presenter: Presenter
 
   override def onAttachedToWindow(): Unit = {
     self.onAttachedToWindow()

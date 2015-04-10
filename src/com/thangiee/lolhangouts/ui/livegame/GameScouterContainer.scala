@@ -19,13 +19,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 class GameScouterContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
-  lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
-  lazy val pager          = this.find[ViewPager](R.id.pager)
-  lazy val blueTeamView   = this.find[GameScouterTeamView](R.id.page_1)
-  lazy val purpleTeamView = this.find[GameScouterTeamView](R.id.page_2)
+  private lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
+  private lazy val pager          = this.find[ViewPager](R.id.pager)
+  private lazy val blueTeamView   = this.find[GameScouterTeamView](R.id.page_1)
+  private lazy val purpleTeamView = this.find[GameScouterTeamView](R.id.page_2)
 
-  val viewLiveGameUseCase = ScoutGameUseCaseImpl()
-  val pages               = List("Blue Team", "Purple Team")
+  private val viewLiveGameUseCase = ScoutGameUseCaseImpl()
+  private val pages               = List("Blue Team", "Purple Team")
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()

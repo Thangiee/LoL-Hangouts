@@ -18,15 +18,15 @@ import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
-  lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
-  lazy val msgField        = find[EditText](R.id.et_msg_field)
-  lazy val messageAdapter  = new MessageAdapter(ctx, 0)
-  lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
-  lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
-  
-  private  var friend: Option[Friend] = None
-  override val presenter = new ChatPresenter(this, DeleteMsgUseCaseImpl(), GetMsgUseCaseImpl(), SendMsgUseCaseImpl(),
-                                                   GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
+  private lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
+  private lazy val msgField        = find[EditText](R.id.et_msg_field)
+  private lazy val messageAdapter  = new MessageAdapter(ctx, 0)
+  private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
+  private lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
+
+  private            var friend: Option[Friend] = None
+  override protected val presenter              = new ChatPresenter(this, DeleteMsgUseCaseImpl(), GetMsgUseCaseImpl(),
+    SendMsgUseCaseImpl(), GetUserUseCaseImpl(), GetFriendsUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()

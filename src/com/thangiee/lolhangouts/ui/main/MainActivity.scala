@@ -25,13 +25,13 @@ import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
-  lazy val contentContainer = find[LinearLayout](R.id.content_container)
-  lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
-  lazy val toolbarShadow    = find[View](R.id.toolbar_shadow)
+  private lazy val contentContainer = find[LinearLayout](R.id.content_container)
+  private lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
+  private lazy val toolbarShadow    = find[View](R.id.toolbar_shadow)
 
-  val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
-  var bp       : BillingProcessor = _
-  var container: Container        = _
+  private val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
+  private var bp       : BillingProcessor = _
+  private var container: Container        = _
 
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/1893861576"

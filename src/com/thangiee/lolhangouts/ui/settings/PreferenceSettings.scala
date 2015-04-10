@@ -13,7 +13,7 @@ import com.thangiee.lolhangouts.ui.utils._
 import org.scaloid.common.TagUtil
 
 class PreferenceSettings extends PreferenceFragment with OnSharedPreferenceChangeListener with TagUtil {
-  implicit lazy val ctx = getActivity.getBaseContext
+  implicit private lazy val ctx = getActivity.getBaseContext
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

@@ -18,7 +18,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
                     getMessageUseCase: GetMsgUseCase, sendMsgUseCase: SendMsgUseCase,
                     getUserUseCase: GetUserUseCase, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
 
-  val loadUser = getUserUseCase.loadUser()
+  private val loadUser = getUserUseCase.loadUser()
 
   override def initialize(): Unit = {
     super.initialize()

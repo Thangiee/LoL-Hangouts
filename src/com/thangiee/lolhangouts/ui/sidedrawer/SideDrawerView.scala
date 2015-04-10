@@ -25,13 +25,13 @@ import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu.{MenuButto
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
 
 class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayout(ctx, a) with CustomView {
-  lazy val drawer            = new ListView(ctx)
-  lazy val adapter           = new DrawerItemAdapter()
-  lazy val presenceBtn       = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
-  lazy val statusMsgTextView = find[TextView](R.id.tv_status_msg)
+  private lazy val drawer            = new ListView(ctx)
+  private lazy val adapter           = new DrawerItemAdapter()
+  private lazy val presenceBtn       = find[ExpandableMenuOverlay](R.id.btn_menu_presence)
+  private lazy val statusMsgTextView = find[TextView](R.id.tv_status_msg)
 
   private var drawerClosedListener: Option[View => Unit] = None
-  override val presenter = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
+  override protected val presenter = new SideDrawerPresenter(this, GetAppDataUseCaseImpl(), ChangeUserStatusCaseImpl(), GetUserUseCaseImpl(), LogoutUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()

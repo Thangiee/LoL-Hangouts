@@ -12,7 +12,7 @@ import de.greenrobot.event.EventBus
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class QuickChatActivity extends TActivity with UpButton {
-  override val layoutId              = R.layout.act_with_container_shadowed
+  override protected val layoutId = R.layout.act_with_container_shadowed
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
