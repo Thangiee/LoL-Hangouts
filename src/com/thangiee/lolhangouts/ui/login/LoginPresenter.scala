@@ -68,10 +68,10 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
   def handleLogin(username: String, password: String): Unit = {
     info("[*] attempting to login")
     isGuestMode = false
-    view.showProgress()
+    view.setLoginState(LoginView.LoadingState)
 
     loginUseCase.login(username, password) map { _ =>
-      runOnUiThread(view.showLoginSuccess())
+      runOnUiThread(view.setLoginState(LoginView.SuccessState))
       Thread.sleep(700) // wait a bit for login success animation
       view.navigateToHome(isGuestMode = false)
     } recover {
@@ -83,9 +83,14 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
   }
 
   def handleGuestLogin(): Unit = {
-    // todo: animate button
     isGuestMode = true
-    view.navigateToHome(isGuestMode = true)
-  }
+    view.setGuessLoginState(LoginView.LoadingState)
 
+    delay(mills = 350) {
+      view.setGuessLoginState(LoginView.SuccessState)
+      delay(mills = 500) {
+        view.navigateToHome(isGuestMode = true)
+      }
+    }
+  }
 }

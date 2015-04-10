@@ -4,13 +4,11 @@ import com.thangiee.lolhangouts.ui.core.Presenter
 
 trait LoginView {
 
-  def presenter: Presenter
+  protected def presenter: Presenter
 
-  def showProgress(): Unit
+  def setLoginState(state: Int): Unit
 
-  def hideProgress(): Unit
-
-  def showLoginSuccess(): Unit
+  def setGuessLoginState(state: Int): Unit
 
   def showChangeLog(): Unit
 
@@ -47,4 +45,11 @@ trait LoginView {
   def showUpdateApp(version: String): Unit
 
   def isLoginOffline: Boolean
+}
+
+object LoginView {
+  lazy val NormalState = 0
+  lazy val LoadingState = 50
+  lazy val SuccessState = 100
+  lazy val ErrorState = -1
 }

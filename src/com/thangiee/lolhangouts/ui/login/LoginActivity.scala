@@ -22,15 +22,15 @@ import org.scaloid.common.SIntent
 import scala.util.Try
 
 class LoginActivity extends TActivity with LoginView {
-  lazy val userEditText       = find[MaterialEditText](R.id.et_username)
-  lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
-  lazy val logInBtn           = find[CircularProgressButton](R.id.btn_login)
-  lazy val guestLogInBtn      = find[CircularProgressButton](R.id.btn_guest)
-  lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
-  lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
-  lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
+  private lazy val userEditText       = find[MaterialEditText](R.id.et_username)
+  private lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
+  private lazy val logInBtn           = find[CircularProgressButton](R.id.btn_login)
+  private lazy val guestLogInBtn      = find[CircularProgressButton](R.id.btn_guest)
+  private lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
+  private lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
+  private lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
 
-  override val presenter = new LoginPresenter(this, LoginUseCaseImpl())
+  override protected val presenter = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId  = R.layout.act_login_screen
 
   override def onCreate(b: Bundle): Unit = {
@@ -40,7 +40,7 @@ class LoginActivity extends TActivity with LoginView {
 
     logInBtn.setIndeterminateProgressMode(true)
     logInBtn.onClick { v: View =>
-      if (logInBtn.getProgress == -1) logInBtn.setProgress(0)
+      if (logInBtn.getProgress == LoginView.ErrorState) logInBtn.setProgress(LoginView.NormalState)
       else presenter.handleLogin(userEditText.txt2str, passwordEditText.txt2str)
     }
 
@@ -71,11 +71,9 @@ class LoginActivity extends TActivity with LoginView {
     super.onStop()
   }
 
-  override def showProgress(): Unit = logInBtn.setProgress(50)
+  override def setLoginState(state: Int): Unit = logInBtn.setProgress(state)
 
-  override def hideProgress(): Unit = logInBtn.setProgress(0)
-
-  override def showLoginSuccess(): Unit = logInBtn.setProgress(100)
+  override def setGuessLoginState(state: Int): Unit = guestLogInBtn.setProgress(state)
 
   override def showChangeLog(): Unit = super.showChangeLog()
 
@@ -120,22 +118,23 @@ class LoginActivity extends TActivity with LoginView {
   override def showBlankUsernameError(): Unit = {
     userEditText.shake()
     R.string.err_empty_user.croutonWarn()
-    logInBtn.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showBlankPasswordError(): Unit = {
     passwordEditText.shake()
     R.string.err_empty_pass.croutonWarn()
-    logInBtn.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showAuthenticationError(): Unit = {
     R.string.err_authentication.croutonWarn()
-    logInBtn.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showConnectionError(): Unit = {
     R.string.err_connect_to_server.croutonWarn()
-    logInBtn.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
+
 }

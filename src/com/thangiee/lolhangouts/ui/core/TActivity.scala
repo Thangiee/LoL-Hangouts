@@ -29,7 +29,7 @@ trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActi
   override def basis = this
   override implicit val ctx = this
 
-  def layoutId(): Int
+  protected def layoutId(): Int
 
   // any class that extends TActivity needs to include a toolbar in its layout
   lazy val toolbar = find[Toolbar](R.id.toolbar)
