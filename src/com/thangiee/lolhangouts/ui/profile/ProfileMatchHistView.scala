@@ -45,7 +45,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
     delay(500) { // wait for loading wheel to hide
       val adapter = new SimpleAdapter[Match](R.layout.card_match_hist, classOf[MatchViewHolder], matches).asInstanceOf[RecyclerView.Adapter[RegionViewHolder]]
       val alphaInAdapter = new AlphaInAnimationAdapter(adapter)
-      alphaInAdapter.setDuration(1000)
+      alphaInAdapter.setDuration(500)
       matchRecyclerView.setAdapter(alphaInAdapter)
     }
   }

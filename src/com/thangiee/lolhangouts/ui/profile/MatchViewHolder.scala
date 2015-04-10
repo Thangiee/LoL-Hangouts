@@ -16,7 +16,7 @@ class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
   override def updateView(context: Context, m: Match): Unit = {
     this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAsset(m.champName).toDrawable)
     this.findTextView(R.id.tv_champ_name).text(m.champName)
-    this.findTextView(R.id.tv_match_type).text(m.queueType)
+    this.findTextView(R.id.tv_match_type).text(m.queueType.replace("Ranked ", ""))
     this.findImageView(R.id.rect).setBackgroundColor(if (m.outCome.toLowerCase == "win")
       R.color.md_light_green_500.r2Color else R.color.md_red_500.r2Color)
 

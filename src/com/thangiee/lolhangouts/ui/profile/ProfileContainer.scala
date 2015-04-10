@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view._
 import android.widget.FrameLayout
+import com.afollestad.materialdialogs.MaterialDialog
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.exception.UseCaseException
 import com.thangiee.lolhangouts.data.usecases.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
@@ -25,6 +26,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
 
   private val loadUser = GetUserUseCaseImpl().loadUser()
   private val pages    = List(Page("Summary"), Page("Champions"), Page("History"))
+  private var pagePosition = 0
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
@@ -63,6 +65,10 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
           runOnUiThread(menuInflater.inflate(R.menu.add_friend, menu))
       }
     }
+
+    if (pagePosition == 1 || pagePosition == 2) {
+      menuInflater.inflate(R.menu.info, menu)
+    }
     true
   }
 
@@ -73,11 +79,29 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
           case e: UseCaseException => R.string.error_add_friend.croutonWarn()
         }
         true
+      case R.id.menu_info       =>
+        if (pagePosition == 1) {
+          new MaterialDialog.Builder(ctx)
+            .title("Top Ranked Champion")
+            .customView(R.layout.info_top_champs, true)
+            .positiveText(android.R.string.ok)
+            .show()
+        } else {
+          new MaterialDialog.Builder(ctx)
+            .title("Match History")
+            .customView(R.layout.info_match_hist, true)
+            .positiveText(android.R.string.ok)
+            .show()
+        }
+        true
       case _                    => false
     }
   }
 
   private def handleSwitchPage(position: Int): Unit = {
+    pagePosition = position
+    invalidateOptionsMenu()
+
     // only load the page the user is currently viewing and initialize it only once
     if (!pages(position).isSet) {
       position match {
