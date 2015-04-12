@@ -12,6 +12,7 @@ import com.thangiee.lolhangouts.ui.utils._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presenter {
+  private var isGuestMode = false
 
   override def initialize(): Unit = {
     super.initialize()
@@ -53,30 +54,43 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
           view.showSaveUsername(isEnable = !username.isEmpty)
           view.showSavePassword(isEnable = !password.isEmpty)
         case None         =>
-          view.navigateBack()
+          view.navigateBack() // redirected to region selection screen
       }
     }
   }
 
   override def pause(): Unit = {
     info("[*] saving login info")
-    loginUseCase.saveLoginInfo(view.getUsername, view.getPassword, view.isLoginOffline)
+    loginUseCase.saveLoginInfo(view.getUsername, view.getPassword, view.isLoginOffline, isGuestMode)
     super.pause()
   }
 
   def handleLogin(username: String, password: String): Unit = {
     info("[*] attempting to login")
-    view.showProgress()
+    isGuestMode = false
+    view.setLoginState(LoginView.LoadingState)
 
     loginUseCase.login(username, password) map { _ =>
-      runOnUiThread(view.showLoginSuccess())
+      runOnUiThread(view.setLoginState(LoginView.SuccessState))
       Thread.sleep(700) // wait a bit for login success animation
-      view.navigateToHome()
+      view.navigateToHome(isGuestMode = false)
     } recover {
       case UserInputException(msg, EmptyUsername)     => runOnUiThread(view.showBlankUsernameError())
       case UserInputException(msg, EmptyPassword)     => runOnUiThread(view.showBlankPasswordError())
       case UseCaseException(msg, ConnectionError)     => runOnUiThread(view.showConnectionError())
       case UseCaseException(msg, AuthenticationError) => runOnUiThread(view.showAuthenticationError())
+    }
+  }
+
+  def handleGuestLogin(): Unit = {
+    isGuestMode = true
+    view.setGuessLoginState(LoginView.LoadingState)
+
+    delay(mills = 350) {
+      view.setGuessLoginState(LoginView.SuccessState)
+      delay(mills = 500) {
+        view.navigateToHome(isGuestMode = true)
+      }
     }
   }
 }

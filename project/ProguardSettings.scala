@@ -43,16 +43,9 @@ object ProguardSettings {
     "-keep class org.jivesoftware.smack.SASLAuthentication",
     "-keep class org.jivesoftware.smack.** {*;}",
     "-keep class org.scaloid.common.**",
-    "-keep class org.jsoup.Jsoup.** {*;}",
-    "-keep class com.activeandroid.** {*;}",
-    "-keep class com.thangiee.LoLWithFriends.** {*;}",
-    "-keep class com.nispok.snackbar.Snackbar.** {*;}",
-    "-keep class android.support.v7.graphics.Palette {*;}",
     "-keepclassmembers public class * extends com.skocken.efficientadapter.lib.viewholder.AbsViewHolder {public <init>(...);}",
     "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
     "-keepclassmembers class android.support.v7.widget.SearchView { *; }",
-    "-keepclassmembers class ** {public void processHTML(**);}",
-    "-keepclassmembers class ** {public static Document parse(**);}",
     "-keepclassmembers class ** {public void onEvent*(**);}"
   )
 }

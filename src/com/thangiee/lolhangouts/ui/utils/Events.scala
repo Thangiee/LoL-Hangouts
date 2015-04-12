@@ -19,6 +19,6 @@ object Events {
   case class FinishActivity()
   case class Logout()
   case class ShowNiftyNotification(msg: Message)
-  case class SwitchScreen(drawerTitle: String)
+  case class SwitchContainer(drawerTitle: String)
   case class ShowDisconnection()
 }

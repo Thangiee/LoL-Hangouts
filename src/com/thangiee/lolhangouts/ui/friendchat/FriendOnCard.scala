@@ -16,10 +16,10 @@ import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListene
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
 
 case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
-  lazy val statusTextView = find[TextView](R.id.tv_friend_status)
-  lazy val iconImageView  = find[ImageView](R.id.img_profile_icon)
-  lazy val infoButton     = find[ImageButton](R.id.img_info)
-  lazy val notifyButton   = find[RippleView](R.id.img_bell_ripple)
+  private lazy val statusTextView = find[TextView](R.id.tv_friend_status)
+  private lazy val iconImageView  = find[ImageView](R.id.img_profile_icon)
+  private lazy val infoButton     = find[ImageButton](R.id.img_info)
+  private lazy val notifyButton   = find[RippleView](R.id.img_bell_ripple)
   addCardExpand(new SummonerCardExpand())
 
   override def setupInnerViewElements(parent: ViewGroup, view: View): Unit = {

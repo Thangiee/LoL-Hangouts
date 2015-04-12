@@ -2,7 +2,9 @@ package com.thangiee.lolhangouts.data.datasources.entities
 
 import thangiee.riotapi.league.MiniSeries
 
-case class GameInfoEntity(queueType: String, mapId: Int, blueTeam: List[PlayerStatsEntity], purpleTeam: List[PlayerStatsEntity])
+import scala.collection.parallel.immutable.ParSeq
+
+case class GameInfoEntity(queueType: String, mapId: Int, blueTeam: ParSeq[PlayerStatsEntity], purpleTeam: ParSeq[PlayerStatsEntity])
 
 case class PlayerStatsEntity
 (playerName: String,

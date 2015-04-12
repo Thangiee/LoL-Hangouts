@@ -10,22 +10,26 @@ import android.view.{Menu, MenuInflater, View}
 import android.widget.{ArrayAdapter, FrameLayout, Spinner}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.{CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
+import com.thangiee.lolhangouts.data.usecases.entities.BR
+import com.thangiee.lolhangouts.data.usecases.{GetAppDataUseCaseImpl, CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.utils._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends FrameLayout(ctx) with Container with OnQueryTextListener with OnSuggestionListener {
+abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends FrameLayout(ctx)
+  with Container with OnQueryTextListener with OnSuggestionListener {
 
   private var searchView   : SearchView = _
   private var regionSpinner: Spinner    = _
-  val suggestionAdapter = new SimpleCursorAdapter(ctx, android.R.layout.simple_dropdown_item_1line, null, Array("name"), Array(android.R.id.text1), 0)
+  private val suggestionAdapter = new SimpleCursorAdapter(ctx, android.R.layout.simple_dropdown_item_1line, null,
+    Array("name"), Array(android.R.id.text1), 0)
 
-  val checkSummExistUseCase = CheckSummExistUseCaseImpl()
-  val getUserUseCase        = GetUserUseCaseImpl()
-  val loadFriendList        = GetFriendsUseCaseImpl().loadFriendList()
-  val regions               = R.array.regions.r2StringArray
+  private val getAppDataUseCase     = GetAppDataUseCaseImpl()
+  private val checkSummExistUseCase = CheckSummExistUseCaseImpl()
+  private val getUserUseCase        = GetUserUseCaseImpl()
+  private val loadFriendList        = GetFriendsUseCaseImpl().loadFriendList()
+  private val regions               = R.array.regions.r2StringArray
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
@@ -52,11 +56,15 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
     searchView.setIconified(false)
 
     getUserUseCase.loadUser().map { user =>
-      // set the default spinner selection to the user region
-      regionSpinner.setSelection(regions.indexOf(user.region.id.toUpperCase))
-      // set the username as default
+      // set the username as default in the search view
       searchView.setQuery(user.inGameName, false)
     }
+
+    getAppDataUseCase.loadAppData().map(_.selectedRegion.getOrElse(BR)).map { region =>
+      // set the default spinner selection to the user region
+      regionSpinner.setSelection(regions.indexOf(region.id.toUpperCase))
+    }
+
     true
   }
 
@@ -79,6 +87,8 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
   override def onQueryTextChange(query: String): Boolean = {
     val columnNames = Array("_id", "name")
     val cursor = new MatrixCursor(columnNames)
+
+    // populate the cursor with friends name
     loadFriendList.map { friends =>
       val friendMatched = friends.map(_.name).filter(_.toLowerCase.contains(query.toLowerCase)) // filter names that container the query
       (0 to friendMatched.size).zip(friendMatched).foreach(p => cursor.addRow(p.productIterator.toList))

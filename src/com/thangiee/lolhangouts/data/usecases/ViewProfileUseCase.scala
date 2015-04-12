@@ -1,18 +1,18 @@
 package com.thangiee.lolhangouts.data.usecases
 
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, ProfileSummaryMapper, TopChampionMapper}
 import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, ProfileSummaryEntity, TopChampEntity}
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
-import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.utils.Parser._
+import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
 import thangiee.riotapi.core.{RiotApi, RiotException}
 import thangiee.riotapi.league.{League, LeagueEntry}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Success, Try}
 
 trait ViewProfileUseCase extends Interactor {
@@ -60,7 +60,8 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
     for {
       summ      ← RiotApi.summonerByName(name.replace(" ", ""), regionId)
       leagues   ← RiotApi.leagueEntryById(summ.id, regionId)
-      rankStats ← RiotApi.rankedStatsById(summ.id, 2015, regionId).map(_.getChampions.find(_.id == 0).head.stats.data2)
+      champs    ← RiotApi.rankedStatsById(summ.id, 2015, regionId).map(_.getChampions)
+      rankStats = champs.find(_.id == 0).head.stats.data2 // id 0 is all champions combine
       league    = leagues.headOption.getOrElse(League(name = "N/A", tier = "Unranked")) // set default values
       entry     = league.entries.headOption.getOrElse(LeagueEntry())
       series    = entry.miniSeries
@@ -71,13 +72,9 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
       deaths    = rankStats.totalDeathsPerSession.getOrElse(0)
       assists   = rankStats.totalAssists.getOrElse(0)
       games     = rankStats.totalSessionsPlayed.getOrElse(0)
-      double    = rankStats.totalDoubleKills.getOrElse(0)
-      triple    = rankStats.totalTripleKills.getOrElse(0)
-      quadra    = rankStats.totalQuadraKills.getOrElse(0)
-      penda     = rankStats.totalPentaKills.getOrElse(0)
     } yield ProfileSummaryMapper.transform {
       ProfileSummaryEntity(summ.name, regionId, entry.division, league.name, entry.leaguePoints, league.tier,
-        level, loses, wins, kills, deaths, assists, games, series, double, triple, quadra, penda)
+        level, loses, wins, kills, deaths, assists, games, series, champs)
     }
   }
 

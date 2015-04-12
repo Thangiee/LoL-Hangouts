@@ -1,6 +1,5 @@
 package com.thangiee.lolhangouts.ui.friendchat
 
-import android.os.Handler
 import com.github.nscala_time.time.Imports._
 import com.thangiee.lolhangouts.data.usecases.GetFriendsUseCase
 import com.thangiee.lolhangouts.ui.core.Presenter
@@ -12,9 +11,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
-  var lock        = false
-  val autoUpdateHandler = new Handler()
-  val autoUpdateTask = new Runnable {
+  private var lock           = false
+  private val autoUpdateTask = new Runnable {
     override def run(): Unit = {
       info("[*] Auto updating online friend cards")
       EventBus.getDefault.post(UpdateOnlineFriendsCard())
@@ -30,10 +28,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
   override def resume(): Unit = {
     super.resume()
     handler.postDelayed(autoUpdateTask, 1.minutes.millis)
-
-    view.showLoading()
     loadCardList()
-    view.hideLoading()
   }
 
   override def pause(): Unit = {
@@ -56,7 +51,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
           val (onFriends, offFriends) = friends.partition(_.isOnline)
           runOnUiThread(view.initCardList(onFriends, offFriends))
           lock = false
-        case Failure(_) =>
+        case Failure(_)       =>
           lock = false
       }
     }
@@ -77,7 +72,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     else
       info("[-] Refresh friend card blocked")
   }
-  
+
   def onEvent(events: UpdateOnlineFriendsCard): Unit = {
     info("[*] onEvent: request to update online friend cards")
     // lock use to prevent multiple calls to load list while it is already loading

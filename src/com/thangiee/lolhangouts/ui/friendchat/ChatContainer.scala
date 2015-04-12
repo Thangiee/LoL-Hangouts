@@ -17,12 +17,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with Container with PanelSlideListener {
-  lazy val friendListView = new FriendListView()
-  lazy val chatView       = new ChatView()
+  private lazy val friendListView = new FriendListView()
+  private lazy val chatView       = new ChatView()
 
-  val getUserUseCase       = GetUserUseCaseImpl()
-  val setActiveChatUseCase = SetActiveChatUseCaseImpl()
-  val markMsgReadUseCase   = MarkMsgReadUseCaseImp()
+  private val getUserUseCase       = GetUserUseCaseImpl()
+  private val setActiveChatUseCase = SetActiveChatUseCaseImpl()
+  private val markMsgReadUseCase   = MarkMsgReadUseCaseImp()
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()

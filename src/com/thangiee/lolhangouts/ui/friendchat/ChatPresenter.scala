@@ -18,7 +18,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
                     getMessageUseCase: GetMsgUseCase, sendMsgUseCase: SendMsgUseCase,
                     getUserUseCase: GetUserUseCase, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
 
-  val loadUser = getUserUseCase.loadUser()
+  private val loadUser = getUserUseCase.loadUser()
 
   override def initialize(): Unit = {
     super.initialize()
@@ -89,7 +89,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
       view.showLoading()
       getMessageUseCase.loadMessages(f.name).map(messages => runOnUiThread {
         view.showMessages(messages)
-        view.hideLoading()
+        delay(100) { view.hideLoading() }
       })
     }.getOrElse(warn("[!] friend is not set for ChatView"))
   }

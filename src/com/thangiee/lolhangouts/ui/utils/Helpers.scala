@@ -17,6 +17,7 @@ import com.nineoldandroids.animation.Animator
 import com.nineoldandroids.animation.Animator.AnimatorListener
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
+import com.thangiee.lolhangouts.ui.custom.ChampIconView
 import fr.castorflex.android.circularprogressbar.{CircularProgressBar, CircularProgressDrawable}
 
 trait Helpers extends org.scaloid.common.Helpers with ViewHelpers {

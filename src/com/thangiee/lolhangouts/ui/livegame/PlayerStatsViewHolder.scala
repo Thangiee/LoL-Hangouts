@@ -12,15 +12,16 @@ import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
 import com.thangiee.lolhangouts.ui.utils._
 
 class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
-  implicit val ctx = getContext
+  implicit private val ctx = getContext
 
   override def updateView(context: Context, p: PlayerStats): Unit = {
+
     // load champion icon
-    this.findImageView(R.id.img_live_game_champ).setImageDrawable(ChampIconAssetFile(p.championName).toDrawable)
+    this.findImageView(R.id.img_live_game_champ).setImageDrawable(ChampIconAsset(p.championName).toDrawable)
     // load spell 1 icon
-    this.findImageView(R.id.img_live_game_spell1).setImageDrawable(SummonerSpellAssetFile(p.spellOne).toDrawable)
+    this.findImageView(R.id.img_live_game_spell1).setImageDrawable(SummonerSpellAsset(p.spellOne).toDrawable)
     // load spell 2 icon
-    this.findImageView(R.id.img_live_game_spell2).setImageDrawable(SummonerSpellAssetFile(p.spellTwo).toDrawable)
+    this.findImageView(R.id.img_live_game_spell2).setImageDrawable(SummonerSpellAsset(p.spellTwo).toDrawable)
 
     // load season 4 badge
     setBadgeDrawable(p.leagueTier, this.findImageView(R.id.img_s4_badge))

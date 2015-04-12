@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.thangiee.lolhangouts"
-          android:versionCode="2008"
+          android:versionCode="2009"
           android:versionName="@string/app_version">
 
     <uses-sdk
             android:minSdkVersion="14"
-            android:targetSdkVersion="21"/>
+            android:targetSdkVersion="22"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

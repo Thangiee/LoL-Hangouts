@@ -10,6 +10,6 @@ abstract class SimpleContainer(implicit ctx: Context) extends FrameLayout(ctx) w
   def layoutId: Int
 
   override def getView: View = {
-    layoutInflater.inflate(layoutId, null)
+    layoutInflater.inflate(layoutId, this, false)
   }
 }

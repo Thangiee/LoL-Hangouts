@@ -1,11 +1,12 @@
 package com.thangiee.lolhangouts.data.usecases
 
+import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.GameInfoMapper
 import com.thangiee.lolhangouts.data.datasources.entities.{GameInfoEntity, PlayerStatsEntity}
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
-import com.thangiee.lolhangouts.data.usecases.entities.GameInfo
 import com.thangiee.lolhangouts.data.exception.DataAccessException
 import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.entities.GameInfo
+import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
 import play.api.libs.json.JsResultException
 import thangiee.riotapi.core.{RiotApi, RiotException}
 import thangiee.riotapi.currentgame.Participant
@@ -13,8 +14,9 @@ import thangiee.riotapi.league.League
 import thangiee.riotapi.stats.PlayerStatsSummary
 import thangiee.riotapi.stats.aggregatedstats.Data2
 
+import scala.collection.parallel._
+import scala.concurrent.forkjoin.ForkJoinPool
 import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
 
 trait ScoutGameUseCase extends Interactor {
@@ -27,44 +29,41 @@ case class ScoutGameUseCaseImpl() extends ScoutGameUseCase {
     getGame(username, regionId).map(_.logThenReturn(_ => "[+] Live game loaded successfully")).recover {
       case RiotException(msg, RiotException.DataNotFound) =>
         DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
-      case RiotException(msg, _) =>
+      case RiotException(msg, _)                          =>
         DataAccessException(s"[!] $msg", GetDataError).logThenThrow.w
-      case e: JsResultException =>
+      case e: JsResultException                           =>
         DataAccessException(s"[!] ${e.getMessage}", DataNotFound).logThenThrow.w
-    } get
+    }.get
   }
 
   private def getGame(name: String, regionId: String): Try[GameInfo] = {
     for {
       id         ← RiotApi.summonerByName(name.replace(" ", ""), regionId).map(_.id)
       gameInfo   ← RiotApi.currentGameInfoById(id, regionId)
-      allPlayers = gameInfo.participants
-      ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap  // todo: run in parallel possible?
+      allPlayers = gameInfo.participants.par  // execute in parallel
+      _          = allPlayers.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(allPlayers.size)) // set pool size to #players
+      ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap
       normals    = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
-      leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId), regionId)
-    } yield GameInfoMapper.transform {
-      GameInfoEntity(
-        gameInfo.gameType,
-        gameInfo.mapId.toInt,
-        allPlayers.filter(_.teamId == 100).map { p =>
-          createPlayerStatsEntity(
-            p,
-            regionId,
-            leagues.getOrElse(p.summonerId, Nil).headOption.headOption.getOrElse(League(tier = "UNRANKED")),
-            ranks.get(p.summonerId).get,
-            normals.get(p.summonerId).get
-          )
-        },
-        allPlayers.filter(_.teamId == 200).map { p =>
-          createPlayerStatsEntity(
-            p,
-            regionId,
-            leagues.getOrElse(p.summonerId, Nil).headOption.headOption.getOrElse(League(tier = "UNRANKED")),
-            ranks.get(p.summonerId).get,
-            normals.get(p.summonerId).get
-          )
-        }
-      )
+      leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId).toList, regionId)
+    } yield {
+      val allPlayersStats = allPlayers.map { p =>
+        createPlayerStatsEntity(
+          p,
+          regionId,
+          leagues.getOrElse(p.summonerId, Nil).headOption.headOption.getOrElse(League(tier = "UNRANKED")),
+          ranks.get(p.summonerId).get,
+          normals.get(p.summonerId).get
+        )
+      }
+
+      GameInfoMapper.transform {
+        GameInfoEntity(
+          gameInfo.gameType,
+          gameInfo.mapId.toInt,
+          allPlayersStats.filter(_.teamId == 100),
+          allPlayersStats.filter(_.teamId == 200)
+        )
+      }
     }
   }
 

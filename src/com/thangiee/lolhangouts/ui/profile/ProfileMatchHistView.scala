@@ -13,23 +13,23 @@ import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.regionselection.RegionViewHolder
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter
 import tr.xip.errorview.{ErrorView, RetryListener}
 
 import scala.collection.JavaConversions._
 
 class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  lazy val loadingWheel      = find[CircularProgressBar](R.id.circular_loader)
-  lazy val errorView         = find[ErrorView](R.id.error_view)
-  lazy val matchRecyclerView = find[RecyclerView](R.id.recycler_view)
+  private lazy val loadingWheel      = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val errorView         = find[ErrorView](R.id.error_view)
+  private lazy val matchRecyclerView = find[RecyclerView](R.id.recycler_view)
 
-  override val presenter = new ProfileMatchHistPresenter(this, ViewProfileUseCaseImpl())
+  override protected val presenter = new ProfileMatchHistPresenter(this, ViewProfileUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
     addView(layoutInflater.inflate(R.layout.profile_match_hist, this, false))
     val llm = new LinearLayoutManager(ctx)
     llm.setSmoothScrollbarEnabled(true)
-    matchRecyclerView.setVisibility(View.INVISIBLE)
     matchRecyclerView.setLayoutManager(llm)
     matchRecyclerView.setHasFixedSize(true)
   }
@@ -42,10 +42,11 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
   }
 
   def initializeViewData(matches: List[Match]): Unit = {
-    val adapter = new SimpleAdapter[Match](R.layout.line_item_match_history, classOf[MatchViewHolder], matches)
-
-    delay(1500) { // wait for loading wheel to hide
-      matchRecyclerView.setAdapter(adapter.asInstanceOf[RecyclerView.Adapter[RegionViewHolder]])
+    delay(500) { // wait for loading wheel to hide
+      val adapter = new SimpleAdapter[Match](R.layout.card_match_hist, classOf[MatchViewHolder], matches).asInstanceOf[RecyclerView.Adapter[RegionViewHolder]]
+      val alphaInAdapter = new AlphaInAnimationAdapter(adapter)
+      alphaInAdapter.setDuration(500)
+      matchRecyclerView.setAdapter(alphaInAdapter)
     }
   }
 
@@ -58,7 +59,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
 
   def hideLoading(): Unit = {
     loadingWheel.zoomOut(delay = 500)
-    matchRecyclerView.slideInDown(delay = 1500)
+    matchRecyclerView.fadeIn(duration = 1, delay = 500)
   }
 
   def showDataNotFound(): Unit = showError("No Result", R.string.no_match_hist.r2String)

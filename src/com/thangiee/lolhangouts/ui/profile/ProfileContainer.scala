@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view._
 import android.widget.FrameLayout
+import com.afollestad.materialdialogs.MaterialDialog
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.exception.UseCaseException
 import com.thangiee.lolhangouts.data.usecases.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
@@ -15,16 +16,17 @@ import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListene
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
-  lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
-  lazy val pager                = this.find[ViewPager](R.id.pager)
-  lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
-  lazy val profileTopChampView  = this.find[ProfileTopChampsView](R.id.page_2)
-  lazy val profileMatchHistView = this.find[ProfileMatchHistView](R.id.page_3)
+  private lazy val tabs                 = this.find[MaterialTabHost](R.id.tabs)
+  private lazy val pager                = this.find[ViewPager](R.id.pager)
+  private lazy val profileSummaryView   = this.find[ProfileSummaryView](R.id.page_1)
+  private lazy val profileTopChampView  = this.find[ProfileTopChampsView](R.id.page_2)
+  private lazy val profileMatchHistView = this.find[ProfileMatchHistView](R.id.page_3)
 
   case class Page(title: String, var isSet: Boolean = false)
 
-  val loadUser = GetUserUseCaseImpl().loadUser()
-  val pages    = List(Page("Summary"), Page("Champions"), Page("History"))
+  private val loadUser = GetUserUseCaseImpl().loadUser()
+  private val pages    = List(Page("Summary"), Page("Champions"), Page("History"))
+  private var pagePosition = 0
 
   override def onAttachedToWindow(): Unit = {
     super.onAttachedToWindow()
@@ -63,6 +65,10 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
           runOnUiThread(menuInflater.inflate(R.menu.add_friend, menu))
       }
     }
+
+    if (pagePosition == 1 || pagePosition == 2) {
+      menuInflater.inflate(R.menu.info, menu)
+    }
     true
   }
 
@@ -73,11 +79,29 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
           case e: UseCaseException => R.string.error_add_friend.croutonWarn()
         }
         true
+      case R.id.menu_info       =>
+        if (pagePosition == 1) {
+          new MaterialDialog.Builder(ctx)
+            .title("Top Ranked Champion")
+            .customView(R.layout.info_top_champs, true)
+            .positiveText(android.R.string.ok)
+            .show()
+        } else {
+          new MaterialDialog.Builder(ctx)
+            .title("Match History")
+            .customView(R.layout.info_match_hist, true)
+            .positiveText(android.R.string.ok)
+            .show()
+        }
+        true
       case _                    => false
     }
   }
 
   private def handleSwitchPage(position: Int): Unit = {
+    pagePosition = position
+    invalidateOptionsMenu()
+
     // only load the page the user is currently viewing and initialize it only once
     if (!pages(position).isSet) {
       position match {

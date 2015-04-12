@@ -17,11 +17,11 @@ import tr.xip.errorview.ErrorView
 import scala.collection.JavaConversions._
 
 class GameScouterTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  lazy val playersRecView = find[RecyclerView](R.id.recycler_view)
-  lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
-  lazy val errorView      = find[ErrorView](R.id.error_view)
+  private lazy val playersRecView = find[RecyclerView](R.id.recycler_view)
+  private lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val errorView      = find[ErrorView](R.id.error_view)
 
-  override val presenter = new GameScouterTeamPresenter(this)
+  override protected val presenter = new GameScouterTeamPresenter(this)
 
   override def onAttached(): Unit = {
     super.onAttached()

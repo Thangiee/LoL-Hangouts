@@ -1,17 +1,17 @@
 package com.thangiee.lolhangouts.ui
 
+import java.text.{DecimalFormat, DecimalFormatSymbols}
+import java.util.Locale
+
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.{BitmapFactory, Bitmap, Point}
-import android.graphics.drawable.Drawable
+import android.graphics.Point
 import android.net.ConnectivityManager
-import android.os.{Looper, Handler}
+import android.os.{Handler, Looper}
 import android.support.v7.app.ActionBarActivity
 import android.util.TypedValue
-import com.thangiee.lolhangouts.{R, MyApplication}
+import com.thangiee.lolhangouts.MyApplication
 import org.scaloid.common.SystemServices
-
-import scala.util.Try
 
 package object utils extends SystemServices with Helpers with Implicits with Logger {
   lazy val handler = new Handler(Looper.getMainLooper)
@@ -85,18 +85,13 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
   }
 
-  implicit class Asset2Drawable(assetFile: AssetFile)(implicit ctx: Context) {
-    def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(assetFile.path), null))
-      .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
+  implicit class Rounding(number: Double) {
+    def roundTo(DecimalPlace: Int): Double = {
+      if (number.isNaN) return 0.0
 
-    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(assetFile.path)))
-      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
-  }
-
-  implicit class RightBiasedEither[A,B](e: Either[A,B]) {
-    def map[C](f: B => C) = e.right map f
-    def flatMap[C](f: B => Either[A,C]) = e.right flatMap f
-    def get = e.right get
-    def getOrElse(f: => B) = e.right getOrElse f
+      // need to use Locale.US otherwise this throw NumberFormatException: Invalid double
+      // on phones that are set on a language that use comma to denote decimal
+      new DecimalFormat("###." + ("#" * DecimalPlace), new DecimalFormatSymbols(Locale.US)).format(number).toDouble
+    }
   }
 }

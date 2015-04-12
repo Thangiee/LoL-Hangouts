@@ -5,6 +5,7 @@ object CacheKey {
   val LoginPass = "login-password"
   val AppVersion = "app-version"
   val IsLoginOffline = "login-offline"
+  val IsGuestMode = "guest-mode"
   val LoginRegionId = "login-region-id"
 
   val IsFirstLaunch = "first_launch"

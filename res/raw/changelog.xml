@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="2.1.0" changeDate="April 10, 2015">
+        <changelogtext>Redesign profile screens</changelogtext>
+        <changelogtext>significantly reduced game scouter loading time</changelogtext>
+        <changelogtext>Add Guest login mode which allows use of some features without logging in with an account</changelogtext>
+    </changelogversion>
 
     <changelogversion versionName="2.0.5" changeDate="Mar 29, 2015">
         <changelogtext>Fix game scouter crashing for phones that are set on a language that use comma to denote decimal.</changelogtext>

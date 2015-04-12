@@ -17,18 +17,20 @@ import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.lolhangouts.ui.utils._
 import org.jivesoftware.smack.SmackAndroid
+import org.scaloid.common.SIntent
 
 import scala.util.Try
 
 class LoginActivity extends TActivity with LoginView {
-  lazy val userEditText       = find[MaterialEditText](R.id.et_username)
-  lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
-  lazy val logInButton        = find[CircularProgressButton](R.id.btn_login)
-  lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
-  lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
-  lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
+  private lazy val userEditText       = find[MaterialEditText](R.id.et_username)
+  private lazy val passwordEditText   = find[MaterialEditText](R.id.et_password)
+  private lazy val logInBtn           = find[CircularProgressButton](R.id.btn_login)
+  private lazy val guestLogInBtn      = find[CircularProgressButton](R.id.btn_guest)
+  private lazy val saveUserSwitch     = find[SwitchCompat](R.id.cb_save_user)
+  private lazy val savePassSwitch     = find[SwitchCompat](R.id.cb_save_pass)
+  private lazy val offlineLoginSwitch = find[SwitchCompat](R.id.cb_offline_login)
 
-  override val presenter = new LoginPresenter(this, LoginUseCaseImpl())
+  override protected val presenter = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId  = R.layout.act_login_screen
 
   override def onCreate(b: Bundle): Unit = {
@@ -36,15 +38,17 @@ class LoginActivity extends TActivity with LoginView {
     SmackAndroid.init(ctx)
     overridePendingTransition(R.anim.right_slide_in, R.anim.stay_still)
 
-    logInButton.setIndeterminateProgressMode(true)
-    logInButton.onClick { v: View =>
-      if (logInButton.getProgress == -1) logInButton.setProgress(0)
+    logInBtn.setIndeterminateProgressMode(true)
+    logInBtn.onClick { v: View =>
+      if (logInBtn.getProgress == LoginView.ErrorState) logInBtn.setProgress(LoginView.NormalState)
       else presenter.handleLogin(userEditText.txt2str, passwordEditText.txt2str)
     }
 
+    guestLogInBtn.setIndeterminateProgressMode(true)
+    guestLogInBtn.onClick((v: View) => presenter.handleGuestLogin())
+
     navIcon.setIconState(MaterialMenuDrawable.IconState.ARROW)
     toolbar.setNavigationOnClickListener(navigateBack())
-    getSupportActionBar.setTitle(null)
   }
 
   override def onStart(): Unit = {
@@ -67,17 +71,15 @@ class LoginActivity extends TActivity with LoginView {
     super.onStop()
   }
 
-  override def showProgress(): Unit = logInButton.setProgress(50)
+  override def setLoginState(state: Int): Unit = logInBtn.setProgress(state)
 
-  override def hideProgress(): Unit = logInButton.setProgress(0)
-
-  override def showLoginSuccess(): Unit = logInButton.setProgress(100)
+  override def setGuessLoginState(state: Int): Unit = guestLogInBtn.setProgress(state)
 
   override def showChangeLog(): Unit = super.showChangeLog()
 
-  override def navigateToHome(): Unit = {
+  override def navigateToHome(isGuestMode: Boolean): Unit = {
     finish()
-    startActivity[MainActivity]
+    ctx.startActivity(MainActivity(isGuestMode))
   }
 
   override def navigateBack(): Unit = {
@@ -85,7 +87,7 @@ class LoginActivity extends TActivity with LoginView {
     startActivity[RegionSelectionActivity]
   }
 
-  override def setTitle(title: String): Unit = find[TextView](R.id.tv_region_name).setText(title)
+  override def setTitle(title: String): Unit = getSupportActionBar.setTitle(title)
 
   override def setPassword(password: String): Unit = runOnUiThread(passwordEditText.setText(password))
 
@@ -116,22 +118,23 @@ class LoginActivity extends TActivity with LoginView {
   override def showBlankUsernameError(): Unit = {
     userEditText.shake()
     R.string.err_empty_user.croutonWarn()
-    logInButton.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showBlankPasswordError(): Unit = {
     passwordEditText.shake()
     R.string.err_empty_pass.croutonWarn()
-    logInButton.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showAuthenticationError(): Unit = {
     R.string.err_authentication.croutonWarn()
-    logInButton.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showConnectionError(): Unit = {
     R.string.err_connect_to_server.croutonWarn()
-    logInButton.setProgress(-1)
+    logInBtn.setProgress(LoginView.ErrorState)
   }
+
 }

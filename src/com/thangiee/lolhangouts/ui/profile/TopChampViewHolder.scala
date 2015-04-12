@@ -12,9 +12,9 @@ import com.thangiee.lolhangouts.data.usecases.entities.TopChampion
 import com.thangiee.lolhangouts.ui.utils._
 
 class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
-  implicit val ctx = getContext
-  val green = R.color.md_light_green_600.r2Color
-  val red = R.color.red.r2Color
+  implicit protected val ctx = getContext
+  private val green = R.color.md_light_green_600.r2Color
+  private val red = R.color.red.r2Color
 
   val paletteAsyncListener = new PaletteAsyncListener {
     override def onGenerated(palette: Palette): Unit = {
@@ -32,7 +32,7 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
   }
 
   override def updateView(context: Context, c: TopChampion): Unit = {
-    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAssetFile(c.name).toDrawable)
+    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAsset(c.name).toDrawable)
     this.findTextView(R.id.tv_champ_name).text(c.name)
 
     this.findTextView(R.id.tv_champ_perf).text(c.overAllPerformance + "%")
@@ -59,10 +59,10 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
     this.findTextView(R.id.tv_champ_avg_more_cs).text(c.avgCsPerformance.toString)
       .textColor(if (c.avgCsPerformance >= 0) green else red)
 
-    this.findTextView(R.id.tv_champ_avg_g).text(c.avgGold.toString)
+    this.findTextView(R.id.tv_champ_avg_g).text((c.avgGold/1000.0).roundTo(1).toString + "k")
     this.findTextView(R.id.tv_champ_avg_more_g).text(c.avgGoldPerformance.toString)
       .textColor(if (c.avgGoldPerformance >= 0) green else red)
 
-    Palette.generateAsync(ChampIconAssetFile(c.name).toBitmap, paletteAsyncListener)
+    Palette.generateAsync(ChampIconAsset(c.name).toBitmap, paletteAsyncListener)
   }
 }

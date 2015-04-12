@@ -1,5 +1,11 @@
 package com.thangiee.lolhangouts.data
 
-package object utils extends AnyRef with Logger with Parser {
+import java.util.concurrent.Executors
 
+import scala.concurrent.ExecutionContext
+
+package object utils extends AnyRef with Logger with Parser {
+  object Implicits extends AnyRef {
+    implicit val executionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
+  }
 }

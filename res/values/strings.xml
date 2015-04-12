@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LoL Hangouts</string>
-    <string name="app_version">2.0.5</string>
+    <string name="app_version">2.1.0</string>
     <string name="region_name">region name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
@@ -28,7 +28,7 @@
 
     <!--error messages-->
     <string name="no_match_hist">404: Unable to find any match history.</string>
-    <string name="no_champion">404: Unable to find any champion data.</string>
+    <string name="no_champion">404: Unable to find any ranked champion data.</string>
     <string name="no_profile">404: Unable to find summoner profile.</string>
     <string name="server_down">server is currently down. Try again later.</string>
     <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this take too long)</string>
@@ -76,7 +76,8 @@
     <string name="regions">regions</string>
     <string name="ranked_solo_queue">Ranked Solo Queue</string>
     <string name="username">Username</string>
-    <string name="win_rate">win rate</string>
+    <string name="win_rate">Win Rate</string>
+    <string name="kda">K/D/A</string>
     <string name="rank_elo">Rank Elo</string>
     <string name="save_username">Save username</string>
     <string name="rank">Rank</string>
@@ -100,6 +101,24 @@
     <string name="tier_division">tier division</string>
     <string name="league">League</string>
     <string name="points">points</string>
+    <string name="guest">Guest</string>
+    <string name="in_guest_mode">In guest mode</string>
+    <string name="chat_unavailable_in_guest_mode">Chat feature is unavailable in Guest mode. Please login to use it.</string>
+    <string name="stats">Statistics</string>
+    <string name="most_played">Most Played</string>
+    <string name="oops">Oops</string>
+    <string name="info">info</string>
+    <string name="perf_icon_description">Performance with a champion compared to the average player\'s performance with the same champion</string>
+    <string name="match_hist_kill_icon_description">Number of kills for the match</string>
+    <string name="match_hist_death_icon_description">Number of deaths for the match</string>
+    <string name="match_hist_assist_icon_description">Number of assists for the match</string>
+    <string name="match_hist_cs_icon_description">Creep Score for the match</string>
+    <string name="match_hist_gold_icon_description">Gold Earned for the match</string>
+    <string name="top_champ_kill_icon_description">Average Kills per Game with a champion</string>
+    <string name="top_champ_death_icon_description">Average Deaths per Game with a champion</string>
+    <string name="top_champ_assist_icon_description">Average Assists per Game with a champion</string>
+    <string name="top_champ_cs_icon_description">Average Creep Score per Game with a champion</string>
+    <string name="top_champ_gold_icon_description">Average Gold Earned per Game with a champion</string>
 
     <string-array name="history">
         <item>1 day</item>
