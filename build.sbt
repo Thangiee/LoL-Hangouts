@@ -11,11 +11,6 @@ minSdkVersion in Android := "14"
 
 platformTarget in Android := "android-22"
 
-proguardCache in Android ++= Seq(
-  ProguardCache("org.scaloid") % "org.scaloid",
-  ProguardCache("play") % "play"
-)
-
 apkbuildExcludes in Android ++= Seq(
   "META-INF/notice.txt",
   "META-INF/license.txt",
@@ -27,15 +22,27 @@ apkbuildExcludes in Android ++= Seq(
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
+resolvers += "smack repo" at "https://oss.sonatype.org/content/repositories/snapshots"
+
+resolvers += "material-dialogs" at "https://dl.bintray.com/drummer-aidan/maven"
+
 proguardOptions in Android ++= ProguardSettings.buildSettings
 
+libraryDependencies ++= Seq(
+  "org.igniterealtime.smack" % "smack-tcp" % "4.1.1",
+  "org.igniterealtime.smack" % "smack-core" % "4.1.1",
+  "org.igniterealtime.smack" % "smack-extensions" % "4.1.1",
+  "org.igniterealtime.smack" % "smack-android" % "4.1.1",
+  "org.scalactic" % "scalactic_2.11" % "2.2.5"
+)
+
 // core dependencies
-libraryDependencies ++= appCompat ++ googleBilling :+ scaloid :+ scalaLogging :+ playJson :+ scalajHttp
+libraryDependencies ++= appCompat ++ googleBilling ++ smack :+ scaloid :+ scalaLogging :+ playJson :+ scalajHttp
 
 libraryDependencies ++= androidViewAnimations ++ cardsLib :+ smoothProgressBar :+ materialTabs :+ errorView :+
-                        snackbar :+ efficientAdapter :+ materialDialog :+ rippleView :+ changeLogLib :+
+                        snackbar :+ efficientAdapter :+ rippleView :+ changeLogLib :+ materialDialog :+
                         licensesDialog :+ roundedImageView :+ discreetAppRate :+ easyPrefs :+ materialMenu :+
-                        circularProgressBtn :+ expandableBtnMenu :+ funAdapter :+ crouton :+ jsoup :+ acra :+
+                        circularProgressBtn :+ funAdapter :+ crouton :+ jsoup :+ acra :+ expandableBtnMenu :+
                         nscalaTime :+ revealColorView :+ parse :+ helloChart :+ recyclerViewAnimator
 
 run <<= run in Android
