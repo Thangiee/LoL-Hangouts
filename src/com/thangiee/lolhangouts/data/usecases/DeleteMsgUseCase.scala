@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
 import com.thangiee.lolhangouts.data.utils._
 
@@ -14,7 +14,7 @@ trait DeleteMsgUseCase extends Interactor {
 case class DeleteMsgUseCaseImpl() extends DeleteMsgUseCase {
 
   override def deleteAllMessages(friendName: String): Future[Unit] = Future {
-    DB.deleteMessages(LoLChat.loginName, friendName)
+    DB.deleteMessages(Cached.loginUsername, friendName)
     info(s"[+] deleted all messages with $friendName")
   }
 }

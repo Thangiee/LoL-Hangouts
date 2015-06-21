@@ -1,59 +1,55 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, ProfileSummaryMapper, TopChampionMapper}
 import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, ProfileSummaryEntity, TopChampEntity}
-import com.thangiee.lolhangouts.data.exception.DataAccessException
-import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{ProfileNotFound, GetProfileFailed, ViewProfileError}
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
-import com.thangiee.lolhangouts.data.utils.Parser._
+import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data.utils.Parser.{ParserError, DataNotFound, ServerBusy}
 import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
+import org.scalactic.Or
 import thangiee.riotapi.core.{RiotApi, RiotException}
 import thangiee.riotapi.league.{League, LeagueEntry}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 trait ViewProfileUseCase extends Interactor {
-  def loadSummary(username: String, regionId: String): Future[ProfileSummary]
-  def loadTopChamps(username: String, regionId: String): Future[List[TopChampion]]
-  def loadMatchHistory(username: String, regionId: String): Future[List[Match]]
+  def loadSummary(username: String, regionId: String): Future[ProfileSummary Or ViewProfileError]
+  def loadTopChamps(username: String, regionId: String): Future[List[TopChampion] Or ViewProfileError]
+  def loadMatchHistory(username: String, regionId: String): Future[List[Match] Or ViewProfileError]
+}
+
+object ViewProfileUseCase {
+  sealed trait ViewProfileError
+  object ProfileNotFound extends ViewProfileError
+  object GetProfileFailed extends ViewProfileError
 }
 
 case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
 
-  override def loadSummary(username: String, regionId: String): Future[ProfileSummary] = Future {
-    getSummary(username.toLowerCase, regionId.toLowerCase).map {
-      _.logThenReturn(_ => "[+] Profile summary loaded")
-    } recover {
-      case RiotException(msg, RiotException.DataNotFound) =>
-        DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
-      case RiotException(msg, _) =>
-        DataAccessException(s"[!] $msg", GetDataError).logThenThrow.w
-    } get
+  override def loadSummary(username: String, regionId: String): Future[ProfileSummary Or ViewProfileError] = Future {
+    getSummary(username.toLowerCase, regionId.toLowerCase) match {
+      case Success(summary)                                        => info("[+] Profile summary loaded"); Good(summary)
+      case Failure(RiotException(msg, RiotException.DataNotFound)) => info(s"[-] $msg"); Bad(ProfileNotFound)
+      case Failure(RiotException(msg, _))                          => info(s"[!] $msg"); Bad(GetProfileFailed)
+      case Failure(e)                                              => e.printStackTrace(); Bad(GetProfileFailed)
+    }
   }
 
-  override def loadTopChamps(username: String, regionId: String): Future[List[TopChampion]] = Future {
-    getTopChampions(username.toLowerCase, regionId.toLowerCase).map {
-      _.logThenReturn(_ => "[+] Top Champions loaded")
-    } recover {
-      case RiotException(msg, RiotException.DataNotFound) =>
-        DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
-      case RiotException(msg, _) =>
-        DataAccessException(s"[!] $msg", GetDataError).logThenThrow.w
-    } get
-  }
+  override def loadTopChamps(username: String, regionId: String): Future[List[TopChampion] Or ViewProfileError] =
+    getParsedData(topChampions(username.toLowerCase, regionId.toLowerCase), "[+] Top Champions loaded")
 
-  override def loadMatchHistory(username: String, regionId: String): Future[List[Match]] = Future {
-    getMatchHistory(username.toLowerCase, regionId.toLowerCase).map {
-      _.logThenReturn(_ => "[+] Match history loaded")
-    } recover {
-      case RiotException(msg, RiotException.DataNotFound) =>
-        DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
-      case RiotException(msg, _) =>
-        DataAccessException(s"[!] $msg", GetDataError).logThenThrow.w
-    } get
+  override def loadMatchHistory(username: String, regionId: String): Future[List[Match] Or ViewProfileError] =
+    getParsedData(matchHistory(username.toLowerCase, regionId.toLowerCase), "[+] Match history loaded")
+
+  private def getParsedData[A](f: => Or[A, ParserError], successLog: String): Future[A Or ViewProfileError] = Future {
+    f.map(_.logThenReturn(_ => successLog)).badMap {
+      case DataNotFound => info("[-] Parser did not find the summoner info"); ProfileNotFound
+      case ServerBusy => info(s"[!] Parser timeout; failed to connect to the server"); GetProfileFailed
+    }
   }
 
   private def getSummary(name: String, regionId: String): Try[ProfileSummary] = {
@@ -78,7 +74,7 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
     }
   }
 
-  private def getTopChampions(name: String, regionId: String): Try[List[TopChampion]] = {
+  private def topChampions(name: String, regionId: String): List[TopChampion] Or ParserError = {
     val url = s"http://www.lolskill.net/summoner/$regionId/${name.replace(" ", "")}/champions"
     val doc = fetchDocument(url)
 
@@ -86,7 +82,7 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
       // check for "Champion Performance" button since the button is hidden and
       // the page is redirected to the summary page for summoner without any top ranked champion.
       // So just return an empty list.
-      if (!doc.div("pagination").text().contains("Champion Performance")) return Success(Nil)
+      if (!doc.div("pagination").text().contains("Champion Performance")) return Good(Nil)
     }
 
     doc.map(_.tableId("championsTable").tr().tail.map { row =>
@@ -111,12 +107,12 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
     }.toList)
   }
 
-  private def getMatchHistory(name: String, regionId: String): Try[List[Match]] = {
+  private def matchHistory(name: String, regionId: String): List[Match] Or ParserError = {
     val url = s"http://www.lolskill.net/summoner/$regionId/${name.replace(" ", "")}/matches"
     val fetchDoc = fetchDocument(url)
 
     fetchDoc map { doc =>
-      if (!doc.div("pagination").text().contains("Match History")) return Success(Nil)
+      if (!doc.div("pagination").text().contains("Match History")) return Good(Nil)
     }
 
     fetchDoc.map(_.tableId("matchHistory").tr().filter(_.hasClass("match")).map { row =>

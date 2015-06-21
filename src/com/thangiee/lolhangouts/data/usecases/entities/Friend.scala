@@ -1,7 +1,6 @@
 package com.thangiee.lolhangouts.data.usecases.entities
 
 import com.thangiee.lolhangouts.data.usecases.entities.ChatMode.ChatMode
-import com.thangiee.lolhangouts.data.usecases.entities.ChatType.ChatType
 
 case class Friend
 (
@@ -10,7 +9,6 @@ case class Friend
   regionId: String,
   latestMsg: Option[Message],
   chatMode: ChatMode,
-  chatType: ChatType,
   isOnline: Boolean,
   timeInGame: Long, // in mils, return 0 if not in a game
   championSelect: Option[String],
@@ -28,10 +26,4 @@ object ChatMode extends Enumeration {
   val Chat = Value("chat")
   val Away = Value("away")
   val Dnd  = Value("Do not disturb")
-}
-
-object ChatType extends Enumeration {
-  type ChatType = Value
-  val Available   = Value("online")
-  val Unavailable = Value("offline")
 }
