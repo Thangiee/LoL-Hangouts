@@ -31,7 +31,7 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
     cardListView.setExternalAdapter(animationAdapter, cardArrayAdapter)
   }
 
-  def initCardList(onFriends: List[Friend], offFriends: List[Friend]): Unit = {
+  def initCardList(onFriends: Seq[Friend], offFriends: Seq[Friend]): Unit = {
     cards.clear()
     cards.++=(onFriends.map(f => FriendOnCard(f)))
     cards.++=(offFriends.map(f => FriendOffCard(f)))

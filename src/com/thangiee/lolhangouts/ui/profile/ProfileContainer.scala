@@ -7,7 +7,6 @@ import android.view._
 import android.widget.FrameLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.exception.UseCaseException
 import com.thangiee.lolhangouts.data.usecases.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.ui.utils._
@@ -45,7 +44,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
     pager.setAdapter(pagerAdapter)
     pager.setOnPageChangeListener(pageChangeListener)
 
-    (0 until pages.size).foreach { i =>
+    pages.indices.foreach { i =>
       tabs.addTab(tabs.newTab()
         .setText(pages(i).title)
         .setTabListener(this))
@@ -59,7 +58,8 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   override def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = {
     menuInflater.inflate(R.menu.overflow, menu)
     GetFriendsUseCaseImpl().loadFriendByName(name) onFailure { case e => // not in friend list
-      loadUser onSuccess { case user =>
+      //todo: fix
+      loadUser onSuccess { case Good(user) =>
         // don't inflate if viewing your own profile or a profile from a different region
         if (name.toLowerCase != user.inGameName.toLowerCase && regionId.toLowerCase == user.region.id.toLowerCase)
           runOnUiThread(menuInflater.inflate(R.menu.add_friend, menu))
@@ -75,9 +75,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case R.id.menu_add_friend =>
-        AddFriendUseCaseImpl().addFriend(name) recover {
-          case e: UseCaseException => R.string.error_add_friend.croutonWarn()
-        }
+        AddFriendUseCaseImpl().addFriend(name)
         true
       case R.id.menu_info       =>
         if (pagePosition == 1) {

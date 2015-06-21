@@ -10,7 +10,7 @@ trait Ads extends TActivity {
   def AD_UNIT_ID: String
   def adsLayout: ViewGroup
 
-  def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = {
+  def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = { //todo:
     adView.setAdSize(AdSize.BANNER)
     adView.setAdUnitId(AD_UNIT_ID)
 

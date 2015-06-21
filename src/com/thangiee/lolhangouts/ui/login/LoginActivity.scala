@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.SwitchCompat
 import android.view.View
-import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
@@ -16,8 +15,6 @@ import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.lolhangouts.ui.utils._
-import org.jivesoftware.smack.SmackAndroid
-import org.scaloid.common.SIntent
 
 import scala.util.Try
 
@@ -35,7 +32,6 @@ class LoginActivity extends TActivity with LoginView {
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
-    SmackAndroid.init(ctx)
     overridePendingTransition(R.anim.right_slide_in, R.anim.stay_still)
 
     logInBtn.setIndeterminateProgressMode(true)

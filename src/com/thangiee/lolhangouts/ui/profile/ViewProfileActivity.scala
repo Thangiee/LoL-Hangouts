@@ -4,8 +4,8 @@ import android.content.{Context, Intent}
 import android.os.Bundle
 import android.view.{Menu, MenuItem, ViewGroup}
 import android.widget.LinearLayout
-import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.lolhangouts.R
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.ui.core.{TActivity, TIntent, UpButton, Ads}
 
 case class ViewProfileActivity() extends TActivity with UpButton with Ads {
@@ -22,7 +22,7 @@ case class ViewProfileActivity() extends TActivity with UpButton with Ads {
     super.onCreate(savedInstanceState)
     contentContainer.addView(container.getView)
 
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    if (Cached.isAdsEnable) setupAds()
   }
 
   override def onCreateOptionsMenu(menu: Menu): Boolean = {

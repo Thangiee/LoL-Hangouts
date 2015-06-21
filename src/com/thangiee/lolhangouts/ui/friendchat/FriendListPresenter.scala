@@ -46,13 +46,10 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     if (!lock) {
       lock = true
       info("[*] loading all friends")
-      getFriendsUseCase.loadFriendList() onComplete {
-        case Success(friends) =>
-          val (onFriends, offFriends) = friends.partition(_.isOnline)
-          runOnUiThread(view.initCardList(onFriends, offFriends))
-          lock = false
-        case Failure(_)       =>
-          lock = false
+      getFriendsUseCase.loadFriendList().map { friends =>
+        val (onFriends, offFriends) = friends.partition(_.isOnline)
+        runOnUiThread(view.initCardList(onFriends, offFriends))
+        lock = false
       }
     }
     else info("[-] repopulate friend card list blocked")
@@ -68,7 +65,9 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
 
     // block RefreshFriendCard event when friend list is currently loading 
     if (!lock)
-      getFriendsUseCase.loadFriendByName(event.friendName).map(f => runOnUiThread(view.updateCardContent(f)))
+      getFriendsUseCase.loadFriendByName(event.friendName).onSuccess {
+        case Good(f) => runOnUiThread(view.updateCardContent(f))
+      }
     else
       info("[-] Refresh friend card blocked")
   }

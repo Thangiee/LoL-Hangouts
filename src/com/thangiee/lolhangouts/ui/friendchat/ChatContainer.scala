@@ -96,8 +96,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
-    getUserUseCase.loadUser().map { user =>
-      user.currentFriendChat.foreach { friendName =>
+    getUserUseCase.loadUser().onSuccess {
+      case Good(user) => user.currentFriendChat.foreach { friendName =>
         info(s"[*] mark messages in chat between user and $friendName as read")
         markMsgReadUseCase.markAsRead(friendName)
         EventBus.getDefault.post(UpdateFriendCard(friendName))

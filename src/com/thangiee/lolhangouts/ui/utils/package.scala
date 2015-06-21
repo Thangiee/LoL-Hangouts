@@ -17,6 +17,9 @@ package object utils extends SystemServices with Helpers with Implicits with Log
   lazy val handler = new Handler(Looper.getMainLooper)
   lazy val uiThread = Looper.getMainLooper.getThread
 
+  private[lolhangouts] val Good = org.scalactic.Good
+  private[lolhangouts] val Bad = org.scalactic.Bad
+
   def appCtx(implicit ctx: Context): MyApplication = ctx.getApplicationContext.asInstanceOf[MyApplication]
 
   def runOnUiThread[T >: Null](f: => T): T = {

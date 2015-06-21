@@ -1,10 +1,8 @@
 package com.thangiee.lolhangouts.ui.login
 
 import com.parse.{GetCallback, ParseException, ParseObject, ParseQuery}
-import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.data.exception.UseCaseException.{AuthenticationError, ConnectionError}
-import com.thangiee.lolhangouts.data.exception.UserInputException._
-import com.thangiee.lolhangouts.data.exception.{UseCaseException, UserInputException}
+import com.thangiee.lolhangouts.data.Cached
+import com.thangiee.lolhangouts.data.usecases.LoginUseCase._
 import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.ui.utils._
@@ -19,7 +17,7 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
 
     // don't run this code when first time opening the app since
     // the app will be redirected to region selection screen
-    if (!Prefs.getBoolean("first_launch", true)) {
+    if (Cached.isFirstLaunch) {
       info("[*] checking for new app version")
       loginUseCase.loadAppVersion().map { oldVer =>
         val currentVersion = view.getCurrentAppVersion
@@ -70,15 +68,17 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
     isGuestMode = false
     view.setLoginState(LoginView.LoadingState)
 
-    loginUseCase.login(username, password) map { _ =>
-      runOnUiThread(view.setLoginState(LoginView.SuccessState))
-      Thread.sleep(700) // wait a bit for login success animation
-      view.navigateToHome(isGuestMode = false)
-    } recover {
-      case UserInputException(msg, EmptyUsername)     => runOnUiThread(view.showBlankUsernameError())
-      case UserInputException(msg, EmptyPassword)     => runOnUiThread(view.showBlankPasswordError())
-      case UseCaseException(msg, ConnectionError)     => runOnUiThread(view.showConnectionError())
-      case UseCaseException(msg, AuthenticationError) => runOnUiThread(view.showAuthenticationError())
+    loginUseCase.login(username, password).onSuccess {
+      case Good(_)                  =>
+        runOnUiThread(view.setLoginState(LoginView.SuccessState))
+        Thread.sleep(700) // wait a bit for login success animation
+        view.navigateToHome(isGuestMode = false)
+      case Bad(EmptyUsername)       => runOnUiThread(view.showBlankUsernameError())
+      case Bad(EmptyPassword)       => runOnUiThread(view.showBlankPasswordError())
+      case Bad(EmptyUserAndPass)    => runOnUiThread {view.showBlankUsernameError(); view.showBlankPasswordError()}
+      case Bad(ConnectionError)     => runOnUiThread(view.showConnectionError())
+      case Bad(AuthenticationError) => runOnUiThread(view.showAuthenticationError())
+      case Bad(InternalError)       => runOnUiThread(view.showConnectionError()) //todo:
     }
   }
 
