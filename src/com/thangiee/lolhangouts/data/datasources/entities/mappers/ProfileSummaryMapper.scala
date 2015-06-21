@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.datasources.entities.mappers
 
 import com.thangiee.lolhangouts.data.datasources.entities.ProfileSummaryEntity
 import com.thangiee.lolhangouts.data.usecases.entities.{MostPlayedChamp, ProfileSummary}
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
 import thangiee.riotapi.core.RiotApi
 import thangiee.riotapi.static_data.Champion
 import thangiee.riotapi.stats.ChampionStats

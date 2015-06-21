@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.data.datasources.entities.mappers
 
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.PlayerStatsEntity
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import thangiee.riotapi.core.RiotApi
