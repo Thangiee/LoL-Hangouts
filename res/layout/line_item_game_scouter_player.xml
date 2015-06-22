@@ -144,16 +144,16 @@
             android:layout_alignRight="@+id/tv_live_game_s4_leag_lp"
             android:layout_alignEnd="@+id/tv_live_game_s4_leag_lp"/>
 
-    <com.sakout.fancybuttons.FancyButton
+    <mehdi.sakout.fancybuttons.FancyButton
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fancy:text="View Profile"
-            fancy:borderColor="@color/accent"
-            fancy:borderWidth="2dp"
-            fancy:defaultColor="@android:color/transparent"
-            fancy:focusColor="@color/primary_light"
-            fancy:radius="5dp"
+            fancy:fb_text="View Profile"
+            fancy:fb_borderColor="@color/accent"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_defaultColor="@android:color/transparent"
+            fancy:fb_focusColor="@color/primary_light"
+            fancy:fb_radius="5dp"
             android:id="@+id/btn_live_game_profile"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"

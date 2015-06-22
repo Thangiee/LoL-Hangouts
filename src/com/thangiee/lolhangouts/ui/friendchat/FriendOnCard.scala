@@ -5,7 +5,7 @@ import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.andexert.library.RippleView
-import com.sakout.fancybuttons.FancyButton
+import mehdi.sakout.fancybuttons.FancyButton
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.{ChatMode, Friend}
 import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity

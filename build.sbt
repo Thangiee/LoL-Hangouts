@@ -95,7 +95,9 @@ libraryDependencies ++= Seq(
   aar("co.lemonlabs"                             % "expandable-button-menu" % "1.0.0"),
   aar("com.github.markushi"                      % "android-ui"             % "1.2"),
   aar("com.github.lecho"                         % "hellocharts-library"    % "1.5.5"),
-  aar("jp.wasabeef"                              % "recyclerview-animators" % "1.2.0")
+  aar("jp.wasabeef"                              % "recyclerview-animators" % "1.2.0"),
+  aar("com.rengwuxian.materialedittext"          % "library"                % "2.1.4"),
+  aar("com.github.medyo"                         %"fancybuttons"            % "1.3")
 )
 
 libraryDependencies ++= Seq(
@@ -103,7 +105,8 @@ libraryDependencies ++= Seq(
   "de.keyboardsurfer.android.widget"  % "crouton"       % "1.8.5",
   "org.jsoup"                         % "jsoup"         % "1.8.2",
   "ch.acra"                           % "acra"          % "4.6.2",
-  "com.parse.bolts"                   % "bolts-android" % "1.2.0"
+  "com.parse.bolts"                   % "bolts-android" % "1.2.0",
+  "de.greenrobot"                     % "eventbus"      % "2.4.0"
 )
 
 run <<= run in Android

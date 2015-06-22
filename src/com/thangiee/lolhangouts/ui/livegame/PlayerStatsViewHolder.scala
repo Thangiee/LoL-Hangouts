@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
-import com.sakout.fancybuttons.FancyButton
+import mehdi.sakout.fancybuttons.FancyButton
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
