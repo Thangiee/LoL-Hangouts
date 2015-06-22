@@ -65,45 +65,45 @@ libraryDependencies ++= Seq(
 // androidViewAnimations
 libraryDependencies ++= Seq(
   "com.nineoldandroids" % "library" % "2.4.0",
-  aar("com.daimajia.easing" % "library" % "1.0.1"),
+  aar("com.daimajia.easing" % "library" % "1.0.2"),
   aar("com.daimajia.androidanimations" % "library" % "1.1.3")
 )
 
 // cardsLib
 libraryDependencies ++= Seq(
-  aar("com.github.gabrielemariotti.cards" % "cardslib-core" % "2.0.1"),
-  aar("com.github.gabrielemariotti.cards" % "cardslib-cards" % "2.0.1"),
-  aar("com.github.gabrielemariotti.cards" % "cardslib-recyclerview" % "2.0.1"),
+  aar("com.github.gabrielemariotti.cards" % "cardslib-core" % "2.1.0"),
+  aar("com.github.gabrielemariotti.cards" % "cardslib-cards" % "2.1.0"),
+  aar("com.github.gabrielemariotti.cards" % "cardslib-recyclerview" % "2.1.0"),
   aar("com.nhaarman.listviewanimations" % "lib-core" % "3.1.0")
 )
 
 libraryDependencies ++= Seq(
-  aar("com.github.castorflex.smoothprogressbar"  % "library-circular"       % "1.0.2"),
+  aar("com.github.castorflex.smoothprogressbar"  % "library-circular"       % "1.1.0"),
   aar("it.neokree"                               % "MaterialTabs"           % "0.11"),
-  aar("com.github.xiprox.errorview"              % "library"                % "1.0.0"),
-  aar("com.nispok"                               % "snackbar"               % "2.7.4"),
-  aar("com.skocken"                              % "efficientadapter.lib"   % "1.2.+"),
-  aar("com.github.traex.rippleeffect"            % "library"                % "1.2.4"),
-  aar("com.github.gabrielemariotti.changeloglib" % "library"                % "1.5.1"),
+  aar("com.github.xiprox.errorview"              % "library"                % "2.2.0"),
+  aar("com.nispok"                               % "snackbar"               % "2.7.4"), //todo: DEPRECATED
+  aar("com.skocken"                              % "efficientadapter.lib"   % "1.2.0"),
+  aar("com.github.traex.rippleeffect"            % "library"                % "1.3"),
+  aar("com.github.gabrielemariotti.changeloglib" % "library"                % "1.5.2"),
   aar("com.afollestad"                           % "material-dialogs"       % "0.7.4.2"),
   aar("de.psdev.licensesdialog"                  % "licensesdialog"         % "1.5.0"),
-  aar("com.makeramen"                            % "roundedimageview"       % "1.3.0"),
+  aar("com.makeramen"                            % "roundedimageview"       % "2.1.0"),
   aar("fr.nicolaspomepuy"                        % "discreetapprate"        % "1.0.5"),
-  aar("com.pixplicity.easyprefs"                 % "library"                % "1.3"),
-  aar("com.balysv.materialmenu"                  % "material-menu-toolbar"  % "1.5.0"),
-  aar("com.github.dmytrodanylyk.circular-progress-button" % "library"       % "1.1.2"),
+  aar("com.pixplicity.easyprefs"                 % "library"                % "1.5"),
+  aar("com.balysv.materialmenu"                  % "material-menu-toolbar"  % "1.5.4"),
+  aar("com.github.dmytrodanylyk.circular-progress-button" % "library"       % "1.1.3"),
   aar("co.lemonlabs"                             % "expandable-button-menu" % "1.0.0"),
   aar("com.github.markushi"                      % "android-ui"             % "1.2"),
-  aar("com.github.lecho"                         % "hellocharts-library"    % "1.5.4"),
-  aar("jp.wasabeef"                              % "recyclerview-animators" % "1.1.+")
+  aar("com.github.lecho"                         % "hellocharts-library"    % "1.5.5"),
+  aar("jp.wasabeef"                              % "recyclerview-animators" % "1.2.0")
 )
 
 libraryDependencies ++= Seq(
   "com.github.amigold.fundapter2"     % "library"       % "1.01",
   "de.keyboardsurfer.android.widget"  % "crouton"       % "1.8.5",
-  "org.jsoup"                         % "jsoup"         % "1.7.3",
-  "ch.acra"                           % "acra"          % "4.5.0",
-  "com.parse.bolts"                   % "bolts-android" % "1.+"
+  "org.jsoup"                         % "jsoup"         % "1.8.2",
+  "ch.acra"                           % "acra"          % "4.6.2",
+  "com.parse.bolts"                   % "bolts-android" % "1.2.0"
 )
 
 run <<= run in Android

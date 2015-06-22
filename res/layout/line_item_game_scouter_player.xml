@@ -11,7 +11,7 @@
         >
 
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:id="@+id/img_live_game_champ"
@@ -20,9 +20,9 @@
             android:layout_alignStart="@+id/textView4"
             android:layout_alignLeft="@+id/textView4"
             android:layout_marginTop="4dp"
-            circle:corner_radius="24dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="2dp"/>
+            circle:riv_corner_radius="24dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="2dp"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -159,31 +159,31 @@
             android:layout_centerHorizontal="true"
             />
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:id="@+id/img_live_game_spell1"
             android:src="@drawable/ic_load_unknown"
-            circle:corner_radius="28dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="28dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:layout_alignTop="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_champ"
             android:layout_marginLeft="4dp"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:id="@+id/img_live_game_spell2"
             android:src="@drawable/ic_load_unknown"
-            circle:corner_radius="28dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="28dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:layout_alignBottom="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_champ"
             android:layout_marginLeft="4dp"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:id="@+id/img_live_game_serie_1"
@@ -191,65 +191,65 @@
             android:layout_alignLeft="@+id/img_live_game_champ"
             android:layout_alignStart="@+id/img_live_game_champ"
             android:layout_marginRight="6dp"
-            circle:corner_radius="5dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="5dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:id="@+id/img_live_game_serie_2"
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_1"
             android:layout_marginRight="6dp"
-            circle:corner_radius="5dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="5dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:id="@+id/img_live_game_serie_3"
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_2"
             android:layout_marginRight="6dp"
-            circle:corner_radius="5dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="5dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:id="@+id/img_live_game_serie_4"
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_3"
             android:layout_marginRight="6dp"
-            circle:corner_radius="5dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="5dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:id="@+id/img_live_game_serie_5"
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_4"
             android:layout_marginRight="6dp"
-            circle:corner_radius="5dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="1dp"
+            circle:riv_corner_radius="5dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="1dp"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
