@@ -1,9 +1,7 @@
 
 object ProguardSettings {
   val buildSettings = Seq(
-    "-dontobfuscate",
-    "-dontoptimize",
-    "-keepattributes Signature",
+    "-dontobfuscate", "-dontoptimize", "-keepattributes Signature", "-printseeds target/seeds.txt", "-printusage target/usage.txt",
     "-dontwarn scala.collection.**",
     "-dontwarn scala.collection.mutable.**",
     "-dontwarn scala.**",
@@ -22,6 +20,7 @@ object ProguardSettings {
     "-dontwarn org.xmlpull.v1.**",
     "-dontwarn javax.xml.namespace.QName",
     "-dontwarn org.jivesoftware.smack.**",
+    "-dontwarn android.webkit.*",
     "-keep class * implements org.jivesoftware.smack.provider.IQProvider",
     "-keep class * implements org.jivesoftware.smack.provider.PacketExtensionProvider",
     "-keep class de.measite.smack.AndroidDebugger { *; }",

@@ -4,6 +4,8 @@ import android.view.View
 import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
 import com.ami.fundapter.interfaces.ItemClickListener
 
+import scala.language.implicitConversions
+
 trait ExtractorImplicits {
   implicit def function2StringExtractor[T](f: T ⇒ String): StringExtractor[T] = {
     new StringExtractor[T] {

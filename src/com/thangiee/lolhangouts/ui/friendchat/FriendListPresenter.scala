@@ -8,7 +8,6 @@ import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   private var lock           = false
@@ -78,7 +77,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     if (!lock) {
       lock = true
       getFriendsUseCase.loadOnlineFriends().onSuccess {
-        case fl => fl.map(f => runOnUiThread(view.updateCardContent(f)))
+        case fl => fl.foreach(f => runOnUiThread(view.updateCardContent(f)))
       }
       lock = false
     }

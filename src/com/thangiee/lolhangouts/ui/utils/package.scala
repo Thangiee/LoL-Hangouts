@@ -22,13 +22,9 @@ package object utils extends SystemServices with Helpers with Implicits with Log
 
   def appCtx(implicit ctx: Context): MyApplication = ctx.getApplicationContext.asInstanceOf[MyApplication]
 
-  def runOnUiThread[T >: Null](f: => T): T = {
-    if (uiThread == Thread.currentThread) {
-      f
-    } else {
-      handler.post(new Runnable { def run(): Unit = f })
-      null
-    }
+  def runOnUiThread(f: => Unit): Unit = {
+    if (uiThread == Thread.currentThread()) f
+    else handler.post(new Runnable { def run(): Unit = f})
   }
 
   def toolbarHeight(implicit ctx: Context): Int = {

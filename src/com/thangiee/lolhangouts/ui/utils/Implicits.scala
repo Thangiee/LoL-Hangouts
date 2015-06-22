@@ -15,6 +15,7 @@ import com.nispok.snackbar.listeners.ActionClickListener
 import com.thangiee.lolhangouts.R
 import de.keyboardsurfer.android.widget.crouton.{Configuration, Crouton, Style}
 
+import scala.language.implicitConversions
 import scala.util.Try
 
 

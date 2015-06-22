@@ -27,6 +27,15 @@ resolvers += "material-dialogs" at "https://dl.bintray.com/drummer-aidan/maven"
 
 proguardOptions in Android ++= ProguardSettings.buildSettings
 
+proguardCache in Android ++= Seq(
+  ProguardCache("org.scaloid") % "org.scaloid",
+  ProguardCache("play") % "play"
+)
+
+javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
+
+dexMaxHeap in Android := "2048m"
+
 // dependencies for lolchat
 libraryDependencies ++= Seq(
   "org.igniterealtime.smack" % "smack-tcp" % "4.1.1",
@@ -38,7 +47,7 @@ libraryDependencies ++= Seq(
 
 // scala 3th party libraries
 libraryDependencies ++= Seq(
-  "org.scaloid" %% "scaloid" % "3.6.1-10",
+  "org.scaloid" %% "scaloid" % "4.0-RC1",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.0",
@@ -112,3 +121,5 @@ libraryDependencies ++= Seq(
 run <<= run in Android
 
 install <<= install in Android
+
+retrolambdaEnable in Android := false // turning it on significantly increases the build time
