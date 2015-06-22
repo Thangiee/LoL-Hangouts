@@ -57,8 +57,9 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
 
   override def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = {
     menuInflater.inflate(R.menu.overflow, menu)
-    GetFriendsUseCaseImpl().loadFriendByName(name) onFailure { case e => // not in friend list
-      //todo: fix
+
+    // determine to inflate an add friend menu btn or not
+    GetFriendsUseCaseImpl().loadFriendByName(name) onSuccess { case Bad(_) => // not in friend list
       loadUser onSuccess { case Good(user) =>
         // don't inflate if viewing your own profile or a profile from a different region
         if (name.toLowerCase != user.inGameName.toLowerCase && regionId.toLowerCase == user.region.id.toLowerCase)
@@ -76,6 +77,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
     item.getItemId match {
       case R.id.menu_add_friend =>
         AddFriendUseCaseImpl().addFriend(name)
+        // todo: show message
         true
       case R.id.menu_info       =>
         if (pagePosition == 1) {
