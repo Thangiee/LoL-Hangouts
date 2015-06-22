@@ -2,8 +2,8 @@ package com.thangiee.lolhangouts.ui.sidedrawer
 
 import android.content.{Context, Intent}
 import android.support.v4.widget.DrawerLayout
-import android.support.v4.widget.DrawerLayout.{SimpleDrawerListener, LayoutParams}
-import android.support.v7.app.ActionBarActivity
+import android.support.v4.widget.DrawerLayout.{LayoutParams, SimpleDrawerListener}
+import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.view._
 import android.widget._
@@ -98,7 +98,7 @@ class SideDrawerView(implicit ctx: Context, a: AttributeSet) extends DrawerLayou
 
   def showIsOfflineMsg(): Unit = {
     val customStyle = new Style.Builder().setBackgroundColor(R.color.offline_warning).build()
-    Crouton.makeText(ctx.asInstanceOf[ActionBarActivity], R.string.offline_mode_warning.r2String, customStyle, R.id.crouton_holder)
+    Crouton.makeText(ctx.asInstanceOf[AppCompatActivity], R.string.offline_mode_warning.r2String, customStyle, R.id.crouton_holder)
       .setConfiguration(new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build())
       .show()
   }

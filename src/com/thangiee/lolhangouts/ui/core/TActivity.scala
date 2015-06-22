@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.ui.core
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Bundle
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view._
 import android.widget.FrameLayout
@@ -24,7 +24,7 @@ import org.scaloid.common.{SContext, TraitActivity}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-trait TActivity extends ActionBarActivity with SContext with TraitActivity[TActivity] {
+trait TActivity extends AppCompatActivity with SContext with TraitActivity[TActivity] {
 
   override def basis = this
   override implicit val ctx = this

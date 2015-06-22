@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 import android.app.{AlarmManager, PendingIntent}
 import android.content.Intent
 import android.os.{Bundle, SystemClock}
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
 import android.view.View
 import com.balysv.materialmenu.MaterialMenuDrawable
@@ -23,7 +23,7 @@ import thangiee.riotapi.core.RiotApi
 
 import scala.collection.JavaConversions._
 
-class RegionSelectionActivity extends ActionBarActivity with TActivity with OnItemClickListener[Region] {
+class RegionSelectionActivity extends AppCompatActivity with TActivity with OnItemClickListener[Region] {
   override val layoutId = R.layout.act_region_selection_screen
 
   override def onCreate(savedInstanceState: Bundle): Unit = {

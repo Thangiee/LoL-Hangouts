@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.ui.core
 
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.view._
 import org.scaloid.common.TagUtil
 
@@ -30,7 +30,7 @@ trait Container extends AnyRef with TagUtil {
 
   def onOptionsItemSelected(item: MenuItem): Boolean = false
 
-  def invalidateOptionsMenu(): Unit = getContext.asInstanceOf[ActionBarActivity].invalidateOptionsMenu()
+  def invalidateOptionsMenu(): Unit = getContext.asInstanceOf[AppCompatActivity].invalidateOptionsMenu()
 
   def onBackPressed(): Boolean = false
 

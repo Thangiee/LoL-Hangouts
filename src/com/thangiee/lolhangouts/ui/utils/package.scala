@@ -8,7 +8,7 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.net.ConnectivityManager
 import android.os.{Handler, Looper}
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
 import com.thangiee.lolhangouts.MyApplication
 import org.scaloid.common.SystemServices
@@ -62,11 +62,11 @@ package object utils extends SystemServices with Helpers with Implicits with Log
   }
 
   def setToolbarTitle(title: String)(implicit ctx: Context): Unit = {
-    ctx.asInstanceOf[ActionBarActivity].getSupportActionBar.setTitle(title)
+    ctx.asInstanceOf[AppCompatActivity].getSupportActionBar.setTitle(title)
   }
 
   def setToolbarSubTitle(subTitle: String)(implicit ctx: Context): Unit = {
-    ctx.asInstanceOf[ActionBarActivity].getSupportActionBar.setSubtitle(subTitle)
+    ctx.asInstanceOf[AppCompatActivity].getSupportActionBar.setSubtitle(subTitle)
   }
 
   def isAppInForeground(implicit ctx: Context): Boolean = {
@@ -75,14 +75,14 @@ package object utils extends SystemServices with Helpers with Implicits with Log
   }
 
   def screenAbsWidth(implicit ctx: Context): Int = {
-    val display = ctx.asInstanceOf[ActionBarActivity].getWindowManager.getDefaultDisplay
+    val display = ctx.asInstanceOf[AppCompatActivity].getWindowManager.getDefaultDisplay
     val size = new Point()
     display.getSize(size)
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.x else size.y
   }
 
   def screenAbsHeight(implicit ctx: Context): Int = {
-    val display = ctx.asInstanceOf[ActionBarActivity].getWindowManager.getDefaultDisplay
+    val display = ctx.asInstanceOf[AppCompatActivity].getWindowManager.getDefaultDisplay
     val size = new Point()
     display.getSize(size)
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
