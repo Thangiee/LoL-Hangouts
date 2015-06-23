@@ -6,7 +6,7 @@ import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, ProfileS
 import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{ProfileNotFound, GetProfileFailed, ViewProfileError}
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.utils._
-import com.thangiee.lolhangouts.data.utils.Parser.{ParserError, DataNotFound, ServerBusy}
+import com.thangiee.lolhangouts.data.utils.Parser._
 import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
 import org.scalactic.Or
 import thangiee.riotapi.core.{RiotApi, RiotException}

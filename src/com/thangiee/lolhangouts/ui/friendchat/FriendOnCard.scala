@@ -5,14 +5,15 @@ import android.view.{View, ViewGroup}
 import android.widget.{ImageButton, ImageView, TextView}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.andexert.library.RippleView
-import mehdi.sakout.fancybuttons.FancyButton
 import com.thangiee.lolhangouts.R
+import com.thangiee.lolhangouts.data.usecases.ManageFriendUseCaseImpl
 import com.thangiee.lolhangouts.data.usecases.entities.{ChatMode, Friend}
 import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
 import com.thangiee.lolhangouts.ui.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}
 import it.gmariotti.cardslib.library.internal.{Card, CardExpand, ViewToClickToExpand}
+import mehdi.sakout.fancybuttons.FancyButton
 
 case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) extends FriendBaseCard(friend, R.layout.friend_card) {
   private lazy val statusTextView = find[TextView](R.id.tv_friend_status)
@@ -120,7 +121,7 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
           .content(s"You are about to REMOVE ${friend.name} from your friend list!")
           .positiveText("Remove")
           .negativeText("Cancel")
-//          .onPositive((dialog) => LoLChat.connection.getRoster.removeEntry(LoLChat.getFriendByName(friend.name).get.entry)) //todo
+          .onPositive((dialog) => ManageFriendUseCaseImpl().removeFriend(friend.id))
           .show()
       })
 

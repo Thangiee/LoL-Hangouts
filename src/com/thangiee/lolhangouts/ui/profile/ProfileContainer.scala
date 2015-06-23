@@ -7,7 +7,7 @@ import android.view._
 import android.widget.FrameLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.{AddFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
+import com.thangiee.lolhangouts.data.usecases.{ManageFriendUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
@@ -76,7 +76,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case R.id.menu_add_friend =>
-        AddFriendUseCaseImpl().addFriend(name)
+        ManageFriendUseCaseImpl().addFriend(name)
         // todo: show message
         true
       case R.id.menu_info       =>
