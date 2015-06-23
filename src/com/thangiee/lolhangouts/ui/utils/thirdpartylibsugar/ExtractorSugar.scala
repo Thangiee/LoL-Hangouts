@@ -1,4 +1,4 @@
-package com.thangiee.lolhangouts.ui.utils
+package com.thangiee.lolhangouts.ui.utils.thirdpartylibsugar
 
 import android.view.View
 import com.ami.fundapter.extractors.{BooleanExtractor, StringExtractor}
@@ -6,7 +6,7 @@ import com.ami.fundapter.interfaces.ItemClickListener
 
 import scala.language.implicitConversions
 
-trait ExtractorImplicits {
+trait ExtractorSugar {
   implicit def function2StringExtractor[T](f: T ⇒ String): StringExtractor[T] = {
     new StringExtractor[T] {
       override def getStringValue(p1: T, p2: Int): String = f.apply(p1)
@@ -26,4 +26,4 @@ trait ExtractorImplicits {
   }
 }
 
-object ExtractorImplicits extends ExtractorImplicits
+object ExtractorSugar extends ExtractorSugar

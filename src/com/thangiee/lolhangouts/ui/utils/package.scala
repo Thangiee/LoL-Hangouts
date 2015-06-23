@@ -5,15 +5,24 @@ import java.util.Locale
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Point
+import android.graphics.drawable.{BitmapDrawable, Drawable}
+import android.graphics.{Bitmap, BitmapFactory, Point, Typeface}
 import android.net.ConnectivityManager
 import android.os.{Handler, Looper}
 import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
-import com.thangiee.lolhangouts.MyApplication
-import org.scaloid.common.SystemServices
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.{CompoundButton, TextView}
+import com.thangiee.lolhangouts.ui.utils.thirdpartylibsugar._
+import com.thangiee.lolhangouts.{MyApplication, R}
+import org.scaloid.common.{Implicits, Helpers, SystemServices}
 
-package object utils extends SystemServices with Helpers with Implicits with Logger {
+import scala.language.implicitConversions
+import scala.util.Try
+
+package object utils extends SystemServices with Sugar with Helpers with Implicits with Logger {
   lazy val handler = new Handler(Looper.getMainLooper)
   lazy val uiThread = Looper.getMainLooper.getThread
 
@@ -38,7 +47,7 @@ package object utils extends SystemServices with Helpers with Implicits with Log
 
   def delay(mills: Long)(f: => Unit): Unit = {
     val handler = new Handler()
-    handler.postDelayed(() => f, mills)
+    handler.postDelayed(f, mills)
   }
   
   def api_=(targetVersion: Int)(f: => Unit): Unit = {
@@ -84,6 +93,12 @@ package object utils extends SystemServices with Helpers with Implicits with Log
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
   }
 
+//  implicit def func2Runnable[F](f: => F): Runnable = new Runnable() { def run(): Unit = f }
+
+  implicit def func2OnCheckedChangeListener[F](f: (CompoundButton, Boolean) ⇒ F): OnCheckedChangeListener = new OnCheckedChangeListener {
+    def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean): Unit = f(buttonView, isChecked)
+  }
+
   implicit class Rounding(number: Double) {
     def roundTo(DecimalPlace: Int): Double = {
       if (number.isNaN) return 0.0
@@ -92,5 +107,40 @@ package object utils extends SystemServices with Helpers with Implicits with Log
       // on phones that are set on a language that use comma to denote decimal
       new DecimalFormat("###." + ("#" * DecimalPlace), new DecimalFormatSymbols(Locale.US)).format(number).toDouble
     }
+  }
+
+  implicit class ViewSugar(v: View) {
+    def setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bot: Int = 0) = {
+      v.getLayoutParams match {
+        case p: MarginLayoutParams =>
+          p.setMargins(left, top, right, bot)
+          v.requestLayout()
+        case _ =>
+      }
+    }
+  }
+
+  implicit class TextViewSugar(tv: TextView) {
+    def txt2str: String = tv.getText.toString
+  }
+
+  implicit class DrawableSugar(drawableId: Int)(implicit ctx: Context) {
+    def toBitmap: Bitmap = BitmapFactory.decodeResource(ctx.getResources, drawableId)
+  }
+
+  implicit class BitMapSugar(bitmap: Bitmap)(implicit ctx: Context) {
+    def toDrawable: Drawable = new BitmapDrawable(ctx.getResources, bitmap)
+  }
+
+  implicit class ImageAssetSugar(imageFile: ImageFile)(implicit ctx: Context) {
+    def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(imageFile.path), null))
+      .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
+
+    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(imageFile.path)))
+      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
+  }
+
+  implicit class FontAssetSugar(fontFile: FontFile)(implicit ctx: Context) {
+    def toTypeFace: Typeface = Typeface.createFromAsset(ctx.getAssets, fontFile.path)
   }
 }

@@ -113,23 +113,23 @@ class LoginActivity extends TActivity with LoginView {
 
   override def showBlankUsernameError(): Unit = {
     userEditText.shake()
-    R.string.err_empty_user.croutonWarn()
+    R.string.err_empty_user.r2String.croutonWarn()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showBlankPasswordError(): Unit = {
     passwordEditText.shake()
-    R.string.err_empty_pass.croutonWarn()
+    R.string.err_empty_pass.r2String.croutonWarn()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showAuthenticationError(): Unit = {
-    R.string.err_authentication.croutonWarn()
+    R.string.err_authentication.r2String.croutonWarn()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showConnectionError(): Unit = {
-    R.string.err_connect_to_server.croutonWarn()
+    R.string.err_connect_to_server.r2String.croutonWarn()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 

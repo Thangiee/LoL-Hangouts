@@ -68,11 +68,11 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def showSendFail(): Unit = sendButton.setProgress(-1)
 
-  def showEmptyMsgError(): Unit = R.string.err_empty_msg.croutonWarn()
+  def showEmptyMsgError(): Unit = R.string.err_empty_msg.r2String.croutonWarn()
 
-  def showSendMsgError(): Unit = R.string.err_sending_msg.croutonWarn()
+  def showSendMsgError(): Unit = R.string.err_sending_msg.r2String.croutonWarn()
 
-  def showMsgToNobodyError(): Unit = R.string.err_send_to_nobody.croutonWarn()
+  def showMsgToNobodyError(): Unit = R.string.err_send_to_nobody.r2String.croutonWarn()
 
   def clearMessageInput(): Unit = msgField.setText("")
 
