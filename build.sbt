@@ -64,6 +64,7 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   aar("com.android.support" % "recyclerview-v7" % "22.2.0"),
   aar("com.android.support" % "appcompat-v7" % "22.2.0"),
+  aar("com.android.support" % "design" %"22.2.0"),
   "com.android.support" % "palette-v7" % "22.2.0",
   "com.android.support" % "support-v13" % "22.2.0",
   "com.google.code.findbugs" % "jsr305" % "3.0.0" // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
