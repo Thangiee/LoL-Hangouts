@@ -44,7 +44,7 @@ case class GetUserUseCaseImpl() extends GetUserUseCase {
           sess.user,
           inGameName,
           regionId,
-          Cached.statusMsg(Cached.loginUsername).getOrElse("Using LoLHangout App"),
+          Cached.statusMsg(id).getOrElse("Using LoLHangout App"),
           Cached.friendChat(Cached.loginUsername)
         )
       }
