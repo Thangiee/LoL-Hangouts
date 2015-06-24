@@ -38,7 +38,7 @@
     <string name="err_empty_msg">Can\'t send empty message</string>
     <string name="err_sending_msg">An error occurred while trying to send the message</string>
     <string name="err_send_to_nobody">Can\'t send message to nobody</string>
-    <string name="err_authentication">Invalid Username or password</string>
+    <string name="err_authentication">Invalid!</string>
     <string name="err_connect_to_server">Cannot connect to server.</string>
     <string name="err_get_data">An unexpected error occurred while retrieving the data</string>
     <string name="data_not_found">404: Data not found.</string>

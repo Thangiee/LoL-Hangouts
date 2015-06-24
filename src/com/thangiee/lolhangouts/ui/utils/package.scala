@@ -9,12 +9,15 @@ import android.graphics.drawable.{BitmapDrawable, Drawable}
 import android.graphics.{Bitmap, BitmapFactory, Point, Typeface}
 import android.net.ConnectivityManager
 import android.os.{Handler, Looper}
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CompoundButton, TextView}
+import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.utils.thirdpartylibsugar._
 import com.thangiee.lolhangouts.{MyApplication, R}
 import org.scaloid.common.{Implicits, Helpers, SystemServices}
@@ -93,8 +96,6 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
   }
 
-//  implicit def func2Runnable[F](f: => F): Runnable = new Runnable() { def run(): Unit = f }
-
   implicit def func2OnCheckedChangeListener[F](f: (CompoundButton, Boolean) ⇒ F): OnCheckedChangeListener = new OnCheckedChangeListener {
     def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean): Unit = f(buttonView, isChecked)
   }
@@ -142,5 +143,19 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
 
   implicit class FontAssetSugar(fontFile: FontFile)(implicit ctx: Context) {
     def toTypeFace: Typeface = Typeface.createFromAsset(ctx.getAssets, fontFile.path)
+  }
+
+  case class RichSnackBar(view: View, text: String) {
+    val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+    def setDuration(duration: Int): Snackbar = snackbar.setDuration(duration)
+    def setAction(text: CharSequence, onAction: => Unit): Snackbar = snackbar.setAction(text, new OnClickListener {
+      def onClick(view: View): Unit = { onAction; snackbar.dismiss() }
+    })
+  }
+
+  object SnackBar {
+    def apply(view: View, text: String) = RichSnackBar(view, text)
+    def apply(viewId: Int, resId: Int)(implicit ctx: Context) =
+      RichSnackBar(ctx.asInstanceOf[TActivity].find[View](viewId), resId.r2String)
   }
 }
