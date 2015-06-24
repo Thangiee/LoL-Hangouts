@@ -9,6 +9,7 @@ import android.media.{MediaPlayer, RingtoneManager}
 import android.os.{Build, IBinder}
 import com.thangiee.lolchat._
 import com.thangiee.lolchat.changedPresence._
+import com.thangiee.lolchat.error.NoSession
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.entities.MessageEntity
@@ -38,17 +39,17 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
 
   override def onCreate(): Unit = {
     super.onCreate()
-    try {
+    LoLChat.findSession(Cached.loginUsername).map { sess =>
       info("[*] Service started")
-      LoLChat.findSession(Cached.loginUsername).map { sess =>
-        sess.addReceiveMsgListener(this)
-        sess.addReconnectionListener(this)
-        sess.setFriendListListener(this)
-      }
+      sess.addReceiveMsgListener(this)
+      sess.addReconnectionListener(this)
+      sess.setFriendListListener(this)
       EventBus.getDefault.registerSticky(ctx)
       if (isNotifyAppRunningPrefOn) notifyAppRunning()
-    } catch {
-      case e: IllegalStateException ⇒ warn("[!] " + e.getMessage); notifyDisconnection(); stopSelf()
+    } recover {
+      case NoSession(_) =>
+        warn(s"[!] Did not find session for user ${Cached.loginUsername}! Service will now shut down.")
+        stopSelf()
     }
   }
 
@@ -247,7 +248,6 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
       .setContentIntent(pendingActivity[MainActivity])
       .setContentTitle(Cached.loginUsername)
       .setContentText("LoL Hangouts is running")
-      .setOngoing(true)
 
     notificationManager.notify(runningNotificationId, builder.getNotification)
   }
