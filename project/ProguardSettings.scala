@@ -26,7 +26,6 @@ object ProguardSettings {
     "-keep class de.measite.smack.AndroidDebugger { *; }",
     "-keep class org.jivesoftware.smack.** { *; }",
     "-keep class org.jivesoftware.smackx.** { *; }",
-    "-keep class org.scaloid.common.**",
     "-keep class com.thangiee.lolhangouts.**",
     "-keepclassmembers public class * extends com.skocken.efficientadapter.lib.viewholder.AbsViewHolder {public <init>(...);}",
     "-keepclassmembers class android.support.v7.widget.Toolbar {*;}",
