@@ -20,6 +20,10 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
 
   override protected val presenter = new FriendListPresenter(this, GetFriendsUseCaseImpl())
 
+  private var _friendGroupToShow = "all"
+  def friendGroupToShow: String = _friendGroupToShow
+  def friendGroupToShow_=(groupName: String): Unit = _friendGroupToShow = groupName
+
   override def onAttached(): Unit = {
     super.onAttached()
     addView(layoutInflater.inflate(R.layout.friend_list_view, this, false))

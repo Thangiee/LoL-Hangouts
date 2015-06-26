@@ -7,5 +7,6 @@ case class User(
   inGameName: String,
   region: Region,
   statusMsg: String,
-  currentFriendChat: Option[String] = None
+  currentFriendChat: Option[String] = None,
+  groupNames: Seq[String]
   )

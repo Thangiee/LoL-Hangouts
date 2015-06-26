@@ -18,7 +18,8 @@ case class Friend
   rankedLeagueTier: String, // bronze, silver, gold, etc...
   rankedLeagueDivision: String,
   rankedLeagueName: String,
-  wins: String
+  wins: String,
+  groupName: String
   )
 
 object ChatMode extends Enumeration {

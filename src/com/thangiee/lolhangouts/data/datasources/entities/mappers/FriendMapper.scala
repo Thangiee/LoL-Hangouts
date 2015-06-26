@@ -26,7 +26,8 @@ object FriendMapper {
       friendEntity.rankedTier.getOrElse("UNRANKED"),
       friendEntity.rankedDivision.getOrElse(""),
       friendEntity.leagueName.getOrElse("NO LEAGUE"),
-      friendEntity.wins.toString
+      friendEntity.wins.toString,
+      friendEntity.groupNames.headOption.getOrElse("")
     )
   }
 

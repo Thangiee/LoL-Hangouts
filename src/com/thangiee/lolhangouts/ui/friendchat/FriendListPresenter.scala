@@ -44,9 +44,16 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     // lock use to prevent multiple calls to load list while it is already loading
     if (!lock) {
       lock = true
-      info("[*] loading all friends")
+      info("[*] loading friends")
       getFriendsUseCase.loadFriendList().map { friends =>
-        val (onFriends, offFriends) = friends.partition(_.isOnline)
+        val filteredFriends = view.friendGroupToShow.toLowerCase match {
+          case "all"     => friends
+          case "online"  => friends.filter(_.isOnline)
+          case "offline" => friends.filter(!_.isOnline)
+          case groupName => friends.filter(_.groupName.toLowerCase == groupName)
+        }
+
+        val (onFriends, offFriends) = filteredFriends.partition(_.isOnline)
         runOnUiThread(view.initCardList(onFriends, offFriends))
         lock = false
       }

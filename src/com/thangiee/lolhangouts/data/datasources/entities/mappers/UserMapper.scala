@@ -12,7 +12,8 @@ object UserMapper {
       userEntity.inGameName,
       getFromId(userEntity.regionId),
       userEntity.statusMsg,
-      userEntity.currentFriendNameChat
+      userEntity.currentFriendNameChat,
+      userEntity.groupNames.filter(_ != "**Default")
     )
   }
 }
