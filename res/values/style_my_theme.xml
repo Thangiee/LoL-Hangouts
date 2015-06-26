@@ -62,4 +62,11 @@
         <item name="android:dropDownSelector">?android:selectableItemBackground</item>
         <item name="android:divider">@null</item>
     </style>
+
+    <style name="MenuButtonsStyle">
+        <item name="fab_size">mini</item>
+        <item name="fab_colorNormal">@color/accent</item>
+        <item name="fab_colorPressed">@color/accent_dark</item>
+        <item name="fab_colorRipple">@color/accent_light</item>
+    </style>
 </resources>

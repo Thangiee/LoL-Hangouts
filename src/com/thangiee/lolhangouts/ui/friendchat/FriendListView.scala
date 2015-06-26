@@ -1,7 +1,9 @@
 package com.thangiee.lolhangouts.ui.friendchat
 
 import android.content.Context
+import android.view.View
 import android.widget.FrameLayout
+import com.github.clans.fab.FloatingActionMenu
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.Friend
@@ -15,6 +17,8 @@ import scala.collection.JavaConversions._
 
 class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   private lazy val cardListView     = find[CardListView](R.id.card_list)
+  private lazy val fabMenu          = find[FloatingActionMenu](R.id.fab_menu)
+
   private      val cards            = scala.collection.mutable.ArrayBuffer[FriendBaseCard]()
   private      val cardArrayAdapter = new CardArrayAdapter(ctx, cards)
 
@@ -27,12 +31,19 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
   override def onAttached(): Unit = {
     super.onAttached()
     addView(layoutInflater.inflate(R.layout.friend_list_view, this, false))
+    fabMenu.hideMenuButton(false)
+
     cardArrayAdapter.setNotifyOnChange(false)
     cardArrayAdapter.setInnerViewTypeCount(2) // important with different inner layout
 
     val animationAdapter = new SwingLeftInAnimationAdapter(cardArrayAdapter)
     animationAdapter.setAbsListView(cardListView)
     cardListView.setExternalAdapter(animationAdapter, cardArrayAdapter)
+  }
+
+  override def onVisible(): Unit = {
+    super.onVisible()
+    delay(mills = 700) { fabMenu.showMenuButton(true) }
   }
 
   def initCardList(onFriends: Seq[Friend], offFriends: Seq[Friend]): Unit = {
