@@ -13,7 +13,8 @@ import org.scalactic.Good
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class QuickChatActivity extends TActivity with UpButton {
-  override protected val layoutId = R.layout.act_with_container_shadowed
+  override val layoutId = R.layout.act_with_container_shadowed
+  override val snackBarHolderId = R.id.act_with_container_shadowed
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

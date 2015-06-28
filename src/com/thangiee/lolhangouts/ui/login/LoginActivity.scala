@@ -29,6 +29,7 @@ class LoginActivity extends TActivity with LoginView {
 
   override protected val presenter = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId  = R.layout.act_login_screen
+  override val snackBarHolderId = R.id.act_login_screen
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
@@ -130,10 +131,7 @@ class LoginActivity extends TActivity with LoginView {
   }
 
   override def showConnectionError(): Unit = {
-    SnackBar(R.id.act_login_screen, R.string.err_connect_to_server)
-      .setAction("Ok", { /* dismiss */ })
-      .show()
-
+    SnackBar(R.id.act_login_screen, R.string.err_connect_to_server).show()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 

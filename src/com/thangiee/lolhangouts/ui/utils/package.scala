@@ -13,14 +13,13 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.{CompoundButton, TextView}
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.utils.thirdpartylibsugar._
 import com.thangiee.lolhangouts.{MyApplication, R}
-import org.scaloid.common.{Implicits, Helpers, SystemServices}
+import org.scaloid.common.{Helpers, Implicits, SystemServices}
 
 import scala.language.implicitConversions
 import scala.util.Try
@@ -36,7 +35,9 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
 
   def runOnUiThread(f: => Unit): Unit = {
     if (uiThread == Thread.currentThread()) f
-    else handler.post(new Runnable { def run(): Unit = f})
+    else handler.post(new Runnable {
+      def run(): Unit = f
+    })
   }
 
   def toolbarHeight(implicit ctx: Context): Int = {
@@ -52,7 +53,7 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     val handler = new Handler()
     handler.postDelayed(f, mills)
   }
-  
+
   def api_=(targetVersion: Int)(f: => Unit): Unit = {
     if (android.os.Build.VERSION.SDK_INT == targetVersion) f
   }
@@ -83,7 +84,7 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
   }
 
   def screenAbsWidth(implicit ctx: Context): Int = {
-    val display = ctx.asInstanceOf[AppCompatActivity].getWindowManager.getDefaultDisplay
+    val display = windowManager.getDefaultDisplay
     val size = new Point()
     display.getSize(size)
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.x else size.y
@@ -116,7 +117,7 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
         case p: MarginLayoutParams =>
           p.setMargins(left, top, right, bot)
           v.requestLayout()
-        case _ =>
+        case _                     =>
       }
     }
   }
@@ -145,17 +146,17 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     def toTypeFace: Typeface = Typeface.createFromAsset(ctx.getAssets, fontFile.path)
   }
 
-  case class RichSnackBar(view: View, text: String) {
-    val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-    def setDuration(duration: Int): Snackbar = snackbar.setDuration(duration)
-    def setAction(text: CharSequence, onAction: => Unit): Snackbar = snackbar.setAction(text, new OnClickListener {
-      def onClick(view: View): Unit = { onAction; snackbar.dismiss() }
-    })
+  implicit class RichSnackBar(snackbar: Snackbar) {
+    def setAction(text: CharSequence, onAction: => Unit): Snackbar =
+      snackbar.setAction(text, (v: View) => {onAction; snackbar.dismiss()})
   }
 
   object SnackBar {
-    def apply(view: View, text: String) = RichSnackBar(view, text)
-    def apply(viewId: Int, resId: Int)(implicit ctx: Context) =
-      RichSnackBar(ctx.asInstanceOf[TActivity].find[View](viewId), resId.r2String)
+    def apply(viewId: Int, resId: Int)(implicit ctx: Context): Snackbar = apply(viewId, resId.r2String)(ctx)
+    def apply(text: String)(implicit ctx: Context): Snackbar = apply(ctx.asInstanceOf[TActivity].snackBarHolderId(), text)
+    def apply(viewId: Int, text: String)(implicit ctx: Context): Snackbar = {
+      val sb = Snackbar.make(ctx.asInstanceOf[TActivity].find[View](viewId), text, Snackbar.LENGTH_LONG)
+      sb.setAction(android.R.string.ok, (v: Snackbar) => v.dismiss())
+    }
   }
 }

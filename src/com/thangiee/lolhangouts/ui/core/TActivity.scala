@@ -30,6 +30,7 @@ trait TActivity extends AppCompatActivity with SContext with TraitActivity[TActi
   override implicit val ctx = this
 
   protected def layoutId(): Int
+  def snackBarHolderId(): Int
 
   // any class that extends TActivity needs to include a toolbar in its layout
   lazy val toolbar = find[Toolbar](R.id.toolbar)

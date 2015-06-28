@@ -25,6 +25,7 @@ import scala.collection.JavaConversions._
 
 class RegionSelectionActivity extends AppCompatActivity with TActivity with OnItemClickListener[Region] {
   override val layoutId = R.layout.act_region_selection_screen
+  override val snackBarHolderId = R.id.act_region_selection_screen
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

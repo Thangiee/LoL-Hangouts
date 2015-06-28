@@ -35,6 +35,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/1893861576"
   override      val layoutId              = R.layout.act_main_screen
+  override      val snackBarHolderId      = R.id.act_main_screen
 
   private lazy val isGuestMode       = getIntent.getBooleanExtra("is-guest-mode-key", false)
   private lazy val loadUser          = GetUserUseCaseImpl().loadUser()

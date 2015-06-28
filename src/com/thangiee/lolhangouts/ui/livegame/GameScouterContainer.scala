@@ -65,7 +65,7 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
         purpleTeamView.hideLoading()
       }
       case Bad(e) => runOnUiThread {
-        Snackbar.`with`(ctx)
+        Snackbar.`with`(ctx)  // todo: replace with android support lib snackbar when its set duration bug is fix
           .text("Failed to load game")
           .textColorResource(R.color.md_white)
           .colorResource(R.color.md_grey_900)
