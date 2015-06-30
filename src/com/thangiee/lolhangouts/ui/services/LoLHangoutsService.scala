@@ -162,17 +162,7 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
     runOnUiThread(Crouton.cancelAllCroutons())
   }
 
-  def onReconnectionFailed(attempt: Int): Unit = {
-    info(s"[!] attempt $attempt to reconnect failed")
-    // cancel reconnection after a number of attempts
-    if (attempt > 6) {
-      EventBus.getDefault.post(FinishActivity())
-      EventBus.getDefault.post(Events.Logout())
-      val i = new Intent(getBaseContext, classOf[LoginActivity])
-      i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-      startActivity(i)
-    }
-  }
+  def onReconnectionFailed(attempt: Int): Unit = info(s"[!] attempt $attempt to reconnect failed"
 
   def onReconnectingIn(sec: Int): Unit = info("[*] Connecting in " + sec)
 
