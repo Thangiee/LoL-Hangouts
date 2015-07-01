@@ -202,7 +202,7 @@
 # view res/layout/abc_action_menu_layout.xml #generated:17
 -keep class android.support.v7.widget.ActionMenuView { <init>(...); }
 
-# view res/layout/act_region_selection_screen.xml #generated:15
+# view res/layout/act_region_selection_screen.xml #generated:16
 # view res/layout/game_scouter_team_view.xml #generated:8
 # view res/layout/profile_match_hist.xml #generated:9
 # view res/layout/profile_top_champs.xml #generated:106
@@ -258,6 +258,14 @@
 # view res/layout/act_login_screen.xml #generated:85
 # view res/layout/chat_view.xml #generated:53
 -keep class com.dd.CircularProgressButton { <init>(...); }
+
+# view res/layout/friend_list_view.xml #generated:34
+# view res/layout/friend_list_view.xml #generated:43
+# view res/layout/friend_list_view.xml #generated:52
+-keep class com.github.clans.fab.FloatingActionButton { <init>(...); }
+
+# view res/layout/friend_list_view.xml #generated:15
+-keep class com.github.clans.fab.FloatingActionMenu { <init>(...); }
 
 # view AndroidManifest.xml #generated:36
 -keep class com.google.android.gms.ads.AdActivity { <init>(...); }
@@ -353,7 +361,7 @@
 # view res/layout/native_inner_base_main_cardwithlist.xml #generated:34
 -keep class it.gmariotti.cardslib.library.prototypes.LinearListView { <init>(...); }
 
-# view res/layout/friend_list_view.xml #generated:8
+# view res/layout/friend_list_view.xml #generated:9
 -keep class it.gmariotti.cardslib.library.view.CardListView { <init>(...); }
 
 # view res/layout/list_card_layout.xml #generated:23
@@ -457,7 +465,6 @@
 -keep class de.measite.smack.AndroidDebugger { *; }
 -keep class org.jivesoftware.smack.** { *; }
 -keep class org.jivesoftware.smackx.** { *; }
--keep class org.scaloid.common.**
 -keep class com.thangiee.lolhangouts.**
 -keepclassmembers public class * extends com.skocken.efficientadapter.lib.viewholder.AbsViewHolder {public <init>(...);}
 -keepclassmembers class android.support.v7.widget.Toolbar {*;}

@@ -41,6 +41,7 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
     super.onCreate()
     LoLChat.findSession(Cached.loginUsername).map { sess =>
       info("[*] Service started")
+      sess.enableAutoReconnection()
       sess.addReceiveMsgListener(this)
       sess.addReconnectionListener(this)
       sess.setFriendListListener(this)
@@ -162,7 +163,10 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
     runOnUiThread(Crouton.cancelAllCroutons())
   }
 
-  def onReconnectionFailed(attempt: Int): Unit = info(s"[!] attempt $attempt to reconnect failed"
+  def onReconnectionFailed(attempt: Int): Unit = {
+    info(s"[!] attempt $attempt to reconnect failed")
+    // todo: let user force a reconnection attempt
+  }
 
   def onReconnectingIn(sec: Int): Unit = info("[*] Connecting in " + sec)
 
@@ -268,10 +272,7 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
 
   def onEvent(event: EventLogout): Unit = {
     info("[*] Cleaning up and disconnecting")
-    Future {
-      LoLChat.endAllSessions()
-    } onSuccess { case () =>
-      stopSelf()
-    }
+    LoLChat.endAllSessions()
+    stopSelf()
   }
 }
