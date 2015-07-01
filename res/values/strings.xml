@@ -45,6 +45,14 @@
     <string name="no_wifi">Connection Issues</string>
     <string name="server_busy">Server Busy</string>
     <string name="not_in_game">is not in a game or it has not started.</string>
+    <string name="no_connection">No connection. Please try again.</string>
+    <string name="summoner_not_found">Summoner does not exist. Please try again.</string>
+    <string name="unexpected_err">An unexpected error has occurred.</string>
+    
+    <!-- friend list -->
+    <string name="friends_moved_to_group">%1$d friend(s) moved to %2$s group.</string>
+    <string name="friend_req_sent">Friend request sent successfully.</string>
+    <string name="group_created">%1$s group created.</string>
 
     <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages?</string>

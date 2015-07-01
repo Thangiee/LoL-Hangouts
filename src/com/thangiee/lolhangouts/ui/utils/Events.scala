@@ -21,4 +21,5 @@ object Events {
   case class ShowNiftyNotification(msg: Message)
   case class SwitchContainer(drawerTitle: String)
   case class ShowDisconnection()
+  case class CreateFriendGroup(groupName: String)
 }

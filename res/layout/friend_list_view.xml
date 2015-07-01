@@ -32,12 +32,12 @@
             >
 
         <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab_add_friend"
+                android:id="@+id/fab_send_friend_request"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:src="@drawable/ic_menu_person_add_white"
-                fab:fab_label="Add friend"
+                fab:fab_label="Send Friend Request"
                 style="@style/MenuButtonsStyle"/>
 
         <com.github.clans.fab.FloatingActionButton

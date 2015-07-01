@@ -13,7 +13,7 @@ object UserMapper {
       getFromId(userEntity.regionId),
       userEntity.statusMsg,
       userEntity.currentFriendNameChat,
-      userEntity.groupNames.filter(_ != "**Default")
+      userEntity.groupNames
     )
   }
 }

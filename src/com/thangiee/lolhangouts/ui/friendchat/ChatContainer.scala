@@ -13,7 +13,7 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.ui.custom.MaterialSpinnerAdapter
-import com.thangiee.lolhangouts.ui.utils.Events.{FriendCardClicked, UpdateFriendCard}
+import com.thangiee.lolhangouts.ui.utils.Events.{CreateFriendGroup, FriendCardClicked, UpdateFriendCard}
 import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
@@ -24,7 +24,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   private lazy val friendListView = new FriendListView()
   private lazy val chatView       = new ChatView()
 
-  private lazy val spinnerContainer = layoutInflater.inflate(R.layout.toolbar_spinner, toolbar, false)
+  private lazy val spinnerContainer   = layoutInflater.inflate(R.layout.toolbar_spinner, toolbar, false)
+  private lazy val friendGroupAdapter = new MaterialSpinnerAdapter(Seq("All", "Online", "Offline"))
 
   private lazy val loadUser        = GetUserUseCaseImpl().loadUser()
   private val setActiveChatUseCase = SetActiveChatUseCaseImpl()
@@ -45,15 +46,14 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     val lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     toolbar.addView(spinnerContainer, lp)
 
-    val adapter = new MaterialSpinnerAdapter(Seq("All", "Online", "Offline"))
-    loadUser.onSuccess { case Good(user) => adapter.addItems(user.groupNames) }
+    loadUser.onSuccess { case Good(user) => friendGroupAdapter.addItems(user.groupNames.filter(_ != "**Default")) }
 
     val spinner = spinnerContainer.find[Spinner](R.id.toolbar_spinner)
-    spinner.setAdapter(adapter)
+    spinner.setAdapter(friendGroupAdapter)
     spinner.setOnItemSelectedListener(new OnItemSelectedListener {
       def onNothingSelected(adapterView: AdapterView[_]): Unit = {}
       def onItemSelected(adapterView: AdapterView[_], view: View, position: Int, id: Long): Unit = {
-        friendListView.friendGroupToShow = adapter.getItem(position)
+        friendListView.friendGroupToShow = friendGroupAdapter.getItem(position)
         EventBus.getDefault.post(Events.ReloadFriendCardList())
       }
     })
@@ -156,5 +156,9 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
         chatView.setFriend(event.friend)
       }
     }
+  }
+
+  def onEvent(event: CreateFriendGroup): Unit ={
+    friendGroupAdapter.addItem(event.groupName)
   }
 }

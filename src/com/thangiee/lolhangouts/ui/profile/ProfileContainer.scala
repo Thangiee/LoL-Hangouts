@@ -76,7 +76,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   override def onOptionsItemSelected(item: MenuItem): Boolean = {
     item.getItemId match {
       case R.id.menu_add_friend =>
-        ManageFriendUseCaseImpl().addFriend(name)
+        ManageFriendUseCaseImpl().sendFriendRequest(name)
         // todo: show message
         true
       case R.id.menu_info       =>
