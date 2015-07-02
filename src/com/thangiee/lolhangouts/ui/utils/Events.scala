@@ -18,7 +18,6 @@ object Events {
   case class ClearDisConnectNotification()
   case class FinishActivity()
   case class Logout()
-  case class ShowNiftyNotification(msg: Message)
   case class SwitchContainer(drawerTitle: String)
   case class ShowDisconnection()
   case class CreateFriendGroup(groupName: String)
