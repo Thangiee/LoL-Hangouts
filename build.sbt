@@ -39,10 +39,10 @@ javacOptions ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil
 
 // dependencies for lolchat
 libraryDependencies ++= Seq(
-  "org.igniterealtime.smack" % "smack-tcp" % "4.1.1",
-  "org.igniterealtime.smack" % "smack-core" % "4.1.1",
-  "org.igniterealtime.smack" % "smack-extensions" % "4.1.1",
-  "org.igniterealtime.smack" % "smack-android" % "4.1.1",
+  "org.igniterealtime.smack" % "smack-tcp" % "4.1.2",
+  "org.igniterealtime.smack" % "smack-core" % "4.1.2",
+  "org.igniterealtime.smack" % "smack-extensions" % "4.1.2",
+  "org.igniterealtime.smack" % "smack-android" % "4.1.2",
   "org.scalactic" % "scalactic_2.11" % "2.2.5"
 ).map(_.exclude("xpp3", "xpp3"))
 
