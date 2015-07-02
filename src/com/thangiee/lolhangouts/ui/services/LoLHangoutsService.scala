@@ -255,7 +255,7 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
 
   private def isNotifySoundPrefOn: Boolean = R.string.pref_notify_sound.pref2Boolean(default = true)
 
-  private def isNotifyAppRunningPrefOn: Boolean = R.string.pref_notify_app_running.pref2Boolean(default = true)
+  private def isNotifyAppRunningPrefOn: Boolean = R.string.pref_notify_app_running.pref2Boolean(default = false)
 
   def onEvent(event: Events.ClearChatNotification): Unit = {
     notificationManager.cancel(msgNotificationId) // clear notification
