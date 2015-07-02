@@ -33,6 +33,7 @@ proguardCache in Android ++= ProguardCache("org.scaloid") % "org.scaloid" ::
   ProguardCache("android.support") % "com.android.support" ::
   ProguardCache("com.google.common") % "com.google.common" ::
   ProguardCache("com.thangiee") % "com.thangiee" ::
+  ProguardCache("scala.collection") % "scala.collection" ::
   Nil
 
 javacOptions ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil
@@ -57,7 +58,7 @@ libraryDependencies ++= Seq(
 
 // google billing
 libraryDependencies ++= Seq(
-  aar("com.google.android.gms" % "play-services" % "6.1.+"),
+  aar("com.google.android.gms" % "play-services-ads" % "7.+"),
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+")
 )
 

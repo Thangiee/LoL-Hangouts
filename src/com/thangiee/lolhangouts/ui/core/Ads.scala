@@ -7,18 +7,18 @@ import com.google.android.gms.ads.{AdRequest, AdSize, AdView}
 trait Ads extends TActivity {
   private lazy val adView = new AdView(ctx)
 
-  def AD_UNIT_ID: String
-  def adsLayout: ViewGroup
+  def adUnitId: String
+  def adLayout: ViewGroup
 
-  def setupAds(params: ViewGroup.LayoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)): Unit = { //todo:
-    adView.setAdSize(AdSize.BANNER)
-    adView.setAdUnitId(AD_UNIT_ID)
+  def setupAds(): Unit = { 
+    adView.setAdSize(AdSize.SMART_BANNER)
+    adView.setAdUnitId(adUnitId)
 
-    adsLayout.addView(adView, params)
+    val params = new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    adLayout.addView(adView, params)
 
     val adRequest = new AdRequest.Builder()
       .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-      .addTestDevice("6D8906D4C1230F9D8AA43AFD76C75B9D")
       .build()
 
     adView.loadAd(adRequest)
