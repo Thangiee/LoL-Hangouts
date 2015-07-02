@@ -4,37 +4,38 @@ android.Plugin.androidBuild
 
 name := "LoL Hangouts"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
 
 minSdkVersion in Android := "14"
 
 platformTarget in Android := "android-22"
 
-apkbuildExcludes in Android ++= Seq(
-  "META-INF/notice.txt",
-  "META-INF/license.txt",
-  "META-INF/LICENSE",
-  "META-INF/NOTICE",
-  "META-INF/LICENSE.txt",
-  "META-INF/NOTICE.txt"
-)
+apkbuildExcludes in Android ++=
+  "META-INF/notice.txt" ::
+  "META-INF/license.txt" ::
+  "META-INF/LICENSE" ::
+  "META-INF/NOTICE" ::
+  "META-INF/LICENSE.txt" ::
+  "META-INF/NOTICE.txt" ::
+  Nil
 
-resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+dexMaxHeap in Android := "2048m"
 
-resolvers += "smack repo" at "https://oss.sonatype.org/content/repositories/snapshots"
-
-resolvers += "material-dialogs" at "https://dl.bintray.com/drummer-aidan/maven"
+resolvers ++= ("Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/") ::
+  ("smack repo" at "https://oss.sonatype.org/content/repositories/snapshots") ::
+  ("material-dialogs" at "https://dl.bintray.com/drummer-aidan/maven") ::
+  Nil
 
 proguardOptions in Android ++= ProguardSettings.buildSettings
 
-proguardCache in Android ++= Seq(
-  ProguardCache("org.scaloid") % "org.scaloid",
-  ProguardCache("play") % "play"
-)
+proguardCache in Android ++= ProguardCache("org.scaloid") % "org.scaloid" ::
+  ProguardCache("play") % "play" ::
+  ProguardCache("android.support") % "com.android.support" ::
+  ProguardCache("com.google.common") % "com.google.common" ::
+  ProguardCache("com.thangiee") % "com.thangiee" ::
+  Nil
 
-javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
-
-dexMaxHeap in Android := "2048m"
+javacOptions ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil
 
 // dependencies for lolchat
 libraryDependencies ++= Seq(
@@ -43,7 +44,7 @@ libraryDependencies ++= Seq(
   "org.igniterealtime.smack" % "smack-extensions" % "4.1.1",
   "org.igniterealtime.smack" % "smack-android" % "4.1.1",
   "org.scalactic" % "scalactic_2.11" % "2.2.5"
-)
+).map(_.exclude("xpp3", "xpp3"))
 
 // scala 3th party libraries
 libraryDependencies ++= Seq(
