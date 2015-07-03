@@ -5,7 +5,8 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.ui.core.{TActivity, UpButton}
 
 class SettingsActivity extends TActivity with UpButton {
-  override protected def layoutId(): Int = R.layout.act_settings_screen
+  override def layoutId(): Int = R.layout.act_settings_screen
+  override val snackBarHolderId = R.id.act_settings_screen
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)

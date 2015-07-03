@@ -19,7 +19,8 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
     About("App version", R.string.app_version.r2String)
   )
 
-  override val layoutId     = R.layout.act_about_screen
+  override val layoutId         = R.layout.act_about_screen
+  override val snackBarHolderId = R.id.act_about_screen
   private lazy val listView = find[ListView](android.R.id.list)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -58,5 +59,4 @@ class AboutActivity extends TActivity with UpButton with AdapterView.OnItemClick
   }
 
   private case class About(title: String, subTitle: String)
-
 }

@@ -1,7 +1,8 @@
 package com.thangiee.lolhangouts.data.datasources.entities.mappers
 
+import com.thangiee.lolhangouts.data.datasources._
 import com.thangiee.lolhangouts.data.datasources.entities.UserEntity
-import com.thangiee.lolhangouts.data.usecases.entities.{Region, User}
+import com.thangiee.lolhangouts.data.usecases.entities.User
 
 object UserMapper {
 
@@ -9,9 +10,10 @@ object UserMapper {
     User(
       userEntity.loginName,
       userEntity.inGameName,
-      Region.getFromId(userEntity.regionId),
+      getFromId(userEntity.regionId),
       userEntity.statusMsg,
-      userEntity.currentFriendNameChat
+      userEntity.currentFriendNameChat,
+      userEntity.groupNames
     )
   }
 }

@@ -7,8 +7,7 @@ import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.nispok.snackbar.Snackbar
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.exception.DataAccessException
-import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase.{GameInfoNotFound, InternalError}
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
 import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView._
@@ -16,7 +15,6 @@ import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 class GameScouterContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   private lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
@@ -43,12 +41,12 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
     pager.setOnPageChangeListener(pageChangeListener)
 
     // set tabs title and listener for all pages
-    (0 until pages.size).foreach { i =>
+    pages.indices.foreach { i =>
       tabs.addTab(tabs.newTab()
         .setText(pages(i))
         .setTabListener(this))
     }
-    
+
     loadGame()
   }
 
@@ -58,36 +56,33 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
   }
 
   def loadGame(): Unit = {
-    viewLiveGameUseCase.loadGameInfo(username, regionId) onComplete {
-      case Success(liveGame) =>
-        runOnUiThread {
-          setToolbarTitle(s"${liveGame.mapName} - $regionId")
-          blueTeamView.initializeViewData(liveGame.blueTeam, BlueTeam)
-          blueTeamView.hideLoading()
-          purpleTeamView.initializeViewData(liveGame.purpleTeam, PurpleTeam)
-          purpleTeamView.hideLoading()
-        }
-      case Failure(e)        =>
-        runOnUiThread {
-          Snackbar.`with`(ctx)
-            .text("Failed to load game")
-            .textColorResource(R.color.md_white)
-            .colorResource(R.color.md_grey_900)
-            .actionLabel("Retry")
-            .actionColorResource(R.color.accent_light)
-            .actionListener((snackbar: Snackbar) => reloadGame())
-            .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-            .show(ctx.asInstanceOf[TActivity])
+    viewLiveGameUseCase.loadGameInfo(username, regionId).onSuccess {
+      case Good(gameInfo) => runOnUiThread {
+        setToolbarTitle(s"${gameInfo.mapName} - $regionId")
+        blueTeamView.initializeViewData(gameInfo.blueTeam, BlueTeam)
+        blueTeamView.hideLoading()
+        purpleTeamView.initializeViewData(gameInfo.purpleTeam, PurpleTeam)
+        purpleTeamView.hideLoading()
+      }
+      case Bad(e) => runOnUiThread {
+        Snackbar.`with`(ctx)  // todo: replace with android support lib snackbar when its set duration bug is fix
+          .text("Failed to load game")
+          .textColorResource(R.color.md_white)
+          .colorResource(R.color.md_grey_900)
+          .actionLabel("Retry")
+          .actionColorResource(R.color.accent_light)
+          .actionListener((snackbar: Snackbar) => reloadGame())
+          .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+          .show(ctx.asInstanceOf[TActivity])
 
-          val errMsg = e match {
-            case DataAccessException(_, DataNotFound) => username + R.string.not_in_game.r2String
-            case DataAccessException(_, GetDataError) => R.string.err_get_data.r2String
-            case _ => e.printStackTrace(); ""
-          }
-
-          blueTeamView.showLoadingError("Oops", errMsg)
-          purpleTeamView.showLoadingError("Oops", errMsg)
+        val errMsg = e match {
+          case GameInfoNotFound => username + R.string.not_in_game.r2String
+          case InternalError    => R.string.err_get_data.r2String
         }
+
+        blueTeamView.showLoadingError("Oops", errMsg)
+        purpleTeamView.showLoadingError("Oops", errMsg)
+      }
     }
   }
 

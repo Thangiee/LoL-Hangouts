@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:card="http://schemas.android.com/apk/res-auto"
+                xmlns:fab="http://schemas.android.com/apk/res/com.thangiee.lolhangouts"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -10,4 +11,52 @@
             android:layout_height="match_parent"
             card:list_card_layout_resourceID="@layout/native_list_card_layout"
             android:id="@+id/card_list"/>
+
+    <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="bottom|right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
+            fab:menu_animationDelayPerItem="100"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true"
+            fab:menu_colorNormal="@color/accent"
+            fab:menu_colorPressed="@color/accent_dark"
+            fab:menu_colorRipple="@color/accent_light"
+            >
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_send_friend_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:src="@drawable/ic_menu_person_add_white"
+                fab:fab_label="Send Friend Request"
+                style="@style/MenuButtonsStyle"/>
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_create_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:src="@drawable/ic_file_folder_shared"
+                fab:fab_label="Create friend group"
+                style="@style/MenuButtonsStyle"/>
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_move"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:src="@drawable/ic_action_trending_neutral"
+                fab:fab_label="Move friend to new group"
+                style="@style/MenuButtonsStyle"/>
+    </com.github.clans.fab.FloatingActionMenu>
+
 </RelativeLayout>

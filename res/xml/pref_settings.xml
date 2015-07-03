@@ -23,7 +23,7 @@
                 android:widgetLayout="@layout/pref_switch"
                 android:title="Vibration"/>
         <com.thangiee.lolhangouts.ui.settings.SwitchCompatPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="@string/pref_notify_app_running"
                 android:widgetLayout="@layout/pref_switch"
                 android:title="Notify app running"

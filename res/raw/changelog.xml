@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+
+    <changelogversion versionName="2.2.0" changeDate="July 2, 2015">
+        <changelogtext>[b][font color=red]New![/font][/b] Create friend groups</changelogtext>
+        <changelogtext>[b][font color=red]New![/font][/b] Move friends between groups</changelogtext>
+        <changelogtext>[b][font color=red]New![/font][/b] Show friends only from a certain group</changelogtext>
+        <changelogtext>Update/Polish UI</changelogtext>
+        <changelogtext>Add Bard and Ekko icons</changelogtext>
+        <changelogtext>Bug fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.1.0" changeDate="April 10, 2015">
         <changelogtext>Redesign profile screens</changelogtext>
         <changelogtext>significantly reduced game scouter loading time</changelogtext>

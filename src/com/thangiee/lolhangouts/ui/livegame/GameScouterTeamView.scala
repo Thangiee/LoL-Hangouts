@@ -51,8 +51,8 @@ class GameScouterTeamView(implicit ctx: Context, a: AttributeSet) extends FrameL
     errorView.showRetryButton(false)
 
     delay(1000) {
-      errorView.setErrorTitle(title)
-      errorView.setErrorSubtitle(subTitle)
+      errorView.setTitle(title)
+      errorView.setSubtitle(subTitle)
       errorView.setVisibility(View.VISIBLE)
     }
   }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.thangiee.lolhangouts"
-          android:versionCode="2009"
+          android:versionCode="2010"
           android:versionName="@string/app_version">
 
     <uses-sdk
@@ -21,10 +21,8 @@
             android:icon="@drawable/ic_launcher"
             android:name=".MyApplication">
 
-        <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
-
-
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
         <meta-data android:name="AA_DB_VERSION" android:value="2" />
         <meta-data android:name="AA_MODELS" android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity" />
 
@@ -49,6 +47,7 @@
                 android:name=".ui.main.MainActivity"
                 android:label="@string/app_name"
                 android:configChanges="orientation|keyboardHidden|screenSize"
+                android:windowSoftInputMode="adjustResize"
                 android:launchMode="singleTop"/>
 
         <activity
@@ -73,11 +72,6 @@
 
         <activity
                 android:name=".ui.livegame.ViewGameScouterActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:label="@string/app_name"/>
-
-        <activity
-                android:name=".ui.friendchat.QuickChatActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"/>
 

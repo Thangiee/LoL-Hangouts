@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.SwitchCompat
 import android.view.View
-import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.dd.CircularProgressButton
@@ -16,8 +15,6 @@ import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.regionselection.RegionSelectionActivity
 import com.thangiee.lolhangouts.ui.utils._
-import org.jivesoftware.smack.SmackAndroid
-import org.scaloid.common.SIntent
 
 import scala.util.Try
 
@@ -32,10 +29,10 @@ class LoginActivity extends TActivity with LoginView {
 
   override protected val presenter = new LoginPresenter(this, LoginUseCaseImpl())
   override val layoutId  = R.layout.act_login_screen
+  override val snackBarHolderId = R.id.act_login_screen
 
   override def onCreate(b: Bundle): Unit = {
     super.onCreate(b)
-    SmackAndroid.init(ctx)
     overridePendingTransition(R.anim.right_slide_in, R.anim.stay_still)
 
     logInBtn.setIndeterminateProgressMode(true)
@@ -117,23 +114,24 @@ class LoginActivity extends TActivity with LoginView {
 
   override def showBlankUsernameError(): Unit = {
     userEditText.shake()
-    R.string.err_empty_user.croutonWarn()
+    userEditText.setError(R.string.err_empty_user.r2String)
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showBlankPasswordError(): Unit = {
     passwordEditText.shake()
-    R.string.err_empty_pass.croutonWarn()
+    passwordEditText.setError(R.string.err_empty_pass.r2String)
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showAuthenticationError(): Unit = {
-    R.string.err_authentication.croutonWarn()
+    userEditText.setError(R.string.err_authentication.r2String)
+    passwordEditText.setError(R.string.err_authentication.r2String)
     logInBtn.setProgress(LoginView.ErrorState)
   }
 
   override def showConnectionError(): Unit = {
-    R.string.err_connect_to_server.croutonWarn()
+    SnackBar(R.id.act_login_screen, R.string.err_connect_to_server).show()
     logInBtn.setProgress(LoginView.ErrorState)
   }
 

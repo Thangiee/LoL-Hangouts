@@ -11,6 +11,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/act_main_screen"
             android:fitsSystemWindows="true"
             android:background="@color/primary_dark"
             >

@@ -1,6 +1,6 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
 
 import scala.concurrent.Future
@@ -13,7 +13,7 @@ trait MarkMsgReadUseCase extends Interactor {
 case class MarkMsgReadUseCaseImp() extends MarkMsgReadUseCase {
 
   override def markAsRead(friendName: String): Future[Unit] = Future {
-    DB.getUnreadMessages(LoLChat.loginName, friendName).map(_.setRead(true).save())
+    DB.getUnreadMessages(Cached.loginUsername, friendName).map(_.setRead(true).save())
       .logThenReturn(_ => "[+] Messages set to read")
   }
 }

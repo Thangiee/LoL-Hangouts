@@ -2,12 +2,11 @@ package com.thangiee.lolhangouts.ui.main
 
 import android.content.{Context, Intent}
 import android.os.Bundle
-import android.support.v4.widget.DrawerLayout.SimpleDrawerListener
 import android.view.View.OnClickListener
 import android.view.{Menu, MenuItem, View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
-import com.pixplicity.easyprefs.library.Prefs
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.usecases.GetUserUseCaseImpl
 import com.thangiee.lolhangouts.ui.core._
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
@@ -33,9 +32,10 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   private var bp       : BillingProcessor = _
   private var container: Container        = _
 
-  override lazy val adsLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
-  override      val AD_UNIT_ID: String    = "ca-app-pub-4297755621988601/1893861576"
-  override      val layoutId              = R.layout.act_main_screen
+  override lazy val adLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
+  override      val adUnitId: String     = "ca-app-pub-4297755621988601/1893861576"
+  override      val layoutId             = R.layout.act_main_screen
+  override      val snackBarHolderId     = R.id.act_main_screen
 
   private lazy val isGuestMode       = getIntent.getBooleanExtra("is-guest-mode-key", false)
   private lazy val loadUser          = GetUserUseCaseImpl().loadUser()
@@ -71,7 +71,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
     })
 
     notificationManager.cancelAll() // clear any left over notification
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    if (Cached.isAdsEnable) setupAds()
     rateMyApp()
   }
 
@@ -120,7 +120,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   override def onProductPurchased(productId: String, details: TransactionDetails): Unit = {
     info("[+] Product purchased: " + productId)
-    Prefs.putBoolean("is_ads_enable", false)
+    Cached.isAdsEnable = false
     R.string.ads_disabled.r2String.croutonConfirm(Configuration.DURATION_LONG)
     bp.release()
   }
@@ -131,7 +131,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       R.string.ads_already_disabled.r2String.croutonInfo()
       bp.release()
     } else {
-      Prefs.putBoolean("is_ads_enable", true)
+      Cached.isAdsEnable = true
       bp.purchase(this, SKU_REMOVE_ADS)
     }
   }
@@ -139,7 +139,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
   override def onPurchaseHistoryRestored(): Unit = {
     info("[+] Purchase history restored: " + bp.listOwnedProducts())
     if (bp.listOwnedProducts.contains(SKU_REMOVE_ADS)) {
-      Prefs.putBoolean("is_ads_enable", false)
+      Cached.isAdsEnable = false
       R.string.ads_disabled.r2String.croutonConfirm(Configuration.DURATION_LONG)
       bp.release()
     }
@@ -170,7 +170,7 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
 
   private def switchToMyProfile(): Unit = {
     loadUser.onSuccess {
-      case user => runOnUiThread {
+      case Good(user) => runOnUiThread {
         showToolBarShadow = false // remove the shadow since profile already has shadow under the tabs
         container = new ProfileContainer(user.inGameName, user.region.id)
       }

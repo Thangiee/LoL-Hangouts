@@ -12,7 +12,8 @@ import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
-import tr.xip.errorview.{ErrorView, RetryListener}
+import tr.xip.errorview.ErrorView
+import tr.xip.errorview.ErrorView.RetryListener
 
 import scala.collection.JavaConversions._
 
@@ -72,8 +73,8 @@ class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends Frame
     loadingWheel.zoomOut(delay = 500) // delay in millis
 
     delay(1500) {
-      errorView.setErrorTitle(title)
-      errorView.setErrorSubtitle(subTitle)
+      errorView.setTitle(title)
+      errorView.setSubtitle(subTitle)
       errorView.setVisibility(View.VISIBLE)
     }
   }

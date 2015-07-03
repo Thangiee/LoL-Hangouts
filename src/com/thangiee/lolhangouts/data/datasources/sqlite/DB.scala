@@ -53,7 +53,7 @@ object DB {
       new Select().from(classOf[MessageEntity]).where("username = ? AND friendName = ?", username, friendName)
         .orderBy("date DESC").limit(1).executeSingle[MessageEntity]()
     } match {
-      case Success(msg) => if (msg != null) Some(msg) else None
+      case Success(msg) => Option(msg)
       case Failure(e)   => None
     }
   }

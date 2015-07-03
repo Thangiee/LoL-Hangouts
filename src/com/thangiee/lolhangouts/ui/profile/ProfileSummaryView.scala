@@ -16,7 +16,8 @@ import it.gmariotti.cardslib.library.view.CardViewNative
 import lecho.lib.hellocharts.formatter.SimplePieChartValueFormatter
 import lecho.lib.hellocharts.model.{PieChartData, SliceValue}
 import lecho.lib.hellocharts.view.PieChartView
-import tr.xip.errorview.{ErrorView, RetryListener}
+import tr.xip.errorview.ErrorView
+import tr.xip.errorview.ErrorView.RetryListener
 
 import scala.collection.JavaConversions._
 
@@ -183,8 +184,8 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     loadingWheel.zoomOut(delay = 1000) // delay in millis
 
     delay(2000) {
-      errorView.setErrorTitle(title)
-      errorView.setErrorSubtitle(subTitle)
+      errorView.setTitle(title)
+      errorView.setSubtitle(subTitle)
       errorView.setVisibility(View.VISIBLE)
     }
   }

@@ -1,43 +1,56 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
+import com.thangiee.lolchat.LoLChat
+import com.thangiee.lolchat.error.{FailAuthentication, NotConnected, UnexpectedError}
+import com.thangiee.lolchat.region._
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.AppDataMapper
-import com.thangiee.lolhangouts.data.datasources.AppDataFactory
-import com.thangiee.lolhangouts.data.datasources.net.core.LoLChat
-import com.thangiee.lolhangouts.data.usecases.entities.Region
+import com.thangiee.lolhangouts.data.datasources.{AppDataFactory, _}
+import com.thangiee.lolhangouts.data.usecases.LoginUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.Value.Boolean.IsLoginOffline
 import com.thangiee.lolhangouts.data.usecases.entities.Value.String.{Password, Username, Version}
-import com.thangiee.lolhangouts.data.exception.UseCaseException._
-import com.thangiee.lolhangouts.data.exception.UserInputException._
-import com.thangiee.lolhangouts.data.exception.{UseCaseException, UserInputException}
+import com.thangiee.lolhangouts.data.utils._
+import org.scalactic.Or
 import thangiee.riotapi.core.RiotApi
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 trait LoginUseCase extends Interactor {
   def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)]
-  def login(user: String, pass: String): Future[Unit]
+  def login(user: String, pass: String): Future[Unit Or LoginError]
   def saveLoginInfo(user: String, pass: String, isLoginOffline: Boolean, isGuestMode: Boolean): Future[Unit]
   def updateAppVersion(version: String): Future[Unit]
   def loadAppVersion(): Future[Version]
 }
 
+object LoginUseCase {
+  sealed trait LoginError
+  object EmptyUsername extends LoginError
+  object EmptyPassword extends LoginError
+  object EmptyUserAndPass extends LoginError
+  object ConnectionError extends LoginError
+  object AuthenticationError extends LoginError
+  object InternalError extends LoginError
+}
+
 case class LoginUseCaseImpl() extends LoginUseCase {
 
-  override def login(user: String, pass: String): Future[Unit] = Future {
-    // validate inputs
-    if (user.isEmpty) UserInputException("[-] username is empty", EmptyUsername).logThenThrow.i
-    if (pass.isEmpty) UserInputException("[-] password is empty", EmptyPassword).logThenThrow.i
-
-    val region = Region.getFromId(PrefsCache.getString(CacheKey.LoginRegionId).getOrElse(""))
-    RiotApi.regionId = region.id
-
-    if (!LoLChat.connect(region))
-      UseCaseException("[-] Fail to connect to server.", ConnectionError).logThenThrow.i
-
-    if (!LoLChat.login(user, pass))
-      UseCaseException("[-] Invalid username/password", AuthenticationError).logThenThrow.i
+  override def login(user: String, pass: String): Future[Unit Or LoginError] = Future {
+    (user.isEmpty, pass.isEmpty) match {
+      case (true, false)  => info("[-] username is empty"); Bad(EmptyUsername)
+      case (false, true)  => info("[-] password is empty"); Bad(EmptyPassword)
+      case (true, true)   => info("[-] username and password are empty"); Bad(EmptyUserAndPass)
+      case (false, false) =>
+        val region = getFromId(Cached.loginRegionId.getOrElse("na"))
+        RiotApi.regionId = region.id
+        LoLChat.login(user, pass, region) match {
+          case Good(_)                       => Good(Unit)
+          case Bad(NotConnected(url))        => info(s"[-] fail to reach $url"); Bad(ConnectionError)
+          case Bad(FailAuthentication(_, _)) => info("[-] Invalid username or password"); Bad(AuthenticationError)
+          case Bad(UnexpectedError(t))       => t.printStackTrace(); Bad(InternalError)
+        }
+    }
   }
 
   override def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)] = Future {
@@ -46,17 +59,13 @@ case class LoginUseCaseImpl() extends LoginUseCase {
   }
 
   override def saveLoginInfo(user: String, pass: String, isLoginOffline: Boolean, isGuestMode: Boolean): Future[Unit] = Future {
-    PrefsCache.put(CacheKey.LoginName → user)
-    PrefsCache.put(CacheKey.LoginPass → pass)
-    PrefsCache.put(CacheKey.IsLoginOffline → isLoginOffline)
-    PrefsCache.put(CacheKey.IsGuestMode → isGuestMode)
+    Cached.loginUsername = user
+    Cached.loginPassword = pass
+    Cached.isLoginOffline = isLoginOffline
+    Cached.isGuessMode = isGuestMode
   }
 
-  override def updateAppVersion(version: String): Future[Unit] = Future {
-    PrefsCache.put(CacheKey.AppVersion → version)
-  }
+  override def updateAppVersion(version: String): Future[Unit] = Future { Cached.appVersion = version }
 
-  override def loadAppVersion(): Future[Version] = Future {
-    PrefsCache.getString(CacheKey.AppVersion).getOrElse("-1")
-  }
+  override def loadAppVersion(): Future[Version] = Future { Cached.appVersion.getOrElse("0") }
 }

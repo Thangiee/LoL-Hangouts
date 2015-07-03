@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.{EditText, FrameLayout}
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
+import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
 import com.thangiee.lolhangouts.data.usecases._
@@ -19,7 +20,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   private lazy val sendButton      = find[CircularProgressButton](R.id.btn_send_msg)
-  private lazy val msgField        = find[EditText](R.id.et_msg_field)
+  private lazy val msgField        = find[MaterialEditText](R.id.et_msg_field)
   private lazy val messageAdapter  = new MessageAdapter(ctx, 0)
   private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
   private lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
@@ -43,6 +44,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   def setFriend(friend: Friend) = {
     this.friend = Some(friend)
     presenter.handleFriendChange(friend)
+    msgField.setFloatingLabelText(s"${R.string.send_msg_to.r2String} ${friend.name}")
   }
 
   def getFriend: Option[Friend] = friend
@@ -68,11 +70,11 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
 
   def showSendFail(): Unit = sendButton.setProgress(-1)
 
-  def showEmptyMsgError(): Unit = R.string.err_empty_msg.croutonWarn()
+  def showEmptyMsgError(): Unit = msgField.setError(R.string.err_empty_msg.r2String)
 
-  def showSendMsgError(): Unit = R.string.err_sending_msg.croutonWarn()
+  def showSendMsgError(): Unit = msgField.setError(R.string.err_sending_msg.r2String)
 
-  def showMsgToNobodyError(): Unit = R.string.err_send_to_nobody.croutonWarn()
+  def showMsgToNobodyError(): Unit = msgField.setError(R.string.err_send_to_nobody)
 
   def clearMessageInput(): Unit = msgField.setText("")
 
