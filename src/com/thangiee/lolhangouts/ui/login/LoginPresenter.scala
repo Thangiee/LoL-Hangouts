@@ -17,7 +17,7 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
 
     // don't run this code when first time opening the app since
     // the app will be redirected to region selection screen
-    if (Cached.isFirstLaunch) {
+    if (!Cached.isFirstLaunch) {
       info("[*] checking for new app version")
       loginUseCase.loadAppVersion().map { oldVer =>
         val currentVersion = view.getCurrentAppVersion
