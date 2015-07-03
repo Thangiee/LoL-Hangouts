@@ -8,7 +8,6 @@ import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUseCase) extends Presenter {
   private var lock           = false
@@ -45,14 +44,18 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     // lock use to prevent multiple calls to load list while it is already loading
     if (!lock) {
       lock = true
-      info("[*] loading all friends")
-      getFriendsUseCase.loadFriendList() onComplete {
-        case Success(friends) =>
-          val (onFriends, offFriends) = friends.partition(_.isOnline)
-          runOnUiThread(view.initCardList(onFriends, offFriends))
-          lock = false
-        case Failure(_)       =>
-          lock = false
+      info("[*] loading friends")
+      getFriendsUseCase.loadFriendList().map { friends =>
+        val filteredFriends = view.friendGroupToShow.toLowerCase match {
+          case "all"     => friends
+          case "online"  => friends.filter(_.isOnline)
+          case "offline" => friends.filter(!_.isOnline)
+          case groupName => friends.filter(_.groupName.toLowerCase == groupName)
+        }
+
+        val (onFriends, offFriends) = filteredFriends.partition(_.isOnline)
+        runOnUiThread(view.initCardList(onFriends, offFriends))
+        lock = false
       }
     }
     else info("[-] repopulate friend card list blocked")
@@ -68,7 +71,9 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
 
     // block RefreshFriendCard event when friend list is currently loading 
     if (!lock)
-      getFriendsUseCase.loadFriendByName(event.friendName).map(f => runOnUiThread(view.updateCardContent(f)))
+      getFriendsUseCase.loadFriendByName(event.friendName).onSuccess {
+        case Good(f) => runOnUiThread(view.updateCardContent(f))
+      }
     else
       info("[-] Refresh friend card blocked")
   }
@@ -79,7 +84,7 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
     if (!lock) {
       lock = true
       getFriendsUseCase.loadOnlineFriends().onSuccess {
-        case fl => fl.map(f => runOnUiThread(view.updateCardContent(f)))
+        case fl => fl.foreach(f => runOnUiThread(view.updateCardContent(f)))
       }
       lock = false
     }

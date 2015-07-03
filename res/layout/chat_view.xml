@@ -30,7 +30,8 @@
             android:background="@android:color/white"
             >
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
+                xmlns:met="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/et_msg_field"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,11 +42,12 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:textColorHint="@color/gray"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
                 android:textColor="@color/black"
-                android:hint="hint"
                 android:layout_weight="1.00"
+                met:met_floatingLabel="highlight"
+                met:met_primaryColor="@color/accent"
+                met:met_floatingLabelTextSize="14sp"
+                android:layout_marginLeft="4dp"
                 />
 
         <com.dd.CircularProgressButton

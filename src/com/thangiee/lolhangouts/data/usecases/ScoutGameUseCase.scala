@@ -1,13 +1,16 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
+import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.GameInfoMapper
 import com.thangiee.lolhangouts.data.datasources.entities.{GameInfoEntity, PlayerStatsEntity}
-import com.thangiee.lolhangouts.data.exception.DataAccessException
-import com.thangiee.lolhangouts.data.exception.DataAccessException._
+import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.GameInfo
 import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
+import com.thangiee.lolhangouts.data.utils._
+import org.scalactic.Or
+import org.scalactic.TrySugar._
 import play.api.libs.json.JsResultException
+import thangiee.riotapi.core.RiotException.DataNotFound
 import thangiee.riotapi.core.{RiotApi, RiotException}
 import thangiee.riotapi.currentgame.Participant
 import thangiee.riotapi.league.League
@@ -15,42 +18,45 @@ import thangiee.riotapi.stats.PlayerStatsSummary
 import thangiee.riotapi.stats.aggregatedstats.Data2
 
 import scala.collection.parallel._
-import scala.concurrent.forkjoin.ForkJoinPool
 import scala.concurrent.Future
+import scala.concurrent.forkjoin.ForkJoinPool
 import scala.util.Try
 
 trait ScoutGameUseCase extends Interactor {
-  def loadGameInfo(username: String, regionId: String): Future[GameInfo]
+  def loadGameInfo(username: String, regionId: String): Future[GameInfo Or GameInfoError]
+}
+
+object ScoutGameUseCase {
+  sealed trait GameInfoError
+  object GameInfoNotFound extends GameInfoError
+  object InternalError extends GameInfoError
 }
 
 case class ScoutGameUseCaseImpl() extends ScoutGameUseCase {
 
-  override def loadGameInfo(username: String, regionId: String): Future[GameInfo] = Future {
-    getGame(username, regionId).map(_.logThenReturn(_ => "[+] Live game loaded successfully")).recover {
-      case RiotException(msg, RiotException.DataNotFound) =>
-        DataAccessException(s"[-] $msg", DataNotFound).logThenThrow.i
-      case RiotException(msg, _)                          =>
-        DataAccessException(s"[!] $msg", GetDataError).logThenThrow.w
-      case e: JsResultException                           =>
-        DataAccessException(s"[!] ${e.getMessage}", DataNotFound).logThenThrow.w
-    }.get
+  override def loadGameInfo(username: String, regionId: String): Future[GameInfo Or GameInfoError] = Future {
+    getGame(username, regionId).toOr.map(_.logThenReturn(_ => "[+] Live game loaded successfully")).badMap {
+      case RiotException(msg, DataNotFound) => info(s"[-] $msg"); GameInfoNotFound
+      case RiotException(msg, _)            => warn(s"[!] $msg"); InternalError
+      case e: JsResultException             => e.printStackTrace(); GameInfoNotFound
+    }
   }
 
   private def getGame(name: String, regionId: String): Try[GameInfo] = {
     for {
-      id         ← RiotApi.summonerByName(name.replace(" ", ""), regionId).map(_.id)
-      gameInfo   ← RiotApi.currentGameInfoById(id, regionId)
-      allPlayers = gameInfo.participants.par  // execute in parallel
-      _          = allPlayers.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(allPlayers.size)) // set pool size to #players
-      ranks      = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap
-      normals    = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
-      leagues    ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId).toList, regionId)
+      id ← RiotApi.summonerByName(name.replace(" ", ""), regionId).map(_.id)
+      gameInfo ← RiotApi.currentGameInfoById(id, regionId)
+      allPlayers = gameInfo.participants.par // execute in parallel
+      _ = allPlayers.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(allPlayers.size)) // set pool size to #players
+      ranks = allPlayers.map(p => p.summonerId → getRankStats(p.summonerId, 2015, regionId)).toMap
+      normals = allPlayers.map(p => p.summonerId → getNormalStats(p.summonerId, 2015, regionId)).toMap
+      leagues ← RiotApi.leagueEntryByIds(allPlayers.map(_.summonerId).toList, regionId)
     } yield {
       val allPlayersStats = allPlayers.map { p =>
         createPlayerStatsEntity(
           p,
           regionId,
-          leagues.getOrElse(p.summonerId, Nil).headOption.headOption.getOrElse(League(tier = "UNRANKED")),
+          leagues.getOrElse(p.summonerId, Nil).headOption.getOrElse(League(tier = "UNRANKED")),
           ranks.get(p.summonerId).get,
           normals.get(p.summonerId).get
         )

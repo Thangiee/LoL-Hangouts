@@ -20,17 +20,18 @@
                 android:scaleType="centerCrop"
                 />
 
-        <com.makeramen.RoundedImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:id="@+id/img_my_profile_icon"
             android:src="@drawable/league_icon"
+            android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            circle:corner_radius="32dip"
-            circle:border_color="@color/my_orange"
-            circle:border_width="2dp"
+            circle:riv_corner_radius="32dip"
+            circle:riv_border_color="@color/my_orange"
+            circle:riv_border_width="2dp"
             android:layout_marginTop="@dimen/side_drawer_top_margin"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

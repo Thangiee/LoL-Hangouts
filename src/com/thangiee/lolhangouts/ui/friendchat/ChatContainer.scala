@@ -3,14 +3,18 @@ package com.thangiee.lolhangouts.ui.friendchat
 import android.content.Context
 import android.support.v4.widget.SlidingPaneLayout
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener
-import android.view.{Menu, MenuInflater, MenuItem, View}
+import android.support.v7.app.ActionBar
+import android.view._
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.{AdapterView, Spinner}
 import com.balysv.materialmenu.MaterialMenuDrawable
 import com.balysv.materialmenu.MaterialMenuDrawable.AnimationState
+import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.{GetUserUseCaseImpl, MarkMsgReadUseCaseImp, SetActiveChatUseCaseImpl}
 import com.thangiee.lolhangouts.ui.core.Container
+import com.thangiee.lolhangouts.ui.custom.MaterialSpinnerAdapter
 import com.thangiee.lolhangouts.ui.utils.Events.{FriendCardClicked, UpdateFriendCard}
 import com.thangiee.lolhangouts.ui.utils._
-import com.thangiee.lolhangouts.R
 import de.greenrobot.event.EventBus
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -20,7 +24,9 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
   private lazy val friendListView = new FriendListView()
   private lazy val chatView       = new ChatView()
 
-  private val getUserUseCase       = GetUserUseCaseImpl()
+  private lazy val spinnerContainer = layoutInflater.inflate(R.layout.toolbar_spinner, toolbar, false)
+
+  private lazy val loadUser        = GetUserUseCaseImpl().loadUser()
   private val setActiveChatUseCase = SetActiveChatUseCaseImpl()
   private val markMsgReadUseCase   = MarkMsgReadUseCaseImp()
 
@@ -35,7 +41,24 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     toolbar.setSubtitle(null)
     navIcon.setIconState(MaterialMenuDrawable.IconState.BURGER)
 
-    openPane() // show the friend list
+    // setup the spinner in the toolbar to filter friend list by groups
+    val lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    toolbar.addView(spinnerContainer, lp)
+
+    val adapter = new MaterialSpinnerAdapter(Seq("All", "Online", "Offline"))
+    loadUser.onSuccess { case Good(user) => adapter.addItems(user.groupNames) }
+
+    val spinner = spinnerContainer.find[Spinner](R.id.toolbar_spinner)
+    spinner.setAdapter(adapter)
+    spinner.setOnItemSelectedListener(new OnItemSelectedListener {
+      def onNothingSelected(adapterView: AdapterView[_]): Unit = {}
+      def onItemSelected(adapterView: AdapterView[_], view: View, position: Int, id: Long): Unit = {
+        friendListView.friendGroupToShow = adapter.getItem(position)
+        EventBus.getDefault.post(Events.ReloadFriendCardList())
+      }
+    })
+
+    openPane() // show the friend list view
     setPanelSlideListener(this)
     setShadowDrawableLeft(R.drawable.sliding_pane_shadow)
     setCoveredFadeColor(R.color.md_grey_500.r2Color)
@@ -50,6 +73,7 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     EventBus.getDefault.unregister(this)
     appCtx.isChatOpen = false
     appCtx.isFriendListOpen = false
+    toolbar.removeView(spinnerContainer)
     super.onDetachedFromWindow()
   }
 
@@ -96,8 +120,8 @@ class ChatContainer(implicit ctx: Context) extends SlidingPaneLayout(ctx) with C
     appCtx.isFriendListOpen = false
     appCtx.isChatOpen = true
     EventBus.getDefault.postSticky(Events.ClearChatNotification()) // clear notification
-    getUserUseCase.loadUser().map { user =>
-      user.currentFriendChat.foreach { friendName =>
+    loadUser.onSuccess {
+      case Good(user) => user.currentFriendChat.foreach { friendName =>
         info(s"[*] mark messages in chat between user and $friendName as read")
         markMsgReadUseCase.markAsRead(friendName)
         EventBus.getDefault.post(UpdateFriendCard(friendName))

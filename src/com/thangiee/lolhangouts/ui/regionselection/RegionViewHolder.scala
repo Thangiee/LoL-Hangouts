@@ -6,6 +6,7 @@ import android.view.{MotionEvent, View}
 import android.widget.{ImageView, TextView}
 import at.markushi.ui.RevealColorView
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
+import com.thangiee.lolchat.region._
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities._
 import com.thangiee.lolhangouts.ui.utils._

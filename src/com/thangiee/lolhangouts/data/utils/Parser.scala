@@ -1,34 +1,29 @@
 package com.thangiee.lolhangouts.data.utils
 
-import com.thangiee.lolhangouts.data.exception.DataAccessException
-import com.thangiee.lolhangouts.data.exception.DataAccessException.{DataNotFound, GetDataError}
+import com.thangiee.lolhangouts.data.utils.Parser.{DataNotFound, ParserError, ServerBusy}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
+import org.scalactic.{Bad, Good, Or}
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 trait Parser extends AnyRef with TagUtil {
-  def fetchDocument(url: String): Try[Document] = {
-    // do multiple attempts to get the document(aka html stuff)
+  def fetchDocument(url: String): Document Or ParserError = {
+    // do multiple attempts to get the document(html)
     for (attempt ← 1 to 5) {
       info(s"[*] Attempt $attempt |Connecting to: $url")
-      val response = Jsoup.connect(url).timeout(5000).execute()
-      response.statusCode() match {
-        case 200 =>
-          if (response.body().contains("Summoner Not Found")) {
-            info("[-] Summoner info not available")
-            return Failure(DataAccessException("[-] Summoner info not available", DataNotFound))
-          }
-          else
-            return Success(response.parse())
-        case _   =>
-          if (attempt == 5) Thread.sleep(200) // wait a bit and retry
+      Try(Jsoup.connect(url).timeout(5000).execute()).map { response =>
+        response.statusCode() match {
+          case 200 =>
+            if   (response.body().contains("Summoner Not Found")) return Bad(DataNotFound)
+            else return Good(response.parse())
+          case _   =>
+            if (attempt == 5) Thread.sleep(200) // wait a bit and retry
+        }
       }
     }
-
-    info("[-] Server is busy/unavailable")
-    Failure(DataAccessException("[-] Server is busy/unavailable", GetDataError))
+    Bad(ServerBusy)
   }
 
   def getNumber[T: NumberOp](s: String): Option[T] = {
@@ -62,4 +57,8 @@ trait Parser extends AnyRef with TagUtil {
   }
 }
 
-object Parser extends Parser
+object Parser extends Parser {
+  sealed trait ParserError
+  object DataNotFound extends ParserError
+  object ServerBusy extends ParserError
+}

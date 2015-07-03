@@ -2,10 +2,8 @@ package com.thangiee.lolhangouts.ui.friendchat
 
 import java.util.Date
 
+import com.thangiee.lolhangouts.data.usecases.SendMsgUseCase.EmptyMessage
 import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
-import com.thangiee.lolhangouts.data.exception.UseCaseException.MessageSentError
-import com.thangiee.lolhangouts.data.exception.UserInputException.EmptyMessage
-import com.thangiee.lolhangouts.data.exception.{UseCaseException, UserInputException}
 import com.thangiee.lolhangouts.data.usecases._
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.ui.utils.Events.IncomingMessage
@@ -42,23 +40,19 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
     view.getFriend match {
       case Some(f) =>
         val m = Message(f.name, text, isSentByUser = true, isRead = true, new Date())
-        info("[*] Attempting to send message")
-        sendMsgUseCase.sendMessage(m) map { _ =>
-          runOnUiThread(view.showSentSuccess())
-          Thread.sleep(750)
-          runOnUiThread {
-            view.playMsgSentSound()
-            view.showMessages(List(m))
-            view.clearMessageInput()
-            view.hideProgress()
-          }
-        } recover {
-          case UseCaseException(_, MessageSentError) =>
-            onSentMsgFail()
-            runOnUiThread(view.showSendMsgError())
-          case UserInputException(_, EmptyMessage) =>
-            onSentMsgFail()
-            runOnUiThread(view.showEmptyMsgError())
+
+        sendMsgUseCase.sendMessage(m).onSuccess {
+          case Good(_) =>
+            runOnUiThread(view.showSentSuccess())
+            Thread.sleep(750)
+            runOnUiThread {
+              view.playMsgSentSound()
+              view.showMessages(List(m))
+              view.clearMessageInput()
+              view.hideProgress()
+            }
+          case Bad(EmptyMessage) => onSentMsgFail(); runOnUiThread(view.showEmptyMsgError())
+          case Bad(_)            => onSentMsgFail(); runOnUiThread(view.showSendMsgError())
         }
       case None    =>
         onSentMsgFail()
@@ -70,8 +64,8 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
     view.clearMessages()
     view.setHint(s"Send to ${friend.name}")
     view.setFriendIcon(friend.name, friend.regionId)
-    loadUser onSuccess { case user =>
-      runOnUiThread(view.setUserIcon(user.inGameName, user.region.id))
+    loadUser.onSuccess {
+      case Good(user) => runOnUiThread(view.setUserIcon(user.inGameName, user.region.id))
     }
 
     loadAndShowMessages()
@@ -91,7 +85,7 @@ class ChatPresenter(view: ChatView, deleteMsgUseCase: DeleteMsgUseCase,
         view.showMessages(messages)
         delay(100) { view.hideLoading() }
       })
-    }.getOrElse(warn("[!] friend is not set for ChatView"))
+    }.getOrElse(info("[-] friend is not set for ChatView"))
   }
 
   private def onSentMsgFail(): Unit = {

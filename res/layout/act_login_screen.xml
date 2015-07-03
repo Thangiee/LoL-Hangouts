@@ -2,12 +2,13 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:progress="http://schemas.android.com/apk/res-auto"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:met="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/act_login_screen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
         >
 
-        <include
+    <include
             layout="@layout/toolbar"
             android:id="@+id/toolbar"
             />
@@ -31,11 +32,11 @@
                 android:layout_marginLeft="72dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
-                app:floatingLabel="highlight"
-                app:floatingLabelText="Username"
-                app:baseColor="@color/white"
-                app:met_primaryColor="@color/accent"
-                app:floatingLabelTextSize="14sp"
+                met:met_floatingLabel="highlight"
+                met:met_floatingLabelText="Username"
+                met:met_baseColor="@color/white"
+                met:met_primaryColor="@color/accent"
+                met:met_floatingLabelTextSize="14sp"
                 android:singleLine="true"
                 android:textSize="24sp"
                 />
@@ -48,11 +49,11 @@
                 android:singleLine="true"
                 android:layout_marginLeft="72dp"
                 android:layout_marginRight="16dp"
-                app:floatingLabel="highlight"
-                app:floatingLabelText="@string/password_hint"
-                app:baseColor="@color/white"
-                app:met_primaryColor="@color/accent"
-                app:floatingLabelTextSize="14sp"
+                met:met_floatingLabel="highlight"
+                met:met_floatingLabelText="@string/password_hint"
+                met:met_baseColor="@color/white"
+                met:met_primaryColor="@color/accent"
+                met:met_floatingLabelTextSize="14sp"
                 android:inputType="textPassword"
                 android:textSize="24sp"
                 android:layout_marginBottom="16dp"
@@ -81,27 +82,27 @@
             android:layout_marginBottom="8dp"
             />
 
-        <com.dd.CircularProgressButton
-                android:id="@+id/btn_guest"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                progress:cpb_cornerRadius="18dp"
-                progress:cpb_iconComplete="@drawable/ic_action_accept"
-                progress:cpb_iconError="@drawable/ic_action_cancel"
-                progress:cpb_textIdle="Guest"
-                progress:cpb_selectorIdle="@drawable/idle_state_selector"
-                progress:cpb_colorIndicator="@color/primary"
-                progress:cpb_colorIndicatorBackground="@color/primary_light"
-                progress:cpb_colorProgress="@android:color/transparent"
-                android:paddingLeft="42dp"
-                android:paddingRight="42dp"
-                android:layout_below="@+id/btn_login"
-                android:layout_alignLeft="@+id/btn_login"
-                android:layout_alignStart="@+id/btn_login"
-                android:layout_marginTop="8dp"
-                />
+    <com.dd.CircularProgressButton
+            android:id="@+id/btn_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            progress:cpb_cornerRadius="18dp"
+            progress:cpb_iconComplete="@drawable/ic_action_accept"
+            progress:cpb_iconError="@drawable/ic_action_cancel"
+            progress:cpb_textIdle="Guest"
+            progress:cpb_selectorIdle="@drawable/idle_state_selector"
+            progress:cpb_colorIndicator="@color/primary"
+            progress:cpb_colorIndicatorBackground="@color/primary_light"
+            progress:cpb_colorProgress="@android:color/transparent"
+            android:paddingLeft="42dp"
+            android:paddingRight="42dp"
+            android:layout_below="@+id/btn_login"
+            android:layout_alignLeft="@+id/btn_login"
+            android:layout_alignStart="@+id/btn_login"
+            android:layout_marginTop="8dp"
+            />
 
     <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
@@ -153,13 +154,5 @@
             android:layout_height="5dp"
             android:layout_below="@+id/linearLayout3"
             />
-
-        <include
-                layout="@layout/crouton_holder"
-                android:id="@+id/crouton_holder"
-                android:layout_below="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
 </RelativeLayout>

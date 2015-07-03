@@ -1,9 +1,10 @@
 package com.thangiee.lolhangouts;
 
+import android.content.ContextWrapper;
 import com.activeandroid.app.Application;
 import com.parse.Parse;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.typesafe.config.ConfigException;
+import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -18,7 +19,6 @@ import java.util.Set;
         httpMethod = HttpSender.Method.POST,
         formUriBasicAuthLogin = "login",
         formUriBasicAuthPassword = "pass",
-        formKey = "", // This is required for backward compatibility but not used
         customReportContent = {
                 ReportField.APP_VERSION_CODE,
                 ReportField.APP_VERSION_NAME,
@@ -40,15 +40,16 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Prefs.initPrefs(getApplicationContext());
+        new Prefs.Builder()
+                .setContext(this)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(getPackageName())
+                .setUseDefaultSharedPreference(true)
+                .build();
 //        ACRA.init(this);
 
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "LOIXdGNLWVUnWqF4vuKjTdolMR23FpYTiNgArrib", "VDdyddCDyZW0yLS5jQoUf4lnxWPMCCsSCRnCvbJc");
     }
 
-    public void resetState() {
-        isFriendListOpen = false;
-        isChatOpen = false;
-    }
 }

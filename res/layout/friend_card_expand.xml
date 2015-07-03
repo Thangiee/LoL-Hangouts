@@ -94,16 +94,18 @@
             ripple:rv_color="@color/primary_dark"
             >
 
-        <com.sakout.fancybuttons.FancyButton
+        <mehdi.sakout.fancybuttons.FancyButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                fancy:textColor="@color/primary"
-                fancy:borderColor="@color/primary"
-                fancy:borderWidth="1dp"
-                fancy:defaultColor="@android:color/transparent"
-                fancy:focusColor="@color/primary"
-                fancy:radius="21dp"
-                fancy:iconResource="@drawable/ic_card_person_oj"
+                fancy:fb_textColor="@color/primary"
+                fancy:fb_borderColor="@color/primary"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="@android:color/transparent"
+                fancy:fb_focusColor="@color/primary"
+                fancy:fb_iconPaddingLeft="2dp"
+                fancy:fb_iconPaddingRight="2dp"
+                fancy:fb_radius="21dp"
+                fancy:fb_iconResource="@drawable/ic_card_person_oj"
                 android:id="@+id/btn_view_profile"
                 android:textSize="14sp"
                 android:padding="10dp"
@@ -128,16 +130,18 @@
             ripple:rv_color="@color/primary_dark"
             >
 
-        <com.sakout.fancybuttons.FancyButton
+        <mehdi.sakout.fancybuttons.FancyButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                fancy:textColor="@color/primary"
-                fancy:borderColor="@color/primary"
-                fancy:borderWidth="1dp"
-                fancy:defaultColor="@android:color/transparent"
-                fancy:focusColor="@color/primary"
-                fancy:radius="21dp"
-                fancy:iconResource="@drawable/ic_card_tv_oj"
+                fancy:fb_textColor="@color/primary"
+                fancy:fb_borderColor="@color/primary"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="@android:color/transparent"
+                fancy:fb_focusColor="@color/primary"
+                fancy:fb_radius="21dp"
+                fancy:fb_iconPaddingLeft="2dp"
+                fancy:fb_iconPaddingRight="2dp"
+                fancy:fb_iconResource="@drawable/ic_card_tv_oj"
                 android:id="@+id/btn_live_game"
                 android:padding="10dp"
                 />
@@ -159,16 +163,18 @@
             ripple:rv_color="@color/md_red_700"
             >
 
-        <com.sakout.fancybuttons.FancyButton
+        <mehdi.sakout.fancybuttons.FancyButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                fancy:textColor="@color/md_red_500"
-                fancy:borderColor="@color/md_red_500"
-                fancy:borderWidth="1dp"
-                fancy:defaultColor="@android:color/transparent"
-                fancy:focusColor="@color/md_red_500"
-                fancy:radius="21dp"
-                fancy:iconResource="@drawable/ic_card_delete_red"
+                fancy:fb_textColor="@color/md_red_500"
+                fancy:fb_borderColor="@color/md_red_500"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="@android:color/transparent"
+                fancy:fb_focusColor="@color/md_red_500"
+                fancy:fb_radius="21dp"
+                fancy:fb_iconPaddingLeft="2dp"
+                fancy:fb_iconPaddingRight="2dp"
+                fancy:fb_iconResource="@drawable/ic_card_delete_red"
                 android:padding="10dp"
                 android:id="@+id/btn_remove_friends"
                 />

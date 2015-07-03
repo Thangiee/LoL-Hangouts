@@ -29,18 +29,18 @@
             android:singleLine="true"
             />
 
-    <com.makeramen.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:id="@+id/img_profile_icon"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:cropToPadding="false"
             android:layout_margin="8dp"
-            circle:corner_radius="28dip"
-            circle:border_color="@color/accent"
-            circle:border_width="2dp"
+            android:scaleType="centerCrop"
+            circle:riv_corner_radius="28dip"
+            circle:riv_border_color="@color/accent"
+            circle:riv_border_width="1dp"
             android:src="@drawable/ic_load_unknown"
             />
 
@@ -69,7 +69,6 @@
             android:layout_alignBottom="@+id/img_profile_icon"
             android:layout_toRightOf="@+id/img_profile_icon"
             android:paddingRight="8dp"
-            android:paddingLeft="8dp"
             android:layout_alignRight="@+id/tv_friend_status"
             android:layout_alignEnd="@+id/tv_friend_status"
             />

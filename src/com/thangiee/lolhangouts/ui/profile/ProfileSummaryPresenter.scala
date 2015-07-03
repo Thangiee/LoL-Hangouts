@@ -1,8 +1,7 @@
 package com.thangiee.lolhangouts.ui.profile
 
-import com.thangiee.lolhangouts.data.exception.DataAccessException
-import com.thangiee.lolhangouts.data.exception.DataAccessException._
 import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{GetProfileFailed, ProfileNotFound}
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.ui.utils._
 
@@ -13,14 +12,13 @@ class ProfileSummaryPresenter(view: ProfileSummaryView, viewProfileUseCase: View
   def handleSetProfile(username: String, regionId: String): Unit = {
     view.showLoading()
 
-    viewProfileUseCase.loadSummary(username, regionId).map { summary =>
-      runOnUiThread {
+    viewProfileUseCase.loadSummary(username, regionId).onSuccess {
+      case Good(summary) => runOnUiThread {
         view.initializeViewData(summary)
         delay(100) { view.hideLoading() }
       }
-    } recover {
-      case DataAccessException(_, DataNotFound) => runOnUiThread(view.showDataNotFound())
-      case DataAccessException(_, GetDataError) => runOnUiThread(view.showGetDataError())
+      case Bad(ProfileNotFound) => runOnUiThread(view.showDataNotFound())
+      case Bad(GetProfileFailed) => runOnUiThread(view.showGetDataError())
     }
   }
 }

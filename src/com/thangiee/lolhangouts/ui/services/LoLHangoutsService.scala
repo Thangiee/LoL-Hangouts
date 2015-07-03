@@ -7,31 +7,28 @@ import android.content.Intent
 import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
 import android.os.{Build, IBinder}
+import com.thangiee.lolchat._
+import com.thangiee.lolchat.changedPresence._
+import com.thangiee.lolchat.error.NoSession
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.datasources.cache.{CacheKey, PrefsCache}
+import com.thangiee.lolhangouts.data.Cached
+import com.thangiee.lolhangouts.data.datasources.entities.MessageEntity
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{FriendMapper, MessageMapper}
-import com.thangiee.lolhangouts.data.datasources.entities.{FriendEntity, MessageEntity}
-import com.thangiee.lolhangouts.data.datasources.cachingApiCaller
-import com.thangiee.lolhangouts.data.datasources.net.core.{FriendListListener, LoLChat}
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
 import com.thangiee.lolhangouts.data.usecases.entities.Friend
 import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
-import com.thangiee.lolhangouts.ui.utils.Events._
+import com.thangiee.lolhangouts.ui.utils.Events.{Logout => EventLogout, _}
 import com.thangiee.lolhangouts.ui.utils._
 import de.greenrobot.event.EventBus
-import de.keyboardsurfer.android.widget.crouton.{Crouton, Style}
-import org.jivesoftware.smack._
-import org.jivesoftware.smack.packet.{Message => XMPPMessage, Packet, Presence}
-import org.jivesoftware.smack.util.StringUtils
+import de.keyboardsurfer.android.widget.crouton.Crouton
 import org.scaloid.common.SService
-import thangiee.riotapi.core.{RiotException, RiotApi}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.Random
 
-class LoLHangoutsService extends SService with MessageListener with FriendListListener with ConnectionListener {
+class LoLHangoutsService extends SService with ReceiveMsgListener with FriendListListener with ReconnectionListener {
   private val msgNotificationId        = Random.nextInt()
   private val loginNotificationId      = Random.nextInt()
   private val disconnectNotificationId = Random.nextInt()
@@ -42,15 +39,17 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
 
   override def onCreate(): Unit = {
     super.onCreate()
-    try {
+    LoLChat.findSession(Cached.loginUsername).map { sess =>
       info("[*] Service started")
-      LoLChat.initChatListener(this)
-      LoLChat.initFriendListListener(this)
-      LoLChat.initConnectionListener(this)
+      sess.addReceiveMsgListener(this)
+      sess.addReconnectionListener(this)
+      sess.setFriendListListener(this)
       EventBus.getDefault.registerSticky(ctx)
       if (isNotifyAppRunningPrefOn) notifyAppRunning()
-    } catch {
-      case e: IllegalStateException ⇒ warn("[!] " + e.getMessage); notifyDisconnection(); stopSelf()
+    } recover {
+      case NoSession(_) =>
+        warn(s"[!] Did not find session for user ${Cached.loginUsername}! Service will now shut down.")
+        stopSelf()
     }
   }
 
@@ -64,163 +63,118 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     super.onDestroy()
   }
 
-  //=============================================
-  //    MessageListener Implementation
-  //=============================================
-  override def processMessage(chat: Chat, m: XMPPMessage): Unit = {
-    val activeFriendChat = PrefsCache.getString(CacheKey.friendChat(LoLChat.loginName)).getOrElse("")
-    val from = FriendMapper.transform(LoLChat.getFriendById(StringUtils.parseBareAddress(chat.getParticipant)).get)
+  override def onReceivedMessage(fromId: String, textMsg: String): Unit = {
+    for {
+      sess <- LoLChat.findSession(Cached.loginUsername)
+      from <- sess.findFriendById(fromId).map(FriendMapper.transform)
+    } yield {
+      val activeFriendChat = Cached.friendChat(Cached.loginUsername).getOrElse("")
 
-    // create Message object with the received chat message
-    val msgEntity = new MessageEntity(LoLChat.loginName, from.name, m.getBody, false, true, new Date())
+      // create Message object with the received chat message
+      val msgEntity = new MessageEntity(Cached.loginUsername, from.name, textMsg, false, true, new Date())
 
-    // chat pane fragment is not open
-    // or the current open chat is not with sender of the message
-    if (!appCtx.isChatOpen || activeFriendChat != from.name || !isAppInForeground) {
-      msgEntity.setRead(false) // set to false because user has not seen it
-    }
-
-    msgEntity.save() // save to DB
-    EventBus.getDefault.post(Events.UpdateFriendCard(from.name))
-
-    val msg = MessageMapper.transform(msgEntity)
-    EventBus.getDefault.post(Events.IncomingMessage(from, msg))
-
-    // check notification preference
-    val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
-
-    // show notifications
-    if (!isAppInForeground) {
-      if (isNotify) {
-        debug("[+] Notifying message")
-        notifyMessage(msg)
+      // chat pane fragment is not open
+      // or the current open chat is not with sender of the message
+      if (!appCtx.isChatOpen || activeFriendChat != from.name || !isAppInForeground) {
+        msgEntity.setRead(false) // set to false because user has not seen it
       }
-    } else if (!appCtx.isChatOpen || activeFriendChat != from.name) {
-      if (isNotify) {
-        debug("[+] Notifying message")
-        notifyMessage(msg)
+
+      msgEntity.save() // save to DB
+      EventBus.getDefault.post(Events.UpdateFriendCard(from.name))
+
+      val msg = MessageMapper.transform(msgEntity)
+      EventBus.getDefault.post(Events.IncomingMessage(from, msg))
+
+      // check notification preference
+      val isNotify = R.string.pref_notify_msg.pref2Boolean(default = true)
+
+      // show notifications
+      if (!isAppInForeground) {
+        if (isNotify) {
+          debug("[+] Notifying message")
+          notifyMessage(msg)
+        }
+      } else if (!appCtx.isChatOpen || activeFriendChat != from.name) {
+        if (isNotify) {
+          debug("[+] Notifying message")
+          notifyMessage(msg)
+        }
+      }
+
+      // show nifty notifications
+      if ((activeFriendChat != from.name || !appCtx.isChatOpen) && isAppInForeground) {
+        niftyNotificationEventBus.post(Events.ShowNiftyNotification(msg))
       }
     }
-
-    // show nifty notifications
-    if ((activeFriendChat != from.name || !appCtx.isChatOpen) && isAppInForeground) {
-      niftyNotificationEventBus.post(Events.ShowNiftyNotification(msg))
-    }
   }
 
-  //=============================================
-  //    FriendListListener Implementations
-  //=============================================
-
-  override def onFriendRequest(address: String, summonerId: String, request: Packet): Unit = {
-    RiotApi.summonerNameById(summonerId.toLong).map { name =>
-      LoLChat.connection.getRoster.createEntry(address, name, null) // add to friend list
-      // notify sender of approved friend request
-      val subscribed = new Presence(Presence.Type.subscribed)
-      subscribed.setTo(request.getFrom)
-      LoLChat.connection.sendPacket(subscribed)
-    } recover {
-      case RiotException(msg, _) => warn("[!] Unable to find summoner name:" + msg)
-    }
-  }
-
-  override def onFriendAdded(id: String, name: String): Unit = {
-    EventBus.getDefault.post(ReloadFriendCardList())
-    croutonEventBus.post(CroutonMsg(s"Friend request has be sent to $name"))
-  }
-
-  override def onFriendRemove(id: String, name: String): Unit = {
-    EventBus.getDefault.post(ReloadFriendCardList())
-    croutonEventBus.post(CroutonMsg(s"$name has been removed from your friend list", Style.ALERT))
-  }
-
-  override def onFriendAvailable(friend: FriendEntity): Unit = {
+  def onFriendPresenceChanged(friend: FriendEntity)(changedPresence: ChangedPresence): Unit = {
+    info(s"[*] Friend activity: ${friend.name} > $changedPresence")
     val f = FriendMapper.transform(friend)
-    info("[*] Available: " + f.name)
-    if (appCtx.FriendsToNotifyOnAvailable.remove(friend.name)) notifyAvailable(f)
-    EventBus.getDefault.post(UpdateFriendCard(f.name))
-  }
 
-  override def onFriendLogin(friend: FriendEntity): Unit = {
-    val f = FriendMapper.transform(friend)
-    EventBus.getDefault.postSticky(ReloadFriendCardList())
+    changedPresence match {
+      case Login =>
+        EventBus.getDefault.postSticky(ReloadFriendCardList())
 
-    if (R.string.pref_notify_login.pref2Boolean(default = true)) {
-      // show notification when friendList is not in view or screen is not on
-      if (!appCtx.isFriendListOpen || !powerManager.isScreenOn || !isAppInForeground) {
-        // check setting
-        notifyLogin(f)
-      }
+        if (R.string.pref_notify_login.pref2Boolean(default = true)) {
+          // show notification when friendList is not in view or screen is not on
+          if (!appCtx.isFriendListOpen || !powerManager.isScreenOn || !isAppInForeground) {
+            // check setting
+            notifyLogin(f)
+          }
+        }
+
+      case Logout =>
+        EventBus.getDefault.postSticky(ReloadFriendCardList())
+        appCtx.FriendsToNotifyOnAvailable.remove(f.name)
+
+      case Available =>
+        if (appCtx.FriendsToNotifyOnAvailable.remove(f.name)) notifyAvailable(f)
+        EventBus.getDefault.post(UpdateFriendCard(f.name))
+
+      case _ => EventBus.getDefault.post(UpdateFriendCard(f.name))
     }
   }
 
-  override def onFriendBusy(friend: FriendEntity): Unit = {
-    info("[*] Busy: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(friend.name))
+  def onReceivedFriendRequest(fromId: String): Boolean = true //todo: ask user if they want to accept
+
+  def onFriendAdded(id: String): Unit = {
+    EventBus.getDefault.post(ReloadFriendCardList())
+    info("[+] New friend added")
   }
 
-  override def onFriendAway(friend: FriendEntity): Unit = {
-    info("[*] Away: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(friend.name))
+  def onFriendRemoved(id: String): Unit = {
+    EventBus.getDefault.post(ReloadFriendCardList())
+    info("[+] A friend was removed")
   }
 
-  override def onFriendLogOff(friend: FriendEntity): Unit = {
-    EventBus.getDefault.postSticky(ReloadFriendCardList())
-    appCtx.FriendsToNotifyOnAvailable.remove(friend.name)
-  }
-
-  override def onFriendStatusChange(friend: FriendEntity): Unit = {
-    info("[*] Change Status: " + friend.name)
-    EventBus.getDefault.post(UpdateFriendCard(friend.name))
-  }
-
-  //=============================================
-  //    ConnectionListener Implementations
-  //=============================================
-  override def connected(xmppConnection: XMPPConnection): Unit = {
-    info("[*] connected")
-  }
-
-  override def authenticated(xmppConnection: XMPPConnection): Unit = {
-    info("[*] authenticated")
-  }
-
-  override def connectionClosed(): Unit = {
-    info("[*] Connection closed.")
+  def onLostConnection(): Unit = {
+    warn("[*] Connection lost")
     notificationManager.cancel(runningNotificationId)
+    notifyDisconnection()
   }
 
-  override def reconnectionFailed(p1: Exception): Unit = {
-    warn("[-] Reconnection failed")
-  }
-
-  override def reconnectionSuccessful(): Unit = {
-    info("[*] Reconnection successful")
+  def onReconnected(): Unit = {
+    info("[+] Reconnection successful")
     notificationManager.cancel(disconnectNotificationId)
     if (isNotifyAppRunningPrefOn) notifyAppRunning()
     EventBus.getDefault.post(ReloadFriendCardList())
     runOnUiThread(Crouton.cancelAllCroutons())
   }
 
-  override def connectionClosedOnError(e: Exception): Unit = {
-    warn("[!] Connection lost:" + e.getMessage)
-    notificationManager.cancel(runningNotificationId)
-    notifyDisconnection()
-  }
-
-  override def reconnectingIn(sec: Int): Unit = {
-    // cancel reconnection and go to login screen if the wait time is longer than 30 secs
-    if (sec > 30) {
+  def onReconnectionFailed(attempt: Int): Unit = {
+    info(s"[!] attempt $attempt to reconnect failed")
+    // cancel reconnection after a number of attempts
+    if (attempt > 6) {
       EventBus.getDefault.post(FinishActivity())
       EventBus.getDefault.post(Events.Logout())
       val i = new Intent(getBaseContext, classOf[LoginActivity])
       i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       startActivity(i)
     }
-    info("[*] Connecting in " + sec)
   }
 
-  //=============================================
+  def onReconnectingIn(sec: Int): Unit = info("[*] Connecting in " + sec)
 
   private def notifyLogin(friend: Friend) {
     val title = friend.name + " has logged in!"
@@ -249,7 +203,7 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
   }
 
   private def notifyMessage(newestMsg: com.thangiee.lolhangouts.data.usecases.entities.Message) {
-    val unReadMsg = DB.getUnreadMessages(LoLChat.loginName, 5) // get the 5 newest unread messages
+    val unReadMsg = DB.getUnreadMessages(Cached.loginUsername, 5) // get the 5 newest unread messages
     val title = (if (unReadMsg.size >= 5) "+" else "") + unReadMsg.size + " New Messages"
     val content = newestMsg.friendName + ": " + newestMsg.text
     val builder = makeNotificationBuilder(R.drawable.ic_action_dialog, title, content)
@@ -292,9 +246,8 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
       .setLargeIcon(R.drawable.ic_launcher.toBitmap)
       .setSmallIcon(R.drawable.ic_launcher)
       .setContentIntent(pendingActivity[MainActivity])
-      .setContentTitle(LoLChat.loginName)
+      .setContentTitle(Cached.loginUsername)
       .setContentText("LoL Hangouts is running")
-      .setOngoing(true)
 
     notificationManager.notify(runningNotificationId, builder.getNotification)
   }
@@ -323,10 +276,10 @@ class LoLHangoutsService extends SService with MessageListener with FriendListLi
     notificationManager.cancel(loginNotificationId) // clear notification
   }
 
-  def onEvent(event: Events.Logout): Unit = {
+  def onEvent(event: EventLogout): Unit = {
     info("[*] Cleaning up and disconnecting")
     Future {
-      LoLChat.disconnect()
+      LoLChat.endAllSessions()
     } onSuccess { case () =>
       stopSelf()
     }

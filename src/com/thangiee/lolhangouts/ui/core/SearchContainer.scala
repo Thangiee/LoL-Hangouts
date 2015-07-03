@@ -9,8 +9,8 @@ import android.support.v7.widget.SearchView.{OnQueryTextListener, OnSuggestionLi
 import android.view.{Menu, MenuInflater, View}
 import android.widget.{ArrayAdapter, FrameLayout, Spinner}
 import com.balysv.materialmenu.MaterialMenuDrawable
+import com.thangiee.lolchat.region.BR
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.entities.BR
 import com.thangiee.lolhangouts.data.usecases.{GetAppDataUseCaseImpl, CheckSummExistUseCaseImpl, GetFriendsUseCaseImpl, GetUserUseCaseImpl}
 import com.thangiee.lolhangouts.ui.utils._
 
@@ -55,9 +55,10 @@ abstract class SearchContainer(layoutId: Int)(implicit ctx: Context) extends Fra
     searchView.setOnSuggestionListener(this)
     searchView.setIconified(false)
 
-    getUserUseCase.loadUser().map { user =>
+    getUserUseCase.loadUser().onSuccess {
       // set the username as default in the search view
-      searchView.setQuery(user.inGameName, false)
+      case Good(user) => searchView.setQuery(user.inGameName, false)
+      case Bad(_) => // leave it as blank
     }
 
     getAppDataUseCase.loadAppData().map(_.selectedRegion.getOrElse(BR)).map { region =>

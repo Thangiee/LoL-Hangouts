@@ -35,12 +35,14 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
     }
 
     info("[*] loading user")
-    getUserUseCase.loadUser().map(user => runOnUiThread {
-      changeStatusUseCase.setStatusMsg(user.statusMsg)
-      view.setUserProfileIcon(user.inGameName, user.region.id)
-      view.setStatusMsg(user.statusMsg)
-      view.setName(user.inGameName)
-    })
+    getUserUseCase.loadUser().onSuccess {
+      case Good(user) => runOnUiThread {
+        changeStatusUseCase.setStatusMsg(user.statusMsg)
+        view.setUserProfileIcon(user.inGameName, user.region.id)
+        view.setStatusMsg(user.statusMsg)
+        view.setName(user.inGameName)
+      }
+    }
   }
 
   def handleChangePresence(mode: Int) = mode match {

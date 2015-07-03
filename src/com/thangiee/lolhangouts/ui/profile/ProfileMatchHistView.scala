@@ -14,7 +14,8 @@ import com.thangiee.lolhangouts.ui.regionselection.RegionViewHolder
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter
-import tr.xip.errorview.{ErrorView, RetryListener}
+import tr.xip.errorview.ErrorView.RetryListener
+import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
 
@@ -73,8 +74,8 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
     loadingWheel.zoomOut(delay = 500) // delay in millis
 
     delay(1500) {
-      errorView.setErrorTitle(title)
-      errorView.setErrorSubtitle(subTitle)
+      errorView.setTitle(title)
+      errorView.setSubtitle(subTitle)
       errorView.setVisibility(View.VISIBLE)
     }
   }

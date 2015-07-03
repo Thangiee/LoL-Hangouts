@@ -6,6 +6,7 @@ import com.thangiee.lolhangouts.data.utils._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 
 trait CheckSummExistUseCase extends Interactor {
@@ -23,7 +24,7 @@ case class CheckSummExistUseCaseImpl() extends CheckSummExistUseCase {
       case Success(_) => true
       case Failure(e) => e match {
         case e: FileNotFoundException => false
-        case e: Exception             => error(s"[!] ${e.getMessage}", e.getCause); false
+        case _ => e.printStackTrace(); false
       }
     }
   }

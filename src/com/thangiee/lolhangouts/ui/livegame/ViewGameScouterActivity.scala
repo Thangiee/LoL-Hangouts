@@ -4,8 +4,8 @@ import android.content.{Context, Intent}
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.pixplicity.easyprefs.library.Prefs
 import com.thangiee.lolhangouts.R
+import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.ui.core.{TActivity, TIntent, UpButton, Ads}
 
 class ViewGameScouterActivity extends TActivity with UpButton with Ads {
@@ -22,7 +22,7 @@ class ViewGameScouterActivity extends TActivity with UpButton with Ads {
 
     contentContainer.addView(new GameScouterContainer(summonerName, regionId).getView)
 
-    if (Prefs.getBoolean("is_ads_enable", true)) setupAds()
+    if (Cached.isAdsEnable) setupAds()
   }
 }
 
