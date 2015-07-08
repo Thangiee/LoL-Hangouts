@@ -73,8 +73,10 @@ class FriendListPresenter(view: FriendListView, getFriendsUseCase: GetFriendsUse
   def getFriends: Seq[Friend] =
     Await.result(getFriendsUseCase.loadFriendList(), duration.Duration.Inf)
 
-  def getGroupsName: Seq[CharSequence] =
-    Await.result(getUserUseCase.loadUser(), duration.Duration.Inf).map(_.groupNames).getOrElse(Nil)
+  def getGroupsName: Set[CharSequence] =
+    Await.result(getUserUseCase.loadUser(), duration.Duration.Inf)
+      .map(_.groupNames).getOrElse(Nil)
+      .toSet ++ Set("**Default")
 
   private def loadFriendList(): Unit = {
     // lock use to prevent multiple calls to load list while it is already loading

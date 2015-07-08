@@ -99,7 +99,7 @@ class FriendListView(implicit ctx: Context) extends FrameLayout(ctx) with Custom
       .title("Move Friends to Group")
       .content("Select a group to move friends into.")
       .items(presenter.getGroupsName.toArray)
-      .onSingleChoice((_, _, _, selection) => {selectedGroup = selection.toString; next; true})
+      .onSingleChoice((_, _, _, selection) => {warn("[!] here ") ;selectedGroup = selection.toString; next; true})
       .positiveText("Next")
       .negativeText("Cancel")
       .show()
