@@ -99,8 +99,11 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
   }
 
   private def handleSwitchPage(position: Int): Unit = {
-    pagePosition = position
-    invalidateOptionsMenu()
+    // stop onCreateOptionsMenu from being call twice after initialization
+    if (position != pagePosition) {
+      pagePosition = position
+      invalidateOptionsMenu()
+    }
 
     // only load the page the user is currently viewing and initialize it only once
     if (!pages(position).isSet) {
