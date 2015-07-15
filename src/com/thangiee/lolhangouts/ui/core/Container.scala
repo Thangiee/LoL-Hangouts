@@ -26,6 +26,8 @@ trait Container extends AnyRef with TagUtil {
   
   def getView: View
 
+  def onPrepareOptionsMenu(menu: Menu): Boolean = false
+
   def onCreateOptionsMenu(menuInflater: MenuInflater, menu: Menu): Boolean = false
 
   def onOptionsItemSelected(item: MenuItem): Boolean = false

@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.ui.main
 import android.content.{Context, Intent}
 import android.os.Bundle
 import android.view.View.OnClickListener
-import android.view.{Menu, MenuItem, View, ViewGroup}
+import android.view.{View, ViewGroup}
 import android.widget.LinearLayout
 import com.anjlab.android.iab.v3.{BillingProcessor, TransactionDetails}
 import com.thangiee.lolhangouts.data.Cached
@@ -23,14 +23,14 @@ import fr.nicolaspomepuy.discreetapprate.{AppRate, RetryPolicy}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHandler {
+class MainActivity extends TActivityContainer with Ads with BillingProcessor.IBillingHandler {
   private lazy val contentContainer = find[LinearLayout](R.id.content_container)
   private lazy val sideDrawerView   = find[SideDrawerView](R.id.drawer_layout)
   private lazy val toolbarShadow    = find[View](R.id.toolbar_shadow)
 
   private val SKU_REMOVE_ADS              = "lolhangouts.remove.ads"
   private var bp       : BillingProcessor = _
-  private var container: Container        = _
+  protected var container: Container      = _
 
   override lazy val adLayout : ViewGroup = find[LinearLayout](R.id.ads_holder)
   override      val adUnitId: String     = "ca-app-pub-4297755621988601/1893861576"
@@ -86,19 +86,8 @@ class MainActivity extends TActivity with Ads with BillingProcessor.IBillingHand
       super.onActivityResult(requestCode, resultCode, data)
   }
 
-  override def onCreateOptionsMenu(menu: Menu): Boolean = {
-    if (container.onCreateOptionsMenu(getMenuInflater, menu)) true
-    else super.onCreateOptionsMenu(menu)
-  }
-
-  override def onOptionsItemSelected(item: MenuItem): Boolean = {
-    if (container.onOptionsItemSelected(item)) true
-    else super.onOptionsItemSelected(item)
-  }
-
   override def onBackPressed(): Unit = {
-    // check if container handled back press event
-    if (container.onBackPressed()) return
+    super.onBackPressed()
 
     // if not, go back to home screen
     val homeScreen = new Intent(Intent.ACTION_MAIN)
