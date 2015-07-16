@@ -1,7 +1,7 @@
 package com.thangiee.lolhangouts.data.datasources.sqlite
 
 import com.activeandroid.query.{Delete, Select}
-import com.thangiee.lolhangouts.data.datasources.entities.MessageEntity
+import com.thangiee.lolhangouts.data.datasources.entities.{SummSearchHistEntity, MessageEntity}
 
 import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
@@ -80,5 +80,9 @@ object DB {
   def getUnreadMessages(username: String, friendName: String): List[MessageEntity] = {
     new Select().from(classOf[MessageEntity]).where("username = ? AND friendName = ? AND isRead = 0", username, friendName)
       .orderBy("date DESC").execute[MessageEntity]().reverse.toList
+  }
+
+  def getAllSummSearchHist: List[SummSearchHistEntity] = {
+    new Select().from(classOf[SummSearchHistEntity]).orderBy("date DESC").execute().toList
   }
 }

@@ -52,7 +52,7 @@ class RegionSelectionActivity extends AppCompatActivity with TActivity with OnIt
     toolbar.setNavigationOnClickListener(finish())
     getSupportActionBar.setTitle("Regions")
 
-    val recyclerView = find[RecyclerView](R.id.recycler_view)
+    val recyclerView = find[RecyclerView](R.id.rv_suggestions)
     recyclerView.setLayoutManager(new LinearLayoutManager(this))
     recyclerView.setHasFixedSize(true)
 

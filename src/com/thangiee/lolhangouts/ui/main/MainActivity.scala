@@ -12,6 +12,7 @@ import com.thangiee.lolhangouts.ui.core._
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
 import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
+import com.thangiee.lolhangouts.ui.search.SummSearchContainer
 import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
 import com.thangiee.lolhangouts.ui.sidedrawer.{DrawerItem, SideDrawerView}
 import com.thangiee.lolhangouts.ui.utils.Events.SwitchContainer
@@ -167,18 +168,22 @@ class MainActivity extends TActivityContainer with Ads with BillingProcessor.IBi
   }
 
   private def switchToGameScouter(): Unit = {
-    container = new SearchContainer(R.layout.search_container_game_scouter) {
+    container = new SummSearchContainer() {
       override def onSearchCompleted(query: String, region: String): Unit = {
         startActivity(ViewGameScouterActivity(query, region))
       }
+
+      def displayView: Option[View] = Some(layoutInflater.inflate(R.layout.search_game_scouter_screen, this, false))
     }
   }
 
   private def switchToProfileSearcher(): Unit = {
-    container = new SearchContainer(R.layout.search_container_profile) {
+    container = new SummSearchContainer() {
       override def onSearchCompleted(query: String, region: String): Unit = {
         startActivity(ViewProfileActivity(query, region))
       }
+
+      def displayView: Option[View] = Some(layoutInflater.inflate(R.layout.search_profile_screen, this, false))
     }
   }
 }

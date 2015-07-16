@@ -2,11 +2,8 @@ package com.thangiee.lolhangouts.data.usecases
 
 import java.io.FileNotFoundException
 
-import com.thangiee.lolhangouts.data.utils._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 
 trait CheckSummExistUseCase extends Interactor {
@@ -16,7 +13,7 @@ trait CheckSummExistUseCase extends Interactor {
 case class CheckSummExistUseCaseImpl() extends CheckSummExistUseCase {
 
   override def checkExists(summonerName: String, regionId: String): Future[Boolean] = Future {
-    val url = s"https://acs.leagueoflegends.com/v1/players?name=${summonerName.replace(" ", "")}&region=$regionId"
+    val url = s"https://acs.leagueoflegends.com/v1/players?name=${summonerName.replace(" ", "")}&region=${regionId.toUpperCase}"
 
     Try {
       io.Source.fromURL(url).mkString

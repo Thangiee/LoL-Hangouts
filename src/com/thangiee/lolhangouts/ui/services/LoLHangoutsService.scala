@@ -267,7 +267,7 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
 
   def onEvent(event: EventLogout): Unit = {
     info("[*] Cleaning up and disconnecting")
-    LoLChat.endAllSessions()
+    Future { LoLChat.endAllSessions() }
     stopSelf()
   }
 }

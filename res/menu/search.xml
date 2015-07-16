@@ -6,13 +6,12 @@
             android:id="@+id/menu_search"
             android:title="@string/search"
             android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
-            app:showAsAction="always|collapseActionView"
-            android:orderInCategory="100"
-            app:actionViewClass="android.support.v7.widget.SearchView"/>
+            app:showAsAction="ifRoom|collapseActionView"
+            android:orderInCategory="100"/>
     <item
             android:id="@+id/menu_spinner_regions"
             android:title="@string/regions"
-            app:showAsAction="always"
+            app:showAsAction="ifRoom"
             android:orderInCategory="101"
             app:actionViewClass="android.widget.Spinner"/>
 </menu>

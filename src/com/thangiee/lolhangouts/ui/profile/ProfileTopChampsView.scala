@@ -20,7 +20,7 @@ import scala.collection.JavaConversions._
 class ProfileTopChampsView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   private lazy val loadingWheel = find[CircularProgressBar](R.id.circular_loader)
   private lazy val errorView    = find[ErrorView](R.id.error_view)
-  private lazy val champRecView = find[RecyclerView](R.id.recycler_view)
+  private lazy val champRecView = find[RecyclerView](R.id.rv_suggestions)
 
   override protected val presenter = new ProfileTopChampsPresenter(this, ViewProfileUseCaseImpl())
 

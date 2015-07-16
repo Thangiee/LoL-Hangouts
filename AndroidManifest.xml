@@ -23,8 +23,9 @@
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
         <meta-data android:name="AA_DB_NAME" android:value="MessageLogs.db"/>
-        <meta-data android:name="AA_DB_VERSION" android:value="2" />
-        <meta-data android:name="AA_MODELS" android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity" />
+        <meta-data android:name="AA_DB_VERSION" android:value="4" />
+        <meta-data android:name="AA_MODELS"
+                   android:value="com.thangiee.LoLHangouts.data.entities.MessageEntity, com.thangiee.lolhangouts.data.datasources.entities.SummSearchHistEntity"/>
 
         <service android:name=".ui.services.LoLHangoutsService"/>
 

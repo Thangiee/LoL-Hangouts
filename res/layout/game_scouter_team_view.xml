@@ -8,7 +8,7 @@
     <android.support.v7.widget.RecyclerView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/recycler_view"
+            android:id="@+id/rv_suggestions"
             android:layout_gravity="center_horizontal"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="0dp"

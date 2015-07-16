@@ -17,5 +17,5 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:divider="@drawable/listview_divider"
-            android:id="@+id/recycler_view"/>
+            android:id="@+id/rv_suggestions"/>
 </LinearLayout>
