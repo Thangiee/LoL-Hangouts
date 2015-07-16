@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.ui.services
 
 import java.util.Date
 
-import android.app.{Notification, PendingIntent}
+import android.app.Notification
 import android.content.Intent
 import android.graphics.Color
 import android.media.{MediaPlayer, RingtoneManager}
@@ -16,7 +16,6 @@ import com.thangiee.lolhangouts.data.datasources.entities.MessageEntity
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{FriendMapper, MessageMapper}
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
 import com.thangiee.lolhangouts.data.usecases.entities.Friend
-import com.thangiee.lolhangouts.ui.login.LoginActivity
 import com.thangiee.lolhangouts.ui.main.MainActivity
 import com.thangiee.lolhangouts.ui.utils.Events.{Logout => EventLogout, _}
 import com.thangiee.lolhangouts.ui.utils._
@@ -218,15 +217,15 @@ class LoLHangoutsService extends SService with ReceiveMsgListener with FriendLis
   }
 
   private def notifyDisconnection(): Unit = {
-    val i = new Intent(ctx, classOf[MainActivity])
-    i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-    val p = PendingIntent.getActivity(ctx, 0, i, 0)
-    val contentText = "Connection lost!"
-    val builder = makeNotificationBuilder(R.drawable.ic_action_warning, R.string.app_name.r2String, contentText, Color.YELLOW)
-    builder.setContentIntent(p)
-
-    val notification = builder.getNotification
-    notificationManager.notify(disconnectNotificationId, notification)
+//    val i = new Intent(ctx, classOf[MainActivity])
+//    i.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
+//    val p = PendingIntent.getActivity(ctx, 0, i, 0)
+//    val contentText = "Connection lost!"
+//    val builder = makeNotificationBuilder(R.drawable.ic_action_warning, R.string.app_name.r2String, contentText, Color.YELLOW)
+//    builder.setContentIntent(p)
+//
+//    val notification = builder.getNotification
+//    notificationManager.notify(disconnectNotificationId, notification)
     EventBus.getDefault.post(Events.ShowDisconnection())
   }
 
