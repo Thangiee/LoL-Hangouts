@@ -9,12 +9,11 @@
             android:id="@android:id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
             android:drawableRight="@drawable/ic_action_navigation_arrow_drop_down"
-            android:paddingLeft="16dp"
-            android:paddingRight="4dp"
             android:textColor="#ffffffff"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:text="All"
+            android:textStyle="bold"
+            android:gravity="center_vertical"/>
 
 </LinearLayout>
