@@ -42,8 +42,10 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
     notifyButton.setSelected(!notifyButton.isSelected) // Set the button's appearance
     if (notifyButton.isSelected) {
       appCtx.FriendsToNotifyOnAvailable.add(friend.name)
+      SnackBar(R.string.notify_available_enable.r2String.format(friend.name)).setAction("", null).show()
     } else {
       appCtx.FriendsToNotifyOnAvailable.remove(friend.name)
+      SnackBar(R.string.notify_available_disable.r2String.format(friend.name)).setAction("", null).show()
     }
   }
 

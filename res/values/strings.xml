@@ -54,6 +54,8 @@
     <string name="friends_moved_to_group">%1$d friend(s) moved to %2$s group.</string>
     <string name="friend_req_sent">Friend request sent successfully.</string>
     <string name="group_created">%1$s group created.</string>
+    <string name="notify_available_enable">Notify when %1$s is available ENABLED</string>
+    <string name="notify_available_disable">Notify when %1$s is available DISABLED</string>
 
     <!--dialog messages-->
     <string name="dialog_delete_title">Delete All Messages?</string>
