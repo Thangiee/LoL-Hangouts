@@ -156,7 +156,7 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     def apply(text: String)(implicit ctx: Context): Snackbar = apply(ctx.asInstanceOf[TActivity].snackBarHolderId(), text)
     def apply(viewId: Int, text: String)(implicit ctx: Context): Snackbar = {
       val sb = Snackbar.make(ctx.asInstanceOf[TActivity].find[View](viewId), text, Snackbar.LENGTH_LONG)
-      sb.setAction(android.R.string.ok, (v: Snackbar) => v.dismiss())
+      sb.setAction(R.string.dismiss, (v: Snackbar) => v.dismiss())
     }
   }
 }

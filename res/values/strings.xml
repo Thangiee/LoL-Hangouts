@@ -128,6 +128,7 @@
     <string name="top_champ_cs_icon_description">Average Creep Score per Game with a champion</string>
     <string name="top_champ_gold_icon_description">Average Gold Earned per Game with a champion</string>
     <string name="send_msg_to">To</string>
+    <string name="dismiss">dismiss</string>
 
     <string-array name="history">
         <item>1 day</item>
