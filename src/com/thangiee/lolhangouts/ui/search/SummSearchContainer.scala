@@ -128,12 +128,14 @@ abstract class SummSearchContainer(implicit ctx: Context) extends RelativeLayout
 
   private def onSearchSubmit(query: String, regionId: String, isNewSearch: Boolean): Unit = {
     info(s"[*] query submitted: $query - $regionId")
+    inputMethodManager.hideSoftInputFromWindow(getWindowToken, 0) // hide keyboard
+
     checkSummExistUseCase.checkExists(query, regionId).map { isExists =>
       if (isExists) {
         if (isNewSearch) ManageSearchHistUseCaseImpl().saveSummSearchHist(query, regionId)
         onSearchCompleted(query, regionId)
       } else {
-        s"Could not find $query in $regionId".croutonWarn()
+        SnackBar(R.string.err_summ_search.r2String.format(query, regionId)).show()
       }
     }
   }

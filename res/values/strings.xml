@@ -41,6 +41,7 @@
     <string name="err_authentication">Invalid!</string>
     <string name="err_connect_to_server">Cannot connect to server.</string>
     <string name="err_get_data">An unexpected error occurred while retrieving the data</string>
+    <string name="err_summ_search">Could not find %1$s in %2$s.</string>
     <string name="data_not_found">404: Data not found.</string>
     <string name="no_wifi">Connection Issues</string>
     <string name="server_busy">Server Busy</string>
