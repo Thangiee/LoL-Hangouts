@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="2.2.1" changeDate="July 16, 2015">
+        <changelogtext>[b][font color=red]New![/font][/b] Remember search history</changelogtext>
+        <changelogtext>Polish summoner search screens UI</changelogtext>
+        <changelogtext>Add missing icons</changelogtext>
+        <changelogtext>Bug fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.2.0" changeDate="July 2, 2015">
         <changelogtext>[b][font color=red]New![/font][/b] Create friend groups</changelogtext>
         <changelogtext>[b][font color=red]New![/font][/b] Move friends between groups</changelogtext>
