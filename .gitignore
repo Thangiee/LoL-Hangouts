@@ -94,3 +94,5 @@ project/plugins/project/
 .worksheet
 
 Makefile
+
+proguard-sbt.txt
