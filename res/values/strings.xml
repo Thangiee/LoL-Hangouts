@@ -31,8 +31,8 @@
     <string name="no_champion">404: Unable to find any ranked champion data.</string>
     <string name="no_profile">404: Unable to find summoner profile.</string>
     <string name="server_down">server is currently down. Try again later.</string>
-    <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this take too long)</string>
-    <string name="error_add_friend">Fail to add friend.</string>
+    <string name="reconnecting">Chat connection lost! Reconnecting…\n(Re-login manually if this takes too long)</string>
+    <string name="error_add_friend">Failed to add friend.</string>
     <string name="err_empty_user">Username field cannot be empty</string>
     <string name="err_empty_pass">Password field cannot be empty</string>
     <string name="err_empty_msg">Can\'t send empty message</string>

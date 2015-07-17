@@ -57,7 +57,7 @@ class RegionSelectionActivity extends AppCompatActivity with TActivity with OnIt
     recyclerView.setHasFixedSize(true)
 
     val regions = List(NA, BR, EUNE, EUW, KR, LAN, LAS, OCE, RU, TR)
-    val adapter = new SimpleAdapter[Region](R.layout.region_item, classOf[RegionViewHolder], regions)
+    val adapter = new SimpleAdapter[Region](R.layout.line_item_region, classOf[RegionViewHolder], regions)
     recyclerView.setAdapter(adapter.asInstanceOf[RecyclerView.Adapter[RegionViewHolder]])
 
     adapter.setOnItemClickListener(this)
