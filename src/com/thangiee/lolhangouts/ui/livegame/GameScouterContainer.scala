@@ -1,15 +1,15 @@
 package com.thangiee.lolhangouts.ui.livegame
 
 import android.content.Context
+import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
-import com.nispok.snackbar.Snackbar
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase.{GameInfoNotFound, InternalError}
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
-import com.thangiee.lolhangouts.ui.core.{Container, TActivity}
+import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView._
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
@@ -65,15 +65,10 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
         purpleTeamView.hideLoading()
       }
       case Bad(e) => runOnUiThread {
-        Snackbar.`with`(ctx)  // todo: replace with android support lib snackbar when its set duration bug is fix
-          .text("Failed to load game")
-          .textColorResource(R.color.md_white)
-          .colorResource(R.color.md_grey_900)
-          .actionLabel("Retry")
-          .actionColorResource(R.color.accent_light)
-          .actionListener((snackbar: Snackbar) => reloadGame())
-          .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-          .show(ctx.asInstanceOf[TActivity])
+        SnackBar("Failed to load game")
+          .setDuration(Snackbar.LENGTH_INDEFINITE)
+          .setAction("Reload", reloadGame())
+          .show()
 
         val errMsg = e match {
           case GameInfoNotFound => username + R.string.not_in_game.r2String
