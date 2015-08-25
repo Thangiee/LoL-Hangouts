@@ -194,9 +194,10 @@
             android:layout_alignLeft="@+id/img_live_game_champ"
             android:layout_alignStart="@+id/img_live_game_champ"
             android:layout_marginRight="6dp"
-            circle:riv_corner_radius="5dip"
+            circle:riv_corner_radius="10dip"
             circle:riv_border_color="@color/my_orange"
-            circle:riv_border_width="1dp"
+            circle:riv_border_width="5dp"
+            circle:riv_oval="true"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
@@ -208,9 +209,10 @@
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_1"
             android:layout_marginRight="6dp"
-            circle:riv_corner_radius="5dip"
+            circle:riv_corner_radius="10dip"
             circle:riv_border_color="@color/my_orange"
-            circle:riv_border_width="1dp"
+            circle:riv_border_width="5dp"
+            circle:riv_oval="true"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
@@ -222,10 +224,10 @@
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_2"
             android:layout_marginRight="6dp"
-            circle:riv_corner_radius="5dip"
+            circle:riv_corner_radius="10dip"
             circle:riv_border_color="@color/my_orange"
-            circle:riv_border_width="1dp"
-            android:src="@android:color/transparent"
+            circle:riv_border_width="5dp"
+            circle:riv_oval="true"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>
 
@@ -236,12 +238,13 @@
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_3"
             android:layout_marginRight="6dp"
-            circle:riv_corner_radius="5dip"
+            circle:riv_corner_radius="10dip"
             circle:riv_border_color="@color/my_orange"
-            circle:riv_border_width="1dp"
-            android:src="@android:color/transparent"
+            circle:riv_border_width="5dp"
+            circle:riv_oval="true"
             android:layout_marginTop="4dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            />
 
     <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="10dp"
@@ -250,9 +253,10 @@
             android:layout_below="@+id/img_live_game_champ"
             android:layout_toRightOf="@+id/img_live_game_serie_4"
             android:layout_marginRight="6dp"
-            circle:riv_corner_radius="5dip"
+            circle:riv_corner_radius="10dip"
             circle:riv_border_color="@color/my_orange"
-            circle:riv_border_width="1dp"
+            circle:riv_border_width="5dp"
+            circle:riv_oval="true"
             android:src="@android:color/transparent"
             android:layout_marginTop="4dp"
             android:visibility="invisible"/>

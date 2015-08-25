@@ -1,9 +1,10 @@
-package com.thangiee.lolhangouts.ui.livegame
+package com.thangiee.lolhangouts.ui.scoutgame
 
 import android.content.Context
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
+import com.makeramen.roundedimageview.RoundedImageView
 import mehdi.sakout.fancybuttons.FancyButton
 import com.skocken.efficientadapter.lib.viewholder.AbsViewHolder
 import com.thangiee.lolhangouts.R
@@ -37,9 +38,9 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
     this.findTextView(R.id.tv_live_game_normal_w).text(p.normalWin + " W")
     this.findTextView(R.id.tv_live_game_rank_w).text(p.rankWins + " W")
     this.findTextView(R.id.tv_live_game_rank_l).text(p.rankLoses + " L")
-    this.findTextView(R.id.tv_live_game_rank_k).text(p.killRatio.toString)
-    this.findTextView(R.id.tv_live_game_rank_d).text(p.deathRatio.toString)
-    this.findTextView(R.id.tv_live_game_rank_a).text(p.assistRatio.toString)
+    this.findTextView(R.id.tv_live_game_rank_k).text(p.killRatio.roundTo(1).toString)
+    this.findTextView(R.id.tv_live_game_rank_d).text(p.deathRatio.roundTo(1).toString)
+    this.findTextView(R.id.tv_live_game_rank_a).text(p.assistRatio.roundTo(1).toString)
 
     findViewByIdEfficient[FancyButton](R.id.btn_live_game_profile).setTextColor(R.color.primary.r2Color)
     findViewByIdEfficient[FancyButton](R.id.btn_live_game_profile).setOnClickListener(new OnClickListener {
@@ -51,15 +52,15 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
       R.id.img_live_game_serie_4, R.id.img_live_game_serie_5)
 
     seriesImageViews.zipWithIndex.foreach { case (id, index) =>
-      val iv = this.findImageView(id)
-      p.series match {
-        case Some(series) =>
-          // has active series
-          if (series.length == 3 && index < 3) setSeriesImgRes(iv, series(index))
-          if (series.length == 5) setSeriesImgRes(iv, series(index))
-        case None         =>
-          // no active series
-          iv.setVisibility(View.INVISIBLE)
+      val iv = this.findViewByIdEfficient[RoundedImageView](id)
+
+      if (p.series.nonEmpty) {
+        // has active series
+        if (p.series.length == 3 && index < 3) setSeriesImgRes(iv, p.series(index))
+        if (p.series.length == 5) setSeriesImgRes(iv, p.series(index))
+      } else {
+        // no active series
+        iv.setVisibility(View.INVISIBLE)
       }
     }
   }
@@ -77,12 +78,12 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
     }
   }
 
-  private def setSeriesImgRes(imgView: ImageView, result: Char): Unit = {
+  private def setSeriesImgRes(imgView: RoundedImageView, result: String): Unit = {
     imgView.setVisibility(View.VISIBLE)
     result match {
-      case 'W' => imgView.setImageResource(R.color.light_green)
-      case 'L' => imgView.setImageResource(R.color.light_red) // lose result
-      case 'N' => imgView.setImageResource(android.R.color.transparent) // no result yet
+      case "W" => imgView.setImageResource(R.drawable.circle_green)
+      case "L" => imgView.setImageResource(R.drawable.circle_red) // lose result
+      case "N" => imgView.setImageResource(R.drawable.circle_gray) // no result yet
     }
   }
 
