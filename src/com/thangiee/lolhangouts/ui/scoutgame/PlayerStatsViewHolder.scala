@@ -29,7 +29,7 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
 
     // player's name with color base on which team
     this.findTextView(R.id.tv_live_game_name).text(p.playerName)
-      .textColor(if (p.teamNumber == 1) android.R.color.holo_blue_dark.r2Color else android.R.color.holo_purple.r2Color)
+      .textColor(if (p.teamNumber == 100) android.R.color.holo_blue_dark.r2Color else android.R.color.holo_purple.r2Color)
 
     // populate other stats fields
     this.findTextView(R.id.tv_live_game_elo).text(p.elo.toString)

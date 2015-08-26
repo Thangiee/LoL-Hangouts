@@ -4,7 +4,7 @@ import play.api.libs.json._
 
 case class PlayerStats
 (playerName: String,
-  teamNumber: Int,
+  teamNumber: Int, // 100 = blue , 200 = purple
   regionId: String,
   championName: String,
   leagueTier: String,
