@@ -1,4 +1,4 @@
-package com.thangiee.lolhangouts.ui.livegame
+package com.thangiee.lolhangouts.ui.scoutgame
 
 import android.content.Context
 import android.support.design.widget.Snackbar
@@ -10,7 +10,7 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase.{GameInfoNotFound, InternalError}
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.Container
-import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView._
+import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView._
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 

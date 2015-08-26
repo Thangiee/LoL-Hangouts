@@ -1,4 +1,4 @@
-package com.thangiee.lolhangouts.ui.livegame
+package com.thangiee.lolhangouts.ui.scoutgame
 
 import android.content.Context
 import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
@@ -9,7 +9,7 @@ import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.ui.livegame.GameScouterTeamView.BlueTeam
+import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView.BlueTeam
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView

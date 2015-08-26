@@ -1,4 +1,4 @@
-package com.thangiee.lolhangouts.ui.livegame
+package com.thangiee.lolhangouts.ui.scoutgame
 
 import android.content.{Context, Intent}
 import android.os.Bundle

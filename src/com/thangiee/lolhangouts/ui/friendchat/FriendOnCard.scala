@@ -8,7 +8,7 @@ import com.andexert.library.RippleView
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ManageFriendUseCaseImpl
 import com.thangiee.lolhangouts.data.usecases.entities.{ChatMode, Friend}
-import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
+import com.thangiee.lolhangouts.ui.scoutgame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.ViewProfileActivity
 import com.thangiee.lolhangouts.ui.utils._
 import it.gmariotti.cardslib.library.internal.Card.{OnCollapseAnimatorEndListener, OnExpandAnimatorStartListener}

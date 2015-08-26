@@ -1,4 +1,4 @@
-package com.thangiee.lolhangouts.ui.livegame
+package com.thangiee.lolhangouts.ui.scoutgame
 
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.core.Presenter

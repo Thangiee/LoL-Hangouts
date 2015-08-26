@@ -10,7 +10,7 @@ import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.usecases.GetUserUseCaseImpl
 import com.thangiee.lolhangouts.ui.core._
 import com.thangiee.lolhangouts.ui.friendchat.ChatContainer
-import com.thangiee.lolhangouts.ui.livegame.ViewGameScouterActivity
+import com.thangiee.lolhangouts.ui.scoutgame.ViewGameScouterActivity
 import com.thangiee.lolhangouts.ui.profile.{ProfileContainer, ViewProfileActivity}
 import com.thangiee.lolhangouts.ui.search.SummSearchContainer
 import com.thangiee.lolhangouts.ui.services.LoLHangoutsService
