@@ -1,37 +1,24 @@
 package com.thangiee.lolhangouts.data.datasources.cache
 
-import java.util.concurrent.TimeUnit
+import scala.concurrent.duration.Duration
+import scalacache.guava.GuavaCache
 
-import com.google.common.cache.{Cache, CacheBuilder}
-import com.thangiee.lolhangouts.data.utils.TagUtil
-import com.thangiee.lolhangouts.data.utils._
+object MemCache {
+  import scalacache._
+  implicit private val scalaCache = ScalaCache(GuavaCache())
 
-object MemCache extends AnyRef with TagUtil {
-  private val cache: Cache[String, Object] = CacheBuilder.newBuilder()
-    .concurrencyLevel(4)
-    .maximumSize(10000)
-    .expireAfterWrite(20, TimeUnit.MINUTES)
-    .build[String, Object]()
-
-  def get[T](key: String): Option[T] = {
-    val result = cache.getIfPresent(key)
-
-    if (result != null) {
-      debug(s"[+] mem cache hit: KEY:$key - VALUE:${result.toString.take(20)}")
-      Some(result.asInstanceOf[T])
-    } else {
-      debug(s"[-] mem cache miss: KEY:$key")
-      None
+  implicit object StringMemCache extends CanCache[String] {
+    def get(key: String): Option[String] = getSync[String](key)
+    def put(keyVal: (String, String), ttl: Option[Duration]): Unit = keyVal match {
+      case (k, v) => scalacache.put(k)(v, ttl)
     }
   }
 
-  def put(key: String, value: Object): Unit = {
-    verbose(s"[*] saving to mem cache [$key, ${value.toString.take(20)}]")
-    cache.put(key, value)
+  implicit object IntMemCache extends CanCache[Int] {
+    def get(key: String): Option[Int] = getSync[Int](key)
+    def put(keyVal: (String, Int), ttl: Option[Duration]): Unit = keyVal match {
+      case (k, v) => scalacache.put(k)(v, ttl)
+    }
   }
 
-  def removeAll(): Unit = {
-    cache.invalidateAll()
-    cache.cleanUp()
-  }
 }
