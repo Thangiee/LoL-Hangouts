@@ -1,8 +1,24 @@
 package com.thangiee.lolhangouts
 
 import com.thangiee.lolhangouts.data.datasources.cache.PrefsCache
+import com.typesafe.scalalogging.{Logger => Log}
+import org.slf4j.LoggerFactory
 
 package object data {
+
+  case class LoggerTag(tag: String)
+
+  trait TagUtil {
+    implicit val loggerTag = LoggerTag(this.getClass.getSimpleName)
+  }
+
+  def verbose(s: => String)(implicit loggerTag: LoggerTag) = logger.trace(out(s))
+  def debug(s: => String)(implicit loggerTag: LoggerTag) = logger.debug(out(s))
+  def info(s: => String)(implicit loggerTag: LoggerTag) = logger.info(out(s))
+  def warn(s: => String)(implicit loggerTag: LoggerTag) = logger.warn(out(s))
+  def error(s: => String)(implicit loggerTag: LoggerTag) = logger.error(out(s))
+  private def logger(implicit loggerTag: LoggerTag) = Log.apply(LoggerFactory.getLogger(loggerTag.tag))
+  private def out(s: String)(implicit loggerTag: LoggerTag) = "[%-15s] %s".format(loggerTag.tag.take(15), s)
 
   object Cached {
     def loginUsername: String = PrefsCache.getString("login-username").getOrElse("")

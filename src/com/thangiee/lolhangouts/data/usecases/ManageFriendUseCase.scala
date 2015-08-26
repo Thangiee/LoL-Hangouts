@@ -4,7 +4,7 @@ import com.thangiee.lolchat.LoLChat
 import com.thangiee.lolchat.error.{NoSession, NotConnected, NotFound}
 import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.usecases.ManageFriendUseCase._
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.Or
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -6,7 +6,7 @@ import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.FriendMapper
 import com.thangiee.lolhangouts.data.usecases.GetFriendsUseCase.{FriendNotFound, GetFriendError}
 import com.thangiee.lolhangouts.data.usecases.entities.Friend
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic._
 
 import scala.concurrent.ExecutionContext.Implicits.global

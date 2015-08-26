@@ -7,7 +7,7 @@ import com.thangiee.lolhangouts.data.datasources.entities.UserEntity
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.UserMapper
 import com.thangiee.lolhangouts.data.usecases.GetUserUseCase.{GetUserError, InternalError}
 import com.thangiee.lolhangouts.data.usecases.entities.User
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.OptionSugar._
 import org.scalactic._
 

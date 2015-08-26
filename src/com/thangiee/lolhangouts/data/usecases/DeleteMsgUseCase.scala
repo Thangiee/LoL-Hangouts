@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global

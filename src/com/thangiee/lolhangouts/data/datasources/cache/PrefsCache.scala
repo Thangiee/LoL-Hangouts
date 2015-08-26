@@ -1,8 +1,7 @@
 package com.thangiee.lolhangouts.data.datasources.cache
 
 import com.pixplicity.easyprefs.library.Prefs
-import com.thangiee.lolhangouts.data.utils._
-import com.thangiee.lolhangouts.data.utils.TagUtil
+import com.thangiee.lolhangouts.data._
 
 object PrefsCache extends AnyRef with TagUtil {
 

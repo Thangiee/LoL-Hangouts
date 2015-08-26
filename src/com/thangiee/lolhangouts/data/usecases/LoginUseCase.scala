@@ -9,7 +9,7 @@ import com.thangiee.lolhangouts.data.datasources.{AppDataFactory, _}
 import com.thangiee.lolhangouts.data.usecases.LoginUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.Value.Boolean.IsLoginOffline
 import com.thangiee.lolhangouts.data.usecases.entities.Value.String.{Password, Username, Version}
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.Or
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -3,7 +3,7 @@ package com.thangiee.lolhangouts.data.usecases
 import com.thangiee.lolchat.LoLChat
 import com.thangiee.lolchat.error.NoSession
 import com.thangiee.lolhangouts.data.Cached
-import com.thangiee.lolhangouts.data.utils.Logger._
+import com.thangiee.lolhangouts.data._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

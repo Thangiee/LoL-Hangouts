@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.ScoutReport
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.Or
 
 import scala.concurrent.Future

@@ -6,7 +6,7 @@ import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.entities.MessageEntity
 import com.thangiee.lolhangouts.data.usecases.SendMsgUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.Message
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.Or
 
 import scala.concurrent.ExecutionContext.Implicits.global

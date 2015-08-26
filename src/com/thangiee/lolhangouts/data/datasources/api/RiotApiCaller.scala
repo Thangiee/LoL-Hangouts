@@ -5,7 +5,7 @@ import java.net.{SocketTimeoutException, UnknownHostException}
 import com.thangiee.lolhangouts.data.Cached
 import com.thangiee.lolhangouts.data.datasources.cache.CanCache
 import com.thangiee.lolhangouts.data.usecases.entities.{Champion, Summoner, ProfileSummary, ScoutReport}
-import com.thangiee.lolhangouts.data.utils.{TagUtil, _}
+import com.thangiee.lolhangouts.data._
 import org.scalactic.{Bad, Good, Or}
 import play.api.libs.json.{Json, Reads}
 
@@ -76,7 +76,6 @@ trait RiotApiCaller extends AnyRef with TagUtil {
           case Failure(e: UnknownHostException)   => Bad(BadRequest(formattedUrl))
           case Failure(e: Throwable)              => e.printStackTrace(); Bad(ServiceUnavailable)
         }
-
     }
   }
 

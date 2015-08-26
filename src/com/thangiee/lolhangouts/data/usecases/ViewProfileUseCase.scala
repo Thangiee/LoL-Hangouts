@@ -6,6 +6,7 @@ import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{GetProfileFail
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.utils.Parser.ParserError
 import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 import org.scalactic.Or
 
 import scala.collection.JavaConversions._

@@ -5,6 +5,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
 import org.scalactic.{Bad, Good, Or}
+import com.thangiee.lolhangouts.data._
 
 import scala.util.Try
 

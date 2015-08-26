@@ -7,7 +7,7 @@ import com.thangiee.lolhangouts.data.datasources.entities.SummSearchHistEntity
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.SummSearchHistMapper
 import com.thangiee.lolhangouts.data.datasources.sqlite.DB
 import com.thangiee.lolhangouts.data.usecases.entities.SummSearchHist
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

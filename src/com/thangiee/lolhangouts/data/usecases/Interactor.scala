@@ -1,7 +1,7 @@
 package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.datasources.api.RiotApiCaller
-import com.thangiee.lolhangouts.data.utils._
+import com.thangiee.lolhangouts.data._
 
 trait Interactor extends AnyRef with TagUtil with RiotApiCaller {
 
