@@ -21,38 +21,32 @@ apkbuildExcludes in Android ++=
 
 dexMaxHeap in Android := "2048m"
 
-resolvers ++= ("Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/") ::
-  ("smack repo" at "https://oss.sonatype.org/content/repositories/snapshots") ::
-  ("material-dialogs" at "https://dl.bintray.com/drummer-aidan/maven") ::
-  Nil
+resolvers ++=
+  ("Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/") ::
+  ("jcenter" at "https://jcenter.bintray.com/") :: Nil
 
 proguardOptions in Android ++= ProguardSettings.buildSettings
 
-proguardCache in Android ++= ProguardCache("org.scaloid") % "org.scaloid" ::
-  ProguardCache("play") % "play" ::
-  ProguardCache("android.support") % "com.android.support" ::
-  ProguardCache("com.google.common") % "com.google.common" ::
-  ProguardCache("com.thangiee") % "com.thangiee" ::
-  ProguardCache("scala.collection") % "scala.collection" ::
-  Nil
+proguardCache in Android ++= ProguardSettings.cacheValues
 
 javacOptions ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil
 
-// dependencies for lolchat
 libraryDependencies ++= Seq(
-  "org.igniterealtime.smack" % "smack-tcp" % "4.1.2",
-  "org.igniterealtime.smack" % "smack-core" % "4.1.2",
-  "org.igniterealtime.smack" % "smack-extensions" % "4.1.2",
-  "org.igniterealtime.smack" % "smack-android" % "4.1.2",
-  "org.scalactic" % "scalactic_2.11" % "2.2.5"
+  "org.igniterealtime.smack" % "smack-android" % "4.1.3",
+  "com.github.thangiee" %% "league-of-legend-chat-lib-scala" % "0.2.1"
 ).map(_.exclude("xpp3", "xpp3"))
+
+libraryDependencies ++= List(
+  "com.github.cb372" %% "scalacache-guava" % "0.6.4",
+  "org.scalactic" % "scalactic_2.11" % "2.2.5"
+)
 
 // scala 3th party libraries
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "4.0-RC1",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
-  "org.scalaj" %% "scalaj-http" % "1.1.0",
+  "org.scalaj" %% "scalaj-http" % "1.1.5",
   "com.github.nscala-time" %% "nscala-time" % "1.6.0"
 )
 
@@ -64,6 +58,7 @@ libraryDependencies ++= Seq(
 
 // android support libs
 libraryDependencies ++= Seq(
+//  aar("com.android.support" % "multidex" % "1.0.+"),
   aar("com.android.support" % "recyclerview-v7" % "22.2.1"),
   aar("com.android.support" % "appcompat-v7" % "22.2.1"),
   aar("com.android.support" % "design" %"22.2.1"),
@@ -99,7 +94,7 @@ libraryDependencies ++= Seq(
   aar("com.afollestad"                           % "material-dialogs"       % "0.7.4.2"),
   aar("de.psdev.licensesdialog"                  % "licensesdialog"         % "1.5.0"),
   aar("com.makeramen"                            % "roundedimageview"       % "2.1.0"),
-  aar("fr.nicolaspomepuy"                        % "discreetapprate"        % "1.0.5"),
+  aar("fr.nicolaspomepuy"                        % "discreetapprate"        % "2.0.3"),
   aar("com.pixplicity.easyprefs"                 % "library"                % "1.5"),
   aar("com.balysv.materialmenu"                  % "material-menu-toolbar"  % "1.5.4"),
   aar("com.github.dmytrodanylyk.circular-progress-button" % "library"       % "1.1.3"),
