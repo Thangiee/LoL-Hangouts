@@ -1,20 +1,16 @@
 package com.thangiee.lolhangouts.data.usecases
 
-import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
-import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, ProfileSummaryMapper, TopChampionMapper}
-import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, ProfileSummaryEntity, TopChampEntity}
-import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{ProfileNotFound, GetProfileFailed, ViewProfileError}
+import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, TopChampionMapper}
+import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, TopChampEntity}
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{GetProfileFailed, ProfileNotFound, ViewProfileError}
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
+import com.thangiee.lolhangouts.data.utils.Parser.ParserError
 import com.thangiee.lolhangouts.data.utils._
-import com.thangiee.lolhangouts.data.utils.Parser._
-import com.thangiee.lolhangouts.data.utils.Implicits.executionContext
 import org.scalactic.Or
-import thangiee.riotapi.core.{RiotApi, RiotException}
-import thangiee.riotapi.league.{League, LeagueEntry}
 
 import scala.collection.JavaConversions._
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success, Try}
 
 trait ViewProfileUseCase extends Interactor {
   def loadSummary(username: String, regionId: String): Future[ProfileSummary Or ViewProfileError]
@@ -28,14 +24,15 @@ object ViewProfileUseCase {
   object GetProfileFailed extends ViewProfileError
 }
 
-case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
+case class ViewProfileUseCaseImpl() extends ViewProfileUseCase with Parser {
+  import CacheIn.Memory._
 
   override def loadSummary(username: String, regionId: String): Future[ProfileSummary Or ViewProfileError] = Future {
-    getSummary(username.toLowerCase, regionId.toLowerCase) match {
-      case Success(summary)                                        => info("[+] Profile summary loaded"); Good(summary)
-      case Failure(RiotException(msg, RiotException.DataNotFound)) => info(s"[-] $msg"); Bad(ProfileNotFound)
-      case Failure(RiotException(msg, _))                          => info(s"[!] $msg"); Bad(GetProfileFailed)
-      case Failure(e)                                              => e.printStackTrace(); Bad(GetProfileFailed)
+
+    profileSummaryByName(username.toLowerCase, regionId.toLowerCase) match {
+      case Good(summary)     => info(s"[+] Profile summary loaded");          Good(summary)
+      case Bad(DataNotFound) => info(s"[-] Profile summary data not found");  Bad(ProfileNotFound)
+      case Bad(e: RiotError) => info(s"[!] Riot api error: $e");              Bad(GetProfileFailed)
     }
   }
 
@@ -47,30 +44,8 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase {
 
   private def getParsedData[A](f: => Or[A, ParserError], successLog: String): Future[A Or ViewProfileError] = Future {
     f.map(_.logThenReturn(_ => successLog)).badMap {
-      case DataNotFound => info("[-] Parser did not find the summoner info"); ProfileNotFound
-      case ServerBusy => info(s"[!] Parser timeout; failed to connect to the server"); GetProfileFailed
-    }
-  }
-
-  private def getSummary(name: String, regionId: String): Try[ProfileSummary] = {
-    for {
-      summ      ← RiotApi.summonerByName(name.replace(" ", ""), regionId)
-      leagues   ← RiotApi.leagueEntryById(summ.id, regionId)
-      champs    ← RiotApi.rankedStatsById(summ.id, 2015, regionId).map(_.getChampions)
-      rankStats = champs.find(_.id == 0).head.stats.data2 // id 0 is all champions combine
-      league    = leagues.headOption.getOrElse(League(name = "N/A", tier = "Unranked")) // set default values
-      entry     = league.entries.headOption.getOrElse(LeagueEntry())
-      series    = entry.miniSeries
-      level     = summ.summonerLevel.toInt
-      wins      = rankStats.totalSessionsWon.getOrElse(0)
-      loses     = rankStats.totalSessionsLost.getOrElse(0)
-      kills     = rankStats.totalChampionKills.getOrElse(0)
-      deaths    = rankStats.totalDeathsPerSession.getOrElse(0)
-      assists   = rankStats.totalAssists.getOrElse(0)
-      games     = rankStats.totalSessionsPlayed.getOrElse(0)
-    } yield ProfileSummaryMapper.transform {
-      ProfileSummaryEntity(summ.name, regionId, entry.division, league.name, entry.leaguePoints, league.tier,
-        level, loses, wins, kills, deaths, assists, games, series, champs)
+      case Parser.DataNotFound => info("[-] Parser did not find the summoner info"); ProfileNotFound
+      case Parser.ServerBusy => info(s"[!] Parser timeout; failed to connect to the server"); GetProfileFailed
     }
   }
 

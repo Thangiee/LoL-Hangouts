@@ -3,16 +3,12 @@ package com.thangiee.lolhangouts.data.usecases
 import com.thangiee.lolchat.LoLChat
 import com.thangiee.lolchat.error.{NoSession, NotConnected, NotFound}
 import com.thangiee.lolhangouts.data.Cached
-import com.thangiee.lolhangouts.data.datasources.Implicit.cachingApiCaller
 import com.thangiee.lolhangouts.data.usecases.ManageFriendUseCase._
 import com.thangiee.lolhangouts.data.utils._
 import org.scalactic.Or
-import thangiee.riotapi.core.RiotException._
-import thangiee.riotapi.core.{RiotApi, RiotException}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 trait ManageFriendUseCase extends Interactor {
   def sendFriendRequest(toName: String): Future[Unit Or ManageFriendError]
@@ -31,8 +27,10 @@ object ManageFriendUseCase {
 case class ManageFriendUseCaseImpl() extends ManageFriendUseCase {
 
   override def sendFriendRequest(toName: String): Future[Unit Or ManageFriendError] = Future {
-    RiotApi.summonerByName(toName) match {
-      case Success(summoner) =>
+    import CacheIn.Memory._
+
+    summonerByName(toName) match {
+      case Good(summoner) =>
         LoLChat.findSession(Cached.loginUsername).flatMap { sess =>
           info(s"[+] friend request sent to $toName")
           sess.sendFriendRequest(summoner.id.toString)
@@ -41,10 +39,9 @@ case class ManageFriendUseCaseImpl() extends ManageFriendUseCase {
           case NotConnected(_) => warn("[!] No connection to send friend request"); NoConnection
         }
 
-      case Failure(RiotException(msg, DataNotFound)) => info(s"[-] Unable to find summoner $toName: $msg"); Bad(FriendNotFound)
-      case Failure(RiotException(msg, BadRequest))   => info(s"[-] Unable to find summoner $toName: $msg"); Bad(FriendNotFound)
-      case Failure(RiotException(msg, _))            => warn(s"[!] $msg"); Bad(InternalError)
-      case Failure(e)                                => e.printStackTrace(); Bad(InternalError)
+      case Bad(DataNotFound)    => info(s"[-] Unable to find summoner $toName"); Bad(FriendNotFound)
+      case Bad(BadRequest(url)) => info(s"[-] Bad url: $url");                   Bad(FriendNotFound)
+      case Bad(e: RiotError)    => info(s"[!] Riot api error: ${e.toString}");   Bad(InternalError)
     }
   }
 

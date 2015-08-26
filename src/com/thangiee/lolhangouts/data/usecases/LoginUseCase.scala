@@ -11,7 +11,6 @@ import com.thangiee.lolhangouts.data.usecases.entities.Value.Boolean.IsLoginOffl
 import com.thangiee.lolhangouts.data.usecases.entities.Value.String.{Password, Username, Version}
 import com.thangiee.lolhangouts.data.utils._
 import org.scalactic.Or
-import thangiee.riotapi.core.RiotApi
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -43,7 +42,6 @@ case class LoginUseCaseImpl() extends LoginUseCase {
       case (true, true)   => info("[-] username and password are empty"); Bad(EmptyUserAndPass)
       case (false, false) =>
         val region = getFromId(Cached.loginRegionId.getOrElse("na"))
-        RiotApi.regionId = region.id
         LoLChat.login(user, pass, region) match {
           case Good(_)                       => Good(Unit)
           case Bad(NotConnected(url))        => info(s"[-] fail to reach $url"); Bad(ConnectionError)

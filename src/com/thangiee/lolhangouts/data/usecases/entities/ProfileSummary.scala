@@ -1,5 +1,7 @@
 package com.thangiee.lolhangouts.data.usecases.entities
 
+import play.api.libs.json._
+
 case class ProfileSummary(
   summonerName: String,
   regionId: String,
@@ -20,4 +22,6 @@ case class ProfileSummary(
   mostPlayedChamps: Seq[MostPlayedChamp]
   )
 
-case class MostPlayedChamp(name: String, killsRatio: Int, deathsRatio: Int, assistsRatio: Int, games: Int, winRate: Int)
+object ProfileSummary {
+  implicit val profileSummaryFmt = Json.reads[ProfileSummary]
+}
