@@ -15,11 +15,9 @@ import com.skocken.efficientadapter.lib.adapter.{AbsViewHolderAdapter, SimpleAda
 import com.thangiee.lolchat.region._
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.Cached
-import com.thangiee.lolhangouts.data.datasources.api.Keys
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.receivers.DeleteOldMsgReceiver
 import com.thangiee.lolhangouts.ui.utils._
-import thangiee.riotapi.core.RiotApi
 
 import scala.collection.JavaConversions._
 
@@ -65,10 +63,6 @@ class RegionSelectionActivity extends AppCompatActivity with TActivity with OnIt
 
   override def onItemClick(adapter: AbsViewHolderAdapter[Region], view: View, region: Region, p: Int): Unit = {
     delay(500) {
-      // set the default region and key for the riot api caller
-      RiotApi.regionId = region.id
-      RiotApi.key = Keys.productionKey
-
       // save the selected region to avoid needing this activity after restating the app
       Cached.loginRegionId = region.id
       startActivity[com.thangiee.lolhangouts.ui.login.LoginActivity]
