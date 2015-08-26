@@ -75,9 +75,9 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
       case (i, iconId, kdaId, gamesId) => ps.mostPlayedChamps.lift(i).foreach { champ =>
         find[ChampIconView](iconId).setChampion(champ.name)
         find[TextView](gamesId).text = s"Games:${champ.games}"
-        find[TextView](kdaId).text = Html.fromHtml(s"<font color='#8bc34a'>${champ.killsRatio}</font>/" +
-                                                   s"<font color='#e51c23'>${champ.deathsRatio}</font>/" +
-                                                   s"<font color='#fbc02d'>${champ.assistsRatio}</font>")
+        find[TextView](kdaId).text = Html.fromHtml(s"<font color='#8bc34a'>${champ.killsRatio.roundTo(1)}</font>/" +
+                                                   s"<font color='#e51c23'>${champ.deathsRatio.roundTo(1)}</font>/" +
+                                                   s"<font color='#fbc02d'>${champ.assistsRatio.roundTo(1)}</font>")
       }
     }
 
@@ -102,17 +102,18 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     find[ImageView](R.id.profile_summ_rank_badge).setImageResource(badgeResId)
 
     // setup the win rate pie chart
+    // When a value is 0, it causes the graph to disappear so set it to 1 as a work around.
     val winSlice = new SliceValue(1, R.color.md_light_green_500.r2Color)
-    winSlice.setTarget(ps.wins)
+    winSlice.setTarget(if (ps.wins == 0) 1 else ps.wins)
     val loseSlice = new SliceValue(1, R.color.md_red_500.r2Color)
-    loseSlice.setTarget(ps.loses)
+    loseSlice.setTarget(if (ps.loses == 0) 1 else ps.loses)
 
     val data = new PieChartData(Seq(winSlice, loseSlice))
     data.setHasLabels(true)
     data.setHasLabelsOutside(false)
     data.setHasCenterCircle(true)
     data.setHasLabelsOnlyForSelected(false)
-    data.setCenterText1(ps.winRate + "%")
+    data.setCenterText1(ps.winRate.roundTo(1) + "%")
     data.setCenterText1Typeface(frizeFont)
     data.setCenterText1FontSize(16)
     data.setCenterText1Color(if (ps.winRate >= 50) R.color.md_light_green_500.r2Color else R.color.md_red_500.r2Color)
@@ -124,20 +125,21 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     winRatePieChart.setPieChartData(data)
     winRatePieChart.setValueSelectionEnabled(false)
 
-    // setup the kda pie chart
+    // Setup the kda pie chart.
+    // When a value is 0, it causes the graph to disappear so set it to 1 as a work around.
     val killSlice = new SliceValue(1.0f, R.color.md_light_green_500.r2Color)
-    killSlice.setTarget(ps.killsRatio.toFloat)
+    killSlice.setTarget(if (ps.killsRatio == 0) 1 else ps.killsRatio.roundTo(1).toFloat)
     val deathSlice = new SliceValue(1.0f, R.color.md_red_500.r2Color)
-    deathSlice.setTarget(ps.deathsRatio.toFloat)
+    deathSlice.setTarget(if (ps.deathsRatio == 0) 1 else ps.deathsRatio.roundTo(1).toFloat)
     val assistSlice = new SliceValue(1.0f, R.color.md_yellow_500.r2Color)
-    assistSlice.setTarget(ps.assistsRatio.toFloat)
+    assistSlice.setTarget(if (ps.assistsRatio == 0) 1 else ps.assistsRatio.roundTo(1).toFloat)
 
     val data2 = new PieChartData(Seq(killSlice, assistSlice, deathSlice))
     data2.setHasLabels(true)
     data2.setHasLabelsOutside(false)
     data2.setHasCenterCircle(true)
     data2.setHasLabelsOnlyForSelected(false)
-    data2.setCenterText1(ps.kda.toString)
+    data2.setCenterText1(ps.kda.roundTo(1).toString)
     data2.setCenterText1Typeface(frizeFont)
     data2.setCenterText1FontSize(16)
     data2.setCenterText2(R.string.kda.r2String)
