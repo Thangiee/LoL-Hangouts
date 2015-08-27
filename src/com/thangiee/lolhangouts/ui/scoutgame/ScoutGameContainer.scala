@@ -7,15 +7,15 @@ import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.ui.core.Container
-import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView._
+import com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView._
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
 
-class GameScouterContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
+class ScoutGameContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   private lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
   private lazy val pager          = this.find[ViewPager](R.id.pager)
-  private lazy val blueTeamView   = this.find[GameScouterTeamView](R.id.page_1)
-  private lazy val purpleTeamView = this.find[GameScouterTeamView](R.id.page_2)
+  private lazy val blueTeamView   = this.find[ScoutGameView](R.id.page_1)
+  private lazy val purpleTeamView = this.find[ScoutGameView](R.id.page_2)
 
   private val pages               = List("Blue Team", "Purple Team")
 

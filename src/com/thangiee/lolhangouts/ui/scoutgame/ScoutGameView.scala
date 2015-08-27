@@ -11,19 +11,19 @@ import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
 import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.core.CustomView
-import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView.BlueTeam
+import com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView.BlueTeam
 import com.thangiee.lolhangouts.ui.utils._
 import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
 
-class GameScouterTeamView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
+class ScoutGameView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   private lazy val playersRecView = find[RecyclerView](R.id.rv_suggestions)
   private lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
   private lazy val errorView      = find[ErrorView](R.id.error_view)
 
-  override protected val presenter = new GameScouterTeamPresenter(this, ScoutGameUseCaseImpl())
+  override protected val presenter = new ScoutGamePresenter(this, ScoutGameUseCaseImpl())
 
   override def onAttached(): Unit = {
     super.onAttached()
@@ -85,7 +85,7 @@ class GameScouterTeamView(implicit ctx: Context, a: AttributeSet) extends FrameL
   }
 }
 
-object GameScouterTeamView {
+object ScoutGameView {
   val BlueTeam   = 1
   val PurpleTeam = 2
 }

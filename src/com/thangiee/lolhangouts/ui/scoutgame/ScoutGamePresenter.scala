@@ -3,12 +3,12 @@ package com.thangiee.lolhangouts.ui.scoutgame
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase.{OldAppVersion, InternalError, GameInfoNotFound}
 import com.thangiee.lolhangouts.ui.core.Presenter
-import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView._
+import com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView._
 import com.thangiee.lolhangouts.ui.utils._
 import org.scalactic.{Bad, Good}
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class GameScouterTeamPresenter(view: GameScouterTeamView, scoutGameUseCase: ScoutGameUseCase) extends Presenter {
+class ScoutGamePresenter(view: ScoutGameView, scoutGameUseCase: ScoutGameUseCase) extends Presenter {
 
   def handleScoutingGame(username: String, regionId: String, teamColor: Int): Unit = {
 

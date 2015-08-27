@@ -22,13 +22,13 @@
             android:layout_below="@+id/tabs"
             >
 
-        <com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView
+        <com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView
                 android:id="@+id/page_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
-        <com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView
+        <com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView
                 android:id="@+id/page_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

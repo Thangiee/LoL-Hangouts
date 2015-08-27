@@ -21,7 +21,7 @@ class ViewGameScouterActivity extends TActivity with UpButton with Ads {
     val summonerName = getIntent.getStringExtra("name-key")
     val regionId = getIntent.getStringExtra("region-key")
 
-    contentContainer.addView(new GameScouterContainer(summonerName, regionId).getView)
+    contentContainer.addView(new ScoutGameContainer(summonerName, regionId).getView)
 
     if (Cached.isAdsEnable) setupAds()
   }
