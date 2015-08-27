@@ -52,7 +52,7 @@ trait RiotApiCaller extends AnyRef with TagUtil {
   private def call[T: Reads](url: String, ttl: Duration, ver: Int)(implicit canCache: CanCache[String]): T Or RiotError = {
     val formattedUrl = url.replace(" ", "").toLowerCase
 
-    canCache.get(formattedUrl) match { // blocking
+    canCache.get(formattedUrl) match {
       case Some(cacheHit) => Thread.sleep(100); Good(Json.parse(cacheHit).as[T])
       case None           => // cache missed
         val headers = Map("Authorization" → "secret-key", "Version" → ver.toString)
@@ -74,6 +74,7 @@ trait RiotApiCaller extends AnyRef with TagUtil {
               case 429 => Bad(RateLimit)
               case 500 => Bad(ServerError)
               case 503 => Bad(ServiceUnavailable)
+              case code => warn(s"Unexpected response code $code; defaulting to ServerError(500)"); Bad(ServerError)
             }
           case Failure(e: SocketTimeoutException) => Bad(TimeOut)
           case Failure(e: UnknownHostException)   => Bad(BadRequest(formattedUrl))
