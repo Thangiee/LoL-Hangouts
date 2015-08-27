@@ -49,7 +49,9 @@
     <string name="no_connection">No connection. Please try again.</string>
     <string name="summoner_not_found">Summoner does not exist. Please try again.</string>
     <string name="unexpected_err">An unexpected error has occurred.</string>
-    
+    <string name="app_out_of_date_title">App is out of date</string>
+    <string name="app_out_of_date_body">Please update the app to get this feature working again.</string>
+
     <!-- friend list -->
     <string name="friends_moved_to_group">%1$d friend(s) moved to %2$s group.</string>
     <string name="friend_req_sent">Friend request sent successfully.</string>

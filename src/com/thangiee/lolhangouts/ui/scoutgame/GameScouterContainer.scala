@@ -1,20 +1,15 @@
 package com.thangiee.lolhangouts.ui.scoutgame
 
 import android.content.Context
-import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.support.v4.view.{PagerAdapter, ViewPager}
 import android.view.{View, ViewGroup}
 import android.widget.FrameLayout
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCase.{GameInfoNotFound, InternalError}
-import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.Container
 import com.thangiee.lolhangouts.ui.scoutgame.GameScouterTeamView._
 import com.thangiee.lolhangouts.ui.utils._
 import it.neokree.materialtabs.{MaterialTab, MaterialTabHost, MaterialTabListener}
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class GameScouterContainer(username: String, regionId: String)(implicit ctx: Context) extends FrameLayout(ctx) with Container with MaterialTabListener {
   private lazy val tabs           = this.find[MaterialTabHost](R.id.tabs)
@@ -22,7 +17,6 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
   private lazy val blueTeamView   = this.find[GameScouterTeamView](R.id.page_1)
   private lazy val purpleTeamView = this.find[GameScouterTeamView](R.id.page_2)
 
-  private val viewLiveGameUseCase = ScoutGameUseCaseImpl()
   private val pages               = List("Blue Team", "Purple Team")
 
   override def onAttachedToWindow(): Unit = {
@@ -47,44 +41,16 @@ class GameScouterContainer(username: String, regionId: String)(implicit ctx: Con
         .setTabListener(this))
     }
 
-    loadGame()
+    blueTeamView.scoutGame(username, regionId, BlueTeam)
+    delay(1500) {
+      // avoid double work and relay on the cached scout report done by Blue team ScoutGamePresenter
+      purpleTeamView.scoutGame(username, regionId, PurpleTeam)
+    }
   }
 
   override def onDetachedFromWindow(): Unit = {
     super.onDetachedFromWindow()
     toolbar.setSubtitle(null)
-  }
-
-  def loadGame(): Unit = {
-    viewLiveGameUseCase.loadGameInfo(username, regionId).onSuccess {
-      case Good(gameInfo) => runOnUiThread {
-        setToolbarTitle(s"${gameInfo.mapName} - $regionId")
-        blueTeamView.initializeViewData(gameInfo.blueTeam, BlueTeam)
-        blueTeamView.hideLoading()
-        purpleTeamView.initializeViewData(gameInfo.purpleTeam, PurpleTeam)
-        purpleTeamView.hideLoading()
-      }
-      case Bad(e) => runOnUiThread {
-        SnackBar("Failed to load game")
-          .setDuration(Snackbar.LENGTH_INDEFINITE)
-          .setAction("Reload", reloadGame())
-          .show()
-
-        val errMsg = e match {
-          case GameInfoNotFound => username + R.string.not_in_game.r2String
-          case InternalError    => R.string.err_get_data.r2String
-        }
-
-        blueTeamView.showLoadingError("Oops", errMsg)
-        purpleTeamView.showLoadingError("Oops", errMsg)
-      }
-    }
-  }
-
-  def reloadGame(): Unit = {
-    blueTeamView.showLoading()
-    purpleTeamView.showLoading()
-    loadGame()
   }
 
   override def getView: View = this

@@ -2,7 +2,7 @@ package com.thangiee.lolhangouts.data.usecases
 
 import com.thangiee.lolhangouts.data.datasources.entities.mappers.{MatchMapper, TopChampionMapper}
 import com.thangiee.lolhangouts.data.datasources.entities.{MatchEntity, TopChampEntity}
-import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{GetProfileFailed, ProfileNotFound, ViewProfileError}
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase._
 import com.thangiee.lolhangouts.data.usecases.entities.{Match, ProfileSummary, TopChampion}
 import com.thangiee.lolhangouts.data.utils.Parser.ParserError
 import com.thangiee.lolhangouts.data.utils._
@@ -22,6 +22,7 @@ trait ViewProfileUseCase extends Interactor {
 object ViewProfileUseCase {
   sealed trait ViewProfileError
   object ProfileNotFound extends ViewProfileError
+  object OldAppVersion extends ViewProfileError
   object GetProfileFailed extends ViewProfileError
 }
 
@@ -31,9 +32,10 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase with Parser {
   override def loadSummary(username: String, regionId: String): Future[ProfileSummary Or ViewProfileError] = Future {
 
     profileSummaryByName(username.toLowerCase, regionId.toLowerCase) match {
-      case Good(summary)     => info(s"[+] Profile summary loaded");          Good(summary)
-      case Bad(DataNotFound) => info(s"[-] Profile summary data not found");  Bad(ProfileNotFound)
-      case Bad(e: RiotError) => info(s"[!] Riot api error: $e");              Bad(GetProfileFailed)
+      case Good(summary)     => info(s"[+] Profile summary loaded");                      Good(summary)
+      case Bad(DataNotFound) => info(s"[-] Profile summary data not found");              Bad(ProfileNotFound)
+      case Bad(NeedToUpdate) => info(s"[-] Version of api call to backend out of date."); Bad(OldAppVersion)
+      case Bad(e: RiotError) => info(s"[!] Riot api error: $e");                          Bad(GetProfileFailed)
     }
   }
 

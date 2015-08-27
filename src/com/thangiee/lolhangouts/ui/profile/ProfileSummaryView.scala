@@ -182,6 +182,8 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
     subTitle = R.string.err_get_data.r2String
   )
 
+  def showAppNeedUpdate(): Unit = showError(R.string.app_out_of_date_title.r2String, R.string.app_out_of_date_body.r2String)
+
   private def showError(title: String, subTitle: String): Unit = {
     loadingWheel.zoomOut(delay = 1000) // delay in millis
 
