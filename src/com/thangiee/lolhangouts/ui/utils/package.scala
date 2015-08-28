@@ -134,18 +134,6 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     def toDrawable: Drawable = new BitmapDrawable(ctx.getResources, bitmap)
   }
 
-  implicit class ImageAssetSugar(imageFile: ImageFile)(implicit ctx: Context) {
-    def toDrawable: Drawable = Try(Drawable.createFromStream(ctx.getAssets.open(imageFile.path), null))
-      .getOrElse(ctx.getResources.getDrawable(R.drawable.ic_load_unknown))
-
-    def toBitmap: Bitmap = Try(BitmapFactory.decodeStream(ctx.getAssets.open(imageFile.path)))
-      .getOrElse(R.drawable.ic_load_unknown.toBitmap)
-  }
-
-  implicit class FontAssetSugar(fontFile: FontFile)(implicit ctx: Context) {
-    def toTypeFace: Typeface = Typeface.createFromAsset(ctx.getAssets, fontFile.path)
-  }
-
   implicit class RichSnackBar(snackbar: Snackbar) {
     def setAction(text: CharSequence, onAction: => Unit): Snackbar =
       snackbar.setAction(text, (v: View) => {onAction; snackbar.dismiss()})
