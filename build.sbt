@@ -8,7 +8,7 @@ scalaVersion := "2.11.7"
 
 minSdkVersion in Android := "14"
 
-platformTarget in Android := "android-22"
+platformTarget in Android := "android-23"
 
 apkbuildExcludes in Android ++=
   "META-INF/notice.txt" ::
@@ -56,14 +56,15 @@ libraryDependencies ++= Seq(
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+")
 )
 
+val androidSupportV = "23.0.0"
 // android support libs
 libraryDependencies ++= Seq(
 //  aar("com.android.support" % "multidex" % "1.0.+"),
-  aar("com.android.support" % "recyclerview-v7" % "22.2.1"),
-  aar("com.android.support" % "appcompat-v7" % "22.2.1"),
-  aar("com.android.support" % "design" %"22.2.1"),
-  "com.android.support" % "palette-v7" % "22.2.1",
-  "com.android.support" % "support-v13" % "22.2.1",
+  aar("com.android.support" % "recyclerview-v7" % androidSupportV),
+  aar("com.android.support" % "appcompat-v7" % androidSupportV),
+  aar("com.android.support" % "design" % androidSupportV),
+  "com.android.support" % "palette-v7" % androidSupportV,
+  "com.android.support" % "support-v13" % androidSupportV,
   "com.google.code.findbugs" % "jsr305" % "3.0.0" // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
 )
 
