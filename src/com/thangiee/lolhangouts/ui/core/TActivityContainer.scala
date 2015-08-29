@@ -19,8 +19,4 @@ trait TActivityContainer extends TActivity {
     if (container.onOptionsItemSelected(item)) true
     else super.onOptionsItemSelected(item)
   }
-
-  override def onBackPressed(): Unit = {
-    if (container.onBackPressed()) {}
-  }
 }

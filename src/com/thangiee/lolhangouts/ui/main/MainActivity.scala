@@ -88,13 +88,17 @@ class MainActivity extends TActivityContainer with Ads with BillingProcessor.IBi
   }
 
   override def onBackPressed(): Unit = {
-    super.onBackPressed()
-
-    // if not, go back to home screen
-    val homeScreen = new Intent(Intent.ACTION_MAIN)
-    homeScreen.addCategory(Intent.CATEGORY_HOME)
-    homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    startActivity(homeScreen)
+    if (!container.onBackPressed()) { // back btn press handled by container?
+      if (sideDrawerView.isOpen) {
+        sideDrawerView.closeDrawers()
+      } else {
+        // go back to home screen
+        val homeScreen = new Intent(Intent.ACTION_MAIN)
+        homeScreen.addCategory(Intent.CATEGORY_HOME)
+        homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(homeScreen)
+      }
+    }
   }
 
   private def rateMyApp(): Unit = {
