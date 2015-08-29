@@ -64,7 +64,7 @@ class SideDrawerPresenter(view: SideDrawerView, getAppDataUseCase: GetAppDataUse
       case Logout         => view.showLogoutConfirmation(); return
       case RemoveAds      => view.showRemoveAdsConfirmation(); return
       case Chat | Profile =>
-        if (Await.result(loadAppData.map(_.isGuestMode), Duration.apply(3, SECONDS))) { // check if guest mode
+        if (Await.result(loadAppData.map(_.isGuestMode), Duration.apply(10, SECONDS))) { // check if guest mode
           view.showFeatureRestricted()
           return
         }
