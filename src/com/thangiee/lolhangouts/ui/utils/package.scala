@@ -15,7 +15,8 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.CompoundButton.OnCheckedChangeListener
-import android.widget.{CompoundButton, TextView}
+import android.widget.{ImageView, CompoundButton, TextView}
+import com.squareup.picasso.Picasso
 import com.thangiee.lolhangouts.ui.core.TActivity
 import com.thangiee.lolhangouts.ui.utils.thirdpartylibsugar._
 import com.thangiee.lolhangouts.{MyApplication, R}
@@ -119,6 +120,13 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
           v.requestLayout()
         case _                     =>
       }
+    }
+  }
+
+  implicit class ImageViewSugar(iv: ImageView) {
+    def setImageDrawable(imageFile: ImageFile)(implicit ctx: Context): ImageView = {
+      Picasso.`with`(ctx).load(imageFile.path).placeholder(imageFile.defaultDrawableId).into(iv)
+      iv
     }
   }
 

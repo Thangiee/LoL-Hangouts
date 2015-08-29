@@ -12,14 +12,18 @@ import com.github.nscala_time.time.Imports._
 class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
   implicit private val ctx = getContext
 
+  private val green      = R.color.md_light_green_500.r2Color
+  private val red        = R.color.md_red_500.r2Color
+  private val timeFormat = DateTimeFormat.forPattern("MMM dd, yyyy")
+
   override def updateView(context: Context, m: Match): Unit = {
-    this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAsset(m.champName).toDrawable)
-    this.findTextView(R.id.tv_champ_name).text(m.champName)
-    this.findTextView(R.id.tv_match_type).text(m.queueType.toLowerCase.capitalize.replace("_", " "))
-    this.findImageView(R.id.rect).setBackgroundColor(if (m.isWin) R.color.md_light_green_500.r2Color else R.color.md_red_500.r2Color)
+    this.findImageView(R.id.img_match_champ).setImageDrawable(ChampIconAsset(m.champName))
+    this.findTextView(R.id.tv_champ_name).text = m.champName
+    this.findTextView(R.id.tv_match_type).text = m.queueType.toLowerCase.capitalize.replace("_", " ")
+    this.findImageView(R.id.rect).setBackgroundColor(if (m.isWin) green else red)
     this.findTextView(R.id.tv_match_cs).text = m.cs.toString
     this.findTextView(R.id.tv_match_gold).text = s"${(m.gold.toDouble / 1000).roundTo(1)}K"
-    this.findTextView(R.id.tv_match_date).text = DateTimeFormat.forPattern("MMM dd, yyyy").print(m.startTime)
+    this.findTextView(R.id.tv_match_date).text = timeFormat.print(m.startTime)
     this.findTextView(R.id.tv_match_len).text = s"${m.duration / 60} mins"
     this.findTextView(R.id.tv_match_kda).text = Html.fromHtml(
       s"<font color='#8bc34a'>${m.kills}</font>/" +
@@ -36,7 +40,7 @@ class MatchViewHolder(v: View) extends AbsViewHolder[Match](v) {
       (m.items6Id ,R.id.img_match_item6),
       (m.trinketId, R.id.img_match_trinket)
     ) foreach {
-      case (itemId, imgId) => this.findImageView(imgId).setImageDrawable(ItemIconAsset(itemId).toDrawable)
+      case (itemId, imgId) => this.findImageView(imgId).setImageDrawable(ItemIconAsset(itemId))
     }
   }
 }

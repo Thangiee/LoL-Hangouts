@@ -19,7 +19,7 @@ class ChampIconView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(
   }
 
   def setChampion(name: String) = {
-    champIcon.setImageDrawable(ChampIconAsset(name).toDrawable)
+    champIcon.setImageDrawable(ChampIconAsset(name))
     champName.text = name
   }
 }

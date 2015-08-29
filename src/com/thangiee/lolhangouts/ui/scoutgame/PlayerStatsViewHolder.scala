@@ -18,11 +18,11 @@ class PlayerStatsViewHolder(v: View) extends AbsViewHolder[PlayerStats](v) {
   override def updateView(context: Context, p: PlayerStats): Unit = {
 
     // load champion icon
-    this.findImageView(R.id.img_live_game_champ).setImageDrawable(ChampIconAsset(p.championName).toDrawable)
+    this.findImageView(R.id.img_live_game_champ).setImageDrawable(ChampIconAsset(p.championName))
     // load spell 1 icon
-    this.findImageView(R.id.img_live_game_spell1).setImageDrawable(SummonerSpellAsset(p.spellOne).toDrawable)
+    this.findImageView(R.id.img_live_game_spell1).setImageDrawable(SummonerSpellAsset(p.spellOne))
     // load spell 2 icon
-    this.findImageView(R.id.img_live_game_spell2).setImageDrawable(SummonerSpellAsset(p.spellTwo).toDrawable)
+    this.findImageView(R.id.img_live_game_spell2).setImageDrawable(SummonerSpellAsset(p.spellTwo))
 
     // load season 4 badge
     setBadgeDrawable(p.leagueTier, this.findImageView(R.id.img_s4_badge))

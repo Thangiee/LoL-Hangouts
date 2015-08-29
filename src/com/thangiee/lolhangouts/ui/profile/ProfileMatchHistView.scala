@@ -33,6 +33,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
     llm.setSmoothScrollbarEnabled(true)
     matchRecyclerView.setLayoutManager(llm)
     matchRecyclerView.setHasFixedSize(true)
+    matchRecyclerView.setItemViewCacheSize(10)
   }
 
   def setProfile(name: String, regionId: String) = {

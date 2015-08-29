@@ -32,7 +32,7 @@ class TopChampViewHolder(v: View) extends AbsViewHolder[TopChampion](v) {
   }
 
   override def updateView(context: Context, c: TopChampion): Unit = {
-    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAsset(c.name).toDrawable)
+    this.findImageView(R.id.img_champ_icon).setImageDrawable(ChampIconAsset(c.name))
     this.findTextView(R.id.tv_champ_name).text(c.name)
 
     this.findTextView(R.id.tv_champ_perf).text(c.overAllPerformance + "%")

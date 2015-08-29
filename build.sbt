@@ -113,7 +113,8 @@ libraryDependencies ++= Seq(
   "org.jsoup"                         % "jsoup"         % "1.8.2",
   "ch.acra"                           % "acra"          % "4.6.2",
   "com.parse.bolts"                   % "bolts-android" % "1.2.0",
-  "de.greenrobot"                     % "eventbus"      % "2.4.0"
+  "de.greenrobot"                     % "eventbus"      % "2.4.0",
+  "com.squareup.picasso"              % "picasso"       % "2.5.2"
 )
 
 run <<= run in Android
