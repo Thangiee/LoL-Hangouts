@@ -1,7 +1,7 @@
 package com.thangiee.lolhangouts.ui.profile
 
 import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase
-import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{ProfileNotFound, GetProfileFailed}
+import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCase.{ProfileNotFound, InternalError}
 import com.thangiee.lolhangouts.ui.core.Presenter
 import com.thangiee.lolhangouts.ui.utils._
 
@@ -21,7 +21,7 @@ class ProfileTopChampsPresenter(view: ProfileTopChampsView, viewProfileUseCase: 
         }
       }
       case Bad(ProfileNotFound)  => runOnUiThread(view.showDataNotFound())
-      case Bad(GetProfileFailed) => runOnUiThread(view.showGetDataError())
+      case Bad(InternalError) => runOnUiThread(view.showGetDataError())
     }
   }
 }

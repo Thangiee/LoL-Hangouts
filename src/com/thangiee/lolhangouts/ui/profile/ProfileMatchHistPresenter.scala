@@ -20,8 +20,8 @@ class ProfileMatchHistPresenter(view: ProfileMatchHistView, viewProfileUseCase: 
           view.hideLoading()
         }
       }
-      case Bad(ProfileNotFound) => runOnUiThread(view.showDataNotFound())
-      case Bad(GetProfileFailed) => runOnUiThread(view.showGetDataError())
+      case Bad(HistoryNotFound) => runOnUiThread(view.showDataNotFound())
+      case Bad(InternalError) => runOnUiThread(view.showGetDataError())
     }
   }
 }
