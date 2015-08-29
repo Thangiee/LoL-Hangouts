@@ -10,8 +10,8 @@
         >
 
     <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:id="@+id/img_match_champ"
             android:src="@drawable/league_icon"
             android:layout_alignParentTop="true"
@@ -44,41 +44,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Normal 5v5"
             android:id="@+id/tv_match_type"
-            android:minWidth="95dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/rect"
             android:layout_toEndOf="@+id/rect"
-            android:textSize="13sp"
+            android:textSize="14dp"
             android:layout_marginLeft="8dp"
             android:gravity="top"
             android:textColor="@color/primary_text"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="3 days ago"
-            android:id="@+id/tv_match_date"
-            android:gravity="center"
-            android:textSize="13dp"
-            android:textIsSelectable="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/tv_match_type"
-            android:layout_toEndOf="@+id/tv_match_type"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="55 mins"
-            android:id="@+id/tv_match_len"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             />
 
     <ImageView
@@ -95,148 +67,156 @@
     <ImageView
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:id="@+id/imageView9"
-            android:layout_below="@+id/tv_match_type"
-            android:layout_alignLeft="@+id/tv_match_type"
-            android:layout_alignStart="@+id/tv_match_type"
-            android:src="@drawable/ic_preformace_graph"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="4dp"
-            />
-
-    <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
             android:id="@+id/imageView10"
             android:src="@drawable/ic_cs"
-            android:layout_below="@+id/imageView9"
-            android:layout_alignLeft="@+id/imageView9"
-            android:layout_alignStart="@+id/imageView9"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="4dp"
-            />
+            android:layout_below="@+id/imageView12"
+            android:layout_alignRight="@+id/imageView12"
+            android:layout_alignEnd="@+id/imageView12"/>
 
     <ImageView
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:id="@+id/imageView11"
             android:src="@drawable/ic_gold"
-            android:layout_alignLeft="@+id/imageView10"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="2dp"
-            android:layout_below="@+id/imageView10"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="50%"
-            android:id="@+id/tv_match_perf"
-            android:layout_below="@+id/tv_match_type"
-            android:layout_toRightOf="@+id/imageView9"
-            android:layout_alignRight="@+id/tv_match_cs"
-            android:layout_alignEnd="@+id/tv_match_cs"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="7.3 (-1.6)"
-            android:id="@+id/tv_match_cs"
-            android:layout_toRightOf="@+id/imageView10"
-            android:layout_toEndOf="@+id/imageView10"
             android:layout_alignTop="@+id/imageView10"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="7.3 (-1.6)"
-            android:id="@+id/tv_match_gold"
-            android:layout_toRightOf="@+id/imageView11"
-            android:layout_toEndOf="@+id/imageView11"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            android:layout_alignTop="@+id/imageView11"
-            />
+            android:layout_toRightOf="@+id/tv_match_cs"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"/>
 
     <ImageView
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:id="@+id/imageView12"
             android:src="@drawable/ic_kills"
-            android:layout_marginBottom="2dp"
+            android:layout_below="@+id/tv_match_type"
+            android:layout_alignLeft="@+id/tv_match_type"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"
-            android:layout_alignTop="@+id/imageView9"
-            android:layout_alignLeft="@+id/tv_match_date"
-            />
-
-    <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:id="@+id/imageView13"
-            android:src="@drawable/ic_deaths"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="4dp"
-            android:layout_alignTop="@+id/imageView10"
-            android:layout_alignLeft="@+id/imageView12"
-            />
-
-    <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:id="@+id/imageView14"
-            android:src="@drawable/ic_assists"
-            android:layout_below="@+id/imageView10"
-            android:layout_alignLeft="@+id/imageView13"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="4dp"
-            />
+            android:layout_marginBottom="4dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="7.3 (-1.6)"
-            android:id="@+id/tv_match_kills"
-            android:layout_alignTop="@+id/imageView12"
+            android:text="K/D/A"
+            android:id="@+id/tv_match_kda"
             android:layout_toRightOf="@+id/imageView12"
             android:layout_toEndOf="@+id/imageView12"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            />
+            android:layout_alignTop="@+id/imageView12"
+            android:textSize="12dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="7.3 (-1.6)"
-            android:id="@+id/tv_match_deaths"
-            android:layout_alignTop="@+id/imageView13"
-            android:layout_alignLeft="@+id/tv_match_kills"
-            android:layout_alignStart="@+id/tv_match_kills"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            />
+            android:text="1000"
+            android:id="@+id/tv_match_cs"
+            android:layout_below="@+id/imageView12"
+            android:layout_alignLeft="@+id/tv_match_kda"
+            android:layout_alignStart="@+id/tv_match_kda"
+            android:minWidth="16dp"
+            android:textSize="12dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="7.3 (-1.6)"
-            android:id="@+id/tv_match_assists"
-            android:layout_alignTop="@+id/imageView14"
-            android:layout_alignLeft="@+id/tv_match_deaths"
-            android:layout_alignStart="@+id/tv_match_deaths"
-            android:textSize="11sp"
-            android:minWidth="56dp"
-            />
+            android:text="10k"
+            android:id="@+id/tv_match_gold"
+            android:layout_below="@+id/imageView12"
+            android:layout_toRightOf="@+id/imageView11"
+            android:layout_toEndOf="@+id/imageView11"
+            android:textSize="12dp"/>
+
+    <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="2"
+            android:paddingLeft="54dp"
+            android:id="@+id/gridLayout"
+            android:layout_centerInParent="true"
+            android:paddingTop="12dp">
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item1"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item2"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item3"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item4"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item5"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+
+        <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:id="@+id/img_match_item6"
+                android:src="@drawable/item_unknown"
+                android:layout_margin="1dp"/>
+    </GridLayout>
+
+    <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:id="@+id/img_match_trinket"
+            android:layout_toRightOf="@+id/gridLayout"
+            android:layout_toEndOf="@+id/gridLayout"
+            android:src="@drawable/trinket_empty"
+            android:layout_marginTop="26dp"
+            android:layout_marginLeft="1dp"/>
+
+    <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:columnCount="1"
+            android:rowCount="2">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50:00"
+                android:layout_gravity="center"
+                android:id="@+id/tv_match_len"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aug 16, 2015"
+                android:id="@+id/tv_match_date"
+                android:textSize="12sp"
+                />
+    </GridLayout>
 
 </RelativeLayout>

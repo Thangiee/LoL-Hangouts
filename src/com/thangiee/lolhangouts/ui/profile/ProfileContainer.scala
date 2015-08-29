@@ -67,7 +67,7 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
       }
     }
 
-    if (pagePosition == 1 || pagePosition == 2) {
+    if (pagePosition == 1) { // champions tab
       menuInflater.inflate(R.menu.info, menu)
     }
     true
@@ -79,22 +79,16 @@ class ProfileContainer(name: String, regionId: String)(implicit ctx: Context) ex
         ManageFriendUseCaseImpl().sendFriendRequest(name)
         // todo: show message
         true
-      case R.id.menu_info       =>
+      case R.id.menu_info =>
         if (pagePosition == 1) {
           new MaterialDialog.Builder(ctx)
             .title("Top Ranked Champion")
             .customView(R.layout.info_top_champs, true)
             .positiveText(android.R.string.ok)
             .show()
-        } else {
-          new MaterialDialog.Builder(ctx)
-            .title("Match History")
-            .customView(R.layout.info_match_hist, true)
-            .positiveText(android.R.string.ok)
-            .show()
         }
         true
-      case _                    => false
+      case _              => false
     }
   }
 
