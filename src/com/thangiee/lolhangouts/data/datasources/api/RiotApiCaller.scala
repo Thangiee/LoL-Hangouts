@@ -7,7 +7,7 @@ import com.thangiee.lolhangouts.data.datasources.cache.CanCache
 import com.thangiee.lolhangouts.data.usecases.entities._
 import com.thangiee.lolhangouts.data._
 import org.scalactic.{Bad, Good, Or}
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{JsResultException, JsResult, Json, Reads}
 
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
@@ -30,7 +30,7 @@ trait RiotApiCaller extends AnyRef with TagUtil {
   }
 
   def summonerNameById(id: String, regionId: String = cachedRegionId)(implicit c: CanCache[String]): String Or RiotError = {
-    val url = s"$baseUrl/api/summoner/by-id/?id=$id&region=$regionId"
+    val url = s"$baseUrl/api/summoner/name/by-id/?id=$id&region=$regionId"
     call[String](url, ttl = 1.hour, ver = 1)
   }
 
@@ -67,7 +67,11 @@ trait RiotApiCaller extends AnyRef with TagUtil {
             response.code match {
               case 200           =>
                 canCache.put(formattedUrl → response.body, Some(ttl)) // cache the response's content
-                Good(Json.parse(response.body).as[T]) // and return it
+                warn(response.body)
+                Try(Json.parse(response.body).as[T]) match { // check for JsResultException
+                  case Success(t) => Good(t)
+                  case Failure(e) => e.printStackTrace(); Bad(NeedToUpdate)
+                }
               case 400 => Bad(BadRequest(formattedUrl))
               case 401 => Bad(Unauthorized)
               case 404 => Bad(DataNotFound)
