@@ -52,7 +52,7 @@ case class FriendOnCard(private var friend: Friend)(implicit ctx: Context) exten
   override def getType: Int = 0
 
   override def update(friend: Friend): Unit = {
-    if (getCardView != null) {
+    if (getCardView != null && friend != null) {
       this.friend = friend
       super.friend_(friend)
       fetchLatestMessage()
