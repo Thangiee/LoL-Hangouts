@@ -17,7 +17,7 @@ import scala.concurrent.Future
 
 trait LoginUseCase extends Interactor {
   def loadLoginInfo(): Future[(Username, Password, Option[Region], IsLoginOffline)]
-  def login(user: String, pass: String): Future[Unit Or LoginError]
+  def login(user: String, pass: String, isLoginOffline: Boolean): Future[Unit Or LoginError]
   def saveLoginInfo(user: String, pass: String, isLoginOffline: Boolean, isGuestMode: Boolean): Future[Unit]
   def updateAppVersion(version: String): Future[Unit]
   def loadAppVersion(): Future[Version]
@@ -35,14 +35,14 @@ object LoginUseCase {
 
 case class LoginUseCaseImpl() extends LoginUseCase {
 
-  override def login(user: String, pass: String): Future[Unit Or LoginError] = Future {
+  override def login(user: String, pass: String, isLoginOffline: Boolean): Future[Unit Or LoginError] = Future {
     (user.isEmpty, pass.isEmpty) match {
       case (true, false)  => info("[-] username is empty"); Bad(EmptyUsername)
       case (false, true)  => info("[-] password is empty"); Bad(EmptyPassword)
       case (true, true)   => info("[-] username and password are empty"); Bad(EmptyUserAndPass)
       case (false, false) =>
         val region = getFromId(Cached.loginRegionId.getOrElse("na"))
-        LoLChat.login(user, pass, region) match {
+        LoLChat.login(user, pass, region, isLoginOffline) match {
           case Good(_)                       => Good(Unit)
           case Bad(NotConnected(url))        => info(s"[-] fail to reach $url"); Bad(ConnectionError)
           case Bad(FailAuthentication(_, _)) => info("[-] Invalid username or password"); Bad(AuthenticationError)

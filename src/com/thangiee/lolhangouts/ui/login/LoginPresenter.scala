@@ -68,7 +68,7 @@ class LoginPresenter(view: LoginView, loginUseCase: LoginUseCase) extends Presen
     isGuestMode = false
     view.setLoginState(LoginView.LoadingState)
 
-    loginUseCase.login(username, password).onSuccess {
+    loginUseCase.login(username, password, view.isLoginOffline).onSuccess {
       case Good(_)                  =>
         runOnUiThread(view.setLoginState(LoginView.SuccessState))
         Thread.sleep(700) // wait a bit for login success animation
