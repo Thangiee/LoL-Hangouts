@@ -5,26 +5,25 @@ import android.text.Html
 import android.util.AttributeSet
 import android.view.View
 import android.widget._
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.data.usecases.entities.ProfileSummary
 import com.thangiee.lolhangouts.ui.core.{CustomView, TActivity}
 import com.thangiee.lolhangouts.ui.custom.ChampIconView
 import com.thangiee.lolhangouts.ui.utils._
-import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import it.gmariotti.cardslib.library.view.CardViewNative
 import lecho.lib.hellocharts.formatter.SimplePieChartValueFormatter
 import lecho.lib.hellocharts.model.{PieChartData, SliceValue}
 import lecho.lib.hellocharts.view.PieChartView
 import tr.xip.errorview.ErrorView
-import tr.xip.errorview.ErrorView.RetryListener
 
 import scala.collection.JavaConversions._
 
 class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   private lazy val winRatePieChart = find[PieChartView](R.id.pie_graph_win_rate)
   private lazy val kdaPieChart     = find[PieChartView](R.id.pie_graph_kda)
-  private lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val loadingWheel    = find[ProgressWheel](R.id.loading_wheel)
   private lazy val errorView       = find[ErrorView](R.id.error_view)
   private lazy val toolbar         = ctx.asInstanceOf[TActivity].toolbar
 
@@ -151,6 +150,7 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
   }
 
   def showLoading(): Unit = {
+    loadingWheel.spin()
     loadingWheel.setVisibility(View.VISIBLE)
     loadingWheel.fadeInDown(duration = 1)
     Seq(userCard, statsCard, mostPlayedCard, rankedCard).foreach(_.setVisibility(View.INVISIBLE))
@@ -158,7 +158,8 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
   }
 
   def hideLoading(): Unit = {
-    loadingWheel.zoomOut(delay = 1000) // delay in millis
+    loadingWheel.setProgress(1)
+    loadingWheel.fadeOutUp(delay = 1000)
     userCard.fadeIn(delay = 1100)
     statsCard.fadeIn(delay = 1350)
     mostPlayedCard.fadeIn(delay = 1600)
@@ -183,7 +184,7 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
   def showAppNeedUpdate(): Unit = showError(R.string.app_out_of_date_title.r2String, R.string.app_out_of_date_body.r2String)
 
   private def showError(title: String, subTitle: String): Unit = {
-    loadingWheel.zoomOut(delay = 1000) // delay in millis
+    loadingWheel.fadeOutUp(delay = 1000) // delay in millis
 
     delay(2000) {
       errorView.setTitle(title)

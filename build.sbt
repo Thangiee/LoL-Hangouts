@@ -83,7 +83,6 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  aar("com.github.castorflex.smoothprogressbar"  % "library-circular"       % "1.1.0"),
   aar("it.neokree"                               % "MaterialTabs"           % "0.11"),
   aar("com.github.xiprox.errorview"              % "library"                % "2.2.0"),
   aar("com.skocken"                              % "efficientadapter.lib"   % "1.2.0"),
@@ -102,7 +101,8 @@ libraryDependencies ++= Seq(
   aar("jp.wasabeef"                              % "recyclerview-animators" % "1.2.0"),
   aar("com.rengwuxian.materialedittext"          % "library"                % "2.1.4"),
   aar("com.github.medyo"                         %"fancybuttons"            % "1.3"),
-  aar("com.github.clans"                         % "fab"                    % "1.5.3")
+  aar("com.github.clans"                         % "fab"                    % "1.5.3"),
+  aar("com.pnikosis"                             % "materialish-progress"   % "1.7")
 )
 
 libraryDependencies ++= Seq(

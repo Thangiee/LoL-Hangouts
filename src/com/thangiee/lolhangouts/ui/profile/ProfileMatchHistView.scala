@@ -5,6 +5,7 @@ import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.entities.Match
@@ -12,15 +13,13 @@ import com.thangiee.lolhangouts.data.usecases.ViewProfileUseCaseImpl
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.regionselection.RegionViewHolder
 import com.thangiee.lolhangouts.ui.utils._
-import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter
-import tr.xip.errorview.ErrorView.RetryListener
 import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
 
 class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
-  private lazy val loadingWheel      = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val loadingWheel      = find[ProgressWheel](R.id.loading_wheel)
   private lazy val errorView         = find[ErrorView](R.id.error_view)
   private lazy val matchRecyclerView = find[RecyclerView](R.id.rv_suggestions)
 
@@ -51,6 +50,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
   }
 
   def showLoading(): Unit = {
+    loadingWheel.spin()
     loadingWheel.setVisibility(View.VISIBLE)
     errorView.setVisibility(View.GONE)
     loadingWheel.fadeInDown(duration = 1)
@@ -58,8 +58,9 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
   }
 
   def hideLoading(): Unit = {
-    loadingWheel.zoomOut(delay = 500)
-    matchRecyclerView.fadeIn(duration = 1, delay = 500)
+    loadingWheel.setProgress(1)
+    loadingWheel.fadeOutUp(duration = 750, delay = 1000)
+    matchRecyclerView.fadeIn(duration = 1, delay = 1750)
   }
 
   def showDataNotFound(): Unit = showError("No Result", R.string.no_match_hist.r2String)
@@ -70,7 +71,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
   )
 
   private def showError(title: String, subTitle: String): Unit = {
-    loadingWheel.zoomOut(delay = 500) // delay in millis
+    loadingWheel.fadeOutUp(duration = 500, delay = 1000)
 
     delay(1500) {
       errorView.setTitle(title)

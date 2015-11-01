@@ -17,8 +17,8 @@
             />
 
     <include
-            layout="@layout/circular_loader"
-            android:id="@+id/circular_loader"
+            layout="@layout/loading_wheel"
+            android:id="@+id/loading_wheel"
             android:layout_height="42dp"
             android:layout_width="42dp"
             android:layout_centerVertical="true"

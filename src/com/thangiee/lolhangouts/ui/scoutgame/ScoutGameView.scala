@@ -6,6 +6,7 @@ import android.support.v7.widget.{LinearLayoutManager, RecyclerView}
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.skocken.efficientadapter.lib.adapter.SimpleAdapter
 import com.thangiee.lolhangouts.R
 import com.thangiee.lolhangouts.data.usecases.ScoutGameUseCaseImpl
@@ -13,14 +14,13 @@ import com.thangiee.lolhangouts.data.usecases.entities.PlayerStats
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.scoutgame.ScoutGameView.BlueTeam
 import com.thangiee.lolhangouts.ui.utils._
-import fr.castorflex.android.circularprogressbar.CircularProgressBar
 import tr.xip.errorview.ErrorView
 
 import scala.collection.JavaConversions._
 
 class ScoutGameView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(ctx, a) with CustomView {
   private lazy val playersRecView = find[RecyclerView](R.id.rv_suggestions)
-  private lazy val loadingWheel   = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val loadingWheel   = find[ProgressWheel](R.id.loading_wheel)
   private lazy val errorView      = find[ErrorView](R.id.error_view)
 
   override protected val presenter = new ScoutGamePresenter(this, ScoutGameUseCaseImpl())
@@ -49,14 +49,16 @@ class ScoutGameView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(
   }
 
   def showLoading(): Unit = {
+    loadingWheel.spin()
     loadingWheel.setVisibility(View.VISIBLE)
     playersRecView.setVisibility(View.INVISIBLE)
     errorView.setVisibility(View.GONE)
   }
 
   def hideLoading(): Unit = {
-    loadingWheel.zoomOut()
-    playersRecView.fadeIn(duration = 1, delay = 1000)
+    loadingWheel.setProgress(1)
+    loadingWheel.fadeOutUp(duration = 750, delay = 1000)
+    playersRecView.fadeIn(duration = 1, delay = 1750)
   }
 
   def showDataNotFound(username: String, snackBarAction: => Unit): Unit =
@@ -74,7 +76,7 @@ class ScoutGameView(implicit ctx: Context, a: AttributeSet) extends FrameLayout(
       .setAction("Reload", f)
       .show()
 
-    loadingWheel.zoomOut()
+    loadingWheel.fadeOutUp(delay = 1000)
     errorView.showRetryButton(false)
 
     delay(mills = 1000) {

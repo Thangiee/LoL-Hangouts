@@ -69,8 +69,8 @@
     </LinearLayout>
 
     <include
-            layout="@layout/circular_loader"
-            android:id="@+id/circular_loader"
+            layout="@layout/loading_wheel"
+            android:id="@+id/loading_wheel"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_height="42dp"

@@ -2,12 +2,11 @@ package com.thangiee.lolhangouts.data.datasources.api
 
 import java.net.{SocketTimeoutException, UnknownHostException}
 
-import com.thangiee.lolhangouts.data.Cached
+import com.thangiee.lolhangouts.data.{Cached, _}
 import com.thangiee.lolhangouts.data.datasources.cache.CanCache
 import com.thangiee.lolhangouts.data.usecases.entities._
-import com.thangiee.lolhangouts.data._
 import org.scalactic.{Bad, Good, Or}
-import play.api.libs.json.{JsResultException, JsResult, Json, Reads}
+import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}

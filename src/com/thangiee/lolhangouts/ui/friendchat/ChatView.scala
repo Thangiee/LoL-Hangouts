@@ -4,16 +4,16 @@ import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.View
-import android.widget.{EditText, FrameLayout}
+import android.widget.FrameLayout
 import com.afollestad.materialdialogs.MaterialDialog.Builder
 import com.dd.CircularProgressButton
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.thangiee.lolhangouts.R
-import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
 import com.thangiee.lolhangouts.data.usecases._
+import com.thangiee.lolhangouts.data.usecases.entities.{Friend, Message}
 import com.thangiee.lolhangouts.ui.core.CustomView
 import com.thangiee.lolhangouts.ui.utils._
-import fr.castorflex.android.circularprogressbar.CircularProgressBar
 
 import scala.collection.JavaConversions._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,7 +23,7 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   private lazy val msgField        = find[MaterialEditText](R.id.et_msg_field)
   private lazy val messageAdapter  = new MessageAdapter(ctx, 0)
   private lazy val messageListView = find[MessagesListView](R.id.lsv_chat)
-  private lazy val loadingWheel    = find[CircularProgressBar](R.id.circular_loader)
+  private lazy val loadingWheel    = find[ProgressWheel](R.id.loading_wheel)
 
   private            var friend: Option[Friend] = None
   override protected val presenter              = new ChatPresenter(this, DeleteMsgUseCaseImpl(), GetMsgUseCaseImpl(),
@@ -56,13 +56,14 @@ class ChatView(implicit ctx: Context) extends FrameLayout(ctx) with CustomView {
   def hideProgress(): Unit = sendButton.setProgress(0)
 
   def showLoading(): Unit = {
-    loadingWheel.restart()
+    loadingWheel.spin()
     loadingWheel.visibility = View.VISIBLE
     messageListView.visibility = View.INVISIBLE
   }
 
   def hideLoading(): Unit = {
-    loadingWheel.fadeOutUp(duration = 1000)
+    loadingWheel.setProgress(1)
+    loadingWheel.fadeOutUp(duration = 750, delay = 1000)
     messageListView.fadeInDown(duration = 750, delay = 1000)
   }
 
