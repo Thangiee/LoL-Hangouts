@@ -49,19 +49,14 @@ trait MaterialDialogSugar {
     }
   }
 
-  implicit def func2InputCallback(f: (MaterialDialog, CharSequence) => Unit): InputCallback = new InputCallback {
-    def onInput(dialog: MaterialDialog, input: CharSequence): Unit = f(dialog, input)
-  }
+  implicit def func2InputCallback(f: (MaterialDialog, CharSequence) => Unit): InputCallback =
+    (dialog: MaterialDialog, input: CharSequence) => f(dialog, input)
 
   implicit def func2ListCallbackMultiChoice(f: MultiChoice): ListCallbackMultiChoice =
-    new ListCallbackMultiChoice {
-      def onSelection(dialog: MaterialDialog, which: Array[Integer], text: Array[CharSequence]): Boolean = f(dialog, which.map(_.toInt), text)
-    }
+    (dialog: MaterialDialog, which: Array[Integer], text: Array[CharSequence]) => f(dialog, which.map(_.toInt), text)
 
   implicit def func2ListCallbackSingleChoice(f: SingleChoice): ListCallbackSingleChoice =
-    new ListCallbackSingleChoice {
-      def onSelection(dialog: MaterialDialog, view: View, i: Int, selection: CharSequence): Boolean = f(dialog, view, i, selection)
-    }
+    (dialog: MaterialDialog, view: View, i: Int, selection: CharSequence) => f(dialog, view, i, selection)
 }
 
 object MaterialDialogSugar extends MaterialDialogSugar

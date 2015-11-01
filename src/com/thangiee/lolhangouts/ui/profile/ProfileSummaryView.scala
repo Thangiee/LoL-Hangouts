@@ -49,9 +49,7 @@ class ProfileSummaryView(implicit ctx: Context, a: AttributeSet) extends FrameLa
 
   def setProfile(name: String, regionId: String) = {
     presenter.handleSetProfile(name, regionId)
-    errorView.setOnRetryListener(new RetryListener {
-      override def onRetry(): Unit = presenter.handleSetProfile(name, regionId)
-    })
+    errorView.setOnRetryListener(() => presenter.handleSetProfile(name, regionId))
   }
 
   def initializeViewData(ps: ProfileSummary): Unit = {

@@ -36,9 +36,7 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
 
   def runOnUiThread(f: => Unit): Unit = {
     if (uiThread == Thread.currentThread()) f
-    else handler.post(new Runnable {
-      def run(): Unit = f
-    })
+    else handler.post(() => f)
   }
 
   def toolbarHeight(implicit ctx: Context): Int = {
@@ -98,9 +96,8 @@ package object utils extends SystemServices with Sugar with Helpers with Implici
     if (ctx.getResources.getConfiguration.orientation == Configuration.ORIENTATION_PORTRAIT) size.y else size.x
   }
 
-  implicit def func2OnCheckedChangeListener[F](f: (CompoundButton, Boolean) ⇒ F): OnCheckedChangeListener = new OnCheckedChangeListener {
-    def onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean): Unit = f(buttonView, isChecked)
-  }
+  implicit def func2OnCheckedChangeListener[F](f: (CompoundButton, Boolean) ⇒ F): OnCheckedChangeListener =
+    (buttonView: CompoundButton, isChecked: Boolean) => f(buttonView, isChecked)
 
   implicit class Rounding(number: Double) {
     def roundTo(DecimalPlace: Int): Double = {

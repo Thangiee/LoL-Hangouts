@@ -67,9 +67,7 @@ class MainActivity extends TActivityContainer with Ads with BillingProcessor.IBi
     }
 
     // if the container did not handle the nav icon click event then open the drawer
-    toolbar.setNavigationOnClickListener(new OnClickListener {
-      def onClick(view: View): Unit = if (!container.onNavIconClick()) sideDrawerView.openDrawer()
-    })
+    toolbar.setNavigationOnClickListener((view: View) => if (!container.onNavIconClick()) sideDrawerView.openDrawer())
 
     notificationManager.cancelAll() // clear any left over notification
     if (Cached.isAdsEnable) setupAds()

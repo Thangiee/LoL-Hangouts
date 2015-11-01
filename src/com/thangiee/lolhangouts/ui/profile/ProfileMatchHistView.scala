@@ -38,9 +38,7 @@ class ProfileMatchHistView(implicit ctx: Context, a: AttributeSet) extends Frame
 
   def setProfile(name: String, regionId: String) = {
     presenter.handleSetProfile(name, regionId)
-    errorView.setOnRetryListener(new RetryListener {
-      override def onRetry(): Unit = presenter.handleSetProfile(name, regionId)
-    })
+    errorView.setOnRetryListener(() => presenter.handleSetProfile(name, regionId))
   }
 
   def initializeViewData(matches: List[Match]): Unit = {
