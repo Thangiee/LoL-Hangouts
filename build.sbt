@@ -3,31 +3,30 @@ import android.Keys._
 android.Plugin.androidBuild
 
 name := "LoL Hangouts"
-
 scalaVersion := "2.11.7"
+scalacOptions += "-Xexperimental"
 
-minSdkVersion in Android := "14"
+packagingOptions := PackagingOptions(
+  excludes =
+    "META-INF/notice.txt" ::
+    "META-INF/license.txt" ::
+    "META-INF/LICENSE" ::
+    "META-INF/NOTICE" ::
+    "META-INF/LICENSE.txt" ::
+    "META-INF/NOTICE.txt" ::
+    Nil
+)
 
-platformTarget in Android := "android-23"
-
-apkbuildExcludes in Android ++=
-  "META-INF/notice.txt" ::
-  "META-INF/license.txt" ::
-  "META-INF/LICENSE" ::
-  "META-INF/NOTICE" ::
-  "META-INF/LICENSE.txt" ::
-  "META-INF/NOTICE.txt" ::
-  Nil
-
-dexMaxHeap in Android := "2048m"
+dexMaxHeap := "2048m"
 
 resolvers ++=
   ("Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/") ::
   ("jcenter" at "https://jcenter.bintray.com/") :: Nil
 
-proguardOptions in Android ++= ProguardSettings.buildSettings
+proguardOptions ++= ProguardSettings.buildSettings
 
-proguardCache in Android ++= ProguardSettings.cacheValues
+//proguardCache ++= ProguardSettings.cacheValues
+proguardCache := Nil
 
 javacOptions ++= "-source" :: "1.7" :: "-target" :: "1.7" :: Nil
 
@@ -43,7 +42,7 @@ libraryDependencies ++= List(
 
 // scala 3th party libraries
 libraryDependencies ++= Seq(
-  "org.scaloid" %% "scaloid" % "4.0-RC1",
+  "org.scaloid" %% "scaloid" % "4.0",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.typesafe.play" % "play-json_2.11" % "2.4.0-M2",
   "org.scalaj" %% "scalaj-http" % "1.1.5",
@@ -56,16 +55,14 @@ libraryDependencies ++= Seq(
   aar("com.anjlab.android.iab.v3" % "library" % "1.0.+")
 )
 
-val androidSupportV = "23.0.0"
+val androidSupportV = "23.0.1"
 // android support libs
 libraryDependencies ++= Seq(
 //  aar("com.android.support" % "multidex" % "1.0.+"),
   aar("com.android.support" % "recyclerview-v7" % androidSupportV),
   aar("com.android.support" % "appcompat-v7" % androidSupportV),
   aar("com.android.support" % "design" % androidSupportV),
-  "com.android.support" % "palette-v7" % androidSupportV,
-  "com.android.support" % "support-v13" % androidSupportV,
-  "com.google.code.findbugs" % "jsr305" % "3.0.0" // fix Missing dependency 'class javax.annotation.Nullable' for guava lib
+  "com.android.support" % "palette-v7" % androidSupportV
 )
 
 // ========= android 3th party libs ==============
@@ -121,5 +118,3 @@ libraryDependencies ++= Seq(
 run <<= run in Android
 
 install <<= install in Android
-
-retrolambdaEnable in Android := false // turning it on significantly increases the build time

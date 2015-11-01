@@ -1,4 +1,4 @@
-addSbtPlugin("com.hanhuy.sbt" % "android-sdk-plugin" % "1.4.12")
+addSbtPlugin("com.hanhuy.sbt" % "android-sdk-plugin" % "1.5.7")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.4.0")
 
