@@ -72,7 +72,7 @@ case class ViewProfileUseCaseImpl() extends ViewProfileUseCase with Parser {
       if (!doc.div("pagination").text().contains("Champion Performance")) return Good(Nil)
     }
 
-    doc.map(_.tableId("championsTable").tr().tail.map { row =>
+    doc.map(_.table("skinned champions").tr().tail.map { row =>
       TopChampionMapper.transform {
         TopChampEntity(
           name = row.td("left champion tooltip").a().head.text(),
